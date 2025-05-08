@@ -1,54 +1,55 @@
-# React + TypeScript + Vite
+```
+src/
+├── assets/                # Images, icons, banners
+├── components/            # Reusable UI components
+│   ├── ui/                # Generic UI components like Button, Input, Modal
+│   └── shared/            # Shared layout parts like Header, Footer, Navbar
+├── features/              # Feature-based modules with their own logic & pages
+│   ├── auth/              # Login, Register, authentication logic
+│   │   ├── components/
+│   │   ├── pages/
+│   │   │   ├── Login.tsx
+│   │   │   └── Register.tsx
+│   │   ├── authAPI.ts     # Authentication-related API functions
+│   │   └── index.ts       # Barrel file (for exports)
+│   ├── home/              # Homepage logic and UI
+│   │   ├── components/
+│   │   └── pages/
+│   │       └── Home.tsx
+│   ├── product/           # Product list and detail views
+│   │   ├── components/
+│   │   │   ├── ProductCard.tsx
+│   │   │   └── ProductFilterSidebar.tsx
+│   │   ├── pages/
+│   │   │   ├── ProductList.tsx
+│   │   │   └── ProductDetail.tsx
+│   │   ├── productAPI.ts  # Product-related API calls
+│   │   └── productSlice.ts# Zustand or context state (if needed)
+│   ├── cart/              # Cart logic and pages (TBD)
+│   ├── checkout/          # Checkout and payment flow (TBD)
+│   ├── user/              # User profile, order history, wishlist (TBD)
+│   └── admin/             # Admin dashboard, CRUD operations (TBD)
+├── hooks/                 # Custom React hooks
+├── layouts/               # Layout wrappers (AdminLayout, UserLayout)
+├── routes/                # App route configurations
+│   └── AppRoutes.tsx
+├── services/              # Common services like Axios instance
+│   └── apiClient.ts
+├── store/                 # Global state (Zustand or Context API)
+├── types/                 # Global TypeScript types and interfaces
+├── utils/                 # Helper functions (e.g., formatPrice, validators)
+├── App.tsx                # Root app component
+└── main.tsx               # Main entry point (Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Folder Guidelines
+Modular Feature Design: Every major functionality (auth, product, etc.) is grouped in its own folder under features/ with components, pages, and logic inside.
+
+Reusability: Shared or generic UI components live in components/ui/ and components/shared/.
+
+Scalability: Easily extendable for new features like reviews, notifications, etc.
+
+Separation of Concerns: APIs live under services/ or within each feature, keeping UI and business logic separate.
