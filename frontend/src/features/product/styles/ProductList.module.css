@@ -1,0 +1,13 @@
+.listContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    width: 100%;
+    padding-top:20px ;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 20px;
+    margin-top: -8px;
+    }
+.border{
+    border-top: 1px solid #e5e7eb;
+}
