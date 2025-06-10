@@ -1,0 +1,252 @@
+/* Card container */
+.wishlistCard {
+  background: #fff;
+  border: 1px solid #eaeaec; /* Myntra's subtle border */
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.wishlistCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Image container */
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background-color: #f5f5f6; /* Myntra's light background for placeholders */
+}
+
+.itemImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.itemImage:hover {
+  transform: scale(1.05);
+}
+
+.imagePlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #f5f5f6;
+  color: #94969f;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Badges */
+.discountBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #ff905a; /* Myntra's orange for discounts */
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.outOfStockOverlay {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #ff6b6b; /* Myntra's red for out-of-stock */
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Remove button */
+.removeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.removeButton:hover {
+  background: rgba(255, 63, 108, 0.1);
+  color: #ff3f6c; /* Myntra's pink accent */
+  transform: scale(1.1);
+}
+
+/* Content */
+.itemContent {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.itemHeader {
+  margin-bottom: 8px;
+}
+
+.itemName {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+  color: #282c3f; /* Myntra's dark text */
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.category {
+  font-size: 14px;
+  color: #94969f; /* Myntra's secondary text */
+  margin: 0;
+}
+
+/* Rating */
+.itemRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ratingText {
+  font-size: 12px;
+  color: #94969f;
+}
+
+/* Description */
+.itemDescription {
+  font-size: 14px;
+  color: #535766;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Price section */
+.priceSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.currentPrice {
+  font-size: 16px;
+  font-weight: 600;
+  color: #282c3f;
+}
+
+.originalPrice {
+  font-size: 14px;
+  color: #94969f;
+  text-decoration: line-through;
+}
+
+.savings {
+  font-size: 12px;
+  color: #ff905a; /* Myntra's orange for savings */
+  font-weight: 500;
+}
+
+/* Meta */
+.itemMeta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dateAdded {
+  font-size: 12px;
+  color: #94969f;
+}
+
+.stockStatus {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.inStock {
+  color: #03a685; /* Myntra's green for in-stock */
+}
+
+.outOfStock {
+  color: #ff6b6b; /* Myntra's red for out-of-stock */
+}
+
+/* Actions */
+.cardActions {
+  display: flex;
+  gap: 8px;
+}
+
+.addToCartButton,
+.removeFromWishlistButton {
+  flex: 1;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .cardActions {
+    flex-direction: column;
+  }
+
+  .addToCartButton,
+  .removeFromWishlistButton {
+    width: 100%;
+  }
+
+  .imageContainer {
+    height: 200px; /* Smaller image on mobile */
+  }
+
+  .itemName {
+    font-size: 14px;
+  }
+
+  .category {
+    font-size: 12px;
+  }
+
+  .currentPrice {
+    font-size: 14px;
+  }
+
+  .originalPrice {
+    font-size: 12px;
+  }
+}
