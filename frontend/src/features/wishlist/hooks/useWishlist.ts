@@ -1,7 +1,7 @@
 // hooks/useWishlist.ts
 import { useState, useEffect, useMemo } from 'react';
 import type { WishlistItem, WishlistFilters, WishlistState } from '../types/wishlist';
-import { apiService } from '../services/api';
+import { apiService } from '../../order/api';
 
 // Mock data for demonstration
 const mockWishlistItems: WishlistItem[] = [
@@ -21,7 +21,7 @@ const mockWishlistItems: WishlistItem[] = [
     inStock: true,
     addedAt: new Date('2024-01-15'),
     category: 'Men',
-    imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
+    // imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
     description: 'A comfortable cotton casual shirt perfect for everyday wear.',
     dateAdded: '2024-01-15T10:00:00Z'
   },
@@ -41,7 +41,7 @@ const mockWishlistItems: WishlistItem[] = [
     inStock: true,
     addedAt: new Date('2024-01-10'),
     category: 'Women',
-    imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
+    // imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
     description: 'A comfortable cotton casual shirt perfect for everyday wear.',
     dateAdded: '2024-01-15T10:00:00Z'
   },
@@ -61,7 +61,7 @@ const mockWishlistItems: WishlistItem[] = [
     inStock: false,
     addedAt: new Date('2024-01-05'),
     category: 'Kids',
-    imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
+    // imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
     description: 'A comfortable cotton casual shirt perfect for everyday wear.',
     dateAdded: '2024-01-15T10:00:00Z'
   },
@@ -79,7 +79,7 @@ const mockWishlistItems: WishlistItem[] = [
     inStock: true,
     addedAt: new Date('2024-01-12'),
     category: 'Beauty',
-    imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
+    // imageUrl: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&fit=crop',
     description: 'A comfortable cotton casual shirt perfect for everyday wear.',
     dateAdded: '2024-01-15T10:00:00Z'
   }

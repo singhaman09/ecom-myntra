@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { WishlistItem } from '../../../types/wishlist';
+import type { WishlistItem } from '../types/wishlist';
 import Button from '../../../components/UI/Button';
 import StarRating from '../../../components/UI/StarRating';
 import styles from '../../../components/shared/css/wishlistCard.module.css';
@@ -51,7 +51,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item, onRemove, onMoveToCar
       <div className={styles.imageContainer}>
         {!imageError ? (
           <img
-            src={item.imageUrl}
+            src={item.image}
             alt={item.name}
             className={styles.itemImage}
             onError={() => setImageError(true)}

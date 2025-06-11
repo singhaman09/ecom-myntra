@@ -1,7 +1,7 @@
 // components/Wishlist/WishlistFilters.tsx
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { setFilters, clearFilters } from '../../../store/slices/wishlistSlice';
+import { useAppDispatch, useAppSelector } from '../../order/hooks/redux';
+import { setFilters, clearFilters } from '../slice/wishlistSlice';
 import Button from '../../../components/UI/Button';
 import SearchInput from '../../../components/UI/SearchInput';
 import styles from '../../../components/shared/css/wishlistFilter.module.css';

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { WishlistItem } from '../../types/wishlist';
-import { apiService } from '../../services/api';
+import type { WishlistItem } from '../types/wishlist';
+import { apiService } from '../../order/api';
 
 export interface WishlistFilters {
   category?: string;

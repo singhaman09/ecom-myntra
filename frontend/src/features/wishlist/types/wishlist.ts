@@ -35,7 +35,9 @@ export interface WishlistItem {
   dateAdded: string; // Keep only this string field for date
   category: string;
   description: string;
-  imageUrl:string
+  image:string
+  addedAt:Date
+  // imageUrl:string
   // Remove imageUrl and addedAt because not used in mock
   // Remove quantity (not in interface)
 }

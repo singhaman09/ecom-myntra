@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import type { Order } from '../../../types/orders';
+import type { Order } from '../types/orders';
 import StarRating from '../../../components/UI/StarRating';
-import { getStatusColor, getStatusText } from '../../../utils/helpers';
+import { getStatusColor, getStatusText } from '../utils/helpers';
 import styles from '../../styles/components/orderCard.module.css';
 
 interface OrderCardProps {

@@ -1,6 +1,6 @@
 import {configureStore } from '@reduxjs/toolkit';
-import ordersReducer from './slices/orderSlice';
-import wishlistReducer from './slices/wishlistSlice';
+import ordersReducer from '../features/order/slice/orderSlice';
+import wishlistReducer from '../features/wishlist/slice/wishlistSlice';
 const store = configureStore({
   reducer: {
      orders: ordersReducer,

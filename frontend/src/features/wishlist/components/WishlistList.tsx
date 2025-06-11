@@ -1,13 +1,13 @@
 // components/Wishlist/WishlistList.tsx
 import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../order/hooks/redux';
 import { 
   fetchWishlistItems, 
   removeFromWishlist, 
   moveToCart,
   setCurrentPage,
   setItemsPerPage 
-} from '../../../store/slices/wishlistSlice';
+} from '../slice/wishlistSlice';
 import WishlistCard from './WishlistCard';
 import Button from '../../../components/UI/Button';
 import styles from '../../../components/shared/css/wishlistList.module.css';

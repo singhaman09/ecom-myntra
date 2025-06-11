@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Order, OrderStatus } from '../../types/orders';
-import { apiService } from '../../services/api';
+import type { Order, OrderStatus } from '../types/orders';
+import { apiService } from '../api';
 
 export interface OrderFilters {
   status?: OrderStatus;

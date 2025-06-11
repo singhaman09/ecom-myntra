@@ -1,12 +1,12 @@
 // components/Orders/OrderFilters.tsx
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { setFilters, clearFilters } from '../../../store/slices/orderSlice';
-import type { OrderStatus } from '../../../types/orders';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { setFilters, clearFilters } from '../slice/orderSlice';
+import type { OrderStatus } from '../types/orders';
 import Button from '../../../components/UI/Button';
 import SearchInput from '../../../components/UI/SearchInput';
 import styles from '../../../components/shared/css/orderFilter.module.css'
-
+import wstyles from '../../../components/shared/css/wishlistFilter.module.css';
 interface OrderFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -14,6 +14,7 @@ interface OrderFiltersProps {
 }
 
 const OrderFilters: React.FC<OrderFiltersProps> = () => {
+   const [showFilters, setShowFilters] = useState(false); 
   const dispatch = useAppDispatch();
   const { filters } = useAppSelector((state) => state.orders);
   
@@ -26,6 +27,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = () => {
     endDate: filters.dateRange?.endDate || '',
   });
 
+  const toggleFilters = () => setShowFilters(prev => !prev);
   const handleFilterChange = (key: string, value: string) => {
     setLocalFilters(prev => ({
       ...prev,
@@ -77,6 +79,13 @@ const OrderFilters: React.FC<OrderFiltersProps> = () => {
   const orderStatuses: OrderStatus[] = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
 
   return (
+    <div className={wstyles.wishlistFiltersWrapper}>
+      <div className={wstyles.toggleBar}>
+        <button onClick={toggleFilters} className={wstyles.toggleBtn}>
+          {showFilters ? 'Hide Filters ▲' : 'Show Filters ▼'}
+        </button>
+      </div>
+      { showFilters && (
     <div className={styles.orderFilters}>
       <div className={styles.filterSection}>
         <h3>Filter Orders</h3>
@@ -156,6 +165,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = () => {
           </Button>
         </div>
       </div>
+    </div>)}
     </div>
   );
 };

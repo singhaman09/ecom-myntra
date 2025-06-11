@@ -1,59 +1,16 @@
-// src/routes/AppRoutes.tsx
 import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Layout from '../components/shared/Layout';
 import { ProtectedRoute, AuthRoute } from './ProtectedRoute';
-
 import Home from '../features/home/pages/Home';
 import Login from '../features/auth/pages/Login';
 import Register from '../features/auth/pages/Register';
 import ForgotPassword from '../features/auth/pages/ForgotPassword';
 import Profile from '../features/profile/pages/Profile';
+import WishlistPage from '../features/wishlist/pages/WishlistPage';
+import OrdersPage from '../features/order/pages/Orderpage';
+import Footer from '../components/shared/Footer';
 
-// From personal project
-import WishlistPage from '../features/wishlist/Wishlist/WishlistPage';
-import OrderList from '../features/order/Orders/OrderList';
-import OrderFilters from '../features/order/Orders/OderFilters';
-import { useOrders } from '../hooks/useOrders';
-
-// Orders Page Component
-const OrdersPage: React.FC = () => {
-  const {
-    orders,
-    loading,
-    error,
-    searchTerm,
-    setSearchTerm,
-    submitRating,
-    refreshOrders
-  } = useOrders();
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-
-  return (
-    <Layout
-      searchTerm={searchTerm}
-      onSearchChange={setSearchTerm}
-      onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-      isSidebarOpen={isSidebarOpen}
-      sidebarContent={<div>Sidebar Content</div>}
-    >
-      <OrderFilters
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        totalOrders={orders.length}
-      />
-      <OrderList
-        orders={orders}
-        loading={loading}
-        error={error}
-        onRatingSubmit={submitRating}
-        onRetry={refreshOrders}
-      />
-    </Layout>
-  );
-};
-
-// Final route structure
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
@@ -92,9 +49,7 @@ const AppRoutes: React.FC = () => {
       path: '/profile',
       element: (
         <ProtectedRoute>
-          <Layout>
             <Profile />
-          </Layout>
         </ProtectedRoute>
       ),
     },
@@ -103,7 +58,9 @@ const AppRoutes: React.FC = () => {
       element: (
         <ProtectedRoute>
           <OrdersPage />
+          <Footer/>
         </ProtectedRoute>
+        
       ),
     },
     {

@@ -1,14 +1,14 @@
 // components/Orders/OrderList.tsx
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { 
   fetchOrders, 
   updateOrderStatus, 
   cancelOrder, 
   setCurrentPage,
   setItemsPerPage 
-} from '../../../store/slices/orderSlice';
-import type { Order, OrderStatus } from '../../../types/orders';
+} from '../slice/orderSlice';
+import type { Order, OrderStatus } from '../types/orders';
 import Button from '../../../components/UI/Button';
 import styles from '../../../components/shared/css/orderList.module.css';
 

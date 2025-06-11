@@ -1,8 +1,8 @@
 // components/Wishlist/WishlistPage.tsx
 import React from 'react';
-import { useAppSelector } from '../../../hooks/redux';
-import WishlistFilters from './WishlistFilters';
-import WishlistList from './WishlistList';
+import { useAppSelector } from '../../order/hooks/redux';
+import WishlistFilters from '../components/WishlistFilters';
+import WishlistList from '../components/WishlistList';
 import Button from '../../../components/UI/Button';
 import styles from '../../../components/shared/css/wishlistPage.module.css';
 
