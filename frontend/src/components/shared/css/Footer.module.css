@@ -1,0 +1,412 @@
+
+.footer {
+  background-color: #f9fafb;
+  margin-top: 4rem;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 3rem 0;
+}
+
+@media (min-width: 640px) {
+  .mainContent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .mainContent {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.section h3 {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.linkList li {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .linkList li {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.linkList a {
+  color: #4b5563;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+@media (max-width: 640px) {
+  .linkList a {
+    font-size: 0.9rem;
+  }
+}
+
+.linkList a:hover {
+  color: #ec4899;
+}
+
+.appLinks {
+  margin-bottom: 0.75rem;
+}
+
+.appStores {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .appStores {
+    justify-content: center;
+  }
+}
+
+.appStore {
+  height: 2.5rem;
+  width: auto;
+  background-color: black;
+  border-radius: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .appStore {
+    height: 3rem;
+  }
+}
+
+.socialSection h3 {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .socialSection h3 {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+@media (max-width: 640px) {
+  .socialIcons {
+    justify-content: center;
+    gap: 1.5rem;
+  }
+}
+
+.socialIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+@media (max-width: 640px) {
+  .socialIcon {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.socialIcon.facebook:hover {
+  color: #1d4ed8;
+}
+
+.socialIcon.twitter:hover {
+  color: #60a5fa;
+}
+
+.socialIcon.youtube:hover {
+  color: #dc2626;
+}
+
+.socialIcon.instagram:hover {
+  color: #ec4899;
+}
+
+.guaranteeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .guaranteeSection {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.guaranteeItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .guaranteeItem {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}
+
+.guaranteeIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #fce7f3;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .guaranteeIcon {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+.guaranteeIcon span {
+  color: #ec4899;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+  .guaranteeIcon span {
+    font-size: 1rem;
+  }
+}
+
+.guaranteeText h4 {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.875rem;
+  margin: 0 0 0.25rem 0;
+}
+
+@media (max-width: 640px) {
+  .guaranteeText h4 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.guaranteeText p {
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .guaranteeText p {
+    font-size: 0.875rem;
+  }
+}
+
+.popularSearches {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+@media (max-width: 640px) {
+  .popularSearches {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+  }
+}
+
+.popularSearches h3 {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .popularSearches h3 {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
+.searchTags {
+  font-size: 0.875rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .searchTags {
+    font-size: 0.8rem;
+    text-align: center;
+    line-height: 1.8;
+  }
+}
+
+.searchTags span {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.searchTags span:hover {
+  color: #ec4899;
+}
+
+.bottomFooter {
+  background-color: #1f2937;
+  color: white;
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 640px) {
+  .bottomFooter {
+    padding: 1rem 0;
+  }
+}
+
+.bottomContent {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.bottomMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .bottomMain {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+.contactInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .contactInfo {
+    margin-bottom: 0;
+    justify-content: flex-start;
+  }
+}
+
+.contactInfo span {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+  .contactInfo span {
+    font-size: 0.8rem;
+  }
+}
+
+.contactLink {
+  color: #f9a8d4;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contactLink:hover {
+  color: #f3e8ff;
+}
+
+.copyright {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+@media (max-width: 640px) {
+  .copyright {
+    font-size: 0.8rem;
+  }
+}
+
+.companyInfo {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #374151;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .companyInfo {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    text-align: center;
+  }
+  
+  .section:nth-child(3) {
+    order: -1;
+  }
+}

@@ -8,7 +8,7 @@ function SimilarProduct() {
         <ProductList isSimilar={true}/>
       <div className={styles.buttonContainer}>
       <button>
-          More About
+          Show More
         </button>
       </div>
     </div>

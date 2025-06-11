@@ -148,7 +148,7 @@
   }
   
   .sizeBtn {
-    width: 3rem;
+   min-width: 3rem;
     height: 3rem;
     border: 2px solid #d1d5db;
     background: #fff;
@@ -277,4 +277,20 @@
     margin: 0;
     padding-left: 1.2rem;
   }
+  .sizeBtnOutOfStock {
+    position: relative;
+    opacity: 0.5;
+    background-color: transparent;
+  }
   
+  .sizeBtnOutOfStock::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    width: 80%;
+    height: 2px;
+    background: red;
+    transform: rotate(-20deg);
+    pointer-events: none;
+  }

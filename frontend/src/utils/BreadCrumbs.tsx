@@ -4,12 +4,11 @@ import styles from './styles/BreadCrumbs.module.css'
 const Breadcrumbs: React.FC = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(x => x);
-  console.log(pathnames)
   return (
     <nav className={styles.breadcrumbsNav} aria-label="breadcrumb">
     <ol className={styles.breadcrumbsList}>
       <li className={styles.breadcrumbItem}>
-        <Link to="/" className={styles.breadcrumbLink}>Home</Link>
+        <Link to="/" className={styles.breadcrumbLink}>HOME</Link>
       </li>
       {pathnames.map((value, index) => {
     
@@ -18,9 +17,9 @@ const Breadcrumbs: React.FC = () => {
           <li className={styles.breadcrumbItem} key={index}>
             <span className={styles.breadcrumbSeparator}>/</span>
             {isLast ? (
-              <span className={styles.breadcrumbCurrent}>{value}</span>
+              <span className={styles.breadcrumbCurrent}>{value?.toUpperCase()}</span>
             ) : (
-              <Link to={`/${value}`} className={styles.breadcrumbLink}>{value}</Link>
+              <Link to={`/${value}`} className={styles.breadcrumbLink}>{value?.toUpperCase()}</Link>
             )}
           </li>
         );

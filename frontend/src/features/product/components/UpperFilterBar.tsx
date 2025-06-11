@@ -1,20 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, type ChangeEvent } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import type { DrawerProps, UpperFilterProps } from '../interfaces/ProductInterfaces';
 import styles from '../styles/UpperFilterBar.module.css'
+import { useSearchParams } from 'react-router';
 const UpperFilterBar:React.FC<UpperFilterProps>=({isDrawerOpen,setIsDrawerOpen,selectedBrands,selectedColors,selectedGender,selectedCategories,handleReset})=> {
   type SortOption = {
     value: string;
     label: string;
   };
   const sortOptions: SortOption[] = [
-    { value: "relevance", label: "Relevance" },
-    { value: "priceLowHigh", label: "Price: Low to High" },
-    { value: "priceHighLow", label: "Price: High to Low" },
-    { value: "newest", label: "Newest First" },
+    { value: "price_asc", label: "Price: Low to High" },
+    { value: "price_desc", label: "Price: High to Low" },
+    { value: "new", label: "What's new ?" },
     { value: "rating", label: "Customer Rating" },
   ]; 
-  const [sort, setSort] = useState("relevance");
+  const [searchParams,setSearchParams]=useSearchParams()
+ const selectedSort=searchParams.get('sort') || ''
+  useEffect(()=>{
+    if(!searchParams.get('sort')){
+      searchParams.append('sort','new')
+      setSearchParams(searchParams,{replace:true})
+    }
+   },[])
+  const handleChange=(e:any)=>{
+       searchParams.delete('sort')
+       searchParams.append('sort',e.target.value)
+       setSearchParams(searchParams,{replace:true})
+  }
   return (
     <div className={(selectedBrands.length>0 || selectedColors.length>0 || selectedCategories.length>0 || selectedGender)?`${styles.container} ${styles.shadow}`:`${styles.container}` }>  
         <div className={styles.sortDropdownContainer}>
@@ -24,8 +36,8 @@ const UpperFilterBar:React.FC<UpperFilterProps>=({isDrawerOpen,setIsDrawerOpen,s
     <select
       id="sort-select"
       className={styles.sortSelect}
-      value={sort}
-      onChange={(e) => setSort(e.target.value)}
+      value={selectedSort}
+      onChange={(e) => handleChange(e) }
     >
       {sortOptions.map((option) => (
         <option key={option.value} value={option.value}>

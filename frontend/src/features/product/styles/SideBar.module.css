@@ -6,7 +6,6 @@
   overflow-y: auto;
   transition: transform 0.3s cubic-bezier(.4,0,.2,1);
 }
-
 .filteredContainer{
   border-right: 1px solid #e5e7eb;
   border-top: 1px solid #e5e7eb;
@@ -20,7 +19,6 @@
 }
 /* Drawer for mobile */
 @media (max-width: 900px) {
- 
   .container {
     position:fixed;
     left: 0;
@@ -57,7 +55,6 @@
 
 
 @media (max-width: 900px) {
- 
   .clearFilter{
     margin-right: 15px;
   }

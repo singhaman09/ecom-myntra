@@ -2,20 +2,27 @@ import React, { useEffect, useState } from 'react'
 import Breadcrumbs from '../../../utils/BreadCrumbs';
 import SideBarMain from '../components/SideBarMain';
 import styles from '../styles/ProductPage.module.css'
-import ProductList, { products } from '../components/ProductList';
+import ProductList from '../components/ProductList';
 import UpperFilterBar from '../components/UpperFilterBar';
 import Pagination from '../components/Pagination';
 import { useSearchParams } from 'react-router';
+import { getProducts } from '../productAPI';
+import { useAppDispatch, useAppSelector } from '../hooks/storeHooks';
+import Loader from '../utils/Loader';
+
 const ProductPage :React.FC =()=> {
-   const [isDrawerOpen,setIsDrawerOpen]=useState<Boolean>(false)
+   const [isDrawerOpen,setIsDrawerOpen]=useState<boolean>(false)
     const [searchParams,setSearchParams]=useSearchParams()
-    const [value, setValue] = React.useState<number[]>([200, 10200])
      const selectedCategories=searchParams.getAll("category")
      const selectedBrands=searchParams.getAll("brand")
      const selectedColors=searchParams.getAll("color")
      const selectedGender=searchParams.get("gender") || ''
      const selectedPrice=searchParams.get('price')?.split(',').map(Number) || []
-  
+     const dispatch=useAppDispatch()
+     const data=useAppSelector(state=>state.product)
+      useEffect(()=>{
+       dispatch(getProducts({searchParams,slug:''}))
+      },[searchParams])
      const handleCategoryChange = (category: string, checked: boolean) => {
       let newCategories: string[];
       if (checked) {
@@ -26,7 +33,6 @@ const ProductPage :React.FC =()=> {
       searchParams.delete('category')
       newCategories.forEach((cat) => searchParams.append("category", cat));
       setSearchParams(searchParams, { replace: true });
-    
     };
   
     const handleBrandChange = (brand: string, checked: boolean) => {
@@ -34,9 +40,9 @@ const ProductPage :React.FC =()=> {
       if (checked) {
         newBrands = [...selectedBrands, brand];
       } else {
-        newBrands = selectedCategories.filter((c) => c !== brand);
+        newBrands = selectedBrands.filter((c) => c !== brand);
       }
-     searchParams.delete('brand')
+      searchParams.delete('brand')
       newBrands.forEach((bra) => searchParams.append("brand", bra));
       setSearchParams(searchParams, { replace: true });
     };
@@ -73,6 +79,7 @@ const ProductPage :React.FC =()=> {
      }
     }
     const handleChange = (event: Event, newValue: number[]) => {
+    
       searchParams.delete('price')
       searchParams.append('price',newValue.toString())
       setSearchParams(searchParams,{replace:true})
@@ -82,14 +89,15 @@ const ProductPage :React.FC =()=> {
     <div>
       <div className={styles.container} >
         <Breadcrumbs/>
-        <div className={styles.sideBarContainer}>
-       <SideBarMain isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} value={value} handleBrandChange={handleBrandChange} handleCategoryChange={handleCategoryChange} handleColorChange={handleColorChange} handleReset={handleReset} handleGenderChange={handleGenderChange} selectedBrands={selectedBrands} selectedCategories={selectedCategories} selectedGender={selectedGender} selectedColors={selectedColors}  handleChange={handleChange} selectedPrice={selectedPrice}/>
+     {data.error ?(<h2 style={{color:'red',textAlign:'center'}}>Error getting data !</h2>):(<>
+     {data.loading ?(<Loader/>):(   <div className={styles.sideBarContainer}>
+       <SideBarMain isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} handleBrandChange={handleBrandChange} handleCategoryChange={handleCategoryChange} handleColorChange={handleColorChange} handleReset={handleReset} handleGenderChange={handleGenderChange} selectedBrands={selectedBrands} selectedCategories={selectedCategories} selectedGender={selectedGender} selectedColors={selectedColors}  handleChange={handleChange} selectedPrice={selectedPrice}/>
       <div className={styles.sortContainer}>
        <UpperFilterBar isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen}  handleReset={handleReset} selectedBrands={selectedBrands} selectedColors={selectedColors} selectedCategories={selectedCategories} selectedGender={selectedGender}/>
        <ProductList isSimilar={false} selectedBrands={selectedBrands} selectedColors={selectedColors} selectedCategories={selectedCategories} selectedGender={selectedGender}/>
-       <Pagination pageCount={Math.ceil(products.length/limit)}/>
+       <Pagination pageCount={Math.ceil(data.products.length/limit)}/>
         </div>
-    </div>
+    </div>)}</>)}
     {isDrawerOpen && (
     <div
       className={styles.overlay}

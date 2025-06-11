@@ -7,25 +7,25 @@ import { useNavigate } from 'react-router';
 import { renderStars } from '../utils/RenderStars';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
-  const discountPercentage = Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100);
- 
+  const discountPercentage = 40
+
   return (
-    <div className={styles.card} onClick={()=>navigate(`/${product.title}/${product.id}`)}>
+    <div className={styles.card} onClick={()=>navigate(`/${product.name}/${product._id}`)}>
       {/* Image Container */}
       <div className={styles.imageContainer}>
         <img 
-          src={product.image} 
-          alt={product.title}
+          src={product.imageUrl} 
+          alt={product.name}
           className={styles.productImage}
         />
         
         {/* Wishlist Button */}
-        <button className={styles.wishlistBtn}   onClick={(event) => {event.stopPropagation()}}>
-          {product.isWishlisted
+        {/* <button className={styles.wishlistBtn}   onClick={(event) => {event.stopPropagation(),dispatch(toggleWishlist(product.id))}}>
+          {product.isWishlisted || data.wishlist?.includes(product.id) 
             ? <FavoriteIcon style={{ color: '#ef4444' }} />
             : <FavoriteBorderIcon style={{ color: '#6b7280' }} />
           }
-        </button>
+        </button> */}
         
         {/* Discount Badge */}
         {discountPercentage > 0 && (
@@ -44,26 +44,26 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         
         {/* Title */}
         <h3 className={styles.title}>
-          {product.title}
+          {product.name}
         </h3>
         
         {/* Rating */}
         <div className={styles.ratingRow}>
           <div className={styles.stars}>
-            {renderStars(product.rating)}
+            {renderStars(4.6)}
           </div>
-          <span className={styles.ratingCount}>({product.ratingCount.toLocaleString()})</span>
+          <span className={styles.ratingCount}>(3)</span>
         </div>
         
         {/* Pricing */}
         <div className={styles.pricing}>
           <span className={styles.discountedPrice}>
-            ₹{product.discountedPrice.toLocaleString()}
+            ₹{product.price}
           </span>
-          {product.originalPrice > product.discountedPrice && (
+          {product.price > ((product.price * discountPercentage)/100) && (
             <>
               <span className={styles.originalPrice}>
-                ₹{product.originalPrice.toLocaleString()}
+                ₹{product.price+((product.price * discountPercentage)/100)}
               </span>
               <span className={styles.discountPercent}>
                 ({discountPercentage}% OFF)
