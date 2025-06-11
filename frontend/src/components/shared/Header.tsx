@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import styles from './css/Header.module.css';
+import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,9 +41,9 @@ const Header: React.FC = () => {
 
             {/* Logo */}
             <div className={styles.logo}>
-              <div className={styles.logoText}>
+              <Link to="/" className={styles.logoText}>
                 myntra
-              </div>
+              </Link>
             </div>
           </div>
 

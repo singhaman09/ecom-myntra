@@ -1,0 +1,136 @@
+.verifyEmailContainer {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #f5f5f5;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #282c3f;
+  }
+  
+  .subtitle {
+    color: #94969f;
+    font-size: 0.875rem;
+  }
+  
+  .emailHighlight {
+    font-weight: 500;
+    color: #282c3f;
+  }
+  
+  .otpContainer {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+  
+  .otpInput {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .verifyButton {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: #ff3f6c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1.5rem;
+  }
+  
+  .verifyButton:hover {
+    background-color: #e5365f;
+  }
+  
+  .verifyButton:disabled {
+    background-color: #d4d5d9;
+    cursor: not-allowed;
+  }
+  
+  .resendContainer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #94969f;
+  }
+  
+  .resendButton {
+    color: #ff3f6c;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .resendButton:hover {
+    text-decoration: underline;
+  }
+  
+  .resendButton:disabled {
+    color: #94969f;
+    cursor: not-allowed;
+    text-decoration: none;
+  }
+  
+  .changeEmailButton {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+    color: #ff3f6c;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+  
+  .changeEmailButton:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 480px) {
+    .card {
+      padding: 1.5rem;
+      box-shadow: none;
+      border-top: 1px solid #d4d5d9;
+    }
+    
+    .verifyEmailContainer {
+      padding: 0;
+      background-color: white;
+    }
+  }
+  
