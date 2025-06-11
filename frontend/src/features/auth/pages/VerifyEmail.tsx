@@ -21,13 +21,13 @@ const VerifyEmail: React.FC = () => {
     verifyEmail, 
     resendOtp, 
     clearError,
+    clearRegistrationData, // Add this method to your useAuth hook
     error: authError 
   } = useAuth();
 
   // Get data from navigation state or from Redux store
   const email = location.state?.email || registrationData?.email;
   const userId = location.state?.userId || registrationData?.userId;
-//   const verificationToken = location.state?.verificationToken || registrationData.verificationToken;
 
   useEffect(() => {
     if (!email || !userId) {
@@ -193,6 +193,19 @@ const VerifyEmail: React.FC = () => {
     }
   };
 
+  const handleChangeEmail = () => {
+    // Clear registration data to prevent automatic redirect back to verify-email
+    if (clearRegistrationData) {
+      clearRegistrationData();
+    }
+    
+    // Navigate to signup page
+    navigate('/signup', { 
+      replace: true, 
+      state: { from: 'change-email' } 
+    });
+  };
+
   return (
     <div className={styles.verifyEmailContainer}>
       <div className={styles.card}>
@@ -300,7 +313,7 @@ const VerifyEmail: React.FC = () => {
         </div>
 
         <button
-          onClick={() => navigate('/signup')}
+          onClick={handleChangeEmail}
           className={styles.changeEmailButton}
           disabled={isVerifying || loading}
           style={{
