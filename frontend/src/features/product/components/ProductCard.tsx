@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import styles from '../styles/ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import type { ProductCardProps } from '../interfaces/ProductInterfaces';
 import { useNavigate } from 'react-router';
 import { renderStars } from '../utils/RenderStars';
+import { averageRating } from '../utils/Reviews';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
+  const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
-
   return (
     <div className={styles.card} onClick={()=>navigate(`/${product.name}/${product._id}`)}>
       {/* Image Container */}
@@ -20,12 +21,12 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         />
         
         {/* Wishlist Button */}
-        {/* <button className={styles.wishlistBtn}   onClick={(event) => {event.stopPropagation(),dispatch(toggleWishlist(product.id))}}>
-          {product.isWishlisted || data.wishlist?.includes(product.id) 
+        <button className={styles.wishlistBtn}   onClick={(event) => {event.stopPropagation()}}>
+          {1
             ? <FavoriteIcon style={{ color: '#ef4444' }} />
             : <FavoriteBorderIcon style={{ color: '#6b7280' }} />
           }
-        </button> */}
+        </button>
         
         {/* Discount Badge */}
         {discountPercentage > 0 && (
@@ -50,9 +51,9 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         {/* Rating */}
         <div className={styles.ratingRow}>
           <div className={styles.stars}>
-            {renderStars(4.6)}
+            {renderStars(avgRating)}
           </div>
-          <span className={styles.ratingCount}>(3)</span>
+          <span className={styles.ratingCount}>({avgRating>0 ?averageRating(product.reviews).toFixed(1) :averageRating(product.reviews)})</span>
         </div>
         
         {/* Pricing */}
@@ -76,4 +77,4 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

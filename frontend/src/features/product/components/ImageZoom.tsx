@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 import styles from '../styles/ImageZoom.module.css';
-
-interface ImageZoomOnHoverProps {
-  src: string;
-  alt?: string;
-  zoomScale?: number;
-  gridSize?: number;
-}
-
+import type { ImageZoomOnHoverProps } from '../interfaces/ProductInterfaces';
 const ImageZoomOnHover: React.FC<ImageZoomOnHoverProps> = ({
   src,
   alt = '',
   zoomScale = 2,
-  gridSize = 5,
 }) => {
   const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
 

@@ -1,17 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from '../styles//ReviewCard.module.css';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
-import type { ReviewCardProps } from '../interfaces/ProductInterfaces';
+import type { Review } from '../interfaces/ProductInterfaces';
 import { renderStars } from '../utils/RenderStars';
-const ReviewCard: React.FC<ReviewCardProps> = ({
-  userName,
+import { formatDate } from '../utils/Reviews';
+const ReviewCard: React.FC<Review> = ({
+  reviewerName,
   rating,
   title,
   comment,
-  date,
-  verified,
-  helpful,
-  size
+  createdAt,
 }) => {
   return (
     <div className={styles.card}>
@@ -32,26 +29,13 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
       {/* Review Meta */}
       <div className={styles.metaRow}>
         <div className={styles.metaLeft}>
-          <span className={styles.userName}>{userName}</span>
-          {verified && (
-            <span className={styles.verified}>✓ Verified Purchase</span>
-          )}
-          {size && (
-            <span className={styles.size}>Size: {size}</span>
-          )}
-        </div>
-        <span>{date}</span>
+          <span className={styles.userName}>{reviewerName}</span>
+                 </div>
+        <span>{formatDate(createdAt)}</span>
       </div>
 
-      {/* Helpful Section */}
-      <div className={styles.helpfulRow}>
-        <button className={styles.helpfulBtn}>
-          <ThumbUpAltOutlinedIcon fontSize="small" />
-          <span>Helpful ({helpful})</span>
-        </button>
-      </div>
     </div>
   );
 };
 
-export default ReviewCard;
+export default memo(ReviewCard);

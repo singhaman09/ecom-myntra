@@ -1,91 +1,95 @@
+import React, { useEffect, useState, useMemo } from "react";
 import styles from "../styles/ProductDetail.module.css";
-import SimilarProduct from "../components/SimilarProduct";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ReviewSection from "../components/ReviewSection";
-import ImageZoomOnHover from "../components/ImageZoom";
 import { renderStars } from "../utils/RenderStars";
 import { useParams, useSearchParams } from "react-router";
-import { useAppDispatch, useAppSelector } from "../hooks/storeHooks";
-import { useEffect, useState } from "react";
+import { useProductDispatch, useProductSelector } from "../hooks/storeHooks";
 import { getProductDetails } from "../productAPI";
+import Loader from "../utils/Loader";
+import { averageRating } from "../utils/Reviews";
+
+// Lazy load components (no Suspense here)
+const SimilarProduct = React.lazy(() => import("../components/SimilarProduct"));
+const ReviewSection = React.lazy(() => import("../components/ReviewSection"));
+const ImageZoomOnHover = React.lazy(() => import("../components/ImageZoom"));
+const Breadcrumbs = React.lazy(() => import("../utils/BreadCrumbs"));
+const ErrorPage = React.lazy(() => import("./ErrorPage"));
 
 const ProductDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
-  const dispatch = useAppDispatch();
-  const data = useAppSelector((state) => state.product.selectedProduct);
-  const [notCombinations,setNotCombinations]=useState(false)
-  // Variants extraction and unique values
-  const variants = data?.product.variants || [];
-  const uniqueColors = [...new Set(variants.map((v) => v.color))];
-  const uniqueSizes = [...new Set(variants.map((v) => v.size))];
-
-  // Defaults (fall back to first available if not in search params)
-  const selectedSize =
-    searchParams.get("size") || uniqueSizes[0] || "";
-  const selectedColor =
-    searchParams.get("color") || uniqueColors[0] || "";
+  const dispatch = useProductDispatch();
+  const data = useProductSelector((state) => state.product);
+  const variants = data?.selectedProduct?.product?.variants || [];
+  const uniqueColors = useMemo(() => [...new Set(variants.map((v) => v.color))], [variants]);
+  const uniqueSizes = useMemo(() => [...new Set(variants.map((v) => v.size))], [variants]);
+  const [notCompatible, setNotCompatible] = useState({ color: "", size: "" });
+  const selectedSize = searchParams.get("size") || uniqueSizes[0] || "";
+  const selectedColor = searchParams.get("color") || uniqueColors[0] || "";
 
   useEffect(() => {
     dispatch(getProductDetails(id));
   }, [dispatch, id]);
 
-  const handleSize = (size:string) => {
-    if( !variants.find(
-      (v) =>
-        v.size === size &&
-        v.color === selectedColor
-    )){
-      return
+  const handleSize = (size: string) => {
+    setNotCompatible({ color: "", size: "" });
+    if (!variants.find((v) => v.size === size && v.color === selectedColor)) {
+      setNotCompatible({ color: selectedColor, size: size });
     }
     searchParams.set("size", size);
     setSearchParams(searchParams, { replace: true });
   };
 
-  const handleColor = (color:string) => {
-    if(!variants.find(
-      (v) =>
-        v.color === color &&
-        v.size === selectedSize
-    )){
-      return;
+  const handleColor = (color: string) => {
+    setNotCompatible({ color: "", size: "" });
+    if (!variants.find((v) => v.color === color && v.size === selectedSize)) {
+      setNotCompatible({ color: color, size: selectedSize });
     }
     searchParams.set("color", color);
     setSearchParams(searchParams, { replace: true });
   };
 
+  if (data.loading) return <Loader />;
+  if (data.error) return <ErrorPage />;
+
   return (
     <div className={styles.container}>
+      <Breadcrumbs />
       <div className={styles.gridLayout}>
         <ImageZoomOnHover
-          src="https://m.media-amazon.com/images/I/71tV8h2PJlL.jpg"
+          src={data.selectedProduct?.product.imageUrl ? data.selectedProduct?.product.imageUrl : ""}
           alt="Headphones"
         />
         <div className={styles.productDetails}>
           {/* Brand and Title */}
           <div className={styles.brandTitle}>
-            <h2 className={styles.brand}>{data?.product.brand}</h2>
-            <h1 className={styles.title}>{data?.product.name}</h1>
+            <h2 className={styles.brand}>{data?.selectedProduct?.product?.brand}</h2>
+            <h1 className={styles.title}>{data?.selectedProduct?.product?.name}</h1>
           </div>
 
           {/* Rating */}
           <div className={styles.ratingRow}>
-            <div className={styles.stars}>{renderStars(4.6)}</div>
-            <span className={styles.ratingText}>(2.4k reviews)</span>
+            <div className={styles.stars}>
+              {data.selectedProduct?.product &&
+                renderStars(averageRating(data.selectedProduct?.product?.reviews))}
+            </div>
+            <span className={styles.ratingText}>
+              ({data.selectedProduct?.product?.reviews.length} reviews)
+            </span>
           </div>
 
           {/* Price */}
           <div className={styles.priceSection}>
             <div className={styles.priceRow}>
-              <span className={styles.price}>{data?.product.price}</span>
+              <span className={styles.price}>{data?.selectedProduct?.product?.price}</span>
               <span className={styles.oldPrice}>
-                {data?.product.price
-                  ? data?.product.price +
-                    (data?.product.price
-                      ? (40 * data?.product.price) / 100
+                {data?.selectedProduct?.product?.price
+                  ? data?.selectedProduct?.product?.price +
+                    (data?.selectedProduct?.product?.price
+                      ? (40 * data?.selectedProduct?.product?.price) / 100
                       : 0)
-                  : data?.product.price}
+                  : data?.selectedProduct?.product?.price}
               </span>
               <span className={styles.discount}>40% OFF</span>
             </div>
@@ -93,126 +97,100 @@ const ProductDetails = () => {
           </div>
 
           {/* Size Selection */}
-          {uniqueSizes.length > 1 ? (
-            <div className={styles.sizeSection}>
-              <div className={styles.sizeHeaderRow}>
-                <h3 className={styles.sizeLabel}>Size</h3>
-              </div>
-              <div className={styles.sizesRow}>
-                {uniqueSizes.map((size) => {
-                  // Find the variant for this size and current color
-                  const variant =
-                   variants.find(v=>v.size===size)
-                  return (
-                    <button
-                      key={size}
-                      onClick={() => handleSize(size)}
-                      className={`${styles.sizeBtn} ${
-                        selectedSize === size
-                          ? styles.sizeBtnSelected
-                          : ""
-                      } ${
-                        variant?.stock === 0 
-                          ? styles.sizeBtnOutOfStock
-                          : ""
-                      }`}
-                      disabled={variant?.stock === 0 }
-                    >
-                      {size}
-                    </button>
-                  );
-                })}
-              </div>
+          <div className={styles.sizeSection}>
+            <div className={styles.sizeHeaderRow}>
+              <h3 className={styles.sizeLabel}>Size</h3>
             </div>
-          ) : uniqueSizes.length === 1 ? (
-            <div className={styles.sizeSection}>
-              <div className={styles.sizeHeaderRow}>
-                <h3 className={styles.sizeLabel}>Size</h3>
-              </div>
-              <div className={styles.sizesRow}>
-                <span className={styles.sizeBtn}>
-                  {uniqueSizes[0]}
-                </span>
-              </div>
-            </div>
-          ) : null}
+          </div>
+          <div className={styles.sizesRow}>
+            {uniqueSizes.map((size) => {
+              const sizeVariants = variants.filter((v) => v.size === size);
+              const isOutOfStock = !sizeVariants.some((v) => v.stock > 0);
+              const variantForSelectedColor = variants.find(
+                (v) => v.color === selectedColor && v.size === size
+              );
+              const isSelected = selectedSize === size;
+              return (
+                <button
+                  key={size}
+                  onClick={() => handleSize(size)}
+                  className={`${styles.sizeBtn} ${
+                    selectedSize === size ? styles.sizeBtnSelected : ""
+                  } ${
+                    isOutOfStock ||
+                    notCompatible.size === size ||
+                    (!variantForSelectedColor && isSelected)
+                      ? styles.sizeBtnOutOfStock
+                      : ""
+                  }`}
+                  disabled={isOutOfStock}
+                >
+                  {size}
+                </button>
+              );
+            })}
+          </div>
 
           {/* Color Selection */}
-          {uniqueColors.length > 1 ? (
-            <div className={styles.sizeSection}>
-              <div className={styles.sizeHeaderRow}>
-                <h3 className={styles.sizeLabel}>Color</h3>
-              </div>
-              <div className={styles.sizesRow}>
-                {uniqueColors.map((color) => {
-                  // Find the variant for this color and current size
-                  const variant =
-                 variants.find(v=>v.color===color)
-                  return (
-                    <button
-                      key={color}
-                      onClick={() => handleColor(color)}
-                      className={`${styles.sizeBtn} ${
-                        selectedColor === color
-                          ? styles.sizeBtnSelected
-                          : ""
-                      } ${
-                        variant?.stock === 0 
-                          ? styles.sizeBtnOutOfStock
-                          : ""
-                      }`}
-                      disabled={variant?.stock === 0}
-                    >
-                      {color}
-                    </button>
-                  );
-                })}
-              </div>
+          <div className={styles.sizeSection}>
+            <div className={styles.sizeHeaderRow}>
+              <h3 className={styles.sizeLabel}>Color</h3>
             </div>
-          ) : uniqueColors.length === 1 ? (
-            <div className={styles.sizeSection}>
-              <div className={styles.sizeHeaderRow}>
-                <h3 className={styles.sizeLabel}>Color</h3>
-              </div>
-              <div className={styles.sizesRow}>
-                <span className={styles.sizeBtn}>
-                  {uniqueColors[0]}
-                </span>
-              </div>
+            <div className={styles.sizesRow}>
+              {uniqueColors.map((color) => {
+                const colorVariants = variants.filter((v) => v.color === color);
+                const isOutOfStock = !colorVariants.some((v) => v.stock > 0);
+                const variantForSelectedSize = variants.find(
+                  (v) => v.size === selectedSize && v.color === color
+                );
+                const isSelected = selectedColor === color;
+
+                return (
+                  <button
+                    key={color}
+                    onClick={() => handleColor(color)}
+                    className={`${styles.sizeBtn} ${
+                      selectedColor === color ? styles.sizeBtnSelected : ""
+                    } ${
+                      isOutOfStock ||
+                      notCompatible.color === color ||
+                      (!variantForSelectedSize && isSelected)
+                        ? styles.sizeBtnOutOfStock
+                        : ""
+                    }`}
+                    disabled={isOutOfStock}
+                  >
+                    {color}
+                  </button>
+                );
+              })}
             </div>
-          ) : null}
+          </div>
 
           {/* Product Description */}
           <div className={styles.descriptionSection}>
             <p className={styles.descriptionText}>
-              {data?.product?.description}
+              {data?.selectedProduct?.product?.description}
             </p>
-            {/* <ul className={styles.featuresList}>
-              <li> Machine wash cold</li>
-              <li> 100% Cotton</li>
-              <li> Imported</li>
-            </ul> */}
           </div>
+          {/* Action Buttons */}
+          <div className={styles.actionSection}>
+            {variants?.find((v) => v.size === selectedSize && v.color === selectedColor)?.stock === 0 ||
+            !variants.find(
+              (v) =>
+                v.size === selectedSize &&
+                v.color === selectedColor &&
+                data.selectedProduct?.product.totalStock === 0
+            ) ? (
+              <button className={styles.notifyButton}>Notify Me</button>
+            ) : (
+              <button className={styles.addToBagBtn}>ADD TO BAG</button>
+            )}
 
-          {/* Out of stock */}
-          <div>
-            <p style={{ color: "#db2711" }}>
-              {data?.product.totalStock &&
-              data?.product.totalStock > 0
-                ? ""
-                : "*Out of Stock"}
-            </p>
-          </div>
-             {/* Action Buttons */}
-          {/* <div className={styles.actionSection}>
-           {!data.cart.includes('1')? <button className={styles.addToBagBtn} onClick={()=>dispatch(addToCart('1'))}>ADD TO BAG</button>: <button className={styles.addToBagBtn} onClick={()=>dispatch(removeFromCart('1'))}>REMOVE FROM BAG</button>}
             <button
-              onClick={() => dispatch(toggleWishlist('1'))}
-              className={`${styles.wishlistBtn} ${
-                data.wishlist?.includes('1')  ? styles.wishlistBtnSelected : ""
-              }`}
+              className={`${styles.wishlistBtn} ${0 ? styles.wishlistBtnSelected : ""}`}
             >
-              {data.wishlist?.includes('1') ? (
+              {0 ? (
                 <FavoriteIcon
                   className={styles.heartIcon}
                   sx={{ color: "#db2777", fontSize: 20, verticalAlign: "middle" }}
@@ -225,12 +203,10 @@ const ProductDetails = () => {
               )}
               <span>WISHLIST</span>
             </button>
-          </div> */}
+          </div>
           {/* Delivery Info */}
           <div className={styles.deliverySection}>
-            <h4 className={styles.deliveryTitle}>
-              Delivery Options
-            </h4>
+            <h4 className={styles.deliveryTitle}>Delivery Options</h4>
             <ul className={styles.deliveryList}>
               <li> Free delivery on orders above ₹499</li>
               <li> Cash on delivery available</li>
@@ -239,7 +215,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      <ReviewSection productId={'hey'} />
+      <ReviewSection />
       <SimilarProduct />
     </div>
   );

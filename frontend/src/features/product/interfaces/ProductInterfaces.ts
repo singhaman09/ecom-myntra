@@ -1,5 +1,3 @@
-import type React from "react";
-
 // 1. Product and Related Interfaces
 export interface Product {
   _id: string;
@@ -13,18 +11,16 @@ export interface Product {
   createdAt: Date;
   updatedAt: Date;
   description:string;
+  reviews:Review []
 }
 
 export interface Review {
-  id: string;
-  userName: string;
+  _id: string;
+  reviewerName: string;
   rating: number;
   title: string;
   comment: string;
-  date: string;
-  verified: boolean;
-  helpful: number;
-  size?: string;
+  createdAt: string;
 }
 interface variant{
   size:string,
@@ -38,7 +34,6 @@ interface productDetails extends Product{
 }
 export interface SelectedProduct {
   product: productDetails;
-  reviews: Review[];
   similarProducts: Product[];
 }
 
@@ -49,6 +44,8 @@ interface sideBarInterface {
   highestPrice: number;
   lowestPrice: number;
   colors: string[];
+  genders:string[]
+  categories:string[]
 }
 
 interface filtersSelectedData {
@@ -56,6 +53,7 @@ interface filtersSelectedData {
   selectedBrands: string[];
   selectedColors: string[];
   selectedGender: string;
+  selectedSubCategories:string[]
 }
 
 // 3. Product List & Card Props
@@ -65,10 +63,6 @@ export interface ProductCardProps {
 
 export interface ProductListProps extends filtersSelectedData {
   isSimilar: boolean;
-  selectedCategories: string[];
-  selectedBrands: string[];
-  selectedColors: string[];
-  selectedGender: string;
 }
 
 // 4. Pagination & Drawer Props
@@ -84,6 +78,7 @@ export interface DrawerProps {
 // 5. Sidebar & Upper Filter Props
 export interface SideBarMainProps extends DrawerProps, filtersSelectedData {
   handleCategoryChange: (value: string, checked: boolean) => void;
+  handleSubCategoryChange: (value: string, checked: boolean) => void;
   handleBrandChange: (value: string, checked: boolean) => void;
   handleColorChange: (value: string, checked: boolean) => void;
   handleGenderChange: (value: string, checked: boolean) => void;
@@ -92,8 +87,9 @@ export interface SideBarMainProps extends DrawerProps, filtersSelectedData {
   selectedPrice: number[];
 }
 
-export interface UpperFilterProps extends DrawerProps, filtersSelectedData {
+export interface UpperFilterProps extends  filtersSelectedData {
   handleReset: (value: string, key: string) => void;
+  setIsDrawerOpen:(value:boolean)=>void
 }
 
 export interface SideFilterProps {
@@ -104,42 +100,27 @@ export interface SideFilterProps {
 }
 
 // 6. Review Section & Card Props
-export interface ReviewSectionProps {
-  productId: string;
-}
-
-export interface ReviewFormProps {
-  onSubmit: (review: {
-    rating: number;
-    title: string;
-    comment: string;
-    userName: string;
-  }) => void;
-  onCancel: () => void;
-}
-
-export interface ReviewCardProps {
-  id: string;
-  userName: string;
-  rating: number;
-  title: string;
-  comment: string;
-  date: string;
-  verified: boolean;
-  helpful: number;
-  size?: string;
-}
-
-
 export interface ProductState {
   products: Product[];
   selectedProduct: SelectedProduct | null;
   sideBarData: sideBarInterface | null;
   loading: boolean;
   error: string | null;
+  totalProducts:number,
+  limit:number,
+  skip:number
 }
 
 export interface getProductsInterface {
   products: Product[];
   sideBar: sideBarInterface;
+  totalProducts:number
+  limit:number,
+  skip:number
+}
+ export interface ImageZoomOnHoverProps {
+  src: string;
+  alt?: string;
+  zoomScale?: number;
+  gridSize?: number;
 }

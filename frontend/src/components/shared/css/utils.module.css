@@ -1,0 +1,62 @@
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.flexColumn {
+  flex-direction: column;
+}
+
+.alignCenter {
+  align-items: center;
+}
+
+.justifyBetween {
+  justify-content: space-between;
+}
+
+.justifyCenter {
+  justify-content: center;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.mt1 { margin-top: 8px; }
+.mt2 { margin-top: 16px; }
+.mb1 { margin-bottom: 8px; }
+.mb2 { margin-bottom: 16px; }
+.mr1 { margin-right: 8px; }
+.ml1 { margin-left: 8px; }
+
+.p1 { padding: 8px; }
+.p2 { padding: 16px; }
+
+.rounded { border-radius: 4px; }
+.roundedLg { border-radius: 8px; }
+
+.shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.shadowMd {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .hideMobile {
+    display: none !important;
+  }
+  
+  .showMobile {
+    display: block !important;
+  }
+}

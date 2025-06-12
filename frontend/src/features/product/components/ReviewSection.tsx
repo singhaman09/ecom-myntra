@@ -1,81 +1,32 @@
-import React, { useState } from 'react';
+import React, {  useMemo, useState } from 'react';
 import styles from '../styles/ReviewSection.module.css';
 import StarIcon from '@mui/icons-material/Star';
-import AddIcon from '@mui/icons-material/Add';
-import ReviewCard from './ReviewCard';
-import ReviewForm from './ReviewForm';
-import FormModal from './FormModal';
-import type { Review, ReviewSectionProps } from '../interfaces/ProductInterfaces';
 import { renderStars } from '../utils/RenderStars';
-const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [reviews, setReviews] = useState<Review[]>([
-    {
-      id: '1',
-      userName: 'Priya S.',
-      rating: 5,
-      title: 'Excellent quality and fit!',
-      comment: 'Really happy with this purchase. The fabric is soft and comfortable. True to size and the color is exactly as shown in the pictures. Would definitely recommend!',
-      date: '2 days ago',
-      verified: true,
-      helpful: 12,
-      size: 'M'
-    },
-    {
-      id: '2',
-      userName: 'Rahul K.',
-      rating: 4,
-      title: 'Good product but could be better',
-      comment: 'The product is good overall. Quality is decent for the price point. Delivery was quick. Only issue is that it\'s slightly smaller than expected, so consider ordering one size up.',
-      date: '1 week ago',
-      verified: true,
-      helpful: 8,
-      size: 'L'
-    },
-    {
-      id: '3',
-      userName: 'Anjali M.',
-      rating: 5,
-      title: 'Love it! Great value for money',
-      comment: 'Absolutely love this! The quality exceeded my expectations. Perfect fit and very comfortable. The color is vibrant and hasn\'t faded after multiple washes.',
-      date: '2 weeks ago',
-      verified: false,
-      helpful: 15,
-      size: 'S'
-    }
-  ]);
-  const [more,setMore]=useState(3)
-  // Calculate average rating
-  const averageRating = reviews.length > 0
-    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-    : 0;
+import { averageRating, formatNumber } from '../utils/Reviews';
+import { useProductSelector } from '../hooks/storeHooks';
 
-  // Calculate rating distribution
-  const ratingDistribution = [5, 4, 3, 2, 1].map(rating => ({
-    rating,
-    count: reviews.filter(review => review.rating === rating).length,
-    percentage: reviews.length > 0
-      ? (reviews.filter(review => review.rating === rating).length / reviews.length) * 100
-      : 0
-  }));
+//Lazy Load
+const ReviewCard=React.lazy(()=>import('./ReviewCard'));
 
-  const handleSubmitReview = (newReview: {
-    rating: number;
-    title: string;
-    comment: string;
-    userName: string;
-  }) => {
-    const review: Review = {
-      id: Date.now().toString(),
-      ...newReview,
-      date: 'Just now',
-      verified: false,
-      helpful: 0
-    };
+const ReviewSection: React.FC = () => {
+  const selectedProduct = useProductSelector(state => state.product.selectedProduct?.product);
+  const [more, setMore] = useState(3);
 
-    setReviews(prev => [review, ...prev]);
-    setShowReviewForm(false);
-  };
+  // Memoize reviews to avoid repeated calculations
+  const reviews = selectedProduct?.reviews ?? [];
+
+  // Memoize average rating
+  const avgRating = useMemo(() => averageRating(reviews), [reviews]);
+
+  // Memoize rating distribution
+  const ratingDistribution = useMemo(() =>
+    [5, 4, 3, 2, 1].map(rating => {
+      const count = reviews.filter(review => review.rating === rating).length;
+      const percentage = reviews.length ? (count / reviews.length) * 100 : 0;
+      return { rating, count, percentage };
+    }),
+    [reviews]
+  );
 
   return (
     <div className={styles.section}>
@@ -86,12 +37,14 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
         <div className={styles.overall}>
           <div className={styles.overallRating}>
             <span className={styles.overallValue}>
-              {averageRating.toFixed(1)}
+              {reviews.length ? avgRating.toFixed(1) : '0.0'}
             </span>
             <div className={styles.starsRow}>
-              {renderStars(averageRating)}
+              {renderStars(avgRating)}
             </div>
-            <span className={styles.reviewsCount}>({reviews.length} reviews)</span>
+            <span className={styles.reviewsCount}>
+              ({formatNumber(reviews.length)} reviews)
+            </span>
           </div>
         </div>
         {/* Rating Distribution */}
@@ -111,35 +64,21 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
           ))}
         </div>
       </div>
-      {/* Write Review Button */}
-      {!showReviewForm ? (
-        <button
-          className={styles.writeBtn}
-          onClick={() => setShowReviewForm(true)}
-        >
-          <AddIcon style={{ fontSize: 20 }} />
-          Write a Review
-        </button>
-      ):      
-      (
-        <FormModal open={showReviewForm} onClose={() => setShowReviewForm(false)}>
-        <ReviewForm
-          onSubmit={handleSubmitReview}
-          onCancel={() => setShowReviewForm(false)}
-        />
-      </FormModal>
-      )}
       {/* Reviews List */}
       <div>
         <div className={styles.reviewListHeader}>
-          Customer Reviews ({reviews.length})
+          Customer Reviews ({formatNumber(reviews.length)})
         </div>
-        {reviews.length > 0 ? (
+        {reviews.length ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {reviews.slice(0,more).map((review) => (
-              <ReviewCard key={review.id} {...review} />
+            {reviews.slice(0, more).map(review => (
+              <ReviewCard key={review._id} {...review} />
             ))}
-            {reviews.length>more && <p className={styles.load} onClick={()=>setMore(prev=>prev+3)}>Show More...</p>}
+            {reviews.length > more && (
+              <p className={styles.load} onClick={() => setMore(prev => prev + 3)}>
+                Show More...
+              </p>
+            )}
           </div>
         ) : (
           <div className={styles.noReviews}>
@@ -151,4 +90,4 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ productId }) => {
   );
 };
 
-export default ReviewSection;
+export default React.memo(ReviewSection);

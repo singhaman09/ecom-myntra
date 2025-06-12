@@ -1,20 +1,14 @@
-import React, { useEffect } from "react";
+import React, { memo} from "react";
 import styles from "../styles/Pagination.module.css";
 import type { PaginationProps } from "../interfaces/ProductInterfaces";
 import { useNavigate, useSearchParams } from "react-router";
-
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
 }) => {
   const navigate=useNavigate()
-  const [params,setParams]=useSearchParams()
-  const currentPage=params.get("page")
-  useEffect(()=>{
-if(!params.has('page')){
-  params.set('page','1')
-  setParams(params)
-}
-  },[setParams,params])
+  const [params]=useSearchParams()
+  const currentPage=params.get("page") || '1'
+  
  
   return (
     <nav className={styles.paginationContainer}>
@@ -50,4 +44,4 @@ if(!params.has('page')){
   );
 };
 
-export default Pagination;
+export default memo(Pagination);
