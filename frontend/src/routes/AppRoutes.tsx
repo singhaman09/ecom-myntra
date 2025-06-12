@@ -13,6 +13,7 @@ import WishlistPage from '../features/wishlist/pages/WishlistPage';
 import OrdersPage from '../features/order/pages/Orderpage';
 import Footer from '../components/shared/Footer';
 
+
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
@@ -23,7 +24,7 @@ const AppRoutes: React.FC = () => {
           path: '',
           element: <Home />,
         },
-        {
+              {
           path: ':slug',
           element: <ProductPage />,
         },

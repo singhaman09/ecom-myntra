@@ -85,10 +85,11 @@ const ProductPage: React.FC = () => {
     setSearchParams(newParams, { replace: true });
   }, [searchParams, setSearchParams]);
 
-  const handleChange = useCallback((_event: Event, newValue: number[]) => {
+  const handleChange = useCallback(( event: React.SyntheticEvent | Event,newValue: number | number[]) => {
+    const valueArray = Array.isArray(newValue) ? newValue : [newValue];
     searchParams.delete('page');
     searchParams.delete('price');
-    searchParams.append('price', newValue.toString());
+    searchParams.append('price', valueArray.toString());
     setSearchParams(searchParams, { replace: true });
   }, [searchParams, setSearchParams]);
 

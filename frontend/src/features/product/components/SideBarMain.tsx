@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Slider } from "@mui/material";
 import type { SideBarMainProps } from "../interfaces/ProductInterfaces";
 import styles from "../styles/SideBar.module.css";
@@ -26,24 +26,25 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
   selectedPrice,
 }) => {
   const data = useProductSelector((state) => state.product);
-  const sideBarData = data.sideBarData;
+  const sideBarData = data.sideBarData
 
   // Price slider values
-  const minPrice = sideBarData?.lowestPrice ?? 0;
-  const maxPrice = sideBarData?.highestPrice ?? 1000;
-  const priceValue =
-    selectedPrice.length === 2
-      ? selectedPrice
-      : [minPrice, maxPrice];
-
+  const minPrice = sideBarData?.lowestPrice || 0;
+  const maxPrice = sideBarData?.highestPrice || 1000;   
+  const [priceValue,setPriceValue]=useState(()=>selectedPrice
+  ? selectedPrice
+  : [minPrice, maxPrice])
   // Show clear filter if any filter is active
   const hasAnyFilter =
-    selectedBrands.length > 0 ||
-    selectedCategories.length > 0 ||
-    selectedSubCategories.length > 0 ||
-    selectedColors.length > 0 ||
+    selectedBrands?.length > 0 ||
+    selectedCategories?.length > 0 ||
+    selectedSubCategories?.length > 0 ||
+    selectedColors?.length > 0 ||
     !!selectedGender ||
-    selectedPrice.length > 0;
+    selectedPrice?.length > 0;
+  const handleSliderChange=(_event: Event, newValue: number[])=>{
+    setPriceValue(newValue)
+  }
 
   return (
     <div className={`${styles.container} ${isDrawerOpen ? styles.open : ""}`}>
@@ -129,12 +130,13 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
             )}
 
             {/* Price Range */}
-            {minPrice > 0 && maxPrice > 0 && (
+            { (
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>PRICE</h3>
                 <Slider
                   value={priceValue}
-                  onChange={handleChange}
+                  onChange={handleSliderChange}
+                  onChangeCommitted={handleChange}
                   max={maxPrice}
                   min={minPrice}
                   className={styles.slider}

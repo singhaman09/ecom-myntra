@@ -1,3 +1,5 @@
+import type React from "react";
+
 // 1. Product and Related Interfaces
 export interface Product {
   _id: string;
@@ -83,7 +85,7 @@ export interface SideBarMainProps extends DrawerProps, filtersSelectedData {
   handleColorChange: (value: string, checked: boolean) => void;
   handleGenderChange: (value: string, checked: boolean) => void;
   handleReset: (value: string, key: string) => void;
-  handleChange: (event: Event, newValue: number[]) => void;
+  handleChange: (event: Event | React.SyntheticEvent, newValue: number[]) => void;
   selectedPrice: number[];
 }
 
