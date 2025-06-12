@@ -9,6 +9,7 @@ import ForgotPassword from '../features/auth/pages/ForgotPassword';
 import Profile from '../features/profile/pages/Profile';
 import WishlistPage from '../features/wishlist/pages/WishlistPage';
 import OrdersPage from '../features/order/pages/Orderpage';
+import OrderDetailPage from '../features/order/pages/OrderDetailPage';
 import Footer from '../components/shared/Footer';
 
 const AppRoutes: React.FC = () => {
@@ -49,7 +50,7 @@ const AppRoutes: React.FC = () => {
       path: '/profile',
       element: (
         <ProtectedRoute>
-            <Profile />
+          <Profile />
         </ProtectedRoute>
       ),
     },
@@ -58,9 +59,17 @@ const AppRoutes: React.FC = () => {
       element: (
         <ProtectedRoute>
           <OrdersPage />
-          <Footer/>
+          <Footer />
         </ProtectedRoute>
-        
+      ),
+    },
+    {
+      path: '/orders/:orderId',
+      element: (
+        <ProtectedRoute>
+          <OrderDetailPage />
+          <Footer />
+        </ProtectedRoute>
       ),
     },
     {

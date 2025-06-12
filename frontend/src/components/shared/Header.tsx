@@ -41,7 +41,7 @@ const Header: React.FC = () => {
             {/* Logo */}
             <div className={styles.logo}>
               <div className={styles.logoText}>
-                myntra
+                Wyntra
               </div>
             </div>
           </div>

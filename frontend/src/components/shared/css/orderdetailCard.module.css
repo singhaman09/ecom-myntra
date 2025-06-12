@@ -1,0 +1,70 @@
+.orderDetailCard {
+  background: white;
+  border: 1px solid #eaeaec;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #282c3f;
+  margin-bottom: 20px;
+}
+
+.item {
+  display: flex;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.itemImage {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.itemDetails {
+  flex: 1;
+}
+
+.brand {
+  font-size: 14px;
+  color: #535665;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #282c3f;
+}
+
+.meta {
+  font-size: 14px;
+  color: #535665;
+  margin: 5px 0;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 500;
+  color: #282c3f;
+}
+
+.quantity {
+  font-size: 14px;
+  color: #535665;
+}
+
+.orderMeta {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #535665;
+}
+
+.address {
+  margin-top: 10px;
+}

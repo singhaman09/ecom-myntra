@@ -29,3 +29,11 @@
   color: #000;
   font-weight: 500;
 }
+
+.button {
+  display: flex;
+  gap: 12px;
+  padding: auto;
+
+}
+  

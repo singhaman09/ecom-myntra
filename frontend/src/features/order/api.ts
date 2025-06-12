@@ -1,8 +1,8 @@
-// import type { WishlistItem } from '../types/wishlist';
-// import type { Order, OrderStatus } from '../types/orders';
+// import type { WishlistItem } from '../wishlist/types/wishlist';
+// import type { Order, OrderStatus } from '../order/types/orders';
 
 
-// const API_BASE_URL = 'https://your.api.endpoint';
+// const API_BASE_URL = 'https://d6ab-14-194-22-202.ngrok-free.app/wishlist'; // Replace with your actual API base URL
 
 // async function handleResponse(response: Response) {
 //   if (!response.ok) {
@@ -135,7 +135,8 @@ export const apiService = {
           inStock: true,
           description: 'Classic analog watch',
           category: 'Watches',
-          addedAt: new Date('2025-06-03T10:00:00Z'), // addedAt field
+          addedAt: new Date('2025-06-01T10:00:00Z'), // addedAt field
+
         },
         {
           id: 'wish3',
@@ -150,7 +151,8 @@ export const apiService = {
           inStock: true,
           description: 'Comfortable running shoes',
           category: 'Footwear',
-          addedAt: new Date('2025-06-03T10:00:00Z'), // addedAt field
+                    addedAt: new Date('2025-06-01T10:00:00Z'), // addedAt field
+
         },
       ]);
     }, 500);

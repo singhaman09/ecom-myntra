@@ -75,7 +75,7 @@ const WishlistList: React.FC = () => {
     <div className={styles.wishlistList}>
       <div className={styles.listHeader}>
         <div className={styles.listInfo}>
-          <h2>My Wishlist</h2>
+          {/* <h2>My Wishlist</h2> */}
           <p>{totalItems} items in your wishlist</p>
         </div>
         

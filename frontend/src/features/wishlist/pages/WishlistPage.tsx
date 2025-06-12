@@ -31,7 +31,7 @@ const WishlistPage: React.FC = () => {
           </p>
         </div>
         
-        <div className={styles.headerActions}>
+        <div className={styles.button}>
           <Button 
             onClick={handleContinueShopping}
             variant="secondary"
@@ -40,7 +40,7 @@ const WishlistPage: React.FC = () => {
           </Button>
           
           {items.length > 0 && (
-            <Button 
+            <Button
               onClick={handleClearWishlist}
               variant="danger"
             >
