@@ -4,6 +4,7 @@ import WishlistFilters from '../components/WishlistFilters';
 import WishlistList from '../components/WishlistList';
 import Button from '../../../components/UI/Button';
 import styles from '../css/wishlistPage.module.css';
+import Layout from '../../../components/shared/Layout';
 
 const WishlistPage: React.FC = () => {
   const { items, loading } = useAppSelector((state) => state.wishlist);
@@ -23,7 +24,9 @@ const WishlistPage: React.FC = () => {
   };
 
   return (
+   
     <div className={styles.wishlistPage}>
+      
       <div className={styles.pageHeader}>
         <div className={styles.headerContent}>
           <h1>My Wishlist</h1>
@@ -46,6 +49,7 @@ const WishlistPage: React.FC = () => {
       </div>
 
       <div className={styles.pageContent}>
+        
         <aside className={styles.sidebar}>
           <WishlistFilters />
         </aside>

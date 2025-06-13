@@ -7,19 +7,50 @@ import Login from '../features/auth/pages/Login';
 import Register from '../features/auth/pages/Register';
 import ForgotPassword from '../features/auth/pages/ForgotPassword';
 import Profile from '../features/profile/pages/Profile';
+import ProductPage from '../features/product/pages/ProductPage';
+import ProductDetails from '../features/product/pages/ProductDetail';
 import WishlistPage from '../features/wishlist/pages/WishlistPage';
 import OrdersPage from '../features/order/pages/Orderpage';
+import Footer from '../components/shared/Footer';
+
 import OrderDetailPage from '../features/order/pages/OrderDetailPage';
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
       path: '/',
-      element: (
-        <Layout>
-          <Home />
-        </Layout>
-      ),
+      element: <Layout />,
+      children: [
+        {
+          path: '',
+          element: <Home />,
+        },
+              {
+          path: ':slug',
+          element: <ProductPage />,
+        },
+        {
+          path: ':slug/:id',
+          element: <ProductDetails />,
+        },
+        {
+          path: 'wishlist',
+          element: (
+            <ProtectedRoute>
+              <WishlistPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'profile',
+          element: (
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          ),
+        },
+
+      ],
     },
     {
       path: '/login',
@@ -43,14 +74,6 @@ const AppRoutes: React.FC = () => {
         <AuthRoute>
           <ForgotPassword />
         </AuthRoute>
-      ),
-    },
-    {
-      path: '/profile',
-      element: (
-        <ProtectedRoute>
-          <Profile />
-        </ProtectedRoute>
       ),
     },
     {
