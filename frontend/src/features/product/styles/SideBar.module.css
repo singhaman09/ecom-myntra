@@ -1,0 +1,235 @@
+.container{
+  position: sticky;
+  top:0rem;
+  width: 320px;
+  background: #fff;
+  overflow-y: auto;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+}
+.filteredContainer{
+  border-right: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+}
+.section:nth-child(1){
+  padding-top: 10px;
+}
+.closeButton{
+  visibility: hidden;
+  display: none;
+}
+/* Drawer for mobile */
+@media (max-width: 900px) {
+  .container {
+    position:fixed;
+    left: 0;
+    top: 0;
+    max-height: 95vh;
+    height: 93vh;
+    max-width: 90vw;
+    width: 90vw;
+    transform: translateX(-100%);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    border-right: none;
+    border-radius: 0 1rem 1rem 0;
+    padding-top: 4rem;
+    z-index: 1000 !important;
+    overflow-y: auto;
+  }
+  .container.open {
+    transform: translateX(0);
+  }
+
+}
+.filterHeader{
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-left: 20px;
+}
+.filterHeader p{
+  cursor: pointer;
+}
+.clearFilter{
+  color:#db2777
+}
+
+
+@media (max-width: 900px) {
+  .clearFilter{
+    margin-right: 15px;
+  }
+  .closeButton{
+    visibility: visible;
+    display: block;
+    background-color: red;
+    outline: none;
+    border: none;
+    height: 30px;
+    width: 100px;
+    font-weight: bold;
+    color: whitesmoke;
+    font-size: 1rem;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    border-radius: 10px;
+  }
+}
+
+/* Toggle button */
+
+.section {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0px 0px 20px 20px;
+  position: relative;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radioRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkboxLabel {
+  cursor: pointer;
+  flex: 1;
+}
+
+.brandHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ 
+}
+
+.searchIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #9ca3af;
+  display: block;
+  margin-right:20px ;
+}
+
+.brandLabel {
+  cursor: pointer;
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.moreBtn {
+  background: none;
+  border: none;
+  color: #db2777;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 0.5rem;
+  text-align: left;
+}
+
+
+
+.slider {
+  width: 90% !important;
+  margin-bottom: 1rem !important;
+   color: #db2777 !important;;
+}
+
+.priceRangeRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.97rem;
+  font-weight: 500;
+}
+
+.colorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.colorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.colorCircle {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  display: inline-block;
+}
+
+.colorLabel {
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+/* Hide sidebar on mobile if not open */
+@media (max-width: 900px) {
+  /* .sidebar:not(.open) {
+    pointer-events: none;
+  } */
+
+}
+.searchButton{
+  border: none;
+  background-color: transparent;
+  color: grey;
+}
+.input{
+ font-size: 1rem;
+ height: 35px;
+  padding-left: 15px;
+  border: none;
+  outline: none;
+  background-color: whitesmoke;
+  border-radius: 20px;
+  width: 90%;
+  margin: 10px 0px 10px 0px;
+}
+.closeSearchButton{
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+  position: absolute;
+  right: 20px;
+  top:17px;
+  color: grey;
+}
+@media (max-width:900px ) and ( min-width:500px){
+  .closeSearchButton{
+   right: 50px;
+  }
+}
+.searchContainer{
+  position: relative;
+}
