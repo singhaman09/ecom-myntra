@@ -32,9 +32,7 @@ const ImageZoomOnHover: React.FC<ImageZoomOnHoverProps> = ({
       onMouseLeave={() => setZoomStyle({})}
     >
       <img className={styles.zoomImage} src={src} alt={alt} />
-     <div className={styles.zoomLens} style={zoomStyle}>
-   
-     </div>
+     <div className={styles.zoomLens} style={zoomStyle}/> 
      </div>
    
   );

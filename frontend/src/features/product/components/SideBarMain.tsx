@@ -130,7 +130,7 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
             )}
 
             {/* Price Range */}
-            { (
+            { sideBarData.lowestPrice && sideBarData.highestPrice ? (
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>PRICE</h3>
                 <Slider
@@ -146,7 +146,7 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
                   <span>₹{priceValue[1]}&nbsp;</span>
                 </div>
               </div>
-            )}
+            ):(<></>)}
 
             {/* Colors */}
             {sideBarData.colors?.length > 0 && (

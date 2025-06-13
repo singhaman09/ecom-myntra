@@ -74,11 +74,13 @@ const ReviewSection: React.FC = () => {
             {reviews.slice(0, more).map(review => (
               <ReviewCard key={review._id} {...review} />
             ))}
-            {reviews.length > more && (
+            {reviews.length > more ? (
               <p className={styles.load} onClick={() => setMore(prev => prev + 3)}>
                 Show More...
               </p>
-            )}
+            ): <p className={styles.load} onClick={() => setMore(prev => prev - 3)}>
+               Show Less...
+          </p>}
           </div>
         ) : (
           <div className={styles.noReviews}>
