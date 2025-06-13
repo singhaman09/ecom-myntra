@@ -1,0 +1,292 @@
+.addressesContainer {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.addressesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modalCard {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden; 
+  position: relative;
+}
+
+.modalContent {
+  padding: var(--spacing-xl);
+  height: 100%;
+  max-height: 90vh;
+  overflow-y: auto; 
+  position: relative;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.modalTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.closeButton:hover {
+  background-color: var(--bg-hover);
+}
+
+.addressForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.typeSelector {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.typeButton {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-transform: capitalize;
+}
+
+.typeButton.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.typeButton:hover:not(.active) {
+  background-color: var(--bg-hover);
+}
+
+.defaultCheckbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md); 
+  height: 100%; 
+}
+
+.formRow .defaultCheckbox {
+  margin-top: var(--spacing-md); 
+  justify-content: flex-start;
+}
+
+.defaultCheckbox input {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.defaultCheckbox label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.modalActions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .addressesContainer {
+    padding: var(--spacing-lg);
+  }
+
+  .modalCard {
+    margin: 0 var(--spacing-md); 
+    width: calc(100% - 2 * var(--spacing-md)); 
+  }City
+
+  .addressesHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .typeSelector {
+    flex-wrap: wrap;
+  }
+}
+
+.addressesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
+}
+
+.addressCard {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  position: relative;
+  transition: var(--transition-fast);
+}
+
+.addressCard:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.addressCard.default {
+  border-left: 3px solid var(--primary-color);
+  background-color: rgba(255, 63, 108, 0.02);
+}
+
+.defaultBadge {
+  background-color: var(--primary-color);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: var(--spacing-sm);
+  display: inline-block;
+}
+
+.addressHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.addressType {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: capitalize;
+}
+
+.addressActions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.actionButton {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.actionButton:hover {
+  background-color: var(--bg-hover);
+}
+
+.actionButton.delete:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+  border-color: var(--error-color);
+  color: var(--error-color);
+}
+
+.addressDetails {
+  grid-column: 1 / -1;
+}
+
+.addressDetails h3 {
+  display: inline;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-right: var(--spacing-sm);
+}
+
+.addressDetails p {
+  display: inline;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-right: var(--spacing-sm);
+}
+
+.addressDetails p:not(:last-child)::after {
+  content: "•";
+  margin-left: var(--spacing-sm);
+  color: var(--text-muted);
+}
+
+.phoneNumber {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-md);
+}
