@@ -1,0 +1,123 @@
+/* Complete the styles for the Cart Actions component */
+
+.cartListSection {
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.itemsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0 30px 10px;
+  flex-wrap: wrap;
+}
+
+.selectAllWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  flex-wrap: wrap;
+}
+
+.selectAllCheckbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.selectAllText {
+  user-select: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.moveButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  margin-left: 190px;
+}
+
+.removeSelectedButton,
+.moveSelectedButton {
+  color: #535766;
+  background-color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s;
+}
+
+.removeSelectedButton:hover,
+.moveSelectedButton:hover {
+  background-color: #f7f7f7;
+}
+
+.verticalDivider {
+  width: 1px;
+  height: 20px;
+  background-color: #535766;
+  opacity: 0.6;
+}
+
+/* 🔥 Mobile & Tablet Responsive Styling */
+@media (max-width: 768px) {
+  .itemsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px 10px;
+    gap: 16px;
+  }
+
+  .selectAllWrapper {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 13px;
+    gap: 12px;
+  }
+
+  .moveButtons {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    margin-left: 0;
+    gap: 10px;
+  }
+
+  .removeSelectedButton,
+  .moveSelectedButton {
+    width: 100%;
+    font-size: 11px;
+    padding: 8px 12px;
+    text-align: center;
+    border: none;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+
+  .verticalDivider {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .selectAllText {
+    font-size: 11px;
+  }
+
+  .removeSelectedButton,
+  .moveSelectedButton {
+    font-size: 10.5px;
+    padding: 6px 10px;
+  }
+}
