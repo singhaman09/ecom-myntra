@@ -1,0 +1,226 @@
+/* ===== Page Layout ===== */
+.pageWrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 7px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* ===== Left Side ===== */
+.leftSection {
+  flex: 1;
+  min-width: 0;
+  margin-top: 30px;
+}
+
+.sectionTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.leftSection h2 {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 1rem;
+}
+
+.sectionHeading {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #555;
+}
+
+.addNewBtn {
+  padding: 7px 10px;
+  background-color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s ease;
+  border: 1px solid black;
+  color: #555;
+  cursor: pointer;
+  align-self: center;
+}
+
+.addNewBtn:hover {
+  background-color: #e12b58;
+}
+
+/* ===== Address Card Styles ===== */
+.addressCard {
+  /* border: 1px solid #ddd; */
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+  margin-bottom: 1rem;
+  transition: 0.3s ease;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.active {
+  /* border: 2px solid #ff3e6c; */
+  background-color: #fff;
+box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+.radioName {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.tag {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  background-color: #fce4ec;
+  color: #d81b60;
+  border-radius: 4px;
+}
+
+.addrLine,
+.phone,
+.cod {
+  font-size: 0.9rem;
+  color: #333;
+  margin: 0.3rem 0;
+}
+
+.cod {
+  color: #00b894;
+  font-weight: bold;
+}
+
+/* ===== Address Action Buttons ===== */
+.actionBtns {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.removeBtn,
+.editBtn {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  border: 1px solid #111;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+.removeBtn:hover,
+.editBtn:hover {
+  background-color: #f1f1f1;
+}
+
+.addAddressText {
+  color: #ff3e6c;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+/* ===== Right Side ===== */
+.rightSection {
+  width: 400px;
+  margin-top: 30px;
+}
+
+/* If you ever reuse the delivery estimate box */
+.deliveryEstimate {
+  display: flex;
+  align-items: center;
+  background-color: #eaf9f4;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.deliveryIcon {
+  width: 32px;
+  height: 32px;
+  margin-right: 0.8rem;
+}
+
+.priceBox {
+  background-color: #fafafa;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.priceBox p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.3rem 0;
+}
+
+.green {
+  color: #00b098;
+  font-weight: bold;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.continueBtn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.8rem;
+  font-weight: bold;
+  color: white;
+  background-color: #ff3e6c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.continueBtn:hover {
+  background-color: #e12b58;
+}
+
+/* ===== Responsive Breakpoints ===== */
+@media (max-width: 1200px) {
+  .pageWrapper {
+    max-width: 90%;
+    gap: 20px;
+  }
+
+  .rightSection {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageWrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .leftSection,
+  .rightSection {
+    width: 100%;
+    margin-top: 20px;
+  }
+}

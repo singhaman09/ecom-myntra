@@ -1,0 +1,144 @@
+/* Complete the CSS for OffersSection component - RESPONSIVE DONE */
+
+
+.offersSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background-color: #fff6f4;
+  border: 1px solid #ffe6d9;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+.offersHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.offersIcon {
+  font-size: 14px; /* Size for the gift emoji */
+}
+
+.offersTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+.noOffers {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+}
+
+.offer {
+  font-size: 12px;
+  color: #555;
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.offersList {
+  margin: 0;
+  padding-left: 18px; /* Indent for bullet points */
+}
+
+.showMore {
+  background: none;
+  border: none;
+  padding: 6px 0; /* Larger padding for touch target */
+  font-size: 10px;
+  font-weight: 600;
+  color: #ff3f6c;
+  cursor: pointer;
+  text-align: left;
+  width: 100%; /* Full-width for easier tapping */
+}
+
+.showMoreIcon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.showMore:hover {
+  color: #e0355b; /* Slightly darker shade on hover */
+}
+
+.showMoreOpen {
+  color: #e0355b; /* Darker shade when expanded */
+}
+
+/* Medium screens (tablets, ≥481px) */
+@media (min-width: 481px) {
+  .offersHeader {
+    gap: 8px;
+  }
+
+  .offersIcon {
+    font-size: 16px;
+  }
+
+  .offersTitle {
+    font-size: 13px;
+  }
+
+  .noOffers {
+    font-size: 13px;
+  }
+
+  .offer {
+    font-size: 13px;
+  }
+
+  .showMore {
+    font-size: 11px;
+  }
+}
+
+/* Small screens (phones, ≤480px) */
+@media (max-width: 480px) {
+  .offersSection {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .offersHeader {
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .offersIcon {
+    font-size: 13px;
+  }
+
+  .offersTitle {
+    font-size: 11px;
+  }
+
+  .noOffers {
+    font-size: 11px;
+  }
+
+  .offer {
+    font-size: 11px;
+    margin: 2px 0;
+  }
+
+  .offersList {
+    padding-left: 14px;
+  }
+
+  .showMore {
+    font-size: 9px;
+    padding: 4px 0;
+  }
+
+  .showMoreIcon {
+    gap: 2px;
+  }
+}
