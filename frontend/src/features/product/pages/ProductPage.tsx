@@ -157,7 +157,7 @@ const ProductPage: React.FC = () => {
             </div>
           </>
         ) : (          
-          <ProductNotFoundPage />       
+          <ProductNotFoundPage isSimilar={false} />       
         )}
         {isDrawerOpen && (
           <div

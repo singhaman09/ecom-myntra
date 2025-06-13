@@ -54,7 +54,7 @@ const SimilarProduct: React.FC = () => {
             </div>
           </>
         ) : (
-          <ProductNotFoundPage />
+          <ProductNotFoundPage isSimilar={true} />
         )}
       
     </div>
