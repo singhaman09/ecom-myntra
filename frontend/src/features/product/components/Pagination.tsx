@@ -1,11 +1,11 @@
 import React, { memo} from "react";
 import styles from "../styles/Pagination.module.css";
 import type { PaginationProps } from "../interfaces/ProductInterfaces";
-import { useNavigate, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
 }) => {
-  const navigate=useNavigate()
+  
   const [params,setParams]=useSearchParams()
   const currentPage=params.get("page") || '1'
   
