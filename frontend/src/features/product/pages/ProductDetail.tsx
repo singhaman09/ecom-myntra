@@ -179,12 +179,14 @@ const ProductDetails = () => {
             !variants.find(
               (v) =>
                 v.size === selectedSize &&
-                v.color === selectedColor &&
-                data.selectedProduct?.product.totalStock === 0
-            ) ? (
+                v.color === selectedColor 
+               
+            ) ||  data.selectedProduct?.product.totalStock === 0 ? (
               <button className={styles.notifyButton}>Notify Me</button>
             ) : (
-              <button className={styles.addToBagBtn}>ADD TO BAG</button>
+              <>
+              {1?<button className={styles.addToBagBtn}>ADD TO BAG</button>:<button className={styles.addToBagBtn}>REMOVE FROM BAG</button>}
+              </>
             )}
 
             <button

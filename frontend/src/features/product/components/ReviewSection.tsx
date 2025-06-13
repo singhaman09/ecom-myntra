@@ -37,7 +37,7 @@ const ReviewSection: React.FC = () => {
         <div className={styles.overall}>
           <div className={styles.overallRating}>
             <span className={styles.overallValue}>
-              {reviews.length ? avgRating.toFixed(1) : '0.0'}
+              {reviews.length ? avgRating>0?avgRating.toFixed(1):'0' : '0'}
             </span>
             <div className={styles.starsRow}>
               {renderStars(avgRating)}

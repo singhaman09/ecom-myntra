@@ -31,7 +31,7 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
   // Price slider values
   const minPrice = sideBarData?.lowestPrice || 0;
   const maxPrice = sideBarData?.highestPrice || 1000;   
-  const [priceValue,setPriceValue]=useState(()=>selectedPrice
+  const [priceValue,setPriceValue]=useState(()=>selectedPrice.length>0
   ? selectedPrice
   : [minPrice, maxPrice])
   // Show clear filter if any filter is active
