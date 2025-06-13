@@ -1,198 +1,179 @@
-// components/Wishlist/WishlistFilters.tsx
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../order/hooks/redux';
 import { setFilters, clearFilters } from '../slice/wishlistSlice';
-import Button from '../../../components/UI/Button';
-import SearchInput from '../../../components/UI/SearchInput';
-import styles from '../../../components/shared/css/wishlistFilter.module.css';
+import styles from '../css/wishlistFilter.module.css';
 
 const WishlistFilters: React.FC = () => {
   const dispatch = useAppDispatch();
   const { filters, categories } = useAppSelector((state) => state.wishlist);
-   const [showFilters, setShowFilters] = useState(false); // default true for desktop
-  const [localFilters, setLocalFilters] = useState({
-    category: filters.category || '',
-    searchQuery: filters.searchQuery || '',
-    minPrice: filters.priceRange?.min || '',
-    maxPrice: filters.priceRange?.max || '',
-    inStock: filters.inStock !== undefined ? filters.inStock.toString() : '',
-    sortBy: filters.sortBy || 'dateAdded',
-    sortOrder: filters.sortOrder || 'desc',
-  });
+  const [isFiltersOpen, setIsFiltersOpen] = useState(true);
 
-  const toggleFilters = () => setShowFilters(prev => !prev);
-
-  const handleFilterChange = (key: string, value: string) => {
-    setLocalFilters(prev => ({
-      ...prev,
-      [key]: value
-    }));
+  const handleCategoryChange = (category: string) => {
+    dispatch(setFilters({ ...filters, category: category === filters.category ? '' : category }));
   };
 
-  const applyFilters = () => {
-    const filterData: any = {
-      sortBy: localFilters.sortBy,
-      sortOrder: localFilters.sortOrder,
-    };
-    
-    if (localFilters.category) {
-      filterData.category = localFilters.category;
-    }
-    
-    if (localFilters.searchQuery) {
-      filterData.searchQuery = localFilters.searchQuery;
-    }
-    
-    if (localFilters.minPrice || localFilters.maxPrice) {
-      filterData.priceRange = {
-        min: localFilters.minPrice ? parseFloat(String(localFilters.minPrice)) : 0,
-        max: localFilters.maxPrice ? parseFloat(String(localFilters.maxPrice)) : Infinity,
-      };
-    }
-    
-    if (localFilters.inStock !== '') {
-      filterData.inStock = localFilters.inStock === 'true';
-    }
-    
-    dispatch(setFilters(filterData));
+  const handlePriceRangeChange = (min: number, max: number) => {
+    dispatch(setFilters({ ...filters, priceRange: { min, max } }));
+  };
+
+  const handleInStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setFilters({ ...filters, inStock: e.target.checked }));
+  };
+
+  const handleSortByChange = (sortBy: string) => {
+    dispatch(setFilters({ ...filters, sortBy }));
+  };
+
+  const handleSortOrderChange = (sortOrder: 'asc' | 'desc') => {
+    dispatch(setFilters({ ...filters, sortOrder }));
   };
 
   const handleClearFilters = () => {
-    setLocalFilters({
-      category: '',
-      searchQuery: '',
-      minPrice: '',
-      maxPrice: '',
-      inStock: '',
-      sortBy: 'dateAdded',
-      sortOrder: 'desc',
-    });
     dispatch(clearFilters());
   };
 
-  const sortOptions = [
-    { value: 'name', label: 'Name' },
-    { value: 'price', label: 'Price' },
-    { value: 'dateAdded', label: 'Date Added' },
-    { value: 'rating', label: 'Rating' },
-  ];
+  const toggleFilters = () => {
+    setIsFiltersOpen(!isFiltersOpen);
+  };
 
   return (
-     <div className={styles.wishlistFiltersWrapper}>
-      <div className={styles.toggleBar}>
-        <button onClick={toggleFilters} className={styles.toggleBtn}>
-          {showFilters ? 'Hide Filters ▲' : 'Show Filters ▼'}
+    <div className={styles.wishlistFiltersWrapper}>
+      {/* Filter Toggle Button */}
+      <div className={styles.filterToggle}>
+        <button 
+          className={`${styles.toggleBtn} ${isFiltersOpen ? styles.active : ''}`}
+          onClick={toggleFilters}
+        >
+          FILTERS
+          <span className={styles.toggleIcon}>
+            {isFiltersOpen ? '▲' : '▼'}
+          </span>
         </button>
+        {Object.keys(filters).some(key => 
+          filters[key] && 
+          (key !== 'sortBy' || filters[key] !== 'dateAdded') && 
+          (key !== 'sortOrder' || filters[key] !== 'desc')
+        ) && (
+          <button className={styles.clearAllBtn} onClick={handleClearFilters}>
+            CLEAR ALL
+          </button>
+        )}
       </div>
-        { showFilters && (
-    <div className={styles.wishlistFilters}>
-      <div className={styles.filterSection}>
-        <h3>Filter & Sort</h3>
+
+      {/* Filters Section */}
+      <div className={`${styles.wishlistFilters} ${isFiltersOpen ? styles.open : styles.closed}`}>
         
-        <div className={styles.filterGroup}>
-          <SearchInput
-            placeholder="Search wishlist items..."
-            value={localFilters.searchQuery}
-            onChange={(value) => handleFilterChange('searchQuery', value)}
-            onSearch={applyFilters}
-          />
-        </div>
-
-        <div className={styles.filterGroup}>
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            value={localFilters.category}
-            onChange={(e) => handleFilterChange('category', e.target.value)}
-            className={styles.select}
-          >
-            <option value="">All Categories</option>
-            {categories.map(category => (
-              <option key={category} value={category}>
-                {category}
-              </option>
+        {/* Categories */}
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>CATEGORIES</h4>
+          <div className={styles.filterOptions}>
+            {categories.map((category) => (
+              <label key={category} className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={filters.category === category}
+                  onChange={() => handleCategoryChange(category)}
+                  className={styles.checkbox}
+                />
+                <span className={styles.checkboxText}>{category}</span>
+              </label>
             ))}
-          </select>
+          </div>
         </div>
 
-        <div className={styles.filterGroup}>
-          <label>Price Range</label>
-          <div className={styles.rangeInputs}>
+        {/* Price Range */}
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>PRICE</h4>
+          <div className={styles.priceInputs}>
             <input
               type="number"
-              placeholder="Min price"
-              value={localFilters.minPrice}
-              onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-              className={styles.input}
+              placeholder="Min"
+              value={filters.priceRange?.min || ''}
+              onChange={(e) =>
+                handlePriceRangeChange(Number(e.target.value), filters.priceRange?.max || 100000)
+              }
+              className={styles.priceInput}
             />
-            <span>-</span>
+            <span className={styles.priceSeparator}>to</span>
             <input
               type="number"
-              placeholder="Max price"
-              value={localFilters.maxPrice}
-              onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-              className={styles.input}
+              placeholder="Max"
+              value={filters.priceRange?.max || ''}
+              onChange={(e) =>
+                handlePriceRangeChange(filters.priceRange?.min || 0, Number(e.target.value))
+              }
+              className={styles.priceInput}
             />
           </div>
         </div>
 
-        <div className={styles.filterGroup}>
-          <label htmlFor="inStock">Availability</label>
-          <select
-            id="inStock"
-            value={localFilters.inStock}
-            onChange={(e) => handleFilterChange('inStock', e.target.value)}
-            className={styles.select}
-          >
-            <option value="">All Items</option>
-            <option value="true">In Stock Only</option>
-            <option value="false">Out of Stock</option>
-          </select>
-        </div>
-
-        <div className={styles.sortSection}>
-          <div className={styles.filterGroup}>
-            <label htmlFor="sortBy">Sort By</label>
-            <select
-              id="sortBy"
-              value={localFilters.sortBy}
-              onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-              className={styles.select}
-            >
-              {sortOptions.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.filterGroup}>
-            <label htmlFor="sortOrder">Order</label>
-            <select
-              id="sortOrder"
-              value={localFilters.sortOrder}
-              onChange={(e) => handleFilterChange('sortOrder', e.target.value)}
-              className={styles.select}
-            >
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
-            </select>
+        {/* Availability */}
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>AVAILABILITY</h4>
+          <div className={styles.filterOptions}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={filters.inStock || false}
+                onChange={handleInStockChange}
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxText}>In Stock</span>
+            </label>
           </div>
         </div>
 
-        <div className={styles.filterActions}>
-          <Button onClick={applyFilters} variant="primary">
-            Apply Filters
-          </Button>
-          <Button onClick={handleClearFilters} variant="secondary">
-            Clear All
-          </Button>
+        {/* Sort By */}
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>SORT BY</h4>
+          <div className={styles.filterOptions}>
+            {['name', 'price', 'dateAdded', 'rating'].map((option) => (
+              <label key={option} className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="sortBy"
+                  checked={filters.sortBy === option}
+                  onChange={() => handleSortByChange(option)}
+                  className={styles.radio}
+                />
+                <span className={styles.radioText}>
+                  {option === 'dateAdded' ? 'Date Added' : 
+                   option.charAt(0).toUpperCase() + option.slice(1)}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Sort Order */}
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>ORDER</h4>
+          <div className={styles.filterOptions}>
+            <label className={styles.radioLabel}>
+              <input
+                type="radio"
+                name="sortOrder"
+                checked={filters.sortOrder === 'asc'}
+                onChange={() => handleSortOrderChange('asc')}
+                className={styles.radio}
+              />
+              <span className={styles.radioText}>Low to High</span>
+            </label>
+            <label className={styles.radioLabel}>
+              <input
+                type="radio"
+                name="sortOrder"
+                checked={filters.sortOrder === 'desc'}
+                onChange={() => handleSortOrderChange('desc')}
+                className={styles.radio}
+              />
+              <span className={styles.radioText}>High to Low</span>
+            </label>
+          </div>
         </div>
       </div>
-    </div> 
-  )}
-  </div>)
-  };
+    </div>
+  );
+};
 
 export default WishlistFilters;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import styles from '../styles/ProductPage.module.css';
-import { useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { getProducts } from '../productAPI';
 import { useProductDispatch, useProductSelector } from '../hooks/storeHooks';
 import Loader from '../utils/Loader';

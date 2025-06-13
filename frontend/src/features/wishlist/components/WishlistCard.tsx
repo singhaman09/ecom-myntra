@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import type { WishlistItem } from '../types/wishlist';
 import Button from '../../../components/UI/Button';
 import StarRating from '../../../components/UI/StarRating';
-import styles from '../../../components/shared/css/wishlistCard.module.css';
+import styles from '../css/wishlistCard.module.css';  
+import { useNavigate } from 'react-router-dom';
 
 interface WishlistCardProps {
   item: WishlistItem;
@@ -11,6 +12,7 @@ interface WishlistCardProps {
 }
 
 const WishlistCard: React.FC<WishlistCardProps> = ({ item, onRemove, onMoveToCart }) => {
+  const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -102,16 +104,16 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item, onRemove, onMoveToCar
 
         <div className={styles.priceSection}>
           <div className={styles.priceContainer}>
-            <span className={styles.currentPrice}>${item.price.toFixed(2)}</span>
+            <span className={styles.currentPrice}>${(item.price / 100).toFixed(2)}</span>
             {item.originalPrice && item.originalPrice > item.price && (
               <span className={styles.originalPrice}>
-                ${item.originalPrice.toFixed(2)}
+                ${(item.originalPrice / 100).toFixed(2)}
               </span>
             )}
           </div>
           {discountPercentage > 0 && (
             <span className={styles.savings}>
-              Save ${(item.originalPrice! - item.price).toFixed(2)}
+              Save ${((item.originalPrice! - item.price) / 100).toFixed(2)}
             </span>
           )}
         </div>
@@ -135,6 +137,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item, onRemove, onMoveToCar
             variant="primary"
             disabled={!item.inStock || isLoading}
             className={styles.addToCartButton}
+            onClick={() => {navigate('/cart')}}
           >
             {isLoading ? 'Adding...' : 'Add to Cart'}
           </Button>

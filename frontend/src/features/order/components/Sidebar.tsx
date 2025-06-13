@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from '../../../components/shared/css/sidebar.module.css';
+import styles from '../css/sidebar.module.css';
 
 interface SidebarProps {
   isVisible: boolean;

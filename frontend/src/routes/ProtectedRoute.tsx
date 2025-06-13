@@ -1,18 +1,17 @@
 import type { JSX } from 'react';
-import { Navigate } from 'react-router-dom';
-// import { useAuth } from '../features/auth/hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { Navigate, Outlet } from 'react-router-dom';
+import type { RootState } from '../store/store';
 
-interface Props {
-  children: JSX.Element;
-}
-const isAuthenticated: boolean = true;
 
-export const ProtectedRoute = ({ children }: Props) => {
-  // const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+
+// const isAuthenticated: boolean = false;
+export const ProtectedRoute = (): JSX.Element => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-export const AuthRoute = ({ children }: { children: React.ReactNode }) => {
-  // const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <>{children}</>;
+export const AuthRoute = (): JSX.Element => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  return isAuthenticated ? <Navigate to="/" replace /> : <Outlet />;
 };

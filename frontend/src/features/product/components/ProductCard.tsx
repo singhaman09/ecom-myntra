@@ -3,7 +3,7 @@ import styles from '../styles/ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import type { ProductCardProps } from '../interfaces/ProductInterfaces';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { renderStars } from '../utils/RenderStars';
 import { averageRating } from '../utils/Reviews';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {

@@ -1,0 +1,118 @@
+.sidebar {
+  width: 260px;
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: var(--spacing-lg) 0;
+}
+
+.sidebarContent {
+  padding: 0 var(--spacing-md);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: var(--font-size-lg);
+}
+
+.userDetails h3 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.userDetails p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.menuSection {
+  margin-bottom: var(--spacing-lg);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-sm);
+  padding: 0 var(--spacing-md);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: var(--border-radius-sm);
+  margin: 0 var(--spacing-sm);
+}
+
+.menuItem:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.menuItem.active {
+  background-color: rgba(255, 63, 108, 0.1);
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.menuItem svg {
+  width: 16px;
+  height: 16px;
+}
+
+.subMenuItem {
+  padding-left: var(--spacing-xl);
+  font-size: var(--font-size-xs);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .userInfo {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .sidebarContent {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .menuSection {
+    margin-bottom: var(--spacing-md);
+  }
+}
