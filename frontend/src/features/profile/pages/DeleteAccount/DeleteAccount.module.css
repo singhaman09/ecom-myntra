@@ -1,0 +1,254 @@
+.deleteAccountContainer {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  
+}
+
+.header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: var(--spacing-xs) 0;
+  transition: var(--transition-fast);
+}
+
+.backButton:hover {
+  color: var(--text-primary);
+}
+
+.step {
+  text-align: center;
+}
+
+.sadIcon,
+.warningIcon,
+.finalWarning {
+  margin-bottom: var(--spacing-lg);
+  color: var(--warning-color);
+}
+
+.finalWarning {
+  color: var(--error-color);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-xl);
+}
+
+.reasonsSection {
+  text-align: left;
+  margin-bottom: var(--spacing-xl);
+}
+
+.reasonsSection h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.reasonsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.reasonItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.reasonItem:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--primary-color);
+}
+
+.reasonItem input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-color);
+}
+
+.reasonItem input[type="radio"]:checked + .reasonText {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.reasonText {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.consequencesList {
+  text-align: left;
+  margin-bottom: var(--spacing-xl);
+  background-color: rgba(255, 107, 107, 0.05);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+}
+
+.consequencesList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.consequencesList li {
+  position: relative;
+  padding-left: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.consequencesList li:before {
+  content: '⚠️';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.consequencesList li:last-child {
+  margin-bottom: 0;
+}
+
+.reasonDisplay {
+  background-color: var(--bg-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-xl);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+.finalConfirmation {
+  margin-bottom: var(--spacing-xl);
+}
+
+.deleteInput {
+  width: 100%;
+  max-width: 300px;
+  padding: var(--spacing-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-base);
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.deleteInput:focus {
+  border-color: var(--error-color);
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.1);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.deleteButton {
+  background-color: var(--error-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: var(--transition-fast);
+}
+
+.deleteButton:hover {
+  background-color: #e55555;
+}
+
+.finalDeleteButton {
+  background-color: var(--error-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  transition: var(--transition-fast);
+  min-width: 250px;
+}
+
+.finalDeleteButton:hover:not(:disabled) {
+  background-color: #e55555;
+}
+
+.finalDeleteButton:disabled {
+  background-color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .deleteAccountContainer {
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .actions {
+    gap: var(--spacing-sm);
+  }
+
+  .actions .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .reasonsList {
+    gap: var(--spacing-xs);
+  }
+
+  .reasonItem {
+    padding: var(--spacing-sm);
+  }
+
+  .deleteInput {
+    max-width: 100%;
+  }
+}
