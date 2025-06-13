@@ -11,7 +11,7 @@ import ProductPage from '../features/product/pages/ProductPage';
 import ProductDetails from '../features/product/pages/ProductDetail';
 import WishlistPage from '../features/wishlist/pages/WishlistPage';
 import OrdersPage from '../features/order/pages/Orderpage';
-import Footer from '../components/shared/Footer';
+
 
 import OrderDetailPage from '../features/order/pages/OrderDetailPage';
 
@@ -112,3 +112,4 @@ const AppRoutes: React.FC = () => {
 };
 
 export default AppRoutes;
+//push check
