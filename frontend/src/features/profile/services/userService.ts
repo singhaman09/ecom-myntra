@@ -17,7 +17,8 @@ export const changePassword = async (
 };
 
 
-export const verifyPassword = async (currentPassword: string): Promise<void> => {
+export const verifyPassword = async (currentPassword: string): Promise<{ success: boolean; message?: string }> => {
   await axios.post('/api/verify-password', { currentPassword });
+  return { success: true};
 };
 
