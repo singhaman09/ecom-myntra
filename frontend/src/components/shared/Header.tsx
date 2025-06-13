@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import styles from './css/header.module.css';
 
+
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);

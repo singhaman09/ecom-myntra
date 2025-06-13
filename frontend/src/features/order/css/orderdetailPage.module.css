@@ -1,0 +1,84 @@
+.orderDetailPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.backLink {
+  color: #ff3e6c;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #282c3f;
+}
+
+.orderId {
+  font-size: 16px;
+  color: #535665;
+}
+
+.content {
+  display: grid;
+  gap: 20px;
+}
+
+.loadingContainer {
+  text-align: center;
+  padding: 50px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #ff3e6c;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 50px;
+}
+
+.errorIcon {
+  font-size: 40px;
+  color: #ff3e6c;
+  margin-bottom: 20px;
+}
+
+.backButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ff3e6c;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.backButton:hover {
+  background-color: #e3355a;
+}

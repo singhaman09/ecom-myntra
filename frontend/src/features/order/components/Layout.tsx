@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../../../components/shared/Header';
 import Sidebar from './Sidebar';
-import styles from '../../../components/shared/css/layout.module.css';
-
+import styles from '../css/layout.module.css';
+import Footer from '../../../components/shared/Footer';
 interface LayoutProps {
   children: React.ReactNode;
   searchTerm?: string;
@@ -38,6 +38,7 @@ const Layout: React.FC<LayoutProps> = ({ children, searchTerm, onSearchChange })
           {children}
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

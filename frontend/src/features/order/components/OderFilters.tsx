@@ -1,12 +1,11 @@
-// components/Orders/OrderFilters.tsx
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { setFilters, clearFilters } from '../slice/orderSlice';
 import type { OrderStatus } from '../types/orders';
 import Button from '../../../components/UI/Button';
 import SearchInput from '../../../components/UI/SearchInput';
-import styles from '../../../components/shared/css/orderFilter.module.css'
-import wstyles from '../../../components/shared/css/wishlistFilter.module.css';
+import styles from '../css/orderFilter.module.css'
+import wstyles from '../../wishlist/css/wishlistFilter.module.css';
 interface OrderFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;

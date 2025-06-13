@@ -1,5 +1,3 @@
-// Enhanced Order Types with better structure and additional fields
-
 export interface Order {
   id: string;
   status: 'delivered' | 'pending' | 'shipped' | 'cancelled' | 'processing' | 'returned';
