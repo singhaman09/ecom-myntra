@@ -7,6 +7,9 @@ import Profile from './Profile';
 import Addresses from '../Addresses/Addresses';
 import ProfileLayout from '../../components/Layout/ProfileLayout';
 import DeleteAccount from '../DeleteAccount/DeleteAccount';
+import TermsOfUse from '../Legal/TermsOfUse';
+import PrivacyPolicy from '../Legal/PrivacyPolicy';
+import ChangePassword from '../ChangePassword/ChangePassword';
 
 const MainProfile: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -29,14 +32,17 @@ const MainProfile: React.FC = () => {
     if (activeItem === 'addresses') {
       return <Addresses />;
     }
+    if (activeItem === 'change-password') {
+      return <ChangePassword />;
+    }
     if (activeItem === 'delete-account') {
       return <DeleteAccount onGoBack={() => setActiveItem('profile')} />;
     }
     if (activeItem === 'terms') {
-      return <div style={{ padding: '2rem' }}><h3>Terms of Use</h3><p>Our terms of use content will be displayed here.</p></div>;
+      return <TermsOfUse />;
     }
     if (activeItem === 'privacy') {
-      return <div style={{ padding: '2rem' }}><h3>Privacy Policy</h3><p>Our privacy policy content will be displayed here.</p></div>;
+      return <PrivacyPolicy />;
     }
     return user ? <Profile user={user} onUpdateProfile={handleUpdateProfile} /> : null;
 

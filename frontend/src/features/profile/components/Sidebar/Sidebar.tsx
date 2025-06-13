@@ -4,6 +4,7 @@ import {
   RefreshCw, 
   User, 
   MapPin, 
+  Key,
   Trash2, 
   FileText, 
   Shield,
@@ -42,6 +43,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, user }) => {
       icon: 'MapPin'
     },
     {
+      id: 'change-password',
+      label: 'Change Password',
+      icon: 'Key'
+    },
+    {
       id: 'delete-account',
       label: 'Delete Account',
       icon: 'Trash2'
@@ -67,6 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, user }) => {
       RefreshCw,
       User,
       MapPin,
+      Key,
       Trash2,
       FileText,
       Shield
