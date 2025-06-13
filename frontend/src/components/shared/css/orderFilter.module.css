@@ -1,0 +1,67 @@
+.orderFilters {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rangeInputs,
+.dateInputs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.select,
+.input {
+  padding: 8px 12px;
+  border: 1px solid #d4d5d9;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #f8f8f8;
+}
+
+.select:focus,
+.input:focus {
+  outline: none;
+  border-color: #ff3f6c;
+  background: #fff;
+}
+
+.filterActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .orderFilters {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .rangeInputs,
+  .dateInputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
