@@ -1,0 +1,108 @@
+.sidebar {
+  width: 250px;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  height: calc(100vh - 60px);
+  position: sticky;
+  top: 60px;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.sidebarHidden {
+  transform: translateX(-100%);
+}
+
+.sidebarHeader {
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.accountTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.accountName {
+  font-size: 14px;
+  color: #94969f;
+}
+
+.sidebarContent {
+  padding: 0;
+}
+
+.menuSection {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sectionTitle {
+  padding: 16px 20px 8px;
+  font-size: 12px;
+  color: #94969f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.menuList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuItem {
+  margin: 0;
+}
+
+.menuLink {
+  display: block;
+  padding: 12px 20px;
+  color: #282c3f;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.menuLink:hover {
+  background: #f8f8f8;
+  color: #ff3f6c;
+}
+
+.menuLinkActive {
+  background: #fff0f3;
+  color: #ff3f6c;
+  border-left-color: #ff3f6c;
+  font-weight: 500;
+}
+
+.mobileOverlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 60px;
+    z-index: 50;
+    transform: translateX(-100%);
+  }
+  
+  .sidebarVisible {
+    transform: translateX(0);
+  }
+  
+  .mobileOverlay {
+    display: block;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+  }
+}

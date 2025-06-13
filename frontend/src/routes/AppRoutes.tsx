@@ -2,15 +2,22 @@ import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import Layout from '../components/shared/Layout';
 import { ProtectedRoute, AuthRoute } from './ProtectedRoute';
+import Home from '../features/home/pages/Home';
+import Login from '../features/auth/pages/Login';
 
 import Register from '../features/auth/pages/Register';
-import Login from '../features/auth/pages/Login';
-import Home from '../features/home/pages/Home';
 import ForgotPassword from '../features/auth/pages/ForgotPassword';
 import Profile from '../features/profile/pages/Profile';
+import ProductPage from '../features/product/pages/ProductPage';
+import ProductDetails from '../features/product/pages/ProductDetail';
+import WishlistPage from '../features/wishlist/pages/WishlistPage';
+import OrdersPage from '../features/order/pages/Orderpage';
+import Footer from '../components/shared/Footer';
+
 import VerifyEmail from '../features/auth/pages/VerifyEmail';
 import VerifyOtpForgotPass from '../features/auth/pages/VerifyOtpForgotPass';
 import ResetPassword from '../features/auth/pages/ResetPassword';
+
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -21,6 +28,14 @@ const AppRoutes: React.FC = () => {
         {
           path: '',
           element: <Home />,
+        },
+        {
+          path: ':slug',
+          element: <ProductPage />,
+        },
+        {
+          path: ':slug/:id',
+          element: <ProductDetails />,
         },
         {
           element: <AuthRoute />,
@@ -63,6 +78,27 @@ const AppRoutes: React.FC = () => {
             {
               path: 'profile',
               element: <Profile />,
+            },
+            {
+              path: 'wishlist',
+              element: (
+                  <WishlistPage />
+              ),
+            },
+            {
+              path: 'profile',
+              element: (
+                  <Profile />
+              ),
+            },
+            {
+              path: 'orders',
+              element: (
+                  <>
+                    <OrdersPage />
+                    <Footer />
+                  </>
+              ),
             },
           ],
         },

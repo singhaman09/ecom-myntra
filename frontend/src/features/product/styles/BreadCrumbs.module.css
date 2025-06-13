@@ -1,0 +1,97 @@
+.breadcrumbsNav {
+  padding: 16px;
+  background: transparent;
+  margin-top: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.breadcrumbsList {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #bbb #f4f4f4;
+}
+
+.breadcrumbItem {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #555;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.breadcrumbLink {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 120px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.breadcrumbLink:hover {
+  color: #004ba0;
+  text-decoration: underline;
+}
+
+.breadcrumbSeparator {
+  margin: 0 6px;
+  color: #bbb;
+  user-select: none;
+}
+
+.breadcrumbCurrent {
+  color: #222;
+  font-weight: 600;
+  pointer-events: none;
+  cursor: default;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 120px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 600px) {
+  .breadcrumbsNav {
+    padding: 10px 4px;
+    margin-top: 16px;
+  }
+  .breadcrumbsList {
+    gap: 4px;
+    font-size: 0.95rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .breadcrumbItem,
+  .breadcrumbLink,
+  .breadcrumbCurrent {
+    font-size: 0.95rem;
+    max-width: 80px;
+  }
+  .breadcrumbSeparator {
+    margin: 0 2px;
+  }
+}
+
+/* Optional: Hide overflow breadcrumbs, show ellipsis for long paths */
+.breadcrumbsList {
+  -webkit-overflow-scrolling: touch;
+}
+
+.breadcrumbItem {
+  min-width: 0;
+}
