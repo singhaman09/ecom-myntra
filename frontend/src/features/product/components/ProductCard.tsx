@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           <div className={styles.stars}>
             {renderStars(avgRating)}
           </div>
-          <span className={styles.ratingCount}>({avgRating>0 ?averageRating(product.reviews).toFixed(1) :averageRating(product.reviews)})</span>
+          <span className={styles.ratingCount}>({avgRating>0 ?avgRating.toFixed(1) :0})</span>
         </div>
         
         {/* Pricing */}
