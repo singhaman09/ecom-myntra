@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router';
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const [value,setValue]=useState('')
-  const navigate=useNavigate()
+  const [value,setValue] = useState('');
+  const navigate = useNavigate();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     setIsMobileSearchOpen(false);

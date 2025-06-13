@@ -1,27 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit';
-import userReducer from '../features/profile/redux/slices/userSlice';
-import addressReducer from '../features/profile/redux/slices/addressSlice';
-import changePasswordReducer from '../features/profile/redux/slices/changePasswordSlice';
+import {configureStore } from '@reduxjs/toolkit';
 import ProductReducer from '../features/product/productSlice'
 import ordersReducer from '../features/order/slice/orderSlice';
 import wishlistReducer from '../features/wishlist/slice/wishlistSlice';
- const store = configureStore({
+import authReducer from '../features/auth/authSlice'; 
+
+
+
+const store = configureStore({
   reducer: {
-    user: userReducer,
-    address: addressReducer,
-    changePassword: changePasswordReducer,
     orders: ordersReducer,
     wishlist: wishlistReducer,
-    product:ProductReducer
+    product:ProductReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: true }),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
-
-
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
 
 export default store;
