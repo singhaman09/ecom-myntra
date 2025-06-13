@@ -4,12 +4,13 @@ import type { WishlistItem } from './types/wishlist';
 
 const API_BASE_URL = 'https://d6ab-14-194-22-202.ngrok-free.app';
 
+const token = localStorage.getItem('token')
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'ngrok-skip-browser-warning': 'true',
-    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NDljNzAzNGNhY2M5NGQ4YzZjMDZlZCIsImVtYWlsIjoia2FydGlrZXlzaHJpdmFzdGF2MDFAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJkZXZpY2VJZCI6ImQ5OGZiZDFmLTlmMjctNDAzNy1hN2JhLWE0YmE3NDViOTQwMiIsImlhdCI6MTc0OTcyMzIyNywiZXhwIjoxNzQ5ODA5NjI3fQ.ErsWHsZ7q1YjYyNsPb3eXLc_5_MvHrVzPsce8kn6rE0`
+    'Authorization': `Bearer ${token}`
   },
 });
 

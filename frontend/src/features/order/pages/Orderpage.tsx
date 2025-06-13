@@ -44,7 +44,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onRatingSubmit }) => {
     try {
       await onRatingSubmit(order.id, rating);
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      //error handling if needed
     } finally {
       setIsSubmittingRating(false);
     }

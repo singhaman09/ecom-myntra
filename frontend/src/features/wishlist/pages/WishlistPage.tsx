@@ -18,7 +18,7 @@ const WishlistPage: React.FC = () => {
         'Are you sure you want to clear your entire wishlist? This action cannot be undone.'
       )
     ) {
-      console.log('Clear wishlist');
+      //error handling if needed
     }
   };
 

@@ -31,10 +31,10 @@ const OrderCard: React.FC<OrderCardProps> = ({
     try {
       const success = await onRatingSubmit(order.id, rating);
       if (!success) {
-        console.error('Failed to submit rating');
+        //error handling if needed
       }
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      //error handling if needed
     } finally {
       setIsSubmittingRating(false);
     }
