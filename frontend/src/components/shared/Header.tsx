@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   };
 const handleSubmit=(e:any)=>{
     e.preventDefault()
-    navigate(`/${value}`)
+    navigate(`/products/${value}`)
     setValue('')
 }
   return (

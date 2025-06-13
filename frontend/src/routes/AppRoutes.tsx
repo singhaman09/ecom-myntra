@@ -12,8 +12,6 @@ import ProductDetails from '../features/product/pages/ProductDetail';
 import WishlistPage from '../features/wishlist/pages/WishlistPage';
 import OrdersPage from '../features/order/pages/Orderpage';
 import Footer from '../components/shared/Footer';
-
-
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
@@ -24,12 +22,16 @@ const AppRoutes: React.FC = () => {
           path: '',
           element: <Home />,
         },
+        {
+         path:'products',
+         element:<ProductPage/>
+        },
               {
-          path: ':slug',
+          path: 'products/:slug',
           element: <ProductPage />,
         },
         {
-          path: ':slug/:id',
+          path: 'productDetails/:id',
           element: <ProductDetails />,
         },
         {

@@ -1,20 +1,23 @@
 import styles from '../styles/ProductNotFoundPage.module.css';
-import {  useNavigate } from 'react-router';
+import {  useLocation, useNavigate } from 'react-router';
+
 const ProductNotFoundPage:React.FC<{isSimilar:boolean}>=({isSimilar})=> {
   const navigate=useNavigate()
+  const location = useLocation();
   return (
     <div className={styles.container}>
     <div className={styles.title}>Product Not Found</div>
-   {isSimilar? 
-   <div className={styles.message}>
-      Sorry, no similar product  exist or is unavailable.<br />
+   {!isSimilar? 
+   (<><div className={styles.message}>
+     Sorry, the product you’re looking for doesn’t exist or is unavailable.<br />
       Try searching for something else or return to our homepage.
-    </div>:
+    </div>
+    <button className={styles.button} onClick={()=>navigate(location.pathname, { replace: true })}>Go Back</button></>):
      <div className={styles.message}>
-      Sorry, the product you’re looking for doesn’t exist or is unavailable.<br />
-      Try searching for something else or return to our homepage.
+      Sorry, no similar product exist or is unavailable.<br />
+      Try searching for something else.
     </div>}
-    <button className={styles.button} onClick={()=>navigate(-1)}>Go Back</button>
+    
   </div>
   )
 }

@@ -30,6 +30,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getProductDetails(id));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [dispatch, id]);
 
   const handleSize = (size: string) => {

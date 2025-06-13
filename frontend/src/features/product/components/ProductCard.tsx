@@ -11,7 +11,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
   return (
-    <div className={styles.card} onClick={()=>navigate(`/${product.name}/${product._id}`)}>
+    <div className={styles.card} onClick={()=>navigate(`/productDetails/${product._id}`)}>
       {/* Image Container */}
       <div className={styles.imageContainer}>
         <img 
