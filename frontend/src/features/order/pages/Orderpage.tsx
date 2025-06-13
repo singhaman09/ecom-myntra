@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useOrders } from '../hooks/useOrders';
 import Layout from '../components/Layout';
-import styles from '../../../components/shared/css/ordersPage.module.css';
+import styles from '../css/ordersPage.module.css';
 import type { Order } from '../types/orders';
+import { useNavigate } from 'react-router-dom';
+
 
 interface OrderCardProps {
   order: Order;
-  onRatingSubmit: (orderId: string, rating: number) => Promise<boolean>;
+  onRatingSubmit: (orderId: string, rating: number) => Promise<{ success: boolean; }>;
 }
 
 const StarRating: React.FC<{
@@ -20,7 +22,7 @@ const StarRating: React.FC<{
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
-          className={`${styles.star} ${star <= rating ? styles.filled : ''}`}
+          className={`${styles.star} ${star <= rating ? styles.filled : styles.filled}`}
           onClick={() => !readonly && onRatingChange?.(star)}
           disabled={readonly}
           type="button"
@@ -31,8 +33,8 @@ const StarRating: React.FC<{
     </div>
   );
 };
-
 const OrderCard: React.FC<OrderCardProps> = ({ order, onRatingSubmit }) => {
+  const navigate = useNavigate();
   const [isSubmittingRating, setIsSubmittingRating] = useState(false);
   const [showAllItems, setShowAllItems] = useState(false);
 
@@ -42,7 +44,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onRatingSubmit }) => {
     try {
       await onRatingSubmit(order.id, rating);
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      //error handling if needed
     } finally {
       setIsSubmittingRating(false);
     }
@@ -198,7 +200,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onRatingSubmit }) => {
         <div className={styles.rightActions}>
           <button className={styles.helpBtn}>Need Help?</button>
           {order.status === 'delivered' && (
-            <button className={styles.buyAgainBtn}>Buy Again</button>
+            <button className={styles.buyAgainBtn} onClick={() => navigate('/products/' + order.id)}>Buy Again</button>
           )}
         </div>
       </div>

@@ -1,0 +1,45 @@
+.paymentSummaryCard {
+  background: white;
+  border: 1px solid #eaeaec;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #282c3f;
+  margin-bottom: 20px;
+}
+
+.summary {
+  font-size: 14px;
+  color: #535665;
+  margin-bottom: 20px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.totalLabel {
+  font-weight: 600;
+  color: #282c3f;
+}
+
+.totalValue {
+  font-weight: 600;
+  color: #282c3f;
+}
+
+.paymentInfo {
+  font-size: 14px;
+  color: #535665;
+}
+
+.paymentInfo div {
+  margin-bottom: 10px;
+}

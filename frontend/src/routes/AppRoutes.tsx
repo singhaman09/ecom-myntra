@@ -13,6 +13,7 @@ import WishlistPage from '../features/wishlist/pages/WishlistPage';
 import OrdersPage from '../features/order/pages/Orderpage';
 import Footer from '../components/shared/Footer';
 
+import OrderDetailPage from '../features/order/pages/OrderDetailPage';
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -48,17 +49,7 @@ const AppRoutes: React.FC = () => {
             </ProtectedRoute>
           ),
         },
-        {
-          path: 'orders',
-          element: (
-            <ProtectedRoute>
-              <>
-                <OrdersPage />
-                <Footer />
-              </>
-            </ProtectedRoute>
-          ),
-        },
+
       ],
     },
     {
@@ -86,12 +77,34 @@ const AppRoutes: React.FC = () => {
       ),
     },
     {
-      path: '*',
+      path: '/orders',
       element: (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          404 - Page Not Found
-        </div>
+        <ProtectedRoute>
+          <OrdersPage />
+        </ProtectedRoute>
       ),
+    },
+    {
+      path: '/orders/:orderId',
+      element: (
+        <ProtectedRoute>
+          <OrderDetailPage />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: '/wishlist',
+      element: (
+        <ProtectedRoute>
+          <Layout>
+            <WishlistPage />
+          </Layout>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: '*',
+      element: <div style={{ textAlign: 'center', padding: '2rem' }}>404 - Page Not Found</div>,
     },
   ]);
 

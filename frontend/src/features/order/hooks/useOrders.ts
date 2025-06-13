@@ -1,6 +1,84 @@
 import { useState, useEffect } from 'react';
 import type { Order } from '../types/orders';
-import { apiService } from '../api';
+
+const mockOrders: Order[] = [
+  {
+    id: 'order123',
+    status: 'delivered',
+    deliveryDate: '2025-06-01',
+    orderDate: '2025-05-25',
+    exchangeReturnWindow: '2025-06-15',
+    items: [
+      {
+        id: 'item1',
+        name: 'Casual Shirt',
+        brand: 'Levis',
+        image: 'https://via.placeholder.com/80',
+        size: 'M',
+        color: 'Blue',
+        price: 1999,
+        quantity: 1,
+      },
+    ],
+    totalAmount: 1999,
+    total: 1999,
+    customerName: 'John Doe',
+    deliveryAddress: {
+      id: 'addr1',
+      name: 'John Doe',
+      addressLine1: '123 Main St',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400001',
+      country: 'India',
+      phoneNumber: '9876543210',
+    },
+    paymentMethod: {
+      type: 'card',
+      last4Digits: '1234',
+      provider: 'Visa',
+      transactionId: 'txn123',
+    },
+  },
+  {
+    id: 'order123',
+    status: 'delivered',
+    deliveryDate: '2025-06-01',
+    orderDate: '2025-05-25',
+    exchangeReturnWindow: '2025-06-15',
+    items: [
+      {
+        id: 'item1',
+        name: 'Casual Shirt',
+        brand: 'Levis',
+        image: 'https://via.placeholder.com/80',
+        size: 'M',
+        color: 'Blue',
+        price: 1999,
+        quantity: 1,
+      },
+    ],
+    totalAmount: 1999,
+    total: 1999,
+    customerName: 'John Doe',
+    deliveryAddress: {
+      id: 'addr1',
+      name: 'John Doe',
+      addressLine1: '123 Main St',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400001',
+      country: 'India',
+      phoneNumber: '9876543210',
+    },
+    paymentMethod: {
+      type: 'card',
+      last4Digits: '1234',
+      provider: 'Visa',
+      transactionId: 'txn123',
+    },
+  }
+];
 
 export const useOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -20,13 +98,15 @@ export const useOrders = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await apiService.getOrders();
-      setOrders(response);
-      setError(null);
+      setTimeout(() => {
+        setOrders(mockOrders);
+        setError(null);
+        setLoading(false);
+      }, 1000);
     } catch (err) {
       setError('Failed to load orders');
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const filterOrders = () => {
@@ -45,13 +125,16 @@ export const useOrders = () => {
   };
 
   const submitRating = async (orderId: string, rating: number) => {
-    const response = await apiService.submitRating(orderId, rating);
-    if (response.success) {
-      setOrders(prev => prev.map(order =>
-        order.id === orderId ? { ...order, rating } : order
-      ));
+    try {
+      setOrders(prev =>
+        prev.map(order =>
+          order.id === orderId ? { ...order, rating, canRate: false } : order
+        )
+      );
+      return { success: true };
+    } catch {
+      return { success: false };
     }
-    return response.success;
   };
 
   return {
@@ -61,6 +144,6 @@ export const useOrders = () => {
     searchTerm,
     setSearchTerm,
     submitRating,
-    refreshOrders: fetchOrders
+    refreshOrders: fetchOrders,
   };
 };

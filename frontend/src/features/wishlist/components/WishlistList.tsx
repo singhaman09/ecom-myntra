@@ -1,26 +1,25 @@
-// components/Wishlist/WishlistList.tsx
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../order/hooks/redux';
-import { 
-  fetchWishlistItems, 
-  removeFromWishlist, 
+import {
+  fetchWishlistItems,
+  removeFromWishlist,
   moveToCart,
   setCurrentPage,
-  setItemsPerPage 
+  setItemsPerPage,
 } from '../slice/wishlistSlice';
 import WishlistCard from './WishlistCard';
 import Button from '../../../components/UI/Button';
-import styles from '../../../components/shared/css/wishlistList.module.css';
+import styles from '../css/wishlistList.module.css';
 
 const WishlistList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { 
-    filteredItems, 
-    loading, 
-    error, 
-    currentPage, 
-    itemsPerPage, 
-    totalItems 
+  const {
+    filteredItems,
+    loading,
+    error,
+    currentPage,
+    itemsPerPage,
+    totalItems,
   } = useAppSelector((state) => state.wishlist);
 
   useEffect(() => {
@@ -45,7 +44,6 @@ const WishlistList: React.FC = () => {
     dispatch(setItemsPerPage(items));
   };
 
-  // Pagination logic
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedItems = filteredItems.slice(startIndex, endIndex);
@@ -75,15 +73,14 @@ const WishlistList: React.FC = () => {
     <div className={styles.wishlistList}>
       <div className={styles.listHeader}>
         <div className={styles.listInfo}>
-          <h2>My Wishlist</h2>
           <p>{totalItems} items in your wishlist</p>
         </div>
-        
+
         <div className={styles.listControls}>
           <label>
             Show:
-            <select 
-              value={itemsPerPage} 
+            <select
+              value={itemsPerPage}
               onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
             >
               <option value={6}>6 per page</option>
@@ -100,9 +97,7 @@ const WishlistList: React.FC = () => {
           <div className={styles.emptyIcon}>♡</div>
           <h3>Your wishlist is empty</h3>
           <p>Start adding items you love to keep track of them!</p>
-          <Button variant="primary">
-            Continue Shopping
-          </Button>
+          <Button variant="primary">Continue Shopping</Button>
         </div>
       ) : (
         <>
@@ -127,7 +122,7 @@ const WishlistList: React.FC = () => {
               >
                 Previous
               </Button>
-              
+
               <div className={styles.pageNumbers}>
                 {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => {
                   let pageNum;
@@ -138,7 +133,7 @@ const WishlistList: React.FC = () => {
                     pageNum = start + i;
                     if (pageNum > totalPages) pageNum = totalPages - (9 - i);
                   }
-                  
+
                   return (
                     <button
                       key={pageNum}
@@ -173,13 +168,13 @@ const WishlistList: React.FC = () => {
         </div>
         <div className={styles.stat}>
           <span className={styles.statValue}>
-            ${filteredItems.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
+            ${(filteredItems.reduce((sum, item) => sum + item.price, 0) / 100).toFixed(2)}
           </span>
           <span className={styles.statLabel}>Total Value</span>
         </div>
         <div className={styles.stat}>
           <span className={styles.statValue}>
-            {filteredItems.filter(item => item.inStock).length}
+            {filteredItems.filter((item) => item.inStock).length}
           </span>
           <span className={styles.statLabel}>In Stock</span>
         </div>

@@ -418,6 +418,9 @@
   align-items: center;
   justify-content: center;
   transition: color 0.2s;
+  hover {
+    color: #ff905a;
+  }
 }
 
 .star.filled {
