@@ -1,74 +1,77 @@
-import React from 'react';
-import { useRoutes } from 'react-router-dom';
-import Layout from '../components/shared/Layout';
-import { ProtectedRoute, AuthRoute } from './ProtectedRoute';
-import Home from '../features/home/pages/Home';
-import Login from '../features/auth/pages/Login';
+import React from "react";
+import { useRoutes } from "react-router-dom";
+import Layout from "../components/shared/Layout";
+import { ProtectedRoute, AuthRoute } from "./ProtectedRoute";
+import Home from "../features/home/pages/Home";
+import Login from "../features/auth/pages/Login";
 
-import Register from '../features/auth/pages/Register';
-import ForgotPassword from '../features/auth/pages/ForgotPassword';
-import Profile from '../features/profile/pages/Profile';
-import ProductPage from '../features/product/pages/ProductPage';
-import ProductDetails from '../features/product/pages/ProductDetail';
-import WishlistPage from '../features/wishlist/pages/WishlistPage';
-import OrdersPage from '../features/order/pages/Orderpage';
-import Footer from '../components/shared/Footer';
+import Register from "../features/auth/pages/Register";
+import ForgotPassword from "../features/auth/pages/ForgotPassword";
+import Profile from "../features/profile/pages/Profile";
+import ProductPage from "../features/product/pages/ProductPage";
+import ProductDetails from "../features/product/pages/ProductDetail";
+import WishlistPage from "../features/wishlist/pages/WishlistPage";
+import OrdersPage from "../features/order/pages/Orderpage";
+import Footer from "../components/shared/Footer";
 
-import VerifyEmail from '../features/auth/pages/VerifyEmail';
-import VerifyOtpForgotPass from '../features/auth/pages/VerifyOtpForgotPass';
-import ResetPassword from '../features/auth/pages/ResetPassword';
-
+import VerifyEmail from "../features/auth/pages/VerifyEmail";
+import VerifyOtpForgotPass from "../features/auth/pages/VerifyOtpForgotPass";
+import ResetPassword from "../features/auth/pages/ResetPassword";
+import CartPage from "../features/cart/pages/CartPage";
+import CheckoutAddress from "../features/cart/pages/CheckoutAddress";
+import Payment from "../features/cart/pages/Payment";
+import OrderPlaced from "../features/cart/pages/OrderPlaced";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
-      path: '/',
+      path: "/",
       element: <Layout />,
       children: [
         {
-          path: '',
+          path: "",
           element: <Home />,
         },
         {
-          path: ':slug',
+          path: ":slug",
           element: <ProductPage />,
         },
         {
-          path: ':slug/:id',
+          path: ":slug/:id",
           element: <ProductDetails />,
         },
         {
           element: <AuthRoute />,
           children: [
             {
-              path: 'login',
+              path: "login",
               element: <Login />,
             },
             {
-              path: 'signup',
+              path: "signup",
               element: <Register />,
             },
             {
-              path: 'verify-email',
+              path: "verify-email",
               element: <VerifyEmail />,
             },
             {
-              path: 'forgot-password',
+              path: "forgot-password",
               // element: <ForgotPassword />,
               children: [
                 {
-                  path: '',
+                  path: "",
                   element: <ForgotPassword />,
                 },
                 {
-                  path: 'verify-otp',
+                  path: "verify-otp",
                   element: <VerifyOtpForgotPass />,
                 },
                 {
-                  path: 'reset-password',
+                  path: "reset-password",
                   element: <ResetPassword />,
                 },
-              ]
+              ],
             },
           ],
         },
@@ -76,34 +79,53 @@ const AppRoutes: React.FC = () => {
           element: <ProtectedRoute />,
           children: [
             {
-              path: 'profile',
+              path: "profile",
               element: <Profile />,
             },
             {
-              path: 'wishlist',
+              path: "wishlist",
+              element: <WishlistPage />,
+            },
+            {
+              path: "orders",
               element: (
-                  <WishlistPage />
+                <>
+                  <OrdersPage />
+                  <Footer />
+                </>
               ),
             },
             {
-              path: 'profile',
+              path: "/cart",
               element: (
-                  <Profile />
+                  <CartPage />
               ),
             },
+
             {
-              path: 'orders',
+              path: "/checkout/address",
               element: (
-                  <>
-                    <OrdersPage />
-                    <Footer />
-                  </>
+                  <CheckoutAddress />
+              ),
+            },
+
+            {
+              path: "/checkout/payment",
+              element: (
+                  <Payment />
+              ),
+            },
+
+            {
+              path: "/ordersuccess",
+              element: (
+                  <OrderPlaced />
               ),
             },
           ],
         },
         {
-          path: '*',
+          path: "*",
           element: <div>404 - Page Not Found</div>,
         },
       ],
