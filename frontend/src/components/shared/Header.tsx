@@ -1,13 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, type ChangeEvent } from 'react';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import styles from './css/Header.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const [value,setValue]=useState('')
+  const [value,setValue] = useState('');
   const navigate = useNavigate();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -101,17 +101,17 @@ const handleSubmit=(e:any)=>{
           </button>
 
           {/* User Actions */}
-          <div  className={styles.userActions}>
-            <div className={styles.userAction} onClick={() => navigate('/profile')}>
-              <User  className={styles.userActionIcon} />
+          <div className={styles.userActions}>
+            <div className={styles.userAction}>
+              <User className={styles.userActionIcon} />
               <span className={styles.userActionText}>Profile</span>
             </div>
-            <div className={`${styles.userAction} ${styles.bagAction}`} onClick={() => navigate('/wishlist')} >
+            <div className={`${styles.userAction} ${styles.bagAction}`} >
               <Heart className={styles.userActionIcon} />
               <span className={styles.userActionText}>Wishlist</span>
               <span className={styles.bagBadge}>3</span>
             </div>
-            <div className={`${styles.userAction} ${styles.bagAction}`} onClick={() => navigate('/cart')}>
+            <div className={`${styles.userAction} ${styles.bagAction}`}>
               <ShoppingBag className={styles.userActionIcon} />
               <span className={styles.userActionText}>Bag</span>
               <span className={styles.bagBadge}>0</span>
