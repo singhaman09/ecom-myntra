@@ -1,40 +1,42 @@
-import React from 'react';
-import { useRoutes } from 'react-router-dom';
-import Layout from '../components/shared/Layout';
-import { ProtectedRoute, AuthRoute } from './ProtectedRoute';
-import Home from '../features/home/pages/Home';
-import Login from '../features/auth/pages/Login';
-import Register from '../features/auth/pages/Register';
-import ForgotPassword from '../features/auth/pages/ForgotPassword';
-import Profile from '../features/profile/pages/Profile';
-import ProductPage from '../features/product/pages/ProductPage';
-import ProductDetails from '../features/product/pages/ProductDetail';
-import WishlistPage from '../features/wishlist/pages/WishlistPage';
-import OrdersPage from '../features/order/pages/Orderpage';
-
-
-import OrderDetailPage from '../features/order/pages/OrderDetailPage';
+import React from "react";
+import Layout from "../components/shared/Layout";
+import { ProtectedRoute, AuthRoute } from "./ProtectedRoute";
+import { useRoutes } from "react-router-dom";
+import Register from "../features/auth/pages/Register";
+import Login from "../features/auth/pages/Login";
+import Home from "../features/home/pages/Home";
+import ForgotPassword from "../features/auth/pages/ForgotPassword";
+import Profile from "../features/profile/pages/Profile";
+import CartPage from "../features/cart/pages/CartPage";
+import CheckoutAddress from "../features/cart/pages/CheckoutAddress";
+import Payment from "../features/cart/pages/Payment";
+import OrderPlaced from "../features/cart/pages/OrderPlaced";
+import ProductPage from "../features/product/pages/ProductPage";
+import ProductDetails from "../features/product/pages/ProductDetail";
+import WishlistPage from "../features/wishlist/pages/WishlistPage";
+import OrdersPage from "../features/order/pages/Orderpage";
+import Footer from "../components/shared/Footer";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
-      path: '/',
+      path: "/",
       element: <Layout />,
       children: [
         {
-          path: '',
+          path: "",
           element: <Home />,
         },
-              {
-          path: ':slug',
+        {
+          path: ":slug",
           element: <ProductPage />,
         },
         {
-          path: ':slug/:id',
+          path: ":slug/:id",
           element: <ProductDetails />,
         },
         {
-          path: 'wishlist',
+          path: "wishlist",
           element: (
             <ProtectedRoute>
               <WishlistPage />
@@ -42,18 +44,28 @@ const AppRoutes: React.FC = () => {
           ),
         },
         {
-          path: 'profile',
+          path: "profile",
           element: (
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           ),
         },
-
+        {
+          path: "orders",
+          element: (
+            <ProtectedRoute>
+              <>
+                <OrdersPage />
+                <Footer />
+              </>
+            </ProtectedRoute>
+          ),
+        },
       ],
     },
     {
-      path: '/login',
+      path: "/login",
       element: (
         <AuthRoute>
           <Login />
@@ -61,15 +73,25 @@ const AppRoutes: React.FC = () => {
       ),
     },
     {
-      path: '/signup',
+      path: "/signup",
       element: (
         <AuthRoute>
           <Register />
         </AuthRoute>
       ),
     },
+
     {
-      path: '/forgot-password',
+      path: "*",
+      element: (
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          404 - Page Not Found
+        </div>
+      ),
+    },
+
+    {
+      path: "/forgot-password",
       element: (
         <AuthRoute>
           <ForgotPassword />
@@ -77,34 +99,47 @@ const AppRoutes: React.FC = () => {
       ),
     },
     {
-      path: '/orders',
+      path: "/profile",
       element: (
         <ProtectedRoute>
-          <OrdersPage />
+            <Profile />
         </ProtectedRoute>
       ),
     },
     {
-      path: '/orders/:orderId',
+      path: "/cart",
       element: (
         <ProtectedRoute>
-          <OrderDetailPage />
+          <CartPage />
         </ProtectedRoute>
       ),
     },
+
     {
-      path: '/wishlist',
+      path: "/checkout/address",
       element: (
         <ProtectedRoute>
-          <Layout>
-            <WishlistPage />
-          </Layout>
+          <CheckoutAddress />
         </ProtectedRoute>
       ),
     },
+
     {
-      path: '*',
-      element: <div style={{ textAlign: 'center', padding: '2rem' }}>404 - Page Not Found</div>,
+      path: "/checkout/payment",
+      element: (
+        <ProtectedRoute>
+          <Payment />
+        </ProtectedRoute>
+      ),
+    },
+
+    {
+      path: "/ordersuccess",
+      element: (
+        <ProtectedRoute>
+          <OrderPlaced />
+        </ProtectedRoute>
+      ),
     },
   ]);
 
@@ -112,4 +147,3 @@ const AppRoutes: React.FC = () => {
 };
 
 export default AppRoutes;
-//push check

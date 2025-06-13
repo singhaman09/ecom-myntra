@@ -1,0 +1,537 @@
+.cartPage {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 9px 16px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mainContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.leftSection {
+  flex: 1;
+  margin-top: 30px;
+  min-width: 0;
+}
+
+.rightSection {
+  width: 350px;
+}
+
+/* Cart List Section */
+
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalContent {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modalActions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.modalRemove,
+.modalWishlist {
+  flex: none;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.modalRemove {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.modalWishlist {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.modalDivider {
+  width: 1px;
+  height: 22px;
+  background-color: #ccc;
+  opacity: 0.7;
+}
+
+/* Coupons */
+.couponsSection {
+  background: #fff;
+  padding: 16px;
+  border: 1px solid #e5e7eb78;
+}
+
+.couponsHeader {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.couponsTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: #535766;
+  text-transform: uppercase;
+}
+
+.applyCoupons {
+  display: flex;
+  align-items: center;
+}
+
+.applyCouponsText {
+  margin-left: 28px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.applyCoupons span {
+  font-size: 14px;
+}
+
+.applyButton {
+  background-color: #fff;
+  border: 1px solid #ff3f6c;
+  color: #ff3f6c;
+  padding: 6px 12px;
+  margin-left: 150px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.applyButton:hover {
+  background-color: #ffe6e6;
+}
+
+/* You May Also Like */
+.youMayAlsoLikeSection {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  width: 972px;
+  background-color: #fff;
+  padding: 16px;
+  border: 1px solid #e5e7eb78;
+}
+
+.youMayAlsoLikeTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.categoryFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 8px;
+}
+
+.categoryButton {
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.categoryButtonActive {
+  background-color: #ff3f6c;
+  color: #fff;
+  border-color: #ff3f6c;
+}
+
+.categoryButton:hover {
+  background-color: #ffe6e6;
+  border-color: #ff3f6c;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.productCard {
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.productImage {
+  width: 100%;
+  max-width: 100px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.productDetails {
+  text-align: left;
+  width: 100%;
+}
+
+.productName {
+  font-size: 12px;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 2px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productBrand {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.productPrice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.discountedPrice {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.originalPrice {
+  font-size: 11px;
+  color: #888;
+  text-decoration: line-through;
+}
+
+.discount {
+  font-size: 11px;
+  color: #ff3f6c;
+}
+
+.addToBagButton {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ff3f6c;
+  color: #ff3f6c;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.addToBagButton:hover {
+  background-color: #ffe6e6;
+}
+
+/* Responsive Design */
+
+/* Large screens (desktops, >1200px) */
+@media (min-width: 1200px) {
+  .cartPage {
+    padding: 16px 24px;
+  }
+
+  .mainContent {
+    gap: 30px;
+    max-width: 1100px;
+  }
+
+  .rightSection {
+    width: 400px;
+  }
+
+  .productGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Medium screens (tablets, 769px - 1200px) */
+@media (max-width: 1200px) {
+  .mainContent {
+    max-width: 90%;
+    gap: 15px;
+  }
+
+  .rightSection {
+    width: 300px;
+  }
+
+  .moveButtons {
+    margin-left: 100px;
+  }
+
+  .applyButton {
+    margin-left: 80px;
+  }
+
+  .productGrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
+
+/* Small screens (mobile, 481px - 768px) */
+@media (max-width: 768px) {
+  .mainContent {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .leftSection,
+  .rightSection {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .offersSection {
+    max-width: 100%;
+  }
+
+  .itemsHeader {
+    margin: 20px 0 15px 5px;
+  }
+
+  .moveButtons {
+    margin-left: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .removeSelectedButton,
+  .moveSelectedButton {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+
+  .selectAllWrapper {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .selectAllText {
+    width: auto;
+  }
+
+  .modalContent {
+    width: 85%;
+    padding: 16px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modalDivider {
+    display: none;
+  }
+
+  .applyButton {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .applyCouponsText {
+    margin-left: 10px;
+  }
+
+  .productGrid {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+
+  .productImage {
+    max-width: 90px;
+    height: 110px;
+  }
+}
+
+/* Extra small screens (small mobile, <=480px) */
+@media (max-width: 480px) {
+  .cartPage {
+    padding: 8px 12px;
+  }
+
+  .address,
+  .addressLabel,
+  .addressDetails {
+    font-size: 11px;
+  }
+
+  .changeAddress {
+    font-size: 10px;
+    padding: 2px 8px;
+    height: 28px;
+  }
+
+  .offersSection {
+    padding: 8px;
+  }
+
+  .offersTitle {
+    font-size: 12px;
+  }
+
+  .offer {
+    font-size: 11px;
+  }
+
+  .showMore {
+    font-size: 12px;
+  }
+
+  .itemsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .selectAllWrapper {
+    font-size: 12px;
+  }
+
+  .selectAllCheckbox {
+    width: 14px;
+    height: 14px;
+  }
+
+  .removeSelectedButton,
+  .moveSelectedButton {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  .modalContent {
+    width: 90%;
+    padding: 12px;
+  }
+
+  .modalRemove,
+  .modalWishlist {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .couponsHeader {
+    font-size: 13px;
+  }
+
+  .couponsTitle {
+    font-size: 10px;
+  }
+
+  .applyCouponsText {
+    font-size: 11px;
+    margin-left: 5px;
+  }
+
+  .applyButton {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .youMayAlsoLikeTitle {
+    font-size: 14px;
+  }
+
+  .categoryFilters {
+    gap: 8px;
+  }
+
+  .categoryButton {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .productGrid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .productCard {
+    padding: 8px;
+  }
+
+  .productImage {
+    max-width: 80px;
+    height: 100px;
+  }
+
+  .productName {
+    font-size: 11px;
+  }
+
+  .productBrand {
+    font-size: 12px;
+  }
+
+  .discountedPrice {
+    font-size: 12px;
+  }
+
+  .originalPrice,
+  .discount {
+    font-size: 10px;
+  }
+
+  .addToBagButton {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}

@@ -1,15 +1,16 @@
 
-import React, { useState, type ChangeEvent } from 'react';
+import React, { useState, } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
-import styles from './css/Header.module.css';
-import { useNavigate } from 'react-router';
+import styles from './css/header.module.css';
 
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const navigate = useNavigate();
+
   const [value,setValue]=useState('')
-  const navigate=useNavigate()
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     setIsMobileSearchOpen(false);
@@ -19,6 +20,12 @@ const Header: React.FC = () => {
     setIsMobileSearchOpen(!isMobileSearchOpen);
     setIsMobileMenuOpen(false);
   };
+
+    // Navigate to Cart - Siddharth 
+  const handleBagClick = () => {
+    navigate('/cart');
+  };  
+
 const handleSubmit=(e:any)=>{
     e.preventDefault()
     navigate(`/${value}`)
@@ -112,9 +119,10 @@ const handleSubmit=(e:any)=>{
               <span className={styles.userActionText}>Wishlist</span>
               <span className={styles.bagBadge}>3</span>
             </div>
-            <div className={`${styles.userAction} ${styles.bagAction}`}>
+            <div className={`${styles.userAction} ${styles.bagAction}`} onClick={handleBagClick}>
               <ShoppingBag className={styles.userActionIcon} />
               <span className={styles.userActionText}>Bag</span>
+              <span className={styles.bagBadge}>0 </span>
               <span className={styles.bagBadge}>0</span>
             </div>
           </div>

@@ -1,0 +1,173 @@
+/* Base styles for mobile (≤480px) */
+.cartSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.summaryTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.priceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #555;
+  padding: 4px 0;
+}
+
+.priceItem span:first-child {
+  flex: 1;
+}
+
+.priceItem span:last-child {
+  font-weight: 500;
+}
+
+.knowMore,
+.applyCoupon {
+  font-size: 12px;
+  color: #ff3f6c;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.knowMore:hover,
+.applyCoupon:hover {
+  text-decoration: underline;
+}
+
+.discount {
+  color: #ff3f6c;
+  font-weight: 600;
+}
+
+.free {
+  color: #28a745; /* Green for free shipping */
+  font-weight: 600;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid #ddd;
+  margin-top: 8px;
+}
+
+.totalLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.totalPrice {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.checkoutButton {
+  background-color: #ff3f6c; /* Match app's primary color */
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  min-height: 44px; /* Ensure touch target size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkoutButton:hover {
+  background-color: #e0355b; /* Darker shade on hover */
+}
+
+/* Medium screens (tablets, ≥481px) */
+@media (min-width: 481px) {
+  .cartSummary {
+    padding: 16px;
+  }
+
+  .summaryTitle {
+    font-size: 15px;
+  }
+
+  .priceItem {
+    font-size: 13px;
+    padding: 6px 0;
+  }
+
+  .knowMore,
+  .applyCoupon {
+    font-size: 13px;
+  }
+
+  .total {
+    padding: 10px 0;
+  }
+
+  .totalLabel,
+  .totalPrice {
+    font-size: 15px;
+  }
+
+  .checkoutButton {
+    font-size: 13px;
+    padding: 14px;
+  }
+}
+
+/* Large screens (desktops, ≥769px) */
+@media (min-width: 769px) {
+  .cartSummary {
+    padding: 20px;
+  }
+
+  .summaryTitle {
+    font-size: 14px;
+  } 
+
+  .priceItem {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+
+  .knowMore,
+  .applyCoupon {
+    font-size: 14px;
+    margin-left: 6px;
+  }
+
+  .total {
+    padding: 12px 0;
+  }
+
+  .totalLabel,
+  .totalPrice {
+    font-size: 16px;
+  }
+
+  .checkoutButton {
+    font-size: 14px;
+    padding: 16px;
+    min-height: 48px;
+  }
+}
