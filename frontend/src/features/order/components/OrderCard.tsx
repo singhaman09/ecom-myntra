@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Order } from '../types/orders';
 import StarRating from '../../../components/UI/StarRating';
 import { getStatusColor, getStatusText } from '../utils/helpers';
-import styles from '../../../components/shared/css/orderCard.module.css';
+import styles from '../css/orderCard.module.css';
 
 interface OrderCardProps {
   order: Order;

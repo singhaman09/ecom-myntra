@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import OrderDetailCard from '../components/OrderDetailCard';
 import OrderTrackingCard from '../components/OrderTrackingCard';
 import PaymentSummaryCard from '../components/PaymentSummaryCard';
-import styles from '../../../components/shared/css/orderdetailPage.module.css';
+import styles from '../css/orderdetailPage.module.css';
 import type { Order } from '../types/orders';
 
 const OrderDetailPage: React.FC = () => {

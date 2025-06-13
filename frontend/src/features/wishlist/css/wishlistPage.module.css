@@ -1,0 +1,238 @@
+/* wishlistPage.module.css */
+.wishlistPage {
+  padding: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f5f5f6;
+  min-height: 100vh;
+  font-family: 'Whitney', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.pageHeader {
+  background: #fff;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e9e9ed;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.headerContent h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #282c3f;
+  margin: 0 0 8px 0;
+}
+
+.pageDescription {
+  font-size: 16px;
+  color: #535766;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.itemCount {
+  font-size: 14px;
+  color: #94969f;
+  font-weight: 500;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.pageContent {
+  display: flex;
+  gap: 0;
+  min-height: calc(100vh - 120px);
+}
+
+.sidebar {
+  width: 260px;
+  background: #fff;
+  border-right: 1px solid #e9e9ed;
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  flex-shrink: 0;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 20px 24px;
+  background: #f5f5f6;
+}
+
+.loadingState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e9e9ed;
+}
+
+.loadingState p {
+  color: #94969f;
+  font-size: 16px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e9e9ed;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.emptyState h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #282c3f;
+  margin: 0 0 8px 0;
+}
+
+.emptyState p {
+  font-size: 16px;
+  color: #535766;
+  margin: 0 0 24px 0;
+  line-height: 1.4;
+}
+
+/* Breadcrumb styles (keeping existing functionality) */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  padding: 0 24px;
+  background: #fff;
+  padding-top: 12px;
+}
+
+.breadcrumbLink {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  color: #ff3e6c;
+}
+
+.breadcrumbSeparator {
+  margin: 0 8px;
+  color: #999;
+}
+
+.breadcrumbCurrent {
+  color: #282c3f;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .wishlistPage {
+    padding: 0;
+  }
+  
+  .pageHeader {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .headerActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .pageContent {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid #e9e9ed;
+  }
+  
+  .mainContent {
+    padding: 16px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerContent h1 {
+    font-size: 24px;
+  }
+  
+  .pageDescription {
+    font-size: 14px;
+  }
+  
+  .headerActions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .headerActions button {
+    width: 100%;
+  }
+  
+  .mainContent {
+    padding: 12px 16px;
+  }
+  
+  .emptyState {
+    padding: 40px 16px;
+  }
+  
+  .emptyIcon {
+    font-size: 36px;
+  }
+  
+  .emptyState h3 {
+    font-size: 18px;
+  }
+  
+  .emptyState p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageHeader {
+    padding: 12px 16px;
+  }
+  
+  .headerContent h1 {
+    font-size: 20px;
+  }
+  
+  .pageDescription {
+    font-size: 13px;
+  }
+  
+  .itemCount {
+    font-size: 12px;
+  }
+}

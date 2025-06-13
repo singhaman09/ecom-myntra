@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Order } from '../types/orders';
-import styles from '../../../components/shared/css/ordertracking.module.css'
+import styles from '../css/ordertracking.module.css'
 
 interface OrderTrackingCardProps {
   order: Order;

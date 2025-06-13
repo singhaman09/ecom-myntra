@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Order } from '../types/orders';
-import styles from '../../../components/shared/css/paymentsummarycard.module.css';
+import styles from '../css/paymentsummarycard.module.css';
 
 interface PaymentSummaryCardProps {
   order: Order;

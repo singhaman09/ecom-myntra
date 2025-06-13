@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Order } from '../types/orders';
 
-// Mock data for testing
 const mockOrders: Order[] = [
   {
     id: 'order123',
@@ -41,7 +40,44 @@ const mockOrders: Order[] = [
       transactionId: 'txn123',
     },
   },
-  // Add more mock orders as needed
+  {
+    id: 'order123',
+    status: 'delivered',
+    deliveryDate: '2025-06-01',
+    orderDate: '2025-05-25',
+    exchangeReturnWindow: '2025-06-15',
+    items: [
+      {
+        id: 'item1',
+        name: 'Casual Shirt',
+        brand: 'Levis',
+        image: 'https://via.placeholder.com/80',
+        size: 'M',
+        color: 'Blue',
+        price: 1999,
+        quantity: 1,
+      },
+    ],
+    totalAmount: 1999,
+    total: 1999,
+    customerName: 'John Doe',
+    deliveryAddress: {
+      id: 'addr1',
+      name: 'John Doe',
+      addressLine1: '123 Main St',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400001',
+      country: 'India',
+      phoneNumber: '9876543210',
+    },
+    paymentMethod: {
+      type: 'card',
+      last4Digits: '1234',
+      provider: 'Visa',
+      transactionId: 'txn123',
+    },
+  }
 ];
 
 export const useOrders = () => {
@@ -62,7 +98,6 @@ export const useOrders = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      // Simulate API call with mock data
       setTimeout(() => {
         setOrders(mockOrders);
         setError(null);

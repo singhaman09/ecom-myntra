@@ -10,7 +10,6 @@ import Profile from '../features/profile/pages/Profile';
 import WishlistPage from '../features/wishlist/pages/WishlistPage';
 import OrdersPage from '../features/order/pages/Orderpage';
 import OrderDetailPage from '../features/order/pages/OrderDetailPage';
-import Footer from '../components/shared/Footer';
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -59,7 +58,6 @@ const AppRoutes: React.FC = () => {
       element: (
         <ProtectedRoute>
           <OrdersPage />
-          <Footer />
         </ProtectedRoute>
       ),
     },
@@ -68,7 +66,6 @@ const AppRoutes: React.FC = () => {
       element: (
         <ProtectedRoute>
           <OrderDetailPage />
-          <Footer />
         </ProtectedRoute>
       ),
     },

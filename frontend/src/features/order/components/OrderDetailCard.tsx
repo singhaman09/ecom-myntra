@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Order } from '../types/orders';
-import styles from '../../../components/shared/css/orderdetailCard.module.css';
+import styles from '../css/orderdetailCard.module.css';
 
 interface OrderDetailCardProps {
   order: Order;
