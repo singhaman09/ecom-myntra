@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import type { RootState } from '../store/store';
 
-// import { useAuth } from '../features/auth/hooks/useAuth';
 
 
 // const isAuthenticated: boolean = false;

@@ -9,6 +9,8 @@ import Home from '../features/home/pages/Home';
 import ForgotPassword from '../features/auth/pages/ForgotPassword';
 import Profile from '../features/profile/pages/Profile';
 import VerifyEmail from '../features/auth/pages/VerifyEmail';
+import VerifyOtpForgotPass from '../features/auth/pages/VerifyOtpForgotPass';
+import ResetPassword from '../features/auth/pages/ResetPassword';
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -37,7 +39,21 @@ const AppRoutes: React.FC = () => {
             },
             {
               path: 'forgot-password',
-              element: <ForgotPassword />,
+              // element: <ForgotPassword />,
+              children: [
+                {
+                  path: '',
+                  element: <ForgotPassword />,
+                },
+                {
+                  path: 'verify-otp',
+                  element: <VerifyOtpForgotPass />,
+                },
+                {
+                  path: 'reset-password',
+                  element: <ResetPassword />,
+                },
+              ]
             },
           ],
         },

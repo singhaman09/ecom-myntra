@@ -35,20 +35,14 @@ const Register: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log('=== Register Component Debug ===');
-    console.log('registrationData:', registrationData);
-    console.log('location.state:', location.state);
-    console.log('isFromChangeEmail.current:', isFromChangeEmail.current);
     
     // If we're coming from change-email, don't redirect even if registrationData exists
     if (isFromChangeEmail.current) {
-      console.log('Coming from change-email, staying on signup page');
       return;
     }
     
     // Only redirect to verify-email if we have fresh registration data
     if (registrationData?.userId && registrationData?.email) {
-      console.log('Fresh registration detected, navigating to verify-email');
       navigate('/verify-email', {
         state: {
           email: registrationData.email,
@@ -69,14 +63,13 @@ const Register: React.FC = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      console.log('Submitting registration form:', data);
       // Reset the change-email flag before submitting
       isFromChangeEmail.current = false;
       
       await registerUser(data);
       reset();
-    } catch (error) {
-      console.error('Registration failed:', error);
+    } catch {
+      // Handle registration error
     }
   };
 

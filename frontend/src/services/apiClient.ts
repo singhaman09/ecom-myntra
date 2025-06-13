@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+declare module 'axios' {
+  export interface InternalAxiosRequestConfig {
+    skipAuth?: boolean;
+  }
+}
+
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001/', // Replace with your actual API
   headers: {

@@ -1,45 +1,9 @@
-import { createSlice, createAsyncThunk, type Action, isAction } from '@reduxjs/toolkit';
-import { loginAPI, registerAPI, forgotPasswordAPI, verifyEmailAPI, resendOtpAPI } from './services/authAPI';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { loginAPI, registerAPI, forgotPasswordAPI, verifyEmailAPI, resendOtpAPI, verifyOtpAPI, resetPasswordAPI } from './services/authAPI';
 import { setToken, clearToken, getToken } from './utils/tokenUtils';
+import { AxiosError } from 'axios';
+import type { AuthState, LoginCredentials, RegisterData, ResendOtpData, ResetPasswordData, VerifyEmailData, VerifyOtpData } from './types';
 
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData extends LoginCredentials {
-  name: string;
-}
-
-export interface VerifyEmailData {
-  userId: number;
-  token: string;
-}
-
-export interface ResendOtpData {
-  email: string;
-}
-
-interface AuthState {
-  user: User | null;
-  token: string | null;
-  loading: boolean;
-  error: string | null;
-  isAuthenticated: boolean;
-  forgotPasswordSuccess: boolean;
-  registrationData: {
-    userId: number | null;
-    verificationToken: string | null;
-    email: string | null;
-  };
-  emailVerified: boolean;
-}
 
 const initialState: AuthState = {
   user: null,
@@ -54,6 +18,16 @@ const initialState: AuthState = {
     email: null,
   },
   emailVerified: false,
+};    
+
+export const handleThunkError = (error: unknown, errorMessage: string) => {
+  let message = errorMessage;
+  if (error instanceof AxiosError) {
+    message = error.response?.data?.message || error.message || errorMessage;
+  } else if (error instanceof Error) {
+    message = error.message;
+  }
+  return message;
 };
 
 export const loginUser = createAsyncThunk(
@@ -61,11 +35,12 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginCredentials, thunkAPI) => {
     try {
       const response = await loginAPI(credentials);
-      setToken(response.data.tokens.accessToken); // Update this line
+      setToken(response.data.tokens.accessToken);
       return response;
-    } catch (error: any) {
-      const message = error.response?.data?.message || error.message || 'An error occurred during login';
-      return thunkAPI.rejectWithValue(message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred during login')
+      );
     }
   }
 );
@@ -76,9 +51,10 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await registerAPI(data);
       return response;
-    } catch (error: any) {
-      const message = error.response?.data?.message || error.message || 'An error occurred during registration';
-      return thunkAPI.rejectWithValue(message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred during registration')
+      );
     }
   }
 );
@@ -89,9 +65,10 @@ export const verifyEmail = createAsyncThunk(
     try {
       const response = await verifyEmailAPI(data);
       return response;
-    } catch (error: any) {
-      const message = error.response?.data?.message || error.message || 'An error occurred during email verification';
-      return thunkAPI.rejectWithValue(message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred during email verification')
+      );
     }
   }
 );
@@ -102,9 +79,10 @@ export const resendOtp = createAsyncThunk(
     try {
       const response = await resendOtpAPI(data);
       return response;
-    } catch (error: any) {
-      const message = error.response?.data?.message || error.message || 'An error occurred while resending OTP';
-      return thunkAPI.rejectWithValue(message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred while resending OTP')
+      );
     }
   }
 );
@@ -115,12 +93,42 @@ export const forgotPassword = createAsyncThunk(
     try {
       const response = await forgotPasswordAPI(email);
       return response;
-    } catch (error: any) {
-      const message = error.response?.data?.message || error.message || 'An error occurred during password reset request';
-      return thunkAPI.rejectWithValue(message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred during password reset request')
+      );
     }
   }
 );
+
+export const verifyOtp = createAsyncThunk(
+  'auth/verifyOtp',
+  async (data: VerifyOtpData, thunkAPI) => {
+    try {
+      const response = await verifyOtpAPI(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred during OTP verification')
+      );
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async (data: ResetPasswordData, thunkAPI) => {
+    try {
+      const response = await resetPasswordAPI(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred during password reset')
+      );
+    }
+  }
+);
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -143,7 +151,11 @@ const authSlice = createSlice({
       state.error = null;
       state.forgotPasswordSuccess = false;
       state.emailVerified = false;
+      state.otpVerified = false;
+      state.resetToken = null;
+      state.passwordResetSuccess = false;
     },
+    
     clearRegistrationData(state) {
       state.registrationData = {
         userId: null,
@@ -159,7 +171,11 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload.data.user; // Changed from action.payload.user
+        state.user = {
+          id: parseInt(action.payload.data.user._id, 10),
+          name: action.payload.data.user.name,
+          email: action.payload.data.user.email,
+        }; 
         state.token = action.payload.data.tokens.accessToken; // Changed from action.payload.token
         state.loading = false;
         state.isAuthenticated = true;
@@ -178,7 +194,7 @@ const authSlice = createSlice({
         state.error = null;
         // Update to match your API response structure
         state.registrationData = {
-          userId: action.payload.data.userId, // Changed from action.payload.userId
+          userId: action.payload.data.userId, 
           verificationToken: null, // Your API doesn't return this
           email: action.payload.email, // This should come from the original request
         };
@@ -191,7 +207,7 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(verifyEmail.fulfilled, (state, action) => {
+      .addCase(verifyEmail.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
         state.emailVerified = true;
@@ -232,6 +248,38 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
         state.forgotPasswordSuccess = false;
+      })
+      .addCase(verifyOtp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyOtp.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.otpVerified = true;
+        state.resetToken = action.payload.data.resetToken;
+      })
+      .addCase(verifyOtp.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.otpVerified = false;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+        state.passwordResetSuccess = true;
+        state.otpVerified = false;
+        state.resetToken = null;
+        state.forgotPasswordSuccess = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.passwordResetSuccess = false;
       });
       
   },

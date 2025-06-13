@@ -124,7 +124,6 @@ const VerifyEmail: React.FC = () => {
       
       // Success is handled by useEffect hook
     } catch (error: any) {
-      console.error('Email verification failed:', error);
       setError(error || 'The OTP you entered is invalid or has expired');
     } finally {
       setIsVerifying(false);
@@ -169,7 +168,6 @@ const VerifyEmail: React.FC = () => {
       }, 3000);
       
     } catch (error: any) {
-      console.error('Resend OTP failed:', error);
       setError(error || 'Failed to send OTP. Please try again later');
       setResendDisabled(false);
     } finally {

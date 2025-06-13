@@ -26,7 +26,7 @@ const Login: React.FC = () => {
 
   // Clear auth state on component mount
   useEffect(() => {
-    // clearAuthState();
+    clearAuthState();
   }, [clearAuthState]);
 
   const onSubmit = async (data: LoginFormData) => {
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       navigate('/');
       reset();
     } catch {
-      // Error is handled by useAuth hook
+      // Handle login failure silently or show an error message
     }
   };
 

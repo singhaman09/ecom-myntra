@@ -7,10 +7,19 @@ import {
   forgotPassword, 
   verifyEmail, 
   resendOtp,
+  verifyOtp,
+  resetPassword,
   clearAuthState,
   clearRegistrationData
 } from '../authSlice';
-import type { LoginCredentials, RegisterData, VerifyEmailData, ResendOtpData } from '../authSlice';
+import type { 
+  LoginCredentials, 
+  RegisterData, 
+  VerifyEmailData, 
+  ResendOtpData,
+  VerifyOtpData,
+  ResetPasswordData
+} from '../types/index';
 import { useCallback } from 'react';
 
 export const useAuth = () => {
@@ -57,6 +66,22 @@ export const useAuth = () => {
     [dispatch]
   );
 
+  const verifyOtpRequest = useCallback(
+    async (data: VerifyOtpData) => {
+      const result = await dispatch(verifyOtp(data)).unwrap();
+      return result;
+    },
+    [dispatch]
+  );
+  
+  const resetPasswordRequest = useCallback(
+    async (data: ResetPasswordData) => {
+      const result = await dispatch(resetPassword(data)).unwrap();
+      return result;
+    },
+    [dispatch]
+  );
+
   const signOut = useCallback(() => {
     dispatch(logout());
   }, [dispatch]);
@@ -76,8 +101,11 @@ export const useAuth = () => {
     verifyEmail: verifyUserEmail,
     resendOtp: resendVerificationOtp,
     forgotPassword: forgotPasswordRequest,
+    verifyOtp: verifyOtpRequest,
+    resetPassword: resetPasswordRequest,
     signOut,
     clearError,
+    clearAuthState: clearError,
     clearRegistrationData: clearRegData,
   };
 };

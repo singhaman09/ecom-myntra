@@ -15,6 +15,7 @@ const ForgotPassword: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    getValues,
   } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -30,12 +31,15 @@ const ForgotPassword: React.FC = () => {
   // Redirect to login after successful password reset request
   useEffect(() => {
     if (forgotPasswordSuccess) {
-      const timer = setTimeout(() => {
-        navigate('/login');
-      }, 5000);
-      return () => clearTimeout(timer);
+      const email = getValues('email');
+      if (email) {
+        const timer = setTimeout(() => {
+          navigate('/forgot-password/verify-otp', { state: { email } });
+        }, 2000);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [forgotPasswordSuccess, navigate]);
+  }, [forgotPasswordSuccess, navigate, getValues]);
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
@@ -93,7 +97,7 @@ const ForgotPassword: React.FC = () => {
                   </svg>
                   Password reset instructions have been sent to your email.
                 </div>
-                <p className={styles.redirectMessage}>Redirecting to login page in 5 seconds...</p>
+                <p className={styles.redirectMessage}>Redirecting to OTP verification in 2 seconds...</p>
               </div>
             )}
 
@@ -103,7 +107,7 @@ const ForgotPassword: React.FC = () => {
               disabled={loading || isSubmitting || forgotPasswordSuccess}
               className={styles.submitButton}
             >
-              {loading || isSubmitting ? 'Sending...' : 'Send reset instructions'}
+              {loading || isSubmitting ? 'Sending...' : 'Send OTP'}
             </button>
 
             {/* Back to Login Link */}
