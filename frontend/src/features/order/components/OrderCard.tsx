@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Order } from '../types/orders';
 import StarRating from '../../../components/UI/StarRating';
 import { getStatusColor, getStatusText } from '../utils/helpers';
-import styles from '../../styles/components/orderCard.module.css';
+import styles from '../css/orderCard.module.css';
 
 interface OrderCardProps {
   order: Order;
   onRatingSubmit: (orderId: string, rating: number) => Promise<boolean>;
-  onViewDetails?: (orderId: string) => void;
   onWriteReview?: (orderId: string) => void;
   onExchangeReturn?: (orderId: string, itemId: string) => void;
   onBuyAgain?: (orderId: string, itemId: string) => void;
@@ -16,11 +16,11 @@ interface OrderCardProps {
 const OrderCard: React.FC<OrderCardProps> = ({ 
   order, 
   onRatingSubmit,
-  onViewDetails,
   onWriteReview,
   onExchangeReturn,
   onBuyAgain
 }) => {
+  const navigate = useNavigate();
   const [isSubmittingRating, setIsSubmittingRating] = useState(false);
   const [expandedItems, setExpandedItems] = useState(false);
 
@@ -31,11 +31,10 @@ const OrderCard: React.FC<OrderCardProps> = ({
     try {
       const success = await onRatingSubmit(order.id, rating);
       if (!success) {
-        // Handle error case if needed
-        console.error('Failed to submit rating');
+        //error handling if needed
       }
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      //error handling if needed
     } finally {
       setIsSubmittingRating(false);
     }
@@ -70,7 +69,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
   };
 
   const handleViewDetails = () => {
-    onViewDetails?.(order.id);
+    navigate(`/orders/${order.id}`);
   };
 
   const handleWriteReview = () => {
@@ -117,7 +116,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
           onClick={handleViewDetails}
           aria-label="View order details"
         >
-          ›
+          View Details
         </button>
       </div>
       

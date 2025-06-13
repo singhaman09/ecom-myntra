@@ -1,4 +1,3 @@
-// components/Orders/OrderList.tsx
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { 
@@ -10,7 +9,7 @@ import {
 } from '../slice/orderSlice';
 import type { Order, OrderStatus } from '../types/orders';
 import Button from '../../../components/UI/Button';
-import styles from '../../../components/shared/css/orderList.module.css';
+import styles from '../css/orderList.module.css';
 
 interface OrderListProps {
   orders: Order[];
