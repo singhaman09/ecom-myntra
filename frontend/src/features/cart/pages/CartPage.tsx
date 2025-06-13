@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaTag } from "react-icons/fa";
 import CartHeader from "../components/CartHeader";
 import CartList from "../components/CartList";
+import { STATIC_COUPONS, STATIC_OFFERS } from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
 import AddressSection from "../components/AddressSection";
 import OffersSection from "../components/OffersSection";
@@ -14,74 +16,79 @@ import EmptyCart from "./EmptyCart";
 import styles from "../components/styles/CartPage.module.css";
 import type { Address, Coupon } from "../types/cart";
 import {
-  STATIC_COUPONS,
-  STATIC_OFFERS,
-  STATIC_CART_ITEMS,
-  STATIC_ADDRESSES,
-} from "../staticData/StaticData";
+  fetchCart,
+  updateItemQuantity,
+  deleteCartItem,
+  deleteSelectedItems,
+  moveToWishlist,
+} from "../redux/cartSlice";
+import type { RootState, AppDispatch } from "../../../store/store";
 
 const CartPage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { search } = useLocation();
+
   const query = new URLSearchParams(search);
   const modal = query.get("modal");
 
-  const [items, setItems] = useState(STATIC_CART_ITEMS);
+  const {
+    cart: items,
+    loading,
+    error,
+  } = useSelector((state: RootState) => state.cart);
+
   const [offers, setOffers] = useState<string[]>([]);
-  const [addresses, setAddresses] = useState(STATIC_ADDRESSES);
-  const [selectedAddress, setSelectedAddress] = useState<Address | null>(
-    STATIC_ADDRESSES[0]
-  );
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const appliedCouponDiscount = 10;
   const [availableCoupons, setAvailableCoupons] = useState<Coupon[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
     null
   );
   const [showMoreOffers, setShowMoreOffers] = useState(false);
-  const [appliedCouponDiscount, setAppliedCouponDiscount] = useState(0);
 
   const cartListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
 
   useEffect(() => {
     const validCoupons = STATIC_COUPONS.filter(
       (coupon) => new Date(coupon.expires) > new Date()
     );
     setAvailableCoupons(validCoupons);
+  }, []);
+
+  useEffect(() => {
     setOffers(STATIC_OFFERS);
   }, []);
 
   const handleQtyChange = (id: string, quantity: number) => {
-    setItems((prev) =>
-      prev.map((item) => (item.productId === id ? { ...item, quantity } : item))
-    );
+    dispatch(updateItemQuantity({ id, quantity }));
   };
 
   const handleRemove = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.productId !== id));
+    dispatch(deleteCartItem(id));
   };
 
   const handleRemoveSelected = () => {
-    setItems((prev) =>
-      prev.filter((item) => !selectedItems.includes(item.productId))
-    );
+    dispatch(deleteSelectedItems(selectedItems));
     setSelectedItems([]);
     navigate("/cart");
   };
 
-  const handleMoveToWishlist = () => {
-    alert("Moved selected items to wishlist (simulated)");
-    setItems((prev) =>
-      prev.filter((item) => !selectedItems.includes(item.productId))
-    );
+  const handleMoveToWishlist = async () => {
+    await Promise.all(selectedItems.map((id) => dispatch(moveToWishlist(id))));
     setSelectedItems([]);
+    navigate("/cart");
     setModalAction(null);
-    navigate("/cart");
   };
 
-  const handleApplyCoupon = (coupon: Coupon) => {
-    setAppliedCouponDiscount(coupon.discount);
-    alert(`Coupon "${coupon.code}" applied! ₹${coupon.discount} off 🎉`);
-    navigate("/cart");
+  const handleApplyCoupon = async (coupon: Coupon) => {
+    alert(`Coupon ${coupon.code} applied!`);
   };
 
   const handleSaveAddress = (address: Address, updatedAddresses: Address[]) => {
@@ -108,13 +115,12 @@ const CartPage: React.FC = () => {
   );
   const finalPrice = totalPrice - appliedCouponDiscount;
 
-  const handleCheckout =  () => {
-    navigate("/checkout/address");
-  }
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
 
   return (
     <>
-      <CartHeader activeStep="BAG" />
+      <CartHeader activeStep = "BAG" />
       {items.length > 0 ? (
         <div className={styles.cartPage}>
           <div className={styles.mainContent}>
@@ -155,23 +161,28 @@ const CartPage: React.FC = () => {
                   <span className={styles.couponsTitle}>COUPONS</span>
                 </div>
                 <div className={styles.applyCoupons}>
-                  <FaTag className={styles.tagIcon} /> 
+                  <FaTag className={styles.tagIcon} />
                   <span className={styles.applyCouponsText}>
                     Apply Coupons{" "}
+                    {/* {appliedCouponDiscount > 0 && (
+                      <span className={styles.savingsText}>
+                        (₹{appliedCouponDiscount} off)
+                      </span> */}
+                    {/* )} */}
                   </span>
                   <button
                     className={styles.applyButton}
                     onClick={() => navigate("/cart?modal=coupon")}
                   >
-                    APPLY 
-                  </button> 
+                    APPLY
+                  </button>
                 </div>
               </div>
               <CartSummary
                 totalItems={items.length}
                 totalPrice={finalPrice}
                 totalMRP={totalMRP}
-                onCheckout={handleCheckout}
+                onCheckout={() => alert("Proceeding to checkout...")}
               />
             </div>
           </div>
@@ -215,3 +226,4 @@ const CartPage: React.FC = () => {
 };
 
 export default CartPage;
+

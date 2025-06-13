@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Cart } from "../types/cart";
 
-const baseURL = "http://172.50.0.217:3002/";
+const baseURL = "http://172.50.0.217:3002/api/v1/";
 
 const apiClient = axios.create({
   baseURL,
@@ -12,9 +12,8 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = {
-    /* Token */
-  };
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGIyNGFmMjU2ODVmODVkMWQ0ZjJmNCIsImVtYWlsIjoic2hyaXZhc3RhdmthcnRpa2V5QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI1OTE2YzFlYS03ODA1LTQwNjgtYTllOC01MjMzZjdhOWUzNzciLCJpYXQiOjE3NDk4MDIxMTcsImV4cCI6MTc0OTg4ODUxN30.foyAr8PYL2uJCSeZELBn10jjzEmSVk-u-RBw6DHRb38";
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

@@ -1,0 +1,44 @@
+.container {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    color: #1e293b;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .message {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #64748b;
+  }
+  
+  .button {
+    background: #2563eb;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .button:hover {
+    background: #1d4ed8;
+  }
+  

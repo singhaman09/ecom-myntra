@@ -2,13 +2,14 @@
 import React, { useState, } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
-import styles from './css/Header.module.css';
+import styles from './css/header.module.css';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const navigate = useNavigate();
 
+  const [value,setValue]=useState('')
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     setIsMobileSearchOpen(false);
@@ -24,6 +25,11 @@ const Header: React.FC = () => {
     navigate('/cart');
   };  
 
+const handleSubmit=(e:any)=>{
+    e.preventDefault()
+    navigate(`/${value}`)
+    setValue('')
+}
   return (
     <header className={styles.header}>
       {/* Top banner */}
@@ -81,11 +87,15 @@ const Header: React.FC = () => {
           <div className={styles.searchContainer}>
             <div className={styles.searchWrapper}>
               <Search className={styles.searchIcon} />
-              <input
+            <form onSubmit={handleSubmit}>
+            <input
                 type="text"
                 placeholder="Search for products, brands and more"
                 className={styles.searchInput}
+                onChange={(e)=>setValue(e.target.value)}
+                value={value}
               />
+            </form>
             </div>
           </div>
 
@@ -103,14 +113,16 @@ const Header: React.FC = () => {
               <User className={styles.userActionIcon} />
               <span className={styles.userActionText}>Profile</span>
             </div>
-            <div className={styles.userAction}>
+            <div className={`${styles.userAction} ${styles.bagAction}`} >
               <Heart className={styles.userActionIcon} />
               <span className={styles.userActionText}>Wishlist</span>
+              <span className={styles.bagBadge}>3</span>
             </div>
             <div className={`${styles.userAction} ${styles.bagAction}`} onClick={handleBagClick}>
               <ShoppingBag className={styles.userActionIcon} />
               <span className={styles.userActionText}>Bag</span>
               <span className={styles.bagBadge}>0 </span>
+              <span className={styles.bagBadge}>0</span>
             </div>
           </div>
         </div>
@@ -119,11 +131,15 @@ const Header: React.FC = () => {
         <div className={`${styles.mobileSearch} ${isMobileSearchOpen ? styles.active : ''}`}>
           <div className={styles.mobileSearchWrapper}>
             <Search className={styles.searchIcon} />
-            <input
+           <form onSubmit={handleSubmit}>
+           <input
               type="text"
               placeholder="Search for products, brands and more"
               className={styles.searchInput}
+              onChange={(e)=>setValue(e.target.value)}
+              value={value}
             />
+           </form>
           </div>
         </div>
 
