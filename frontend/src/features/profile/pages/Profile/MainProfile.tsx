@@ -47,7 +47,7 @@ const MainProfile: React.FC = () => {
     return user ? <Profile user={user} onUpdateProfile={handleUpdateProfile} /> : null;
 
   };
-
+  console.log(user);
   if (!user) return null;
 
   return (

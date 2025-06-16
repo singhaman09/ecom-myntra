@@ -7,7 +7,7 @@ import Login from "../features/auth/pages/Login";
 
 import Register from "../features/auth/pages/Register";
 import ForgotPassword from "../features/auth/pages/ForgotPassword";
-import Profile from "../features/profile/pages/Profile";
+import Profile from "../features/profile/pages/Profile/MainProfile";
 import ProductPage from "../features/product/pages/ProductPage";
 import ProductDetails from "../features/product/pages/ProductDetail";
 import WishlistPage from "../features/wishlist/pages/WishlistPage";
@@ -33,12 +33,12 @@ const AppRoutes: React.FC = () => {
           element: <Home />,
         },
         {
-          path: ":slug",
-          element: <ProductPage />,
-        },
-        {
           path: ":slug/:id",
           element: <ProductDetails />,
+        },
+        {
+          path: ":slug",
+          element: <ProductPage />,
         },
         {
           element: <AuthRoute />,
