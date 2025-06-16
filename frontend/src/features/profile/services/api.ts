@@ -11,7 +11,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
 //   const token = localStorage.getItem('authToken');
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NDE2ZDllZGE5MDkyZDc1YjBkODg2MCIsImVtYWlsIjoiaGltYW5zaHUuc2luZ2gyQGFwcGludmVudGl2LmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI4NjgxNTYzYy1mNGI2LTRjM2YtODA3Zi1iYWI4NTgwMmE4OTciLCJpYXQiOjE3NDk2NDQ4MDYsImV4cCI6MTc0OTczMTIwNn0.qTe2xwTJqqBegJ9yoQTSCzy3DpffJBpahsQzMXw_r0o';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NDE2ZDllZGE5MDkyZDc1YjBkODg2MCIsImVtYWlsIjoiaGltYW5zaHUuc2luZ2gyQGFwcGludmVudGl2LmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI5NzgwZTVmZS03Zjg3LTQyNGQtYjIyNi0wMWM5NTMzMzkzZWMiLCJpYXQiOjE3NDk4MjE1ODUsImV4cCI6MTc0OTkwNzk4NX0.ARz2atccDepg5vvD85JDaukTfNQrAcFNn8g6mxA8Sds';
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

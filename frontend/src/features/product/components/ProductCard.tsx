@@ -3,7 +3,7 @@ import styles from '../styles/ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import type { ProductCardProps } from '../interfaces/ProductInterfaces';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { renderStars } from '../utils/RenderStars';
 import { averageRating } from '../utils/Reviews';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
@@ -11,7 +11,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
   return (
-    <div className={styles.card} onClick={()=>navigate(`/${product.name}/${product._id}`)}>
+    <div className={styles.card} onClick={()=>navigate(`/productDetails/${product._id}`)}>
       {/* Image Container */}
       <div className={styles.imageContainer}>
         <img 
@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           <div className={styles.stars}>
             {renderStars(avgRating)}
           </div>
-          <span className={styles.ratingCount}>({avgRating>0 ?averageRating(product.reviews).toFixed(1) :averageRating(product.reviews)})</span>
+          <span className={styles.ratingCount}>({avgRating>0 ?avgRating.toFixed(1) :0})</span>
         </div>
         
         {/* Pricing */}

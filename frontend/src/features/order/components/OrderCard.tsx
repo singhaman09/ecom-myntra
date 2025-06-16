@@ -69,7 +69,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
   };
 
   const handleViewDetails = () => {
-    navigate(`/orders/${order.id}`);
+    navigate(`/orders/order123`);
   };
 
   const handleWriteReview = () => {
@@ -80,11 +80,12 @@ const OrderCard: React.FC<OrderCardProps> = ({
   const hasMoreItems = order.items.length > 2;
 
   return (
-    <div className={styles.orderCard}>
-      <div className={styles.orderHeader}>
+    <div className={styles.orderCard} >
+      <div className={styles.orderHeader} >
         <div 
           className={styles.statusIndicator}
           style={{ backgroundColor: getStatusColor(order.status) }}
+          onClick={() => navigate(`/orders/${order.id}`)}
         >
           {getStatusIcon(order.status)}
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Styles/CartActions.module.css";
+import styles from "./styles/CartActions.module.css";
 
 interface CartActionsProps {
   items: { productId: string }[];

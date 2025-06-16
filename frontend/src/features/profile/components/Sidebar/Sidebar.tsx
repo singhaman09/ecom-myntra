@@ -85,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, user }) => {
   const renderMenuItem = (item: SidebarItem) => (
     <div
       key={item.id}
-      className={`${styles.menuItem} ${activeItem === item.id ? styles.active : ''}`}
+      className={`${styles.menuItem} ${activeItem === (item.id=='profile'?'/profile':'/profile/'+item.id)   ? styles.active : ''}`}
       onClick={() => onItemClick(item.id)}
     >
       {item.icon && getIcon(item.icon)}

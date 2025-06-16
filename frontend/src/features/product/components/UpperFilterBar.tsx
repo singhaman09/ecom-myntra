@@ -2,7 +2,7 @@ import React, { type ChangeEvent, useCallback } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import type { UpperFilterProps } from '../interfaces/ProductInterfaces';
 import styles from '../styles/UpperFilterBar.module.css';
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 const sortOptions = [
   { value: 'price_asc', label: 'Price: Low to High' },

@@ -2,21 +2,21 @@ import { useState } from 'react';
 import { Check, Save } from 'lucide-react';
 import styles from './Profile.module.css';
 import type { User } from '../../types/profile.types';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../store/store';
 
-interface ProfileProps {
-  user: User;
-  onUpdateProfile: () => void;
-}
 
-const Profile: React.FC<ProfileProps> = ({ user, onUpdateProfile }) => {
+
+const Profile: React.FC = ({ }) => {
+  const data=useSelector((state:RootState)=>state.user)
+  const user=data.user || {id:'',firstName:'',lastName:'',email:'',phone:'',gender:'other',dateOfBirth:'',avatar:''}
   const [formData, setFormData] = useState<User>(user);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [fullNameInput, setFullNameInput] = useState(
-    `${user.firstName} ${user.lastName}`.trim()
-  );
+  const [fullNameInput,setFullNameInput]=useState('')
+  const onUpdateProfile=()=>{
 
-  if (!user) return null;
+  }
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>

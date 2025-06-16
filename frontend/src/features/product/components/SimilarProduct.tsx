@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/SimilarProduct.module.css';
 import { useProductSelector } from '../hooks/storeHooks';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 // Lazy load components
 const ProductList = React.lazy(() => import('./ProductList'));
@@ -20,19 +20,19 @@ const SimilarProduct: React.FC = () => {
       label: product?.subCategory
         ? `Show More About ${product.subCategory}`
         : null,
-      path: product?.subCategory ? `/${product.subCategory}` : null,
+      path: product?.subCategory ? `/products/${product.subCategory}` : null,
     },
     {
       label: product?.name
         ? `Show More About ${product.name}`
         : null,
-      path: product?.name ? `/${product.name}` : null,
+      path: product?.name ? `/products/${product.name}` : null,
     },
     {
       label: product?.brand
         ? `Show More About ${product.brand}`
         : null,
-      path: product?.brand ? `/${product.brand}` : null,
+      path: product?.brand ? `/products/${product.brand}` : null,
     },
   ].filter(btn => btn.label && btn.path);
 
