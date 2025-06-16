@@ -2,7 +2,7 @@
 import React, { useState, } from 'react';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import styles from './css/Header.module.css';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Header: React.FC = () => {
@@ -27,7 +27,7 @@ const Header: React.FC = () => {
 
 const handleSubmit=(e:any)=>{
     e.preventDefault()
-    navigate(`/${value}`)
+    navigate(`/products/${value}`)
     setValue('')
 }
   return (
@@ -52,7 +52,7 @@ const handleSubmit=(e:any)=>{
             </button>
 
             {/* Logo */}
-            <div className={styles.logo}>
+            <div className={styles.logo} onClick={()=>navigate('/')}>
               <div className={styles.logoText}>
                 Wyntra
               </div>
@@ -62,25 +62,21 @@ const handleSubmit=(e:any)=>{
           {/* Desktop Navigation Menu */}
           <nav className={styles.nav}>
             <div className={styles.navGroup}>
-              <a href="#" className={styles.navLink}>
+              <Link to='/products/men' className={styles.navLink}>
                 Men
-              </a>
+              </Link>
             </div>
             <div className={styles.navGroup}>
-              <a href="#" className={styles.navLink}>
+              <Link to="/products/women" className={styles.navLink}>
                 Women
-              </a>
+              </Link>
             </div>
             <div className={styles.navGroup}>
-              <a href="#" className={styles.navLink}>
+              <a href="/products/kids" className={styles.navLink}>
                 Kids
               </a>
             </div>
-            <div className={styles.navGroup}>
-              <a href="#" className={styles.navLink}>
-                Home & Living
-              </a>
-            </div>
+           
           </nav>
 
           {/* Desktop Search Bar */}
@@ -109,11 +105,11 @@ const handleSubmit=(e:any)=>{
 
           {/* User Actions */}
           <div className={styles.userActions}>
-            <div className={styles.userAction}>
+            <div className={styles.userAction} onClick={()=>navigate('/profile')}>
               <User className={styles.userActionIcon} />
               <span className={styles.userActionText}>Profile</span>
             </div>
-            <div className={`${styles.userAction} ${styles.bagAction}`} >
+            <div className={`${styles.userAction} ${styles.bagAction}`}onClick={()=>navigate('/wishlist')} >
               <Heart className={styles.userActionIcon} />
               <span className={styles.userActionText}>Wishlist</span>
               <span className={styles.bagBadge}>3</span>
@@ -146,12 +142,10 @@ const handleSubmit=(e:any)=>{
         {/* Mobile Navigation */}
         <div className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.active : ''}`}>
           <div className={styles.mobileNavLinks}>
-            <a href="#" className={styles.mobileNavLink}>Men</a>
-            <a href="#" className={styles.mobileNavLink}>Women</a>
-            <a href="#" className={styles.mobileNavLink}>Kids</a>
-            <a href="#" className={styles.mobileNavLink}>Home & Living</a>
-            <a href="#" className={styles.mobileNavLink}>Beauty</a>
-            <a href="#" className={styles.mobileNavLink}>Studio</a>
+            <Link to="/products/men" className={styles.mobileNavLink}>Men</Link>
+            <Link to="/products/women" className={styles.mobileNavLink}>Women</Link>
+            <Link to="/products/kids" className={styles.mobileNavLink}>Kids</Link>
+           
           </div>
         </div>
       </div>

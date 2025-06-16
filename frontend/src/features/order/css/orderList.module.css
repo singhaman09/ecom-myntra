@@ -63,11 +63,6 @@
   box-shadow: 0 2px 8px rgba(255, 63, 108, 0.1);
 }
 
-.ordersGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
-}
 
 .orderCard {
   background: #fff;

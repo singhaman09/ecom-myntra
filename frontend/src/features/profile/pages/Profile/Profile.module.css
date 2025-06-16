@@ -3,6 +3,7 @@
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-xl);
   box-shadow: var(--shadow-sm);
+ 
 }
 
 .profileForm {
@@ -13,6 +14,7 @@
 
 .formGroup {
   margin-bottom: var(--spacing-md);
+  margin-left: 30px;
 }
 
 .formGroup.fullWidth {

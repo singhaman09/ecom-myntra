@@ -18,7 +18,7 @@ export const getProducts = createAsyncThunk<
   { rejectValue: string }                       // Rejection type
 >(
   'products/getProducts',
-  async ({ searchParams, slug }, thunkAPI) => {
+  async ({ searchParams, slug='all'}, thunkAPI) => {
     try {
       const selectedCategories=searchParams.getAll("category")
       const selectedSubCategories=searchParams.getAll("subCategory")

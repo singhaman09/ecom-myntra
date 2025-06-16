@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Header from '../../../components/shared/Header';
 import Sidebar from './Sidebar';
 import styles from '../css/layout.module.css';
-import Footer from '../../../components/shared/Footer';
 interface LayoutProps {
   children: React.ReactNode;
   searchTerm?: string;
@@ -27,18 +25,12 @@ const Layout: React.FC<LayoutProps> = ({ children, searchTerm, onSearchChange })
 
   return (
     <div className={styles.layout}>
-      <Header
-        searchTerm={searchTerm || ''}
-        onSearchChange={onSearchChange}
-        onMenuToggle={showSidebar ? toggleSidebar : undefined}
-      />
       <div className={styles.main}>
         {showSidebar && <Sidebar isVisible={sidebarVisible} onClose={closeSidebar} />}
         <main className={styles.content}>
           {children}
         </main>
       </div>
-      <Footer />
     </div>
   );
 };

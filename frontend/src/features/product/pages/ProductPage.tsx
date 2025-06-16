@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import styles from '../styles/ProductPage.module.css';
-import { useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { getProducts } from '../productAPI';
 import { useProductDispatch, useProductSelector } from '../hooks/storeHooks';
 import Loader from '../utils/Loader';
@@ -101,7 +101,9 @@ const ProductPage: React.FC = () => {
         
         {data.loading ? (
           <Loader />
-        ) : data.error ? (
+        ) 
+        : data.error ?
+         (
           <ErrorPage />
           ) : data.products.length > 0 ? (
           <>
