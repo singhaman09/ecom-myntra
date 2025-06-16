@@ -2,7 +2,7 @@
 import React, { useState, } from 'react';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import styles from './css/Header.module.css';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 
 const Header: React.FC = () => {

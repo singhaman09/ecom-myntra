@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../Styles/CartPage.module.css";
+import styles from "../styles/CartPage.module.css";
 
 interface RemoveModalProps {
   showRemoveModal: boolean;

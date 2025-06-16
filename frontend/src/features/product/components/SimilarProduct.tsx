@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/SimilarProduct.module.css';
 import { useProductSelector } from '../hooks/storeHooks';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 // Lazy load components
 const ProductList = React.lazy(() => import('./ProductList'));

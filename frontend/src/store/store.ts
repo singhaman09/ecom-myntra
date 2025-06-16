@@ -6,7 +6,7 @@ import authReducer from '../features/auth/authSlice';
 
 
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     orders: ordersReducer,
     wishlist: wishlistReducer,

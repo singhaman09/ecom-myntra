@@ -3,7 +3,7 @@ import styles from "../styles/ProductDetail.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { renderStars } from "../utils/RenderStars";
-import { useParams, useSearchParams } from "react-router";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useProductDispatch, useProductSelector } from "../hooks/storeHooks";
 import { getProductDetails } from "../productAPI";
 import Loader from "../utils/Loader";

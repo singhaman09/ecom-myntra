@@ -12,8 +12,6 @@ import ProductPage from "../features/product/pages/ProductPage";
 import ProductDetails from "../features/product/pages/ProductDetail";
 import WishlistPage from "../features/wishlist/pages/WishlistPage";
 import OrdersPage from "../features/order/pages/Orderpage";
-import Footer from "../components/shared/Footer";
-
 import VerifyEmail from "../features/auth/pages/VerifyEmail";
 import VerifyOtpForgotPass from "../features/auth/pages/VerifyOtpForgotPass";
 import ResetPassword from "../features/auth/pages/ResetPassword";
@@ -21,6 +19,7 @@ import CartPage from "../features/cart/pages/CartPage";
 import CheckoutAddress from "../features/cart/pages/CheckoutAddress";
 import Payment from "../features/cart/pages/Payment";
 import OrderPlaced from "../features/cart/pages/OrderPlaced";
+import OrderDetailPage from "../features/order/pages/OrderDetailPage";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -88,42 +87,34 @@ const AppRoutes: React.FC = () => {
             },
             {
               path: "orders",
-              element: (
-                <>
-                  <OrdersPage />
-                  <Footer />
-                </>
-              ),
+              element: <OrdersPage />,
             },
             {
-              path: "/cart",
-              element: (
-                  <CartPage />
-              ),
+              path: "orders/:orderId", // Corrected route
+              element: <OrderDetailPage />,
+            },
+            {
+              path: "cart",
+              element: <CartPage />,
             },
 
             {
-              path: "/checkout/address",
-              element: (
-                  <CheckoutAddress />
-              ),
+              path: "checkout/address",
+              element: <CheckoutAddress />,
             },
 
             {
-              path: "/checkout/payment",
-              element: (
-                  <Payment />
-              ),
+              path: "checkout/payment",
+              element: <Payment />,
             },
 
             {
-              path: "/ordersuccess",
-              element: (
-                  <OrderPlaced />
-              ),
+              path: "ordersuccess",
+              element: <OrderPlaced />,
             },
           ],
         },
+
         {
           path: "*",
           element: <div>404 - Page Not Found</div>,
