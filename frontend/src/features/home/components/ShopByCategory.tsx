@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './css/ShopByCategory.module.css';
+import { Link } from 'react-router-dom';
 
 interface Category {
   id: string;
@@ -20,9 +21,9 @@ const ShopByCategory = ({ categories, title }: ShopByCategoryProps) => {
         <h2 className={styles.sectionTitle}>{title}</h2>
         <div className={styles.grid}>
           {categories.map((category) => (
-            <a 
+            <Link 
               key={category.id} 
-              href={category.link} 
+               to={category.link} 
               className={styles.categoryCard}
             >
               <div className={styles.categoryImageWrapper}>
@@ -33,7 +34,7 @@ const ShopByCategory = ({ categories, title }: ShopByCategoryProps) => {
                 />
               </div>
               <h3 className={styles.categoryName}>{category.name}</h3>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

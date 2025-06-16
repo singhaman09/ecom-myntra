@@ -35,78 +35,85 @@ const Home = () => {
   const categories = [
     {
       id: '1',
-      name: 'Men',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop',
-      link: '/men'
+      name: 'Clothing',
+      image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=300&h=300&fit=crop',
+      link: '/products/clothing'
     },
     {
       id: '2',
-      name: 'Women',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616c1d41e1a?w=300&h=300&fit=crop',
-      link: '/women'
+      name: 'Footwear',
+      image: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?w=300&h=300&fit=crop',
+      link: '/products/footwear'
     },
     {
       id: '3',
-      name: 'Kids',
-      image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=300&fit=crop',
-      link: '/kids'
+      name: 'Electronics',
+      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop',
+      link: '/products/electronics'
     },
     {
       id: '4',
-      name: 'Home & Living',
-      image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop',
-      link: '/home'
+      name: 'Accessories',
+      image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop',
+      link: '/products/accessories'
     },
     {
       id: '5',
       name: 'Beauty',
       image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop',
-      link: '/beauty'
+      link: '/products/beauty'
     },
     {
       id: '6',
-      name: 'Studio',
-      image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=300&fit=crop',
-      link: '/studio'
+      name: 'Home & Living',
+      image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop',
+      link: '/products/home-living'
     }
   ];
 
+  
   const brands = [
     {
       id: '1',
-      name: 'H&M',
+      name: 'Samsung',
       logo: 'https://images.unsplash.com/photo-1523170335258-f5c6c6bd6eaf?w=100&h=100&fit=crop',
-      discount: 'Up to 50% OFF'
+      discount: 'Up to 50% OFF',
+      link: '/products/Samsung'
     },
     {
       id: '2',
       name: 'Zara',
       logo: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=100&h=100&fit=crop',
-      discount: 'Up to 40% OFF'
+      discount: 'Up to 40% OFF',
+      link: '/products/zara'
     },
     {
       id: '3',
       name: 'Nike',
       logo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&h=100&fit=crop',
-      discount: 'Up to 60% OFF'
+      discount: 'Up to 60% OFF',
+      link: '/products/nike'
     },
     {
       id: '4',
       name: 'Adidas',
       logo: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&h=100&fit=crop',
-      discount: 'Up to 45% OFF'
+      discount: 'Up to 45% OFF',
+      link: '/products/adidas'
     },
     {
       id: '5',
       name: 'Puma',
       logo: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&h=100&fit=crop',
-      discount: 'Up to 55% OFF'
+      discount: 'Up to 55% OFF',
+      link: '/products/puma'
     },
     {
       id: '6',
-      name: 'Levi\'s',
+      name: "Levi's",
       logo: 'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=100&h=100&fit=crop',
-      discount: 'Up to 35% OFF'
+      discount: 'Up to 35% OFF',
+      link: '/products/levis'
     }
   ];
 

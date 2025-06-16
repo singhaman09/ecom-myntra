@@ -101,7 +101,9 @@ const ProductPage: React.FC = () => {
         
         {data.loading ? (
           <Loader />
-        ) : data.error ? (
+        ) 
+        : data.error ?
+         (
           <ErrorPage />
           ) : data.products.length > 0 ? (
           <>

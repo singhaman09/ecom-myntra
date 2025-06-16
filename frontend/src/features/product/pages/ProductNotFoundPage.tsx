@@ -3,7 +3,6 @@ import {  useLocation, useNavigate } from 'react-router-dom';
 
 const ProductNotFoundPage:React.FC<{isSimilar:boolean}>=({isSimilar})=> {
   const navigate=useNavigate()
-  const location = useLocation();
   return (
     <div className={styles.container}>
     <div className={styles.title}>Product Not Found</div>

@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { User } from '../types/profile.types';
 
 export const getUser = async (): Promise<User> => {
-  const response = await axios.get('/api/user'); // yahan real api point aega
+  const response = await axios.get('/profile'); // yahan real api point aega
   return response.data;
 };
 

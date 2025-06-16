@@ -52,7 +52,7 @@ const handleSubmit=(e:any)=>{
             </button>
 
             {/* Logo */}
-            <div className={styles.logo}>
+            <div className={styles.logo} onClick={()=>navigate('/')}>
               <div className={styles.logoText}>
                 Wyntra
               </div>
