@@ -57,7 +57,7 @@ export const fetchWishlistItems = createAsyncThunk(
 
 export const addToWishlist = createAsyncThunk(
   "wishlist/addItem",
-  async (item: Omit<WishlistItem, "id" | "dateAdded">, { rejectWithValue }) => {
+  async (item: string, { rejectWithValue }) => {
     try {
       const newItem = await apiService.addToWishlist(item);
       return newItem;
