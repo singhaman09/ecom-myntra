@@ -2,7 +2,7 @@
   width: 100%;
   padding: 16px 24px;
   border-bottom: 1px solid #eee;
-  background-color: #fff;
+  background: #044236;
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -17,7 +17,7 @@
 .logoLink {
   font-size: 24px;
   font-weight: bold;
-  color: #ff3f6c;
+  color: #fff;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -54,13 +54,13 @@
 }
 
 .activeStep {
-  color: #ff3f6c;
+  color: #fff;
   font-weight: 700;
 }
 
 .completedStep {
   color: #4caf50;
-  background-color: #fff;
+  background: none ;
   cursor: pointer;
 }
 

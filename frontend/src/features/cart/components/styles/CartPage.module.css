@@ -126,9 +126,9 @@
 }
 
 .applyButton {
-  background-color: #fff;
-  border: 1px solid #ff3f6c;
-  color: #ff3f6c;
+  background-color: #044236;
+  border: 1px solid #044236;
+  color: #fff;
   padding: 6px 12px;
   margin-left: 150px;
   font-size: 12px;
@@ -138,7 +138,7 @@
 }
 
 .applyButton:hover {
-  background-color: #ffe6e6;
+  background-color: #24d2af;
 }
 
 /* You May Also Like */

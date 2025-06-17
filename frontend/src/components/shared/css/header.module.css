@@ -33,9 +33,9 @@
 }
 
 .container {
-  max-width: 70%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0rem;
+  padding: 0 3rem;
 }
 
 .headerContent {
@@ -49,10 +49,6 @@
 @media (max-width: 768px) {
   .headerContent {
     height: 3.5rem;
-  }
-  .container {
-    padding: 0 1rem;
-    max-width: 100%;
   }
 }
 
@@ -86,15 +82,11 @@
   display: none;
   gap: 2rem;
   margin-left: 3rem;
-  position: relative;
 }
 
 @media (min-width: 769px) {
   .nav {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    
   }
 }
 

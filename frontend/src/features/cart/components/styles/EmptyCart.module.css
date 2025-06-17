@@ -1,8 +1,8 @@
 /* src/styles/EmptyCart.module.css */
 .emptyCart {
   background-color: #fff;
-  padding: 30px 0; /* Uncommented to ensure proper spacing around the section */
-  margin-top: 130px; /* Kept as-is to account for the CartHeader above */
+  padding: 30px 0;
+  margin-top: 130px;
 }
 
 .emptyCartWrapper {
@@ -13,47 +13,45 @@
 }
 
 .emptyBagImg {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 15px; /* Uncommented and reduced from 20px to 15px for tighter spacing */
+  width: 120px;
+  height: 120px;
+  /* margin-bottom: 15px; */
 }
 
 .emptyMessage {
   font-size: 14px;
   font-weight: bold;
-  text-transform: uppercase; /* Uncommented to match the screenshot's uppercase style */
+  text-transform: uppercase;
   color: #333;
-  margin-bottom: 8px; /* Uncommented and reduced from 20px to 8px to decrease the gap */
+  margin-bottom: 8px;
 }
 
 .emptyDescription {
   font-size: 12px;
-  color: #666; /* Slightly lighter color for secondary text */
-  margin-bottom: 15px; /* Space between description and button */
+  color: #666;
+  margin-bottom: 15px;
 }
 
 .wishlistBtn {
-  background-color: #fff;
-  color: #FF3F6C;
-  border: 1px solid #FF3F6C ;
-  padding: 10px 20px; /* Uncommented to ensure proper button size */
+  background: #044236;
+  color: #fff;
+  padding: 10px 20px;
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  border-radius: 2px;
 }
 
 .wishlistBtn:hover {
-  background-color: #e0e0e0;
+  background: #076b57;
 }
 
 /* Responsive Styles (for larger screens) */
 @media (min-width: 768px) {
   .emptyBagImg {
-    width: 120px; /* Slightly larger image on bigger screens */
-    height: 120px;
+    width: 190px;
+    height: 200px;
   }
 
   .emptyMessage {

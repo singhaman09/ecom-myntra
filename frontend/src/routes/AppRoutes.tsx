@@ -26,6 +26,7 @@ import TermsOfUse from "../features/profile/pages/Legal/TermsOfUse";
 import PrivacyPolicy from "../features/profile/pages/Legal/PrivacyPolicy";
 import Profile from "../features/profile/pages/Profile/Profile";
 import Notifications from "../features/profile/pages/Notifications/Notifications";
+import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -155,6 +156,44 @@ const AppRoutes: React.FC = () => {
         {
           path: "*",
           element: <div>404 - Page Not Found</div>,
+        },
+      ],
+    },
+    {
+      element: <AuthRoute />,
+      children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "signup",
+          element: <Register />,
+        },
+        {
+          path: "reg-success",
+          element: <CongratulationsPage />
+        },
+        {
+          path: "verify-email",
+          element: <VerifyEmail />,
+        },
+        {
+          path: "forgot-password",
+          children: [
+            {
+              path: "",
+              element: <ForgotPassword />,
+            },
+            {
+              path: "verify-otp",
+              element: <VerifyOtpForgotPass />,
+            },
+            {
+              path: "reset-password",
+              element: <ResetPassword />,
+            },
+          ],
         },
       ],
     },

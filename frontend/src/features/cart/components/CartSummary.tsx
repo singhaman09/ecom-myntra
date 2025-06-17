@@ -1,20 +1,25 @@
 // src/components/CartSummary.tsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './styles/CartSummary.module.css';
 
 interface CartSummaryProps {
   totalItems: number;
   totalPrice: number;
   totalMRP: number;
-  onCheckout: () => void;
 }
 
-const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, totalMRP, onCheckout }) => {
+const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, totalMRP }) => {
   if (totalItems === 0) return null;
 
-  const platformFee = 20; // Define the platform fee as a constant
+  const platformFee = 20; 
   const discount = totalMRP - totalPrice;
-  const finalTotal = totalPrice + platformFee; // Calculate total explicitly
+  const finalTotal = totalPrice + platformFee;
+  const navigate = useNavigate();
+
+  const handlePlaceOrder = () => {
+    navigate("/checkout/address");  
+  }
 
   return (
     <div className={styles.cartSummary}>
@@ -53,8 +58,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, total
       </div>
       <button
         className={styles.checkoutButton}
-        onClick={onCheckout}
-        aria-label="Proceed to checkout"
+        onClick={handlePlaceOrder}
       >
         Place Order
       </button>
