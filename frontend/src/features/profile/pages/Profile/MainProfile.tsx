@@ -9,7 +9,7 @@ const MainProfile: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
    const navigate=useNavigate()
   const userState = useSelector((state: RootState) => state.user);
-  const { user, loading: userLoading, error: userError } = userState;
+  const { user } = userState;
   const location=useLocation()
   const [activeItem, setActiveItem] = useState(location.pathname);
   const [breadCrumbs,setBreadCrumbs]=useState('profile')
