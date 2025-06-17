@@ -58,18 +58,18 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           <div className={styles.stars}>
             {renderStars(avgRating)}
           </div>
-          <span className={styles.ratingCount}>({avgRating>0 ?avgRating.toFixed(1) :0})</span>
+          <span className={styles.ratingCount}>({product.reviews.length})</span>
         </div>
         
         {/* Pricing */}
         <div className={styles.pricing}>
           <span className={styles.discountedPrice}>
-            ₹{product.price}
+            ₹{Math.round(product.price)}
           </span>
           {product.price > ((product.price * discountPercentage)/100) && (
             <>
               <span className={styles.originalPrice}>
-                ₹{product.price+((product.price * discountPercentage)/100)}
+                ₹{Math.round(product.price+((product.price * discountPercentage)/100))}
               </span>
               <span className={styles.discountPercent}>
                 ({discountPercentage}% OFF)

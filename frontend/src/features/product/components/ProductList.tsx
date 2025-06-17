@@ -10,16 +10,12 @@ const ProductList: React.FC<ProductListProps> = ({
 }) => {
  const result=useProductSelector(state=>state.product)
   return (
- <div>
+ <div className={styles.border}>
      {result.products.length >0 &&    <p style={{ marginLeft: '20px' }}>
-    Showing {result.skip + 1} -{' '}
-    {result.limit + result.skip > result.totalProducts
-      ? result.totalProducts
-      : result.limit + result.skip}{' '}
-    entries of {result.totalProducts}
+    Showing {result.products.length}  of&nbsp;
+    {result.totalProducts} products
   </p>}
-    <div className={`${styles.listContainer} ${styles.border}`}>
-       
+    <div className={`${styles.listContainer}`}>
       {data.map(product => (
         <ProductCard key={product._id} product={product} />
       ))}

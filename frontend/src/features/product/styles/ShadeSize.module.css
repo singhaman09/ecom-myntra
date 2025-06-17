@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  overflow-y: auto; /* allows scrolling if content is too tall */
+  overflow-y: auto;
 }
 
 .modalContent {
