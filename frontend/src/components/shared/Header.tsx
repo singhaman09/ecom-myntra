@@ -2,7 +2,7 @@
 import React, { useState, } from 'react';
 import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import styles from './css/Header.module.css';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 
 const Header: React.FC = () => {
@@ -24,6 +24,10 @@ const Header: React.FC = () => {
   const handleBagClick = () => {
     navigate('/cart');
   };  
+
+  const handleWishlistClick = () => {
+    navigate('/wishlist');
+  }
 
 const handleSubmit=(e:any)=>{
     e.preventDefault()
@@ -113,7 +117,7 @@ const handleSubmit=(e:any)=>{
               <User className={styles.userActionIcon} />
               <span className={styles.userActionText}>Profile</span>
             </div>
-            <div className={`${styles.userAction} ${styles.bagAction}`} >
+            <div className={`${styles.userAction} ${styles.bagAction}`} onClick = {handleWishlistClick} >
               <Heart className={styles.userActionIcon} />
               <span className={styles.userActionText}>Wishlist</span>
               <span className={styles.bagBadge}>3</span>

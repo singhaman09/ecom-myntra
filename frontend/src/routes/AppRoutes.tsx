@@ -95,38 +95,34 @@ const AppRoutes: React.FC = () => {
                 </>
               ),
             },
-            {
-              path: "/cart",
-              element: (
-                  <CartPage />
-              ),
-            },
-
-            {
-              path: "/checkout/address",
-              element: (
-                  <CheckoutAddress />
-              ),
-            },
-
-            {
-              path: "/checkout/payment",
-              element: (
-                  <Payment />
-              ),
-            },
-
-            {
-              path: "/ordersuccess",
-              element: (
-                  <OrderPlaced />
-              ),
-            },
           ],
         },
         {
           path: "*",
           element: <div>404 - Page Not Found</div>,
+        },
+      ],
+    },
+    {
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: "/cart",
+          element: <CartPage />,
+        },
+        {
+          path: "/checkout/address",
+          element: <CheckoutAddress />,
+        },
+
+        {
+          path: "/checkout/payment",
+          element: <Payment />,
+        },
+
+        {
+          path: "/ordersuccess",
+          element: <OrderPlaced />,
         },
       ],
     },

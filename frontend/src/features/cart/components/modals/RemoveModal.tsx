@@ -5,17 +5,17 @@ interface RemoveModalProps {
   showRemoveModal: boolean;
   modalAction: "remove" | "wishlist" | null;
   selectedItems: string[];
-  handleRemoveSelected: () => void;
-  handleMoveToWishlist: (id : string) => void;
+  handleMoveToWishlist: (id: string) => void;
   setShowRemoveModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setModalAction: React.Dispatch<React.SetStateAction<"remove" | "wishlist" | null>>;
+  setModalAction: React.Dispatch<
+    React.SetStateAction<"remove" | "wishlist" | null>
+  >;
 }
 
 const RemoveModal: React.FC<RemoveModalProps> = ({
   showRemoveModal,
   modalAction,
   selectedItems,
-  handleRemoveSelected,
   handleMoveToWishlist,
   setShowRemoveModal,
   setModalAction,
@@ -27,7 +27,10 @@ const RemoveModal: React.FC<RemoveModalProps> = ({
       <div className={styles.modalContent}>
         <p>
           Are you sure you want to{" "}
-          <strong>{modalAction === "remove" ? "remove" : "move"} {selectedItems.length}</strong>{" "}
+          <strong>
+            {modalAction === "remove" ? "remove" : "move"}{" "}
+            {selectedItems.length}
+          </strong>{" "}
           item{selectedItems.length > 1 ? "s" : ""}{" "}
           {modalAction === "remove" ? "from cart" : "to wishlist"}?
         </p>
@@ -35,11 +38,8 @@ const RemoveModal: React.FC<RemoveModalProps> = ({
           <button
             className={styles.modalRemove}
             onClick={() => {
-              if (modalAction === "remove") {
-                handleRemoveSelected();
-              } else {
-                selectedItems.forEach((id) => handleMoveToWishlist(id));
-              }
+              selectedItems.forEach((id) => handleMoveToWishlist(id));
+
               setShowRemoveModal(false);
               setModalAction(null);
             }}

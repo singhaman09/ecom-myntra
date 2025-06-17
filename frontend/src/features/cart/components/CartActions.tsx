@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./Styles/CartActions.module.css";
+// import  {deleteSelectedItems} from "../redux/cartSlice";
+// import { useAppDispatch } from "../hooks/useAppDispatch";
 
 interface CartActionsProps {
   items: { productId: string }[];
