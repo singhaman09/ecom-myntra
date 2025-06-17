@@ -29,7 +29,7 @@ export const getCartAPI = async () => {
     const response = await apiClient.get<Cart>("/cart");
     return response.data.items;
   } catch (error) {
-    console.log("Error fetching cart : " + error);
+
     throw error;
   }
 };
@@ -41,7 +41,7 @@ export const addCartItemsAPI = async (productId: string) => {
     const response = await apiClient.post<Cart>("/cart/items", { productId });
     return response.data.items;
   } catch (error) {
-    console.log("Error adding item to cart: " + error);
+    
     throw error;
   }
 };
@@ -53,7 +53,7 @@ export const removeCartItemAPI = async (productId: string) => {
     const response = await apiClient.delete<Cart>("/cart/items/" + productId);
     return response.data.items;
   } catch (error) {
-    console.log("Error removing item from cart: " + error);
+   
     throw error;
   }
 };
@@ -67,7 +67,7 @@ export const removeSelectedCartItemsAPI = async (ids: string[]) => {
     });
     return response.data.items;
   } catch (error) {
-    console.log("Error removing selected items from cart: " + error);
+  
     throw error;
   }
 };
@@ -84,7 +84,7 @@ export const updateCartItemQuantityAPI = async (
     });
     return response.data.items;
   } catch (error) {
-    console.log("Error updating cart item quantity: " + error);
+    
     throw error;
   }
 };
@@ -98,7 +98,7 @@ export const moveItemToWishlistAPI = async (productId: string) => {
     );
     return response.data.items;
   } catch (error) {
-    console.log("Error moving item to wishlist: " + error);
+    
     throw error;
   }
 };

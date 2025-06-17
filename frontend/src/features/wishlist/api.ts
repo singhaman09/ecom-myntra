@@ -69,15 +69,10 @@ export const apiService = {
   }
 },
 
-  addToWishlist: async (item: Omit<WishlistItem, 'id' | 'dateAdded'>): Promise<WishlistItem> => {
+  addToWishlist: async (item:string): Promise<WishlistItem> => {
     try {
-      const payload = {
-        productId: item.productId,
-        name: item.name,
-        price: item.price,
-        image: item.image,
-      };
-      const response: AxiosResponse<WishlistItemApiResponse> = await axiosInstance.post('/wishlist/add', payload);
+     
+      const response: AxiosResponse<WishlistItemApiResponse> = await axiosInstance.post('/wishlist/add', item);
       return mapApiItemToWishlistItem(response.data);
     } catch (error) {
       throw new Error('Failed to add item to wishlist');

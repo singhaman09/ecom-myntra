@@ -18,7 +18,7 @@
 
 .productImage {
   width: 100%;
-  height: 260px;
+  height: 230px;
   object-fit: cover;
   transition: transform 0.3s;
   display: block;
@@ -50,7 +50,7 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  background: #db2777;
+  background: #004d40;
   color: #fff;
   font-size: 12px;
   font-weight: 500;
@@ -120,7 +120,16 @@
 }
 
 .discountPercent {
-  color: #db2777;
+  color: #004d40;
   font-size: 12px;
   font-weight: 500;
+}
+.addToBag{
+  background-color:#004d40 ;
+  color: white;
+  font-weight: bold;
+  width: 80%;
+  margin-top: 15px;
+  font-size: 18px;
+  padding: 10px;
 }

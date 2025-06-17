@@ -10,8 +10,8 @@ export interface Product {
   category: string;
   subCategory: string;
   totalStock: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   description:string;
   reviews:Review []
 }
@@ -63,10 +63,17 @@ export interface ProductCardProps {
   product: Product;
 }
 
-export interface ProductListProps extends filtersSelectedData {
-  isSimilar: boolean;
+export interface ProductListProps {
+ data:Product[];
 }
-
+export interface filters{
+  category: string[];
+  subCategory: string[];
+  brand: string[];
+  color: string[];
+  gender?: string;
+  price: number[];
+}
 // 4. Pagination & Drawer Props
 export interface PaginationProps {
   pageCount: number;
@@ -78,19 +85,20 @@ export interface DrawerProps {
 }
 
 // 5. Sidebar & Upper Filter Props
-export interface SideBarMainProps extends DrawerProps, filtersSelectedData {
+export interface SideBarMainProps extends DrawerProps {
   handleCategoryChange: (value: string, checked: boolean) => void;
   handleSubCategoryChange: (value: string, checked: boolean) => void;
   handleBrandChange: (value: string, checked: boolean) => void;
   handleColorChange: (value: string, checked: boolean) => void;
   handleGenderChange: (value: string, checked: boolean) => void;
-  handleReset: (value: string, key: string) => void;
+  handleReset: () => void;
   handleChange: (event: Event | React.SyntheticEvent, newValue: number[]) => void;
-  selectedPrice: number[];
+  filters:filters
+  apply:()=>void
 }
 
-export interface UpperFilterProps extends  filtersSelectedData {
-  handleReset: (value: string, key: string) => void;
+export interface UpperFilterProps  {
+ 
   setIsDrawerOpen:(value:boolean)=>void
 }
 
@@ -126,3 +134,15 @@ export interface getProductsInterface {
   zoomScale?: number;
   gridSize?: number;
 }
+
+export interface Shade {
+  id: number;
+  color: string;
+  name: string;
+}
+
+export interface Size {
+  id: number;
+  label: string;
+}
+
