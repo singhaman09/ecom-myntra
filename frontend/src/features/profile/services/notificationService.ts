@@ -61,28 +61,28 @@ const mockNotifications: Notification[] = [
 ];
 
 class NotificationService {
-  private baseUrl = '/api/notifications'; // Replace with your actual API base URL
+  private baseUrl = '/api/notifications';
 
   // Simulate API delay
   private delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   async getNotifications(filters: NotificationFilters = {}): Promise<NotificationResponse> {
     try {
-      // Simulate API call delay
+      
       await this.delay(800);
 
-      // In production, replace this with actual API call:
+     
       // const response = await fetch(`${this.baseUrl}?${new URLSearchParams(filters)}`);
       // const data = await response.json();
       // return data;
 
-      // Mock implementation
+      
       let filteredNotifications = [...mockNotifications];
 
-      // Sort by timestamp (newest first)
+      
       filteredNotifications.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
-      // Apply pagination
+      
       const page = filters.page || 1;
       const limit = filters.limit || 10;
       const startIndex = (page - 1) * limit;
@@ -96,18 +96,17 @@ class NotificationService {
         limit,
         hasMore: endIndex < filteredNotifications.length
       };
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
+    } catch (error) {      
       throw new Error('Failed to fetch notifications');
     }
   }
 
   async markAsRead(request: MarkAsReadRequest): Promise<void> {
     try {
-      // Simulate API call delay
+      
       await this.delay(500);
 
-      // In production, replace this with actual API call:
+      
       // const response = await fetch(`${this.baseUrl}/mark-read`, {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
@@ -115,7 +114,7 @@ class NotificationService {
       // });
       // if (!response.ok) throw new Error('Failed to mark notifications as read');
 
-      // Mock implementation - update local data
+      
       request.notificationIds.forEach(id => {
         const notification = mockNotifications.find(n => n.id === id);
         if (notification) {
@@ -123,17 +122,16 @@ class NotificationService {
         }
       });
     } catch (error) {
-      console.error('Error marking notifications as read:', error);
       throw new Error('Failed to mark notifications as read');
     }
   }
 
   async deleteNotifications(request: DeleteNotificationRequest): Promise<void> {
     try {
-      // Simulate API call delay
+      
       await this.delay(500);
 
-      // In production, replace this with actual API call:
+      
       // const response = await fetch(`${this.baseUrl}/delete`, {
       //   method: 'DELETE',
       //   headers: { 'Content-Type': 'application/json' },
@@ -141,7 +139,7 @@ class NotificationService {
       // });
       // if (!response.ok) throw new Error('Failed to delete notifications');
 
-      // Mock implementation
+      
       request.notificationIds.forEach(id => {
         const index = mockNotifications.findIndex(n => n.id === id);
         if (index !== -1) {
@@ -149,46 +147,39 @@ class NotificationService {
         }
       });
     } catch (error) {
-      console.error('Error deleting notifications:', error);
       throw new Error('Failed to delete notifications');
     }
   }
 
   async markAllAsRead(): Promise<void> {
     try {
-      // Simulate API call delay
+     
       await this.delay(500);
-
-      // In production, replace this with actual API call:
       // const response = await fetch(`${this.baseUrl}/mark-all-read`, {
       //   method: 'POST'
       // });
       // if (!response.ok) throw new Error('Failed to mark all notifications as read');
 
-      // Mock implementation
+      
       mockNotifications.forEach(notification => {
         notification.isRead = true;
       });
     } catch (error) {
-      console.error('Error marking all notifications as read:', error);
       throw new Error('Failed to mark all notifications as read');
     }
   }
 
   async getUnreadCount(): Promise<number> {
     try {
-      // Simulate API call delay
+      
       await this.delay(300);
-
-      // In production, replace this with actual API call:
       // const response = await fetch(`${this.baseUrl}/unread-count`);
       // const data = await response.json();
       // return data.count;
 
-      // Mock implementation
+      
       return mockNotifications.filter(n => !n.isRead).length;
     } catch (error) {
-      console.error('Error fetching unread count:', error);
       throw new Error('Failed to fetch unread count');
     }
   }
