@@ -25,13 +25,13 @@ const Breadcrumbs: React.FC = () => {
     if (data.product.category) {
       crumbs.push({
         label: data.product?.category.toUpperCase(),
-        to: `/${data.product?.category}`
+        to: `/products/${data.product?.category}`
       });
     }
     if (data.product?.subCategory) {
       crumbs.push({
         label: data.product?.subCategory.toUpperCase(),
-        to: `/${data.product?.subCategory}`
+        to: `/products/${data.product?.subCategory}`
       });
     }
     // Last crumb: Product name, not a link

@@ -1,6 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from '../css/sidebar.module.css';
+import {
+  FaUser, FaWallet, FaHome, FaCreditCard, FaCogs,
+  FaSignOutAlt, FaQuestionCircle, FaGift, FaHeart, FaThLarge, FaClock, FaPaw, FaShareAlt
+} from 'react-icons/fa';
 
 interface SidebarProps {
   isVisible: boolean;
@@ -8,123 +12,42 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isVisible, onClose }) => {
+  const menuItems = [
+    { to: '/profile', label: 'My Account', icon: <FaUser /> },
+    { to: '/', label: 'My Dashboard', icon: <FaThLarge /> },
+    { to: '/wallet', label: 'My Wallet', icon: <FaWallet /> },
+    { to: '/orders', label: 'My Orders', icon: <FaClock /> },
+    { to: '/wishlist', label: 'My Wishlist', icon: <FaHeart /> },
+    { to: '/address', label: 'My Address', icon: <FaHome /> },
+    { to: '/payment-methods', label: 'My Payment Methods', icon: <FaCreditCard /> },
+    { to: '/skin-preferences', label: 'My Skin Preferences', icon: <FaPaw /> },
+    { to: '/refer', label: 'Refer and Earn', icon: <FaShareAlt /> },
+    { to: '/settings', label: 'Settings', icon: <FaCogs /> },
+    { to: '/order-queries', label: 'Order Related Queries', icon: <FaQuestionCircle /> },
+    { to: '/logout', label: 'Logout', icon: <FaSignOutAlt /> },
+  ];
+
   return (
     <>
-      {isVisible && (
-        <div className={styles.mobileOverlay} onClick={onClose} />
-      )}
+      {isVisible && <div className={styles.mobileOverlay} onClick={onClose} />}
       <aside className={`${styles.sidebar} ${isVisible ? styles.sidebarVisible : ''}`}>
-        <div className={styles.sidebarHeader}>
-          <h2 className={styles.accountTitle}>Account</h2>
-          <p className={styles.accountName}>Aman</p>
-        </div>
-        
         <div className={styles.sidebarContent}>
-          <div className={styles.menuSection}>
-            <h3 className={styles.sectionTitle}>ORDERS</h3>
-            <ul className={styles.menuList}>
-              <li className={styles.menuItem}>
+          <ul className={styles.menuList}>
+            {menuItems.map((item) => (
+              <li key={item.to} className={styles.menuItem}>
                 <NavLink
-                  to="/orders"
+                  to={item.to}
                   className={({ isActive }) =>
                     `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
                   }
                   onClick={onClose}
                 >
-                  Orders & Returns
+                  <span className={styles.icon}>{item.icon}</span>
+                  <span>{item.label}</span>
                 </NavLink>
               </li>
-            </ul>
-          </div>
-          
-          <div className={styles.menuSection}>
-            <h3 className={styles.sectionTitle}>CREDITS</h3>
-            <ul className={styles.menuList}>
-              <li className={styles.menuItem}>
-                <NavLink
-                  to="/coupons"
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  Coupons
-                </NavLink>
-              </li>
-              <li className={styles.menuItem}>
-                <NavLink
-                  to="/credits"
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  Myntra Credit
-                </NavLink>
-              </li>
-              <li className={styles.menuItem}>
-                <NavLink
-                  to="/myncash"
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  MynCash
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-          
-          <div className={styles.menuSection}>
-            <h3 className={styles.sectionTitle}>ACCOUNT</h3>
-            <ul className={styles.menuList}>
-              <li className={styles.menuItem}>
-                <NavLink
-                  to="/profile"
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  Profile
-                </NavLink>
-              </li>
-              <li className={styles.menuItem}>
-                <NavLink
-                  to="/cards"
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  Saved Cards
-                </NavLink>
-              </li>
-              <li className={styles.menuItem}>
-                <NavLink
-                  to="/addresses"
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  Addresses
-                </NavLink>
-              </li>
-              <li className={styles.menuItem}>
-                <NavLink
-                  to="/insider"
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                  onClick={onClose}
-                >
-                  Myntra Insider
-                </NavLink>
-              </li>
-            </ul>
-          </div>
+            ))}
+          </ul>
         </div>
       </aside>
     </>

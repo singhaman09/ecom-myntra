@@ -69,3 +69,45 @@ export interface SidebarItem {
   isActive?: boolean;
   children?: SidebarItem[];
 }
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  isRead: boolean;
+}
+
+export interface NotificationState {
+  notifications: Notification[];
+  unreadCount: number;
+  loading: boolean;
+  error: string | null;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    hasMore: boolean;
+  };
+}
+
+export interface NotificationFilters {
+  page?: number;
+  limit?: number;
+}
+
+export interface NotificationResponse {
+  notifications: Notification[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface MarkAsReadRequest {
+  notificationIds: string[];
+}
+
+export interface DeleteNotificationRequest {
+  notificationIds: string[];
+}

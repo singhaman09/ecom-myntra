@@ -19,7 +19,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #ff3f6c; /* Myntra's pink accent */
+  border-top: 3px solid  #00a65a; /* Myntra's pink accent */
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -157,15 +157,15 @@
 }
 
 .pageButton:hover {
-  background-color: #ff3f6c;
+  background-color:  #00a65a;
   color: #fff;
-  border-color: #ff3f6c;
+  border-color:  #00a65a;
 }
 
 .pageButton.active {
-  background-color: #ff3f6c;
+  background-color:  #00a65a;
   color: #fff;
-  border-color: #ff3f6c;
+  border-color:  #00a65a;
   font-weight: 600;
 }
 

@@ -20,19 +20,19 @@ const SimilarProduct: React.FC = () => {
       label: product?.subCategory
         ? `Show More About ${product.subCategory}`
         : null,
-      path: product?.subCategory ? `/${product.subCategory}` : null,
+      path: product?.subCategory ? `/products/${product.subCategory}` : null,
     },
     {
       label: product?.name
         ? `Show More About ${product.name}`
         : null,
-      path: product?.name ? `/${product.name}` : null,
+      path: product?.name ? `/products/${product.name}` : null,
     },
     {
       label: product?.brand
         ? `Show More About ${product.brand}`
         : null,
-      path: product?.brand ? `/${product.brand}` : null,
+      path: product?.brand ? `/products/${product.brand}` : null,
     },
   ].filter(btn => btn.label && btn.path);
 
@@ -40,9 +40,9 @@ const SimilarProduct: React.FC = () => {
     <div className={styles.container}>
       <h3>SIMILAR PRODUCTS</h3>
       
-        {similarProducts.length > 0 ? (
+        { data.selectedProduct && similarProducts.length > 0 ? (
           <>
-            <ProductList isSimilar={true} />
+            <ProductList data={data.selectedProduct?.similarProducts} />
             <div className={styles.allContainer}>
               {showMoreButtons.map(({ label, path }) => (
                 <div className={styles.buttonContainer} key={label}>

@@ -10,10 +10,11 @@ interface OrderFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
   totalOrders: number;
+  onClose: () => void;
 }
 
 const OrderFilters: React.FC<OrderFiltersProps> = () => {
-   const [showFilters, setShowFilters] = useState(false); 
+   const [showFilters, setShowFilters] = useState(true); 
   const dispatch = useAppDispatch();
   const { filters } = useAppSelector((state) => state.orders);
   
@@ -79,11 +80,11 @@ const OrderFilters: React.FC<OrderFiltersProps> = () => {
 
   return (
     <div className={wstyles.wishlistFiltersWrapper}>
-      <div className={wstyles.toggleBar}>
+      {/* <div className={wstyles.toggleBar}>
         <button onClick={toggleFilters} className={wstyles.toggleBtn}>
           {showFilters ? 'Hide Filters ▲' : 'Show Filters ▼'}
         </button>
-      </div>
+      </div> */}
       { showFilters && (
     <div className={styles.orderFilters}>
       <div className={styles.filterSection}>

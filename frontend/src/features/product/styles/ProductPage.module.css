@@ -29,10 +29,7 @@
     flex-direction: column;
     gap: 12px;
   }
-  .overlay {
-    display: none;
-  }
-  @media (max-width: 900px) {
+
     .overlay {
       display: block;
       position: fixed;
@@ -46,4 +43,3 @@
       opacity: 0;
       pointer-events: none;
     }
-  }

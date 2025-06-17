@@ -57,18 +57,20 @@ const OrdersPage: React.FC = () => {
   }
 
   return (
-    <Layout searchTerm={searchTerm} onSearchChange={setSearchTerm}>
+    // <Layout searchTerm={searchTerm} onSearchChange={setSearchTerm}>
       <div className={styles.ordersPage}>
-        <div className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>My Orders</h1>
-          <div className={styles.orderCount}>{orders.length} Orders</div>
-        </div>
+    {/* All your order page content goes here */}
+  
+        
+          {/* <h1 className={styles.pageTitle}>My Orders</h1> */}
+          {/* <div className={styles.orderCount}>{orders.length} Orders</div> */}
+        
 
-        <OrderFilters
+        {/* <OrderFilters
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           totalOrders={orders.length}
-        />
+        /> */}
 
         <OrderList
           onRatingSubmit={submitRating}
@@ -76,8 +78,9 @@ const OrdersPage: React.FC = () => {
           onExchangeReturn={handleExchangeReturn}
           onBuyAgain={handleBuyAgain}
         />
-      </div>
-    </Layout>
+        </div>
+
+    // </Layout>
   );
 };
 

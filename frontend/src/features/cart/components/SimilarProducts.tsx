@@ -54,13 +54,7 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({
               src={product.image}
               alt={product.name}
               className={styles.productImg}
-              onError={(e) => {
-                console.error(
-                  `Failed to load image for ${product.name}: ${product.image}`
-                );
-                e.currentTarget.src =
-                  "https://via.placeholder.com/150?text=Image+Not+Found";
-              }}
+              
               loading="lazy"
             />
             <p className={styles.brand}>{product.brand}</p>

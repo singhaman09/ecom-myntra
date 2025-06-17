@@ -7,14 +7,14 @@
 }
 
 .topBanner {
-  background-color: #fdf2f8;
+  background-color:  #067040;
   padding: 0.5rem 0;
   text-align: center;
 }
 
 .bannerText {
   font-size: 0.875rem;
-  color: #374151;
+  color: #edeff1;
 }
 
 @media (max-width: 768px) {
@@ -29,7 +29,7 @@
 
 .bannerTextPink {
   font-weight: 600;
-  color: #ec4899;
+  color: #00a65a;
 }
 
 .container {
@@ -54,12 +54,13 @@
 
 .logo {
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .logoText {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ec4899;
+  color:  #00a65a;
   text-decoration: none;
 }
 
@@ -105,7 +106,7 @@
 }
 
 .navLink:hover {
-  color: #ec4899;
+  color:  #00a65a;
 }
 
 
@@ -147,7 +148,7 @@
 }
 
 .searchInput:focus {
-  kerning: 2px solid #ec4899;
+  kerning: 2px solid  #00a65a;
   border-color: transparent;
 }
 
@@ -173,7 +174,7 @@
 
 .userAction:hover .userActionIcon,
 .userAction:hover .userActionText {
-  color: #ec4899;
+  color:  #00a65a;
 }
 
 .userActionIcon {
@@ -211,7 +212,7 @@
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
-  background-color: #ef4444;
+  background-color:  #00a65a;
   color: white;
   font-size: 0.75rem;
   border-radius: 50%;
@@ -297,6 +298,6 @@
 }
 
 .mobileNavLink:hover {
-  color: #ec4899;
-  border-color: #ec4899;
+  color:  #00a65a;
+  border-color:  #00a65a;
 }

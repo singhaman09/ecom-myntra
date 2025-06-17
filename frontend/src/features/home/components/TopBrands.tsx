@@ -1,11 +1,13 @@
-import React from 'react';
+
 import styles from './css/TopBrands.module.css';
+import { Link } from 'react-router-dom';
 
 interface Brand {
   id: string;
   name: string;
   logo: string;
   discount: string;
+  link:string
 }
 
 interface TopBrandsProps {
@@ -20,7 +22,10 @@ const TopBrands = ({ brands, title }: TopBrandsProps) => {
         <h2 className={styles.sectionTitle}>{title}</h2>
         <div className={styles.brandsGrid}>
           {brands.map((brand) => (
-            <div key={brand.id} className={styles.brandCard}>
+           <Link  key={brand.id} 
+             to={brand.link} 
+            >
+             <div key={brand.id} className={styles.brandCard}>
               <div className={styles.brandLogoWrapper}>
                 <img 
                   src={brand.logo} 
@@ -33,6 +38,7 @@ const TopBrands = ({ brands, title }: TopBrandsProps) => {
                 <p className={styles.brandDiscount}>{brand.discount}</p>
               </div>
             </div>
+           </Link>
           ))}
         </div>
       </div>
