@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Styles/OfferSection.module.css";
+import styles from "./styles/OfferSection.module.css";
 
 interface OffersSectionProps {
   offers: string[];

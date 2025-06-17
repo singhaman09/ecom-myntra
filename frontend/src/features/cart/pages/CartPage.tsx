@@ -109,36 +109,39 @@ const CartPage: React.FC = () => {
   );
   const finalPrice = totalPrice - appliedCouponDiscount;
 
-  if (loading) return <div className={styles.loading}>Loading...</div>;
-  if (error) return <div className={styles.error}>{error}</div>;
-
   return (
     <>
-      <CartHeader activeStep = "BAG" />
-      {items.length > 0 ? (
-        <div className={styles.cartPage}>
-          <div className={styles.mainContent}>
-            <div className={styles.leftSection}>
-              <AddressSection
-                address={selectedAddress}
-                onChangeAddress={() => navigate("/cart?modal=address")}
-              />
-              <OffersSection
-                offers={offers}
-                showMoreOffers={showMoreOffers}
-                toggleOffersDropdown={toggleOffersDropdown}
-              />
-              <CartActions
-                items={items}
-                selectedItems={selectedItems}
-                setSelectedItems={setSelectedItems}
-                setModalAction={(action) => {
-                  setModalAction(action);
-                  navigate("/cart?modal=remove");
-                }}
-                setShowRemoveModal={() => navigate("/cart?modal=remove")}
-              />
-              <div ref={cartListRef} className={styles.cartListSection}>
+      <CartHeader activeStep="BAG" />
+      <div className={styles.cartPage}>
+        <div className={styles.mainContent}>
+          <div className={styles.leftSection}>
+            <AddressSection
+              address={selectedAddress}
+              onChangeAddress={() => navigate("/cart?modal=address")}
+            />
+            <OffersSection
+              offers={offers}
+              showMoreOffers={showMoreOffers}
+              toggleOffersDropdown={toggleOffersDropdown}
+            />
+            <CartActions
+              items={items}
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+              setModalAction={(action) => {
+                setModalAction(action);
+                navigate("/cart?modal=remove");
+              }}
+              setShowRemoveModal={() => navigate("/cart?modal=remove")}
+            />
+            <div ref={cartListRef} className={styles.cartListSection}>
+              {loading ? (
+                <div className={styles.loading}>Loading...</div>
+              ) : error ? (
+                <div className={styles.error}>
+                  {error || "Unable to load cart items. Please try again later."}
+                </div>
+              ) : items.length > 0 ? (
                 <CartList
                   items={items}
                   onQuantityChange={handleQtyChange}
@@ -146,8 +149,11 @@ const CartPage: React.FC = () => {
                   selectedItems={selectedItems}
                   onRemove={handleRemove}
                 />
-              </div>
+              ) : (
+                <EmptyCart />
+              )}
             </div>
+          </div>
 
             <div className={styles.rightSection}>
               <div className={styles.couponsSection}>
@@ -186,28 +192,25 @@ const CartPage: React.FC = () => {
             />
           )}
 
-          {modal === "coupon" && (
-            <CouponModal
-              isOpen={true}
-              onClose={() => navigate("/cart")}
-              onApplyCoupon={handleApplyCoupon}
-              availableCoupons={availableCoupons}
-            />
-          )}
+        {modal === "coupon" && (
+          <CouponModal
+            isOpen={true}
+            onClose={() => navigate("/cart")}
+            onApplyCoupon={handleApplyCoupon}
+            availableCoupons={availableCoupons}
+          />
+        )}
 
-          {modal === "address" && (
-            <ChangeAddressModal
-              isOpen={true}
-              onClose={() => navigate("/cart")}
-              onSave={handleSaveAddress}
-              onUpdateAddresses={(addrs) => setAddresses(addrs)}
-              addresses={addresses}
-            />
-          )}
-        </div>
-      ) : (
-        <EmptyCart />
-      )}
+        {modal === "address" && (
+          <ChangeAddressModal
+            isOpen={true}
+            onClose={() => navigate("/cart")}
+            onSave={handleSaveAddress}
+            onUpdateAddresses={(addrs) => setAddresses(addrs)}
+            addresses={addresses}
+          />
+        )}
+      </div>
     </>
   );
 };

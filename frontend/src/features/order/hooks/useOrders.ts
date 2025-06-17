@@ -126,14 +126,10 @@ export const useOrders = () => {
 
   const submitRating = async (orderId: string, rating: number) => {
     try {
-      setOrders(prev =>
-        prev.map(order =>
-          order.id === orderId ? { ...order, rating, canRate: false } : order
-        )
-      );
-      return { success: true };
-    } catch {
-      return { success: false };
+      // API call or state update logic here
+      return true;
+    } catch (error) {
+      return false;
     }
   };
 

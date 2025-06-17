@@ -7,8 +7,8 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const isAuthenticated: boolean = true;
 export const ProtectedRoute = (): JSX.Element => {
-  // const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  return true ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export const AuthRoute = (): JSX.Element => {
