@@ -40,9 +40,9 @@ const SimilarProduct: React.FC = () => {
     <div className={styles.container}>
       <h3>SIMILAR PRODUCTS</h3>
       
-        {similarProducts.length > 0 ? (
+        { data.selectedProduct && similarProducts.length > 0 ? (
           <>
-            <ProductList isSimilar={true} />
+            <ProductList data={data.selectedProduct?.similarProducts} />
             <div className={styles.allContainer}>
               {showMoreButtons.map(({ label, path }) => (
                 <div className={styles.buttonContainer} key={label}>

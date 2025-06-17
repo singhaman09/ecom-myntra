@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Slider } from "@mui/material";
 import type { SideBarMainProps } from "../interfaces/ProductInterfaces";
 import styles from "../styles/SideBar.module.css";
 import { useProductSelector } from "../hooks/storeHooks";
 
 // Lazy Load 
+const SideBarFilters = React.lazy(() => import('./SideBarFilters'));
 
-const SideBarFilters= React.lazy(()=>import('./SideBarFilters'));
+const tabList = [
+  { key: "category", label: "Category" },
+  { key: "subcategory", label: "Subcategory" },
+  { key: "brand", label: "Brand" },
+  { key: "color", label: "Color" },
+  { key: "gender", label: "Gender" },
+  { key: "price", label: "Price" }
+];
 
 const SidebarMain: React.FC<SideBarMainProps> = ({
   isDrawerOpen,
   setIsDrawerOpen,
-  selectedCategories,
-  selectedSubCategories,
-  selectedBrands,
-  selectedColors,
-  selectedGender,
+  filters,
   handleBrandChange,
   handleCategoryChange,
   handleSubCategoryChange,
@@ -23,33 +27,132 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
   handleReset,
   handleColorChange,
   handleChange,
-  selectedPrice,
+  apply
 }) => {
-  const data = useProductSelector((state) => state.product);
-  const sideBarData = data.sideBarData
+  const sideBarData = useProductSelector(state=>state.product.sideBarData)
+    
 
   // Price slider values
+  const [priceValue, setPriceValue] = useState([0,1000]);
   const minPrice = sideBarData?.lowestPrice || 0;
-  const maxPrice = sideBarData?.highestPrice || 1000;   
-  const [priceValue,setPriceValue]=useState(()=>selectedPrice.length>0
-  ? selectedPrice
-  : [minPrice, maxPrice])
+  const maxPrice = sideBarData?.highestPrice || 1000;
+
+  useEffect(() => {
+    setPriceValue(filters.price.length ? filters.price : [minPrice, maxPrice]);
+  }, [filters.price, minPrice, maxPrice]);
+
   // Show clear filter if any filter is active
   const hasAnyFilter =
-    selectedBrands?.length > 0 ||
-    selectedCategories?.length > 0 ||
-    selectedSubCategories?.length > 0 ||
-    selectedColors?.length > 0 ||
-    !!selectedGender ||
-    selectedPrice?.length > 0;
-  const handleSliderChange=(_event: Event, newValue: number[])=>{
-    setPriceValue(newValue)
-  }
+    filters.brand?.length > 0 ||
+    filters.category?.length > 0 ||
+    filters.price?.length > 0 ||
+    filters.subCategory?.length > 0 ||
+    !!filters.gender ||
+    filters.color?.length > 0;
+
+  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
+    setPriceValue(newValue as number[]);
+  };
+
+  // Tab state
+  const [activeTab, setActiveTab] = useState<string>("category");
+
+  // Render tab content
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "category":
+       if(sideBarData && sideBarData.categories.length>0) return (
+        <SideBarFilters
+          data={sideBarData.categories}
+          type="categories"
+          selectedData={filters.category}
+          handleChange={handleCategoryChange}
+        />
+      ); return <p>No data to show !</p>
+      case "subcategory":
+       
+         if(sideBarData && sideBarData.subCategories.length>0) return ( <SideBarFilters
+          data={sideBarData.subCategories}
+          type="Sub Categories"
+          selectedData={filters.subCategory}
+          handleChange={handleSubCategoryChange}
+        />)
+        return <p>No data to show !</p>
+      case "brand":
+       if(sideBarData && sideBarData.brands.length>0)  return (
+        <SideBarFilters
+          data={sideBarData.brands}
+          type="brands"
+          selectedData={filters.brand}
+          handleChange={handleBrandChange}
+        />
+      );
+      return <p>No data to show !</p>
+      case "color":
+        
+        {if(sideBarData && sideBarData.colors.length>0)  return ( <SideBarFilters
+          data={sideBarData.colors}
+          type="colors"
+          selectedData={filters.color}
+          handleChange={handleColorChange}
+        />)
+        return (<p>No data to show !</p>)}
+      
+      case "gender":
+        if(sideBarData && sideBarData.genders.length>0) return (
+          <div className={styles.section}>
+            <div className={styles.radioGroup}>
+              {sideBarData.genders.map((gender) => (
+                <label key={gender} className={styles.radioRow}>
+                  <h3
+                    className={styles.checkboxLabel}
+                   
+                  >
+                    {gender.charAt(0).toUpperCase() + gender.slice(1)}
+                  </h3>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value={gender}
+                    checked={filters.gender === gender}
+                    onChange={(e) =>
+                      handleGenderChange(gender, e.target.checked)
+                    }
+                  />
+                  
+                </label>
+              ))}
+            </div>
+          </div>
+        ); return <p>No data to show !</p>
+      case "price":
+       if(sideBarData && sideBarData.lowestPrice && sideBarData.highestPrice )  return (
+        <div className={styles.section}>
+          
+          <Slider
+            value={priceValue}
+            onChange={handleSliderChange}
+            onChangeCommitted={handleChange}
+            max={maxPrice}
+            min={minPrice}
+            className={styles.slider}
+          />
+          <div className={styles.priceRangeRow}>
+            <span>₹{priceValue[0]}</span>
+            <span>₹{priceValue[1]}&nbsp;</span>
+          </div>
+        </div>
+      ); return <p>No data to show !</p>
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className={`${styles.container} ${isDrawerOpen ? styles.open : ""}`}>
-      {sideBarData && (
-        <div>
+      <div className={styles.inner}>
+        <div className={styles.filterHeader}>
+          <p>APPLY FILTERS</p>
           <button
             className={styles.closeButton}
             onClick={() => setIsDrawerOpen(false)}
@@ -58,108 +161,33 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
           >
             Close
           </button>
-          <div className={styles.filterHeader}>
-            <p>FILTERS</p>
-            {hasAnyFilter && (
-              <p
-                className={styles.clearFilter}
-                onClick={() => handleReset("all", "")}
-                role="button"
-                tabIndex={0}
+        </div>
+        {/* Vertical Tabs Layout */}
+        <div className={styles.verticalTabsBody}>
+          <div className={styles.verticalTabs}>
+            {tabList.map((tab,idx) => (
+              <button
+                key={tab.key}
+                className={[
+                  styles.tabButton,
+                  activeTab === tab.key ? styles.active : "",
+                                ].join(" ")}
+                onClick={() => setActiveTab(tab.key)}
+                type="button"
               >
-                CLEAR ALL
-              </p>
-            )}
+                {tab.label}
+              </button>
+            ))}
           </div>
-          <div className={styles.filteredContainer}>
-            {/* Gender */}
-            {sideBarData.genders?.length > 0 && (
-              <div className={styles.section}>
-                <div className={styles.radioGroup}>
-                  {sideBarData.genders.map((gender) => (
-                    <label key={gender} className={styles.radioRow}>
-                      <input
-                        type="radio"
-                        name="gender"
-                        value={gender}
-                        checked={selectedGender === gender}
-                        onChange={(e) =>
-                          handleGenderChange(gender, e.target.checked)
-                        }
-                      />
-                      <span
-                        className={styles.checkboxLabel}
-                        style={{ fontWeight: 500 }}
-                      >
-                        {gender.charAt(0).toUpperCase() + gender.slice(1)}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Categories */}
-            {sideBarData.categories?.length > 0 && (
-              <SideBarFilters
-                data={sideBarData.categories}
-                type="categories"
-                selectedData={selectedCategories}
-                handleChange={handleCategoryChange}
-              />
-            )}
-
-            {/* Sub Categories */}
-            {sideBarData.subCategories?.length > 0 && (
-              <SideBarFilters
-                data={sideBarData.subCategories}
-                type="Sub Categories"
-                selectedData={selectedSubCategories}
-                handleChange={handleSubCategoryChange}
-              />
-            )}
-
-            {/* Brands */}
-            {sideBarData.brands?.length > 0 && (
-              <SideBarFilters
-                data={sideBarData.brands}
-                type="brands"
-                selectedData={selectedBrands}
-                handleChange={handleBrandChange}
-              />
-            )}
-
-            {/* Price Range */}
-            { sideBarData.lowestPrice && sideBarData.highestPrice ? (
-              <div className={styles.section}>
-                <h3 className={styles.sectionTitle}>PRICE</h3>
-                <Slider
-                  value={priceValue}
-                  onChange={handleSliderChange}
-                  onChangeCommitted={handleChange}
-                  max={maxPrice}
-                  min={minPrice}
-                  className={styles.slider}
-                />
-                <div className={styles.priceRangeRow}>
-                  <span>₹{priceValue[0]}</span>
-                  <span>₹{priceValue[1]}&nbsp;</span>
-                </div>
-              </div>
-            ):(<></>)}
-
-            {/* Colors */}
-            {sideBarData.colors?.length > 0 && (
-              <SideBarFilters
-                data={sideBarData.colors}
-                type="colors"
-                selectedData={selectedColors}
-                handleChange={handleColorChange}
-              />
-            )}
+          <div className={styles.tabContent}>
+            {renderTabContent()}
           </div>
         </div>
-      )}
+      </div>
+      <div className={styles.footer}>
+        <button className={styles.apply} onClick={apply}>Apply</button>
+        {hasAnyFilter && <button onClick={handleReset}>CLEAR ALL</button>}
+      </div>
     </div>
   );
 };
