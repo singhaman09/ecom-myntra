@@ -1,7 +1,7 @@
 import React, { memo} from "react";
 import styles from "../styles/Pagination.module.css";
 import type { PaginationProps } from "../interfaces/ProductInterfaces";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 const Pagination: React.FC<PaginationProps> = ({
   pageCount,
 }) => {

@@ -24,15 +24,16 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // Navigate to Cart - Siddharth
   const handleBagClick = () => {
     navigate("/cart");
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate(`/products/${value}`);
-    setValue("");
+    if (value.trim()) {
+      navigate(`/products/${value}`);
+      setValue("");
+    }
   };
 
   const handleCategoryHover = (category: string) => {
@@ -189,8 +190,6 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Category Dropdown */}
 
         {/* Mobile Search */}
         <div

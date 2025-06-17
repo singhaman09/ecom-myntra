@@ -39,9 +39,10 @@
 .knowMore,
 .applyCoupon {
   font-size: 12px;
-  color: #ff3f6c;
+  color: #044236;
   text-decoration: none;
   margin-left: 4px;
+  font-weight: 600;
 }
 
 .knowMore:hover,
@@ -50,7 +51,7 @@
 }
 
 .discount {
-  color: #ff3f6c;
+  color: #044236;
   font-weight: 600;
 }
 
@@ -81,7 +82,7 @@
 }
 
 .checkoutButton {
-  background-color: #ff3f6c; /* Match app's primary color */
+  background-color: #08681f; /* Match app's primary color */
   color: white;
   border: none;
   padding: 12px;
@@ -97,7 +98,7 @@
 }
 
 .checkoutButton:hover {
-  background-color: #e0355b; /* Darker shade on hover */
+  background-color: #08681f; /* Darker shade on hover */
 }
 
 /* Medium screens (tablets, ≥481px) */

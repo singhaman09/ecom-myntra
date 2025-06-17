@@ -1,6 +1,10 @@
 import styles from '../styles/ProductNotFoundPage.module.css';
+<<<<<<< HEAD
+import {  useNavigate } from 'react-router-dom';
+=======
 
 
+>>>>>>> origin/main
 const ProductNotFoundPage:React.FC<{isSimilar:boolean}>=({isSimilar})=> {
   
   return (
