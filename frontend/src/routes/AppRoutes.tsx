@@ -26,6 +26,7 @@ import DeleteAccount from "../features/profile/pages/DeleteAccount/DeleteAccount
 import TermsOfUse from "../features/profile/pages/Legal/TermsOfUse";
 import PrivacyPolicy from "../features/profile/pages/Legal/PrivacyPolicy";
 import Profile from "../features/profile/pages/Profile/Profile";
+import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -48,41 +49,6 @@ const AppRoutes: React.FC = () => {
         {
           path: "productDetails/:id",
           element: <ProductDetails />,
-        },
-        {
-          element: <AuthRoute />,
-          children: [
-            {
-              path: "login",
-              element: <Login />,
-            },
-            {
-              path: "signup",
-              element: <Register />,
-            },
-            {
-              path: "verify-email",
-              element: <VerifyEmail />,
-            },
-            {
-              path: "forgot-password",
-              // element: <ForgotPassword />,
-              children: [
-                {
-                  path: "",
-                  element: <ForgotPassword />,
-                },
-                {
-                  path: "verify-otp",
-                  element: <VerifyOtpForgotPass />,
-                },
-                {
-                  path: "reset-password",
-                  element: <ResetPassword />,
-                },
-              ],
-            },
-          ],
         },
         {
           element: <ProtectedRoute />,
@@ -148,6 +114,45 @@ const AppRoutes: React.FC = () => {
         {
           path: "*",
           element: <div>404 - Page Not Found</div>,
+        },
+      ],
+    },
+    {
+      element: <AuthRoute />,
+      children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "signup",
+          element: <Register />,
+        },
+        {
+          path: "reg-success",
+          element: <CongratulationsPage />
+        },
+        {
+          path: "verify-email",
+          element: <VerifyEmail />,
+        },
+        {
+          path: "forgot-password",
+          // element: <ForgotPassword />,
+          children: [
+            {
+              path: "",
+              element: <ForgotPassword />,
+            },
+            {
+              path: "verify-otp",
+              element: <VerifyOtpForgotPass />,
+            },
+            {
+              path: "reset-password",
+              element: <ResetPassword />,
+            },
+          ],
         },
       ],
     },

@@ -1,15 +1,19 @@
-
-import React, { useState, } from 'react';
-import { Search, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
-import styles from './css/Header.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-
+import React, { useState } from "react";
+import { Search, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
+import styles from "./css/Header.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import CategoryDropdown from "./CategoryDropDown";
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const [value,setValue] = useState('');
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [activeCategoryHover, setActiveCategoryHover] = useState<string>("");
+  const [value, setValue] = useState("");
   const navigate = useNavigate();
+
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     setIsMobileSearchOpen(false);
@@ -20,31 +24,67 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
-    // Navigate to Cart - Siddharth 
+  // Navigate to Cart - Siddharth
   const handleBagClick = () => {
-    navigate('/cart');
-  };  
+    navigate("/cart");
+  };
 
-const handleSubmit=(e:any)=>{
-    e.preventDefault()
-    navigate(`/products/${value}`)
-    setValue('')
-}
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    navigate(`/products/${value}`);
+    setValue("");
+  };
+
+  const handleCategoryHover = (category: string) => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+    setActiveCategoryHover(category);
+    setIsCategoryDropdownOpen(true);
+  };
+
+  const handleCategoryLeave = () => {
+    const timeout = setTimeout(() => {
+      setIsCategoryDropdownOpen(false);
+      setActiveCategoryHover("");
+    }, 150);
+    setHoverTimeout(timeout);
+  };
+
+  const handleDropdownEnter = () => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+  };
+
+  const handleDropdownLeave = () => {
+    setIsCategoryDropdownOpen(false);
+    setActiveCategoryHover("");
+  };
+
+  const handleDropdownClose = () => {
+    setIsCategoryDropdownOpen(false);
+    setActiveCategoryHover("");
+  };
+
   return (
     <header className={styles.header}>
       {/* Top banner */}
       <div className={styles.topBanner}>
         <p className={styles.bannerText}>
-          <span className={styles.bannerTextBold}>FLAT ₹200 OFF</span> on first order! Use code: <span className={styles.bannerTextPink}>FIRST200</span>
+          <span className={styles.bannerTextBold}>FLAT ₹200 OFF</span> on first
+          order! Use code:{" "}
+          <span className={styles.bannerTextPink}>FIRST200</span>
         </p>
       </div>
-      
+
       <div className={styles.container}>
         <div className={styles.headerContent}>
-
           <div className={styles.hamLogo}>
             {/* Mobile Menu Button */}
-            <button 
+            <button
               className={styles.mobileMenuButton}
               onClick={toggleMobileMenu}
             >
@@ -52,51 +92,70 @@ const handleSubmit=(e:any)=>{
             </button>
 
             {/* Logo */}
-            <div className={styles.logo} onClick={()=>navigate('/')}>
-              <div className={styles.logoText}>
-                Wyntra
-              </div>
+            <div className={styles.logo} onClick={() => navigate("/")}>
+              <div className={styles.logoText}>Wyntra</div>
             </div>
           </div>
 
           {/* Desktop Navigation Menu */}
           <nav className={styles.nav}>
-            <div className={styles.navGroup}>
-              <Link to='/products/men' className={styles.navLink}>
+            <div
+              className={styles.navGroup}
+              onMouseEnter={() => handleCategoryHover("men")}
+              onMouseLeave={handleCategoryLeave}
+            >
+              <Link to="/products/men" className={styles.navLink}>
                 Men
               </Link>
             </div>
-            <div className={styles.navGroup}>
+            <div
+              className={styles.navGroup}
+              onMouseEnter={() => handleCategoryHover("women")}
+              onMouseLeave={handleCategoryLeave}
+            >
               <Link to="/products/women" className={styles.navLink}>
                 Women
               </Link>
             </div>
-            <div className={styles.navGroup}>
-              <a href="/products/kids" className={styles.navLink}>
+            <div
+              className={styles.navGroup}
+              onMouseEnter={() => handleCategoryHover("kids")}
+              onMouseLeave={handleCategoryLeave}
+            >
+              <Link to="/products/kids" className={styles.navLink}>
                 Kids
-              </a>
+              </Link>
             </div>
-           
+
+            <div>
+              <CategoryDropdown
+                isOpen={isCategoryDropdownOpen}
+                onClose={handleDropdownClose}
+                activeCategory={activeCategoryHover}
+                onMouseEnter={handleDropdownEnter}
+                onMouseLeave={handleDropdownLeave}
+              />
+            </div>
           </nav>
 
           {/* Desktop Search Bar */}
           <div className={styles.searchContainer}>
             <div className={styles.searchWrapper}>
               <Search className={styles.searchIcon} />
-            <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Search for products, brands and more"
-                className={styles.searchInput}
-                onChange={(e)=>setValue(e.target.value)}
-                value={value}
-              />
-            </form>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  placeholder="Search for products, brands and more"
+                  className={styles.searchInput}
+                  onChange={(e) => setValue(e.target.value)}
+                  value={value}
+                />
+              </form>
             </div>
           </div>
 
           {/* Mobile Search Button */}
-          <button 
+          <button
             className={styles.mobileMenuButton}
             onClick={toggleMobileSearch}
           >
@@ -105,47 +164,70 @@ const handleSubmit=(e:any)=>{
 
           {/* User Actions */}
           <div className={styles.userActions}>
-            <div className={styles.userAction} onClick={()=>navigate('/profile')}>
+            <div
+              className={styles.userAction}
+              onClick={() => navigate("/profile")}
+            >
               <User className={styles.userActionIcon} />
               <span className={styles.userActionText}>Profile</span>
             </div>
-            <div className={`${styles.userAction} ${styles.bagAction}`}onClick={()=>navigate('/wishlist')} >
+            <div
+              className={`${styles.userAction} ${styles.bagAction}`}
+              onClick={() => navigate("/wishlist")}
+            >
               <Heart className={styles.userActionIcon} />
               <span className={styles.userActionText}>Wishlist</span>
               <span className={styles.bagBadge}>3</span>
             </div>
-            <div className={`${styles.userAction} ${styles.bagAction}`} onClick={handleBagClick}>
+            <div
+              className={`${styles.userAction} ${styles.bagAction}`}
+              onClick={handleBagClick}
+            >
               <ShoppingBag className={styles.userActionIcon} />
               <span className={styles.userActionText}>Bag</span>
-              <span className={styles.bagBadge}>0 </span>
               <span className={styles.bagBadge}>0</span>
             </div>
           </div>
         </div>
 
+        {/* Category Dropdown */}
+
         {/* Mobile Search */}
-        <div className={`${styles.mobileSearch} ${isMobileSearchOpen ? styles.active : ''}`}>
+        <div
+          className={`${styles.mobileSearch} ${
+            isMobileSearchOpen ? styles.active : ""
+          }`}
+        >
           <div className={styles.mobileSearchWrapper}>
             <Search className={styles.searchIcon} />
-           <form onSubmit={handleSubmit}>
-           <input
-              type="text"
-              placeholder="Search for products, brands and more"
-              className={styles.searchInput}
-              onChange={(e)=>setValue(e.target.value)}
-              value={value}
-            />
-           </form>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Search for products, brands and more"
+                className={styles.searchInput}
+                onChange={(e) => setValue(e.target.value)}
+                value={value}
+              />
+            </form>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        <div className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.active : ''}`}>
+        <div
+          className={`${styles.mobileNav} ${
+            isMobileMenuOpen ? styles.active : ""
+          }`}
+        >
           <div className={styles.mobileNavLinks}>
-            <Link to="/products/men" className={styles.mobileNavLink}>Men</Link>
-            <Link to="/products/women" className={styles.mobileNavLink}>Women</Link>
-            <Link to="/products/kids" className={styles.mobileNavLink}>Kids</Link>
-           
+            <Link to="/products/men" className={styles.mobileNavLink}>
+              Men
+            </Link>
+            <Link to="/products/women" className={styles.mobileNavLink}>
+              Women
+            </Link>
+            <Link to="/products/kids" className={styles.mobileNavLink}>
+              Kids
+            </Link>
           </div>
         </div>
       </div>
