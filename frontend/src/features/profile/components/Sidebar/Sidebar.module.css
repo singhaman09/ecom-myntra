@@ -80,7 +80,7 @@
 }
 
 .menuItem.active {
-  background-color: rgba(255, 63, 108, 0.1);
+  background-color: rgba(4, 66, 54, 0.1);
   color: var(--primary-color);
   font-weight: 500;
 }

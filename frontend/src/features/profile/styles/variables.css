@@ -1,5 +1,5 @@
-:root {
-  /* Colors */
+/* :root {
+  
   --primary-color: #ff3f6c;
   --primary-dark: #e6386a;
   --secondary-color: #282c3f;
@@ -14,7 +14,7 @@
   --warning-color: #ff905a;
   --error-color: #ff6b6b;
 
-  /* Spacing */
+  
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -22,7 +22,7 @@
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
 
-  /* Typography */
+  
   --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-base: 16px;
@@ -30,17 +30,83 @@
   --font-size-xl: 20px;
   --font-size-2xl: 24px;
 
-  /* Borders */
+  
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
 
-  /* Shadows */
+  
   --shadow-sm: 0 2px 4px rgba(40, 44, 63, 0.1);
   --shadow-md: 0 4px 8px rgba(40, 44, 63, 0.12);
   --shadow-lg: 0 8px 16px rgba(40, 44, 63, 0.15);
 
-  /* Transitions */
+  
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:root {
+  
+   --primary-color: #044236;        /* Deep green */
+  --primary-dark: #033028;         /* Darker green */
+  --secondary-color: #02261f;      /* Very dark green */
+  --text-primary: #02261f;         /* Very dark green for text */
+  --text-secondary: #4a5c57;       /* Muted green-gray */
+  --text-muted: #7a8d88;           /* Lighter green-gray */
+  --border-color: #d1d9d7;         /* Very light green-gray */
+  --bg-primary: #ffffff;           /* Keep white background */
+  --bg-secondary: #f0f4f3;         /* Very light green tint */
+  --bg-hover: #e1e9e6;             /* Light green hover */
+  --success-color: #2e8b57;        /* Sea green */
+  --warning-color: #ffa500;        /* Keeping orange for visibility */
+  --error-color: #d9534f;          /* Soft red */
+
+  
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+
+  
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+
+  
+  /* Shadows (unchanged) */
+  --shadow-sm: 0 2px 4px rgba(2, 38, 31, 0.1);    /* Updated rgba to match new primary */
+  --shadow-md: 0 4px 8px rgba(2, 38, 31, 0.12);
+  --shadow-lg: 0 8px 16px rgba(2, 38, 31, 0.15);
+
+  
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
 }

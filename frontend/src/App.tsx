@@ -1,10 +1,8 @@
-
-import './App.css';
-import MainProfile from './features/profile/pages/Profile/MainProfile';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
-      <MainProfile />
+     <AppRoutes/>
   );
 }
 

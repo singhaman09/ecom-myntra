@@ -8,7 +8,8 @@ import {
   Trash2, 
   FileText, 
   Shield,
-  ChevronRight
+  ChevronRight,
+  Bell
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 import type { SidebarItem } from '../../types/profile.types';
@@ -31,6 +32,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, user }) => {
       id: 'profile',
       label: 'Profile',
       icon: 'User'
+    },
+    {
+      id: 'notifications',
+      label: 'Notifications',
+      icon: 'Bell'
     },
     {
       id: 'orders',
@@ -72,6 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, user }) => {
       Package,
       RefreshCw,
       User,
+      Bell,
       MapPin,
       Key,
       Trash2,
@@ -83,16 +90,21 @@ const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, user }) => {
   };
 
   const renderMenuItem = (item: SidebarItem) => (
-    <div
-      key={item.id}
-      className={`${styles.menuItem} ${activeItem === (item.id=='profile'?'/profile':'/profile/'+item.id)   ? styles.active : ''}`}
-      onClick={() => onItemClick(item.id)}
-    >
-      {item.icon && getIcon(item.icon)}
-      <span>{item.label}</span>
-      <ChevronRight className={styles.chevron} size={14} />
-    </div>
-  );
+  <div
+    key={item.id}
+    className={`${styles.menuItem} ${
+      activeItem.includes(`/profile/${item.id}`) || 
+      (item.id === 'profile' && activeItem === '/profile') 
+        ? styles.active 
+        : ''
+    }`}
+    onClick={() => onItemClick(item.id)}
+  >
+    {item.icon && getIcon(item.icon)}
+    <span>{item.label}</span>
+    <ChevronRight className={styles.chevron} size={14} />
+  </div>
+);
 
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();

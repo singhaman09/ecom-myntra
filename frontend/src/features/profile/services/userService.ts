@@ -1,8 +1,14 @@
 import axios from 'axios';
+import api from './api';
 import type { User } from '../types/profile.types';
 
 export const getUser = async (): Promise<User> => {
   const response = await axios.get('/profile'); // yahan real api point aega
+  return response.data;
+};
+
+export const updateUser = async (userData: Partial<User>): Promise<User> => {
+  const response = await api.patch('/edit-profile', userData); // Use the 'api' instance
   return response.data;
 };
 
