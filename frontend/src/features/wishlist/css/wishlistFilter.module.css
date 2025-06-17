@@ -22,7 +22,7 @@
   gap: 8px;
   background: none;
   border: none;
-  color: #282c3f;
+  color:  #00a65a;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
@@ -33,16 +33,16 @@
 }
 
 .toggleBtn:hover {
-  color: #ff3e6c;
+  color: #00a65a;
 }
 
 .toggleBtn:focus {
   outline: none;
-  color: #ff3e6c;
+  color:  #00a65a;
 }
 
 .toggleBtn.active {
-  color: #ff3e6c;
+  color:  #00a65a;
 }
 
 .toggleIcon {
@@ -54,7 +54,7 @@
 .clearAllBtn {
   background: none;
   border: none;
-  color: #ff3e6c;
+  color:  #00a65a;
   font-weight: 600;
   font-size: 12px;
   cursor: pointer;
@@ -81,6 +81,10 @@
   border-bottom: 1px solid #e9e9ed;
   transition: max-height 0.3s ease, opacity 0.3s ease;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  
 }
 
 .wishlistFilters.open {
@@ -136,7 +140,7 @@
   width: 16px;
   height: 16px;
   margin-right: 8px;
-  accent-color: #ff3e6c;
+  accent-color:  #00a65a;
   cursor: pointer;
 }
 
@@ -165,7 +169,7 @@
   width: 16px;
   height: 16px;
   margin-right: 8px;
-  accent-color: #ff3e6c;
+  accent-color:  #00a65a;
   cursor: pointer;
 }
 
@@ -182,6 +186,7 @@
   align-items: center;
   gap: 8px;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .priceInput {
@@ -196,8 +201,8 @@
 
 .priceInput:focus {
   outline: none;
-  border-color: #ff3e6c;
-  box-shadow: 0 0 0 1px #ff3e6c;
+  border-color: #00a65a;
+  box-shadow: 0 0 0 1px  #00a65a;
 }
 
 .priceInput::placeholder {
@@ -275,7 +280,7 @@
 /* Focus states for accessibility */
 .checkbox:focus,
 .radio:focus {
-  outline: 2px solid #ff3e6c;
+  outline: 2px solid  #00a65a;
   outline-offset: 2px;
 }
 

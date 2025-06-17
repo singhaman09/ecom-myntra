@@ -4,6 +4,7 @@ import Button from "../../../components/UI/Button";
 import StarRating from "../../../components/UI/StarRating";
 import styles from "../css/wishlistCard.module.css";
 import { useNavigate } from "react-router-dom";
+import { FaHeart } from 'react-icons/fa'; // solid heart icon
 
 interface WishlistCardProps {
   item: WishlistItem;
@@ -18,19 +19,23 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
 }) => {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
+  const [rating, setRating] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLiked] = useState(true); // assuming it's already in wishlist
 
   const handleMoveToCart = async () => {
     setIsLoading(true);
     try {
       await onMoveToCart();
-      navigate("/cart", { replace: true });
-    } catch (error) {
-      console.error("Failed to move item to cart:", error);
-      alert("Error moving item to cart. Please try again.");
+      navigate("/cart");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleNotifyMe = () => {
+    // Placeholder for notify me functionality
+    // console.log(`Notify me when ${item.name} is back in stock`);
   };
 
   const formatDate = (dateString: string) => {
@@ -94,11 +99,16 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
 
         <button
           className={styles.removeButton}
-          onClick={onRemove}
+          onClick={() => {
+            onRemove();
+          }}
           title="Remove from wishlist"
           aria-label="Remove from wishlist"
         >
-          ×
+          <FaHeart
+            color={isLiked ? "#00a65a" : "#d1d1d1"} // greenish if liked, grey if not
+            size={20}
+          />
         </button>
       </div>
 
@@ -111,7 +121,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
         </div>
 
         <div className={styles.itemRating}>
-          <StarRating rating={item.rating} readonly />
+          <StarRating rating={rating} onRatingChange={setRating} />
           <span className={styles.ratingText}>({item.rating})</span>
         </div>
 
@@ -151,23 +161,25 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
         </div>
 
         <div className={styles.cardActions}>
-          <Button
-            onClick={handleMoveToCart}
-            variant="primary"
-            disabled={!item.inStock || isLoading}
-            className={styles.addToCartButton}
-          >
-            {isLoading ? "Adding..." : "Add to Cart"}
-          </Button>
-
-          <Button
-            onClick={onRemove}
-            variant="secondary"
-            size="small"
-            className={styles.removeFromWishlistButton}
-          >
-            Remove
-          </Button>
+          {item.inStock ? (
+            <Button
+              onClick={handleMoveToCart}
+              variant="primary"
+              disabled={isLoading}
+              className={styles.addToCartButton}
+            >
+              {isLoading ? "Adding..." : "Add to Cart"}
+            </Button>
+          ) : (
+            <Button
+              onClick={handleNotifyMe}
+              variant="primary"
+              disabled={isLoading}
+              className={styles.NotifyToCartButton}
+            >
+              Notify Me
+            </Button>
+          )}
         </div>
       </div>
     </div>

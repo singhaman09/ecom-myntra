@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import type { WishlistItem, WishlistFilters, WishlistState } from '../types/wishlist';
+import type { WishlistFilters, WishlistState } from '../types/wishlist';
 import { apiService } from '../api';
 
 const initialFilters: WishlistFilters = {

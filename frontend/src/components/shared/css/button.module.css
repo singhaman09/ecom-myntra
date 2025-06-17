@@ -14,25 +14,30 @@
 }
 
 .buttonPrimary {
-  background: #ff3f6c;
+  background: #00a65a;
+  color: #fff;
+}
+.buttonDanger {
+  
+  background: #00a65a;
   color: #fff;
 }
 
-.buttonPrimary:hover {
-  background: #e63946;
-}
+/* .buttonPrimary:hover {
+  background: #f3f5f4;
+} */
 
 .buttonSecondary {
   background: #fff;
-  color: #ff3f6c;
-  border: 1px solid #ff3f6c;
+  color: #00a65a;
+  border: 1px solid #00a65a;
 }
 
 .buttonSecondary:hover {
-  background: #fff0f3;
+  background: #9ad4ba;
 }
 .buttonDisabled {
-  background: #f0f0f0;
-  color: #94969f;
+  background: #00a65a;
+  color: #00a65a;
   cursor: not-allowed;
 }

@@ -51,7 +51,7 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  background: #ff905a; /* Myntra's orange for discounts */
+  background:  #00a65a; /* Myntra's orange for discounts */
   color: #fff;
   padding: 4px 8px;
   border-radius: 4px;
@@ -63,7 +63,7 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  background: #ff6b6b; /* Myntra's red for out-of-stock */
+  background:  #00a65a; /* Myntra's red for out-of-stock */
   color: #fff;
   padding: 4px 8px;
   border-radius: 4px;
@@ -91,8 +91,8 @@
 }
 
 .removeButton:hover {
-  background: rgba(255, 63, 108, 0.1);
-  color: #ff3f6c; /* Myntra's pink accent */
+  background: rgba(0, 166, 90, 0.1); /* Updated to greenish */
+  color: #00a65a; /* Updated to greenish */
   transform: scale(1.1);
 }
 
@@ -179,7 +179,7 @@
 
 .savings {
   font-size: 12px;
-  color: #ff905a; /* Myntra's orange for savings */
+  color:  #00a65a; /* Myntra's orange for savings */
   font-weight: 500;
 }
 
@@ -212,12 +212,21 @@
 .cardActions {
   display: flex;
   gap: 8px;
+  background-color: #fff;
+  border:#00a65a 1px solid;
 }
 
 .addToCartButton,
 .removeFromWishlistButton {
   flex: 1;
+  background-color: #045330;
 }
+.NotifyToCartButton {
+  width: 100%;
+  background-color: #fff;
+  color: #05521e;
+}
+
 
 /* Responsive design */
 @media (max-width: 480px) {
@@ -248,5 +257,4 @@
 
   .originalPrice {
     font-size: 12px;
-  }
-}
+  }}

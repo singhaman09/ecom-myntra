@@ -76,7 +76,7 @@ const WishlistList: React.FC = () => {
           <p>{totalItems} items in your wishlist</p>
         </div>
 
-        <div className={styles.listControls}>
+        {/* <div className={styles.listControls}>
           <label>
             Show:
             <select
@@ -89,7 +89,7 @@ const WishlistList: React.FC = () => {
               <option value={48}>48 per page</option>
             </select>
           </label>
-        </div>
+        </div> */}
       </div>
 
       {paginatedItems.length === 0 ? (
@@ -160,25 +160,6 @@ const WishlistList: React.FC = () => {
           )}
         </>
       )}
-
-      <div className={styles.wishlistStats}>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>{totalItems}</span>
-          <span className={styles.statLabel}>Total Items</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>
-            ${(filteredItems.reduce((sum, item) => sum + item.price, 0) / 100).toFixed(2)}
-          </span>
-          <span className={styles.statLabel}>Total Value</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>
-            {filteredItems.filter((item) => item.inStock).length}
-          </span>
-          <span className={styles.statLabel}>In Stock</span>
-        </div>
-      </div>
     </div>
   );
 };

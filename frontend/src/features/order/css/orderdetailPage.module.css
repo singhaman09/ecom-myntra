@@ -12,7 +12,7 @@
 }
 
 .backLink {
-  color: #ff3e6c;
+  color: #0b721c;
   text-decoration: none;
   font-size: 16px;
   font-weight: 500;
@@ -65,14 +65,14 @@
 
 .errorIcon {
   font-size: 40px;
-  color: #ff3e6c;
+  color: #0b721c;
   margin-bottom: 20px;
 }
 
 .backButton {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #ff3e6c;
+  background-color: #0b721c;
   color: white;
   text-decoration: none;
   border-radius: 4px;
@@ -80,5 +80,5 @@
 }
 
 .backButton:hover {
-  background-color: #e3355a;
+  background-color: #0b721c;
 }
