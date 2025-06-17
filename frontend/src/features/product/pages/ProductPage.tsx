@@ -89,7 +89,7 @@ useEffect(()=>{
     }));
   }, []);
   const handleReset = useCallback(() => {
-    console.log(filters.price)
+   
     const newParams = new URLSearchParams(searchParams.toString());
       ['category', 'brand', 'color', 'gender', 'price', 'subCategory'].forEach(param =>
         newParams.delete(param)
@@ -111,7 +111,7 @@ useEffect(()=>{
    
     (event: React.SyntheticEvent | Event, newValue: number | number[]) => {
       const valueArray = Array.isArray(newValue) ? newValue : [newValue];
-      console.log(valueArray)
+      
       setFilters(prevFilters => ({
         ...prevFilters,
         price: valueArray,
