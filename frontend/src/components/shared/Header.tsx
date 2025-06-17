@@ -126,7 +126,6 @@ const handleSubmit=(e:any)=>{
               <ShoppingBag className={styles.userActionIcon} />
               <span className={styles.userActionText}>Bag</span>
               <span className={styles.bagBadge}>0 </span>
-              <span className={styles.bagBadge}>0</span>
             </div>
           </div>
         </div>
