@@ -1,8 +1,14 @@
 import axios from 'axios';
+import api from './api';
 import type { User } from '../types/profile.types';
 
 export const getUser = async (): Promise<User> => {
-  const response = await axios.get('/profile'); // yahan real api point aega
+  const response = await axios.get('/profile');
+  return response.data;
+};
+
+export const updateUser = async (userData: Partial<User>): Promise<User> => {
+  const response = await api.patch('/edit-profile', userData);
   return response.data;
 };
 
@@ -17,7 +23,8 @@ export const changePassword = async (
 };
 
 
-export const verifyPassword = async (currentPassword: string): Promise<void> => {
+export const verifyPassword = async (currentPassword: string): Promise<{ success: boolean; message?: string }> => {
   await axios.post('/api/verify-password', { currentPassword });
+  return { success: true};
 };
 

@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 10px;
-  background-color: #fff6f4;
+  background-color: #fff;
   border: 1px solid #ffe6d9;
   border-radius: 3px;
   margin-bottom: 8px;
@@ -53,7 +53,7 @@
   padding: 6px 0; /* Larger padding for touch target */
   font-size: 10px;
   font-weight: 600;
-  color: #ff3f6c;
+  color: #044236;
   cursor: pointer;
   text-align: left;
   width: 100%; /* Full-width for easier tapping */
@@ -66,11 +66,11 @@
 }
 
 .showMore:hover {
-  color: #e0355b; /* Slightly darker shade on hover */
+  color: #044236; /* Slightly darker shade on hover */
 }
 
 .showMoreOpen {
-  color: #e0355b; /* Darker shade when expanded */
+  color: #044236; /* Darker shade when expanded */
 }
 
 /* Medium screens (tablets, ≥481px) */
@@ -96,7 +96,7 @@
   }
 
   .showMore {
-    font-size: 11px;
+    font-size: 13px;
   }
 }
 

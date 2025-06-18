@@ -31,7 +31,7 @@
 
 .section h3 {
   font-weight: 600;
-  color: #111827;
+  color: #0f3b02;
   margin-bottom: 1rem;
   font-size: 0.875rem;
   text-transform: uppercase;
@@ -306,7 +306,7 @@
 }
 
 .bottomFooter {
-  background-color: #1f2937;
+  background-color: #067040;
   color: white;
   padding: 1.5rem 0;
 }
@@ -346,6 +346,7 @@
   margin-bottom: 1rem;
   flex-wrap: wrap;
   justify-content: center;
+  color: #fff;
 }
 
 @media (min-width: 768px) {

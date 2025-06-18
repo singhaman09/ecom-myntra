@@ -60,7 +60,7 @@
 }
 
 .modalClose:hover {
-  color: #ff3f6c;
+  color: rgb(10, 88, 16);
 }
 
 .noCoupons {
@@ -150,7 +150,7 @@
 }
 
 .applyCouponButton {
-  background: linear-gradient(90deg, #ff3f6c, #ff5c84);
+  background-color: #08681f;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -164,7 +164,7 @@
 }
 
 .applyCouponButton:hover {
-  background: linear-gradient(90deg, #ff5c84, #ff3f6c);
+  background: #08681f;
   transform: scale(1.05);
 }
 

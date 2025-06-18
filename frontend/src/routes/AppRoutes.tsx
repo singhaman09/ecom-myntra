@@ -4,7 +4,6 @@ import Layout from "../components/shared/Layout";
 import { ProtectedRoute, AuthRoute } from "./ProtectedRoute";
 import Home from "../features/home/pages/Home";
 import Login from "../features/auth/pages/Login";
-
 import Register from "../features/auth/pages/Register";
 import ForgotPassword from "../features/auth/pages/ForgotPassword";
 import ProductPage from "../features/product/pages/ProductPage";
@@ -26,6 +25,8 @@ import DeleteAccount from "../features/profile/pages/DeleteAccount/DeleteAccount
 import TermsOfUse from "../features/profile/pages/Legal/TermsOfUse";
 import PrivacyPolicy from "../features/profile/pages/Legal/PrivacyPolicy";
 import Profile from "../features/profile/pages/Profile/Profile";
+import Notifications from "../features/profile/pages/Notifications/Notifications";
+import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -50,6 +51,10 @@ const AppRoutes: React.FC = () => {
           element: <ProductDetails />,
         },
         {
+          path: ":slug",
+          element: <ProductPage />,
+        },
+        {
           element: <AuthRoute />,
           children: [
             {
@@ -66,7 +71,6 @@ const AppRoutes: React.FC = () => {
             },
             {
               path: "forgot-password",
-              // element: <ForgotPassword />,
               children: [
                 {
                   path: "",
@@ -91,6 +95,10 @@ const AppRoutes: React.FC = () => {
               path: "profile",
               element: <MainProfile/>,
               children:[
+                {
+                  path: "notifications",
+                  element: <Notifications/>,
+                },
                 {
                   path: "",
                   element: <Profile/>,
@@ -148,6 +156,44 @@ const AppRoutes: React.FC = () => {
         {
           path: "*",
           element: <div>404 - Page Not Found</div>,
+        },
+      ],
+    },
+    {
+      element: <AuthRoute />,
+      children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "signup",
+          element: <Register />,
+        },
+        {
+          path: "reg-success",
+          element: <CongratulationsPage />
+        },
+        {
+          path: "verify-email",
+          element: <VerifyEmail />,
+        },
+        {
+          path: "forgot-password",
+          children: [
+            {
+              path: "",
+              element: <ForgotPassword />,
+            },
+            {
+              path: "verify-otp",
+              element: <VerifyOtpForgotPass />,
+            },
+            {
+              path: "reset-password",
+              element: <ResetPassword />,
+            },
+          ],
         },
       ],
     },

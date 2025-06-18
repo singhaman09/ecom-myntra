@@ -7,14 +7,14 @@
 }
 
 .topBanner {
-  background-color: #fdf2f8;
+  background-color: #f6f1e9;
   padding: 0.5rem 0;
   text-align: center;
 }
 
 .bannerText {
   font-size: 0.875rem;
-  color: #374151;
+  color: #edeff1;
 }
 
 @media (max-width: 768px) {
@@ -29,13 +29,13 @@
 
 .bannerTextPink {
   font-weight: 600;
-  color: #ec4899;
+  color: #00a65a;
 }
 
 .container {
-  max-width: 100%;
+  max-width: 70%;
   margin: 0 auto;
-  padding: 0 3rem;
+  padding: 0rem;
 }
 
 .headerContent {
@@ -50,6 +50,10 @@
   .headerContent {
     height: 3.5rem;
   }
+  .container {
+    padding: 0 1rem;
+    max-width: 100%;
+  }
 }
 
 .logo {
@@ -60,7 +64,7 @@
 .logoText {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ec4899;
+  color:  #00a65a;
   text-decoration: none;
 }
 
@@ -82,11 +86,15 @@
   display: none;
   gap: 2rem;
   margin-left: 3rem;
+  position: relative;
 }
 
 @media (min-width: 769px) {
   .nav {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    
   }
 }
 
@@ -106,7 +114,7 @@
 }
 
 .navLink:hover {
-  color: #ec4899;
+  color:  #00a65a;
 }
 
 
@@ -148,7 +156,7 @@
 }
 
 .searchInput:focus {
-  kerning: 2px solid #ec4899;
+  kerning: 2px solid  #00a65a;
   border-color: transparent;
 }
 
@@ -174,7 +182,7 @@
 
 .userAction:hover .userActionIcon,
 .userAction:hover .userActionText {
-  color: #ec4899;
+  color:  #00a65a;
 }
 
 .userActionIcon {
@@ -212,7 +220,7 @@
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
-  background-color: #ef4444;
+  background-color:  #00a65a;
   color: white;
   font-size: 0.75rem;
   border-radius: 50%;
@@ -298,6 +306,6 @@
 }
 
 .mobileNavLink:hover {
-  color: #ec4899;
-  border-color: #ec4899;
+  color:  #00a65a;
+  border-color:  #00a65a;
 }

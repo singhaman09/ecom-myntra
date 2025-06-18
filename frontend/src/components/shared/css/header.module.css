@@ -1,0 +1,303 @@
+.header {
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topBanner {
+  background-color: #f6f1e9;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+
+.bannerText {
+  font-size: 0.875rem;
+  color: #edeff1;
+}
+
+@media (max-width: 768px) {
+  .bannerText {
+    font-size: 0.75rem;
+  }
+}
+
+.bannerTextBold {
+  font-weight: 600;
+}
+
+.bannerTextPink {
+  font-weight: 600;
+  color: #00a65a;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    height: 3.5rem;
+  }
+}
+
+.logo {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color:  #00a65a;
+  text-decoration: none;
+}
+
+.hamLogo {
+  display: flex;
+  flex-direction: row ;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+@media (max-width: 768px) {
+  .logoText {
+    font-size: 1.25rem;
+  }
+}
+
+.nav {
+  display: none;
+  gap: 2rem;
+  margin-left: 3rem;
+}
+
+@media (min-width: 769px) {
+  .nav {
+    display: flex;
+  }
+}
+
+.navGroup {
+  position: relative;
+}
+
+.navLink {
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color:  #00a65a;
+}
+
+
+.searchContainer {
+  flex: 1;
+  max-width: 28rem;
+  margin: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .searchContainer {
+    display: none;
+  }
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  width: 1rem;
+  height: 1rem;
+}
+
+.searchInput {
+  width: 80%;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.searchInput:focus {
+  kerning: 2px solid  #00a65a;
+  border-color: transparent;
+}
+
+.userActions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .userActions {
+    gap: 1rem;
+  }
+}
+
+.userAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.userAction:hover .userActionIcon,
+.userAction:hover .userActionText {
+  color:  #00a65a;
+}
+
+.userActionIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #374151;
+  transition: color 0.2s;
+}
+
+@media (max-width: 768px) {
+  .userActionIcon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+.userActionText {
+  font-size: 0.75rem;
+  color: #374151;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+@media (max-width: 768px) {
+  .userActionText {
+    font-size: 0.625rem;
+  }
+}
+
+.bagAction {
+  position: relative;
+}
+
+.bagBadge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  background-color:  #00a65a;
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .bagBadge {
+    width: 1rem;
+    height: 1rem;
+    font-size: 0.625rem;
+  }
+}
+
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .mobileMenuButton {
+    display: block;
+  }
+}
+
+.mobileSearch {
+  display: none;
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .mobileSearch.active {
+    display: block;
+  }
+}
+
+.mobileSearchWrapper {
+  position: relative;
+  max-width: 100%;
+}
+
+.mobileNav {
+  display: none;
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .mobileNav.active {
+    display: block;
+  }
+}
+
+.mobileNavLinks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.mobileNavLink {
+  text-align: center;
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 0.5rem;
+  text-decoration: none;
+  transition: color 0.2s;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+}
+
+.mobileNavLink:hover {
+  color:  #00a65a;
+  border-color:  #00a65a;
+}

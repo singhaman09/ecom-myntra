@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaTag } from "react-icons/fa";
 import CartHeader from "../components/CartHeader";
 import CartList from "../components/CartList";
-import { STATIC_COUPONS, STATIC_OFFERS } from "../staticData/StaticData";
+import { DISCOUNT, STATIC_COUPONS, STATIC_OFFERS } from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
 import AddressSection from "../components/AddressSection";
 import OffersSection from "../components/OffersSection";
@@ -19,7 +19,6 @@ import {
   fetchCart,
   updateItemQuantity,
   deleteCartItem,
-  deleteSelectedItems,
   moveToWishlist,
 } from "../redux/cartSlice";
 import type { RootState, AppDispatch } from "../../../store/store";
@@ -74,11 +73,6 @@ const CartPage: React.FC = () => {
     dispatch(deleteCartItem(id));
   };
 
-  const handleRemoveSelected = () => {
-    dispatch(deleteSelectedItems(selectedItems));
-    setSelectedItems([]);
-    navigate("/cart");
-  };
 
   const handleMoveToWishlist = async () => {
     await Promise.all(selectedItems.map((id) => dispatch(moveToWishlist(id))));
@@ -110,7 +104,7 @@ const CartPage: React.FC = () => {
     0
   );
   const totalPrice = items.reduce(
-    (acc, item) => acc + (item.price - item.discount) * item.quantity,
+    (acc, item) => acc + (item.price - DISCOUNT) * item.quantity,
     0
   );
   const finalPrice = totalPrice - appliedCouponDiscount;
@@ -161,44 +155,42 @@ const CartPage: React.FC = () => {
             </div>
           </div>
 
-          <div className={styles.rightSection}>
-            <div className={styles.couponsSection}>
-              <div className={styles.couponsHeader}>
-                <span className={styles.couponsTitle}>COUPONS</span>
+            <div className={styles.rightSection}>
+              <div className={styles.couponsSection}>
+                <div className={styles.couponsHeader}>
+                  <span className={styles.couponsTitle}>COUPONS</span>
+                </div>
+                <div className={styles.applyCoupons}>
+                  <FaTag className={styles.tagIcon} />
+                  <span className={styles.applyCouponsText}>
+                    Apply Coupons{" "}
+                  </span>
+                  <button
+                    className={styles.applyButton}
+                    onClick={() => navigate("/cart?modal=coupon")}
+                  >
+                    APPLY
+                  </button>
+                </div>
               </div>
-              <div className={styles.applyCoupons}>
-                <FaTag className={styles.tagIcon} />
-                <span className={styles.applyCouponsText}>
-                  Apply Coupons{" "}
-                </span>
-                <button
-                  className={styles.applyButton}
-                  onClick={() => navigate("/cart?modal=coupon")}
-                >
-                  APPLY
-                </button>
-              </div>
+              <CartSummary
+                totalItems={items.length}
+                totalPrice={finalPrice}
+                totalMRP={totalMRP}
+              />
             </div>
-            <CartSummary
-              totalItems={items.length}
-              totalPrice={finalPrice}
-              totalMRP={totalMRP}
-              onCheckout={() => alert("Proceeding to checkout...")}
-            />
           </div>
-        </div>
 
-        {modal === "remove" && (
-          <RemoveModal
-            showRemoveModal={true}
-            modalAction={modalAction}
-            selectedItems={selectedItems}
-            handleRemoveSelected={handleRemoveSelected}
-            handleMoveToWishlist={handleMoveToWishlist}
-            setShowRemoveModal={() => navigate("/cart")}
-            setModalAction={setModalAction}
-          />
-        )}
+          {modal === "remove" && (
+            <RemoveModal
+              showRemoveModal={true}
+              modalAction={modalAction}
+              selectedItems={selectedItems}
+              handleMoveToWishlist={handleMoveToWishlist}
+              setShowRemoveModal={() => navigate("/cart")}
+              setModalAction={setModalAction}
+            />
+          )}
 
         {modal === "coupon" && (
           <CouponModal
