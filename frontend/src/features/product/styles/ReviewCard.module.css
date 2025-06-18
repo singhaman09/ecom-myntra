@@ -21,12 +21,14 @@
     font-size: 0.95rem;
     font-weight: 500;
     color: #111827;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .title {
     font-weight: 500;
     color: #111827;
     margin-bottom: 8px;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .comment {
@@ -34,6 +36,7 @@
     font-size: 0.97rem;
     margin-bottom: 12px;
     line-height: 1.6;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .metaRow {
@@ -42,6 +45,7 @@
     justify-content: space-between;
     font-size: 0.82rem;
     color: #6b7280;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .metaLeft {
@@ -56,6 +60,7 @@
     padding: 2px 8px;
     border-radius: 6px;
     font-size: 0.82rem;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .size {
@@ -80,9 +85,42 @@
     cursor: pointer;
     transition: color 0.2s;
     padding: 0;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .helpfulBtn:hover {
     color: #111827;
   }
-  
+  .helpfulContainer{
+    display: flex;
+    flex-direction: column;
+   
+  }
+  .count{
+    margin-top: -15px;
+    font-size: 14px;
+    color:grey;
+    font-family: 'Work Sans', sans-serif;
+  }
+  .reportButton{
+   padding: 10px;
+   background-color: transparent;
+   border: 1px solid #3D857E;
+   color: #3D857E;
+   font-family: 'Work Sans', sans-serif;
+  }
+  .helpOuter{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  .buttonContainer{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .buttonContainer button{
+    padding: 12px;
+    width: 100px;
+    font-family: 'Work Sans', sans-serif;
+  }

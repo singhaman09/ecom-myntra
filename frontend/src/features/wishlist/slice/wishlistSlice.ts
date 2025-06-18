@@ -42,7 +42,7 @@ const initialState: WishlistState = {
   categories: [],
 };
 
-// Async thunks (unchanged, already using apiService)
+// Async thunks
 export const fetchWishlistItems = createAsyncThunk(
   "wishlist/fetchItems",
   async (_, { rejectWithValue }) => {
@@ -207,6 +207,7 @@ const wishlistSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Fetch wishlist items
       .addCase(fetchWishlistItems.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -214,8 +215,6 @@ const wishlistSlice = createSlice({
       .addCase(fetchWishlistItems.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload;
-        state.filteredItems = action.payload;
-        state.totalItems = action.payload.length;
         state.categories = Array.from(
           new Set(action.payload.map((item) => item.category))
         );
@@ -225,6 +224,8 @@ const wishlistSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      
+      // Add to wishlist
       .addCase(addToWishlist.fulfilled, (state, action) => {
         state.items.push(action.payload);
         if (!state.categories.includes(action.payload.category)) {
@@ -235,13 +236,23 @@ const wishlistSlice = createSlice({
       .addCase(addToWishlist.rejected, (state, action) => {
         state.error = action.payload as string;
       })
+      
+      // Remove from wishlist
+      .addCase(removeFromWishlist.pending, (state) => {
+        state.loading = false; // Don't show loading for remove action
+      })
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
-        state.items = state.items.filter((item) => item.id !== action.payload);
+        state.items = state.items.filter(
+          (item) => item.id !== action.payload
+        );
         wishlistSlice.caseReducers.applyFilters(state);
+        state.error = null;
       })
       .addCase(removeFromWishlist.rejected, (state, action) => {
         state.error = action.payload as string;
       })
+      
+      // Update wishlist item
       .addCase(updateWishlistItem.fulfilled, (state, action) => {
         const index = state.items.findIndex(
           (item) => item.id === action.payload.id
@@ -254,6 +265,8 @@ const wishlistSlice = createSlice({
       .addCase(updateWishlistItem.rejected, (state, action) => {
         state.error = action.payload as string;
       })
+      
+      // Move to cart
       .addCase(moveToCart.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.id !== action.payload);
         wishlistSlice.caseReducers.applyFilters(state);

@@ -1,26 +1,32 @@
-/* Card container */
+/* Wishlist Card Styles */
 .wishlistCard {
-  background: #fff;
-  border: 1px solid #eaeaec; /* Myntra's subtle border */
-  border-radius: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
   display: flex;
   flex-direction: column;
+  font-family: 'Work Sans';
+  height: 100%;
 }
 
 .wishlistCard:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Image container */
+.wishlistCard.outOfStock {
+  opacity: 0.8;
+}
+
+/* Image Container */
 .imageContainer {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 220px;
   overflow: hidden;
-  background-color: #f5f5f6; /* Myntra's light background for placeholders */
 }
 
 .itemImage {
@@ -30,90 +36,103 @@
   transition: transform 0.3s ease;
 }
 
-.itemImage:hover {
+.wishlistCard:hover .itemImage {
   transform: scale(1.05);
 }
 
 .imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: #f8f9fa;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  background: #f5f5f6;
-  color: #94969f;
+  color: #6c757d;
   font-size: 14px;
-  font-weight: 500;
+  font-family: 'Work Sans';
+  
 }
 
-/* Badges */
+/* Badges and Overlays */
 .discountBadge {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #ff905a; /* Myntra's orange for discounts */
-  color: #fff;
+  top: 12px;
+  left: 12px;
+  background: #e74c3c;
+  color: white;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  z-index: 2;
 }
 
 .outOfStockOverlay {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #ff6b6b; /* Myntra's red for out-of-stock */
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 2;
 }
 
-/* Remove button */
+/* Remove Button (Heart Icon) */
 .removeButton {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 16px;
-  color: #666;
   transition: all 0.3s ease;
+  z-index: 3;
+  backdrop-filter: blur(10px);
+  font-family: 'Work Sans';
 }
 
 .removeButton:hover {
-  background: rgba(255, 63, 108, 0.1);
-  color: #ff3f6c; /* Myntra's pink accent */
+  background: rgb(255, 255, 255);
   transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Content */
+.removeButton:active {
+  transform: scale(0.95);
+}
+
+/* Item Content */
 .itemContent {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex-grow: 1;
+  font-family: 'Work Sans';
 }
 
 .itemHeader {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .itemName {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
+  font-family: 'Work Sans';
+  color: #2c3e50;
   margin: 0 0 4px 0;
-  color: #282c3f; /* Myntra's dark text */
-  line-height: 1.3;
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -121,9 +140,11 @@
 }
 
 .category {
-  font-size: 14px;
-  color: #94969f; /* Myntra's secondary text */
-  margin: 0;
+  font-size: 12px;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 /* Rating */
@@ -131,31 +152,30 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .ratingText {
-  font-size: 12px;
-  color: #94969f;
+  font-size: 14px;
+  color: #7f8c8d;
+  font-family: 'Work Sans';
 }
 
 /* Description */
 .itemDescription {
   font-size: 14px;
-  color: #535766;
-  margin: 0 0 12px 0;
-  line-height: 1.4;
+  color: #6c757d;
+  line-height: 1.5;
+  margin-bottom: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  font-family: 'Work Sans';
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Price section */
+/* Price Section */
 .priceSection {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
   margin-bottom: 12px;
 }
 
@@ -163,90 +183,169 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 4px;
 }
 
 .currentPrice {
-  font-size: 16px;
-  font-weight: 600;
-  color: #282c3f;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c3e50;
 }
 
 .originalPrice {
   font-size: 14px;
-  color: #94969f;
+  color: #95a5a6;
   text-decoration: line-through;
 }
 
 .savings {
   font-size: 12px;
-  color: #ff905a; /* Myntra's orange for savings */
-  font-weight: 500;
+  color: #27ae60;
+  font-weight: 600;
 }
 
-/* Meta */
+/* Item Meta */
 .itemMeta {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
+  font-size: 12px;
 }
 
 .dateAdded {
-  font-size: 12px;
-  color: #94969f;
+  color: #7f8c8d;
 }
 
 .stockStatus {
-  font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
 }
 
-.inStock {
-  color: #03a685; /* Myntra's green for in-stock */
+.stockStatus.inStock {
+  background: #d5f4e6;
+  color: #27ae60;
 }
 
-.outOfStock {
-  color: #ff6b6b; /* Myntra's red for out-of-stock */
+.stockStatus.outOfStock {
+  background: #fdeaea;
+  color: #e74c3c;
 }
 
-/* Actions */
+/* Card Actions */
 .cardActions {
-  display: flex;
-  gap: 8px;
+  margin-top: auto;
 }
 
 .addToCartButton,
-.removeFromWishlistButton {
-  flex: 1;
+.notifyButton {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-/* Responsive design */
-@media (max-width: 480px) {
-  .cardActions {
-    flex-direction: column;
-  }
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
 
-  .addToCartButton,
-  .removeFromWishlistButton {
-    width: 100%;
-  }
+.modal {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
 
+.modal h3 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-family: 'Work Sans';
+}
+
+.modal p {
+  margin: 0 0 24px 0;
+  color: #6c757d;
+  line-height: 1.5;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.modalActions button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  min-width: 80px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .wishlistCard {
+    margin-bottom: 16px;
+  }
+  
   .imageContainer {
-    height: 200px; /* Smaller image on mobile */
+    height: 180px;
   }
-
-  .itemName {
-    font-size: 14px;
+  
+  .itemContent {
+    padding: 12px;
   }
-
-  .category {
-    font-size: 12px;
+  
+  .modal {
+    margin: 20px;
+    padding: 20px;
   }
-
-  .currentPrice {
-    font-size: 14px;
+  
+  .modalActions {
+    flex-direction: column-reverse;
   }
-
-  .originalPrice {
-    font-size: 12px;
+  
+  .modalActions button {
+    width: 100%;
   }
 }

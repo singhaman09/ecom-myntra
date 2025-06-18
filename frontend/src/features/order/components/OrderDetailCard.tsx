@@ -1,6 +1,8 @@
-import React from 'react';
-import type { Order } from '../types/orders';
-import styles from '../css/orderdetailCard.module.css';
+import React from "react";
+import type { Order } from "../types/orders";
+import styles from "../css/orderdetailCard.module.css";
+
+import shoes from '../../../assets/shoes.jpeg';
 
 interface OrderDetailCardProps {
   order: Order;
@@ -8,19 +10,24 @@ interface OrderDetailCardProps {
 
 const OrderDetailCard: React.FC<OrderDetailCardProps> = ({ order }) => {
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   };
 
   return (
     <div className={styles.orderDetailCard}>
-      <h2 className={styles.sectionTitle}>Order Items</h2>
+     <div className={styles.orderId}>{order.id.slice(-8)}</div>
+     <div>Ordered on: {formatDate(order.orderDate)}</div>
       {order.items.map((item) => (
         <div key={item.id} className={styles.item}>
-          <img src={item.image} alt={item.name} className={styles.itemImage} />
+          <img
+            src={shoes}
+            alt={item.name}
+            className={styles.itemImage}
+          />
           <div className={styles.itemDetails}>
             <div className={styles.brand}>{item.brand}</div>
             <div className={styles.name}>{item.name}</div>
@@ -32,18 +39,6 @@ const OrderDetailCard: React.FC<OrderDetailCardProps> = ({ order }) => {
           </div>
         </div>
       ))}
-      <div className={styles.orderMeta}>
-        <div>Ordered on: {formatDate(order.orderDate)}</div>
-        {order.deliveryDate && (
-          <div>Delivered on: {formatDate(order.deliveryDate)}</div>
-        )}
-        {order.deliveryAddress && (
-          <div className={styles.address}>
-            Delivery Address: {order.deliveryAddress.name}, {order.deliveryAddress.addressLine1},{' '}
-            {order.deliveryAddress.city}, {order.deliveryAddress.state} - {order.deliveryAddress.pincode}
-          </div>
-        )}
-      </div>
     </div>
   );
 };

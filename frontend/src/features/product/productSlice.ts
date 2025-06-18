@@ -28,7 +28,9 @@ const productSlice = createSlice({
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload.products;
+        if(!action.payload.skip) state.products=action.payload.products
+        else state.products = [...state.products, ...action.payload.products];
+        
         state.sideBarData=action.payload.sideBar
         state.totalProducts=action.payload.totalProducts
         state.limit=action.payload.limit

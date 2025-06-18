@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import styles from "../styles/ChangeAddressModal.module.css";
+import styles from "../styles/ChangeAddressModal.module.css"; // Adjust the path as necessary
 
 interface Address {
   id: string;

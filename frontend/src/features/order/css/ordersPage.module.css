@@ -1,12 +1,13 @@
 /* ordersPage.module.css - Myntra Style */
 
-.ordersPage {
+.ordersPage > * {
+  margin-left: auto;
+  margin-right: auto;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f5f5f6;
-  min-height: 100vh;
+  width: 100%;
+  margin-top: 22px;
 }
+
 
 /* Page Header */
 .pageHeader {
@@ -16,6 +17,7 @@
   margin-bottom: 24px;
   background: white;
   padding: 20px 24px;
+  font-family: 'Work Sans';
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }

@@ -6,7 +6,7 @@ import { useProductDispatch, useProductSelector } from '../hooks/storeHooks';
 import Loader from '../utils/Loader';
 import type { filters } from '../interfaces/ProductInterfaces';
 import TrendingCard from '../components/TrendingCard';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 // Lazy load components
 const Breadcrumbs = React.lazy(() => import('../utils/BreadCrumbs'));
 const SideBarMain = React.lazy(() => import('../components/SideBarMain'));
@@ -22,6 +22,7 @@ const ProductPage: React.FC = () => {
   const { slug } = useParams();
   const dispatch = useProductDispatch();
   const data = useProductSelector(state => state.product);
+  const [page,setPage]=useState(1)
   const [filters, setFilters] = useState<filters>({
     category: [],
     subCategory: [],
@@ -48,9 +49,9 @@ useEffect(()=>{
 
   // Fetch products when filters or slug change
   useEffect(() => {
-    dispatch(getProducts({ filters, slug ,searchParams}));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [dispatch, searchParams, slug]);
+    dispatch(getProducts({ filters, slug ,searchParams,page}));
+   
+  }, [dispatch, searchParams, slug,page]);
 
   // Helper to update filters
   const handleFilterChange = (key: keyof typeof filters, value: string, checked: boolean) => {
@@ -138,6 +139,9 @@ const apply=()=>{
   setSearchParams(searchParams,{replace:true})
   setIsDrawerOpen(false)
 }
+const fetchMoreData = () => {
+  setPage(prev => prev + 1);
+};
   // Render
   return (
     <div>
@@ -174,10 +178,23 @@ const apply=()=>{
                   <UpperFilterBar
                     setIsDrawerOpen={setIsDrawerOpen}
                     />
-                    {data.products.length ?   <ProductList
+                    <InfiniteScroll
+                    dataLength={data.products.length}
+                    next={fetchMoreData}
+                    hasMore={data.totalProducts>data.products.length}
+                    loader={<p>Loading...</p>}
+                    endMessage={
+                      <p style={{ textAlign: 'center', margin: '2rem 0' }}>
+                        <b>No more products to show.</b>
+                      </p>
+                    }
+                    >
+                    {data.products.length ?  
+                     <ProductList
                     data={data.products}
-                 
+                  isSimilar={false}
                   />:<ProductNotFoundPage isSimilar={false} /> }
+                    </InfiniteScroll>
                 
                  
                

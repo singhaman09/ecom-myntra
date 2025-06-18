@@ -4,12 +4,39 @@ import Button from "../../../components/UI/Button";
 import StarRating from "../../../components/UI/StarRating";
 import styles from "../css/wishlistCard.module.css";
 import { useNavigate } from "react-router-dom";
+import { FaHeart } from 'react-icons/fa';
 
 interface WishlistCardProps {
   item: WishlistItem;
   onRemove: () => void;
   onMoveToCart: () => void;
 }
+
+const Modal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  itemName: string;
+}> = ({ isOpen, onClose, onConfirm, itemName }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className={`${styles.modalOverlay}`} onClick={onClose}>
+      <div className={`${styles.modal}`} onClick={(e) => e.stopPropagation()}>
+        <h3>Remove Item</h3>
+        <p>Are you sure you want to remove "{itemName}" from your wishlist?</p>
+        <div className={styles.modalActions}>
+          <Button onClick={onConfirm} variant="danger">
+            Remove
+          </Button>
+          <Button onClick={onClose} variant="secondary">
+            Cancel
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const WishlistCard: React.FC<WishlistCardProps> = ({
   item,
@@ -18,19 +45,31 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
 }) => {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
+  const [rating, setRating] = useState(item.rating || 3);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleMoveToCart = async () => {
     setIsLoading(true);
     try {
       await onMoveToCart();
-      navigate("/cart", { replace: true });
-    } catch (error) {
-      console.error("Failed to move item to cart:", error);
-      alert("Error moving item to cart. Please try again.");
+      navigate("/cart");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleRemoveClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmRemove = () => {
+    onRemove();
+    setIsModalOpen(false);
+  };
+
+  const handleNotifyMe = () => {
+    console.log(`Notify me when ${item.name} is back in stock`);
   };
 
   const formatDate = (dateString: string) => {
@@ -62,115 +101,129 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
   const discountPercentage = getDiscountPercentage();
 
   return (
-    <div
-      className={`${styles.wishlistCard} ${
-        !item.inStock ? styles.outOfStock : ""
-      }`}
-    >
-      <div className={styles.imageContainer}>
-        {!imageError ? (
-          <img
-            src={item.image}
-            alt={item.name}
-            className={styles.itemImage}
-            onError={() => setImageError(true)}
-            loading="lazy"
-          />
-        ) : (
-          <div className={styles.imagePlaceholder}>
-            <span>No Image Available</span>
-          </div>
-        )}
+    <>
+      <div
+        className={`${styles.wishlistCard} ${
+          !item.inStock ? styles.outOfStock : ""
+        }`}
+      >
+        <div className={styles.imageContainer}>
+          {!imageError ? (
+            <img
+              src={item.image}
+              alt={item.name}
+              className={styles.itemImage}
+              onError={() => setImageError(true)}
+              loading="lazy"
+            />
+          ) : (
+            <div className={styles.imagePlaceholder}>
+              <span>No Image Available</span>
+            </div>
+          )}
 
-        {discountPercentage > 0 && (
-          <div className={styles.discountBadge}>{discountPercentage}% OFF</div>
-        )}
+          {discountPercentage > 0 && (
+            <div className={styles.discountBadge}>{discountPercentage}% OFF</div>
+          )}
 
-        {!item.inStock && (
-          <div className={styles.outOfStockOverlay}>
-            <span>Out of Stock</span>
-          </div>
-        )}
+          {!item.inStock && (
+            <div className={styles.outOfStockOverlay}>
+              <span>Out of Stock</span>
+            </div>
+          )}
 
-        <button
-          className={styles.removeButton}
-          onClick={onRemove}
-          title="Remove from wishlist"
-          aria-label="Remove from wishlist"
-        >
-          ×
-        </button>
-      </div>
-
-      <div className={styles.itemContent}>
-        <div className={styles.itemHeader}>
-          <h3 className={styles.itemName} title={item.name}>
-            {item.name}
-          </h3>
-          <span className={styles.category}>{item.category}</span>
+          <button
+            className={styles.removeButton}
+            onClick={handleRemoveClick}
+            title="Remove from wishlist"
+            aria-label="Remove from wishlist"
+          >
+            <FaHeart
+              color="rgb(7, 119, 4)"
+              size={20}
+            />
+          </button>
         </div>
 
-        <div className={styles.itemRating}>
-          <StarRating rating={item.rating} readonly />
-          <span className={styles.ratingText}>({item.rating})</span>
-        </div>
+        <div className={styles.itemContent}>
+          <div className={styles.itemHeader}>
+            <h3 className={styles.itemName} title={item.name}>
+              {item.name}
+            </h3>
+            <span className={styles.category}>{item.category}</span>
+          </div>
 
-        <p className={styles.itemDescription}>
-          {truncateDescription(item.description)}
-        </p>
+          <div className={styles.itemRating}>
+            <StarRating rating={rating} onRatingChange={setRating} />
+            <span className={styles.ratingText}>({item.rating})</span>
+          </div>
 
-        <div className={styles.priceSection}>
-          <div className={styles.priceContainer}>
-            <span className={styles.currentPrice}>
-              ${(item.price / 100).toFixed(2)}
-            </span>
-            {item.originalPrice && item.originalPrice > item.price && (
-              <span className={styles.originalPrice}>
-                ${(item.originalPrice / 100).toFixed(2)}
+          <p className={styles.itemDescription}>
+            {truncateDescription(item.description)}
+          </p>
+
+          <div className={styles.priceSection}>
+            <div className={styles.priceContainer}>
+              <span className={styles.currentPrice}>
+                ${(item.price / 100).toFixed(2)}
+              </span>
+              {item.originalPrice && item.originalPrice > item.price && (
+                <span className={styles.originalPrice}>
+                  ${(item.originalPrice / 100).toFixed(2)}
+                </span>
+              )}
+            </div>
+            {discountPercentage > 0 && (
+              <span className={styles.savings}>
+                Save ${((item.originalPrice! - item.price) / 100).toFixed(2)}
               </span>
             )}
           </div>
-          {discountPercentage > 0 && (
-            <span className={styles.savings}>
-              Save ${((item.originalPrice! - item.price) / 100).toFixed(2)}
+
+          <div className={styles.itemMeta}>
+            <span className={styles.dateAdded}>
+              Added {formatDate(item.dateAdded)}
             </span>
-          )}
-        </div>
+            <span
+              className={`${styles.stockStatus} ${
+                item.inStock ? styles.inStock : styles.outOfStock
+              }`}
+            >
+              {item.inStock ? "In Stock" : "Out of Stock"}
+            </span>
+          </div>
 
-        <div className={styles.itemMeta}>
-          <span className={styles.dateAdded}>
-            Added {formatDate(item.dateAdded)}
-          </span>
-          <span
-            className={`${styles.stockStatus} ${
-              item.inStock ? styles.inStock : styles.outOfStock
-            }`}
-          >
-            {item.inStock ? "In Stock" : "Out of Stock"}
-          </span>
-        </div>
-
-        <div className={styles.cardActions}>
-          <Button
-            onClick={handleMoveToCart}
-            variant="primary"
-            disabled={!item.inStock || isLoading}
-            className={styles.addToCartButton}
-          >
-            {isLoading ? "Adding..." : "Add to Cart"}
-          </Button>
-
-          <Button
-            onClick={onRemove}
-            variant="secondary"
-            size="small"
-            className={styles.removeFromWishlistButton}
-          >
-            Remove
-          </Button>
+          <div className={styles.cardActions}>
+            {item.inStock ? (
+              <Button
+                onClick={handleMoveToCart}
+                variant="primary"
+                disabled={isLoading}
+                className={styles.addToCartButton}
+              >
+                {isLoading ? "Adding..." : "Add to Cart"}
+              </Button>
+            ) : (
+              <Button
+                onClick={handleNotifyMe}
+                variant="primary"
+                disabled={isLoading}
+                className={styles.notifyButton}
+              >
+                Notify Me
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmRemove}
+        itemName={item.name}
+      />
+    </>
   );
 };
 
