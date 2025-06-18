@@ -7,19 +7,16 @@ import { useProductSelector } from '../hooks/storeHooks';
 const ProductCard=React.lazy(()=>import('./ProductCard'));
 const ProductList: React.FC<ProductListProps> = ({
   data,
+  isSimilar=false
 }) => {
  const result=useProductSelector(state=>state.product)
   return (
- <div>
-     {result.products.length >0 &&    <p style={{ marginLeft: '20px' }}>
-    Showing {result.skip + 1} -{' '}
-    {result.limit + result.skip > result.totalProducts
-      ? result.totalProducts
-      : result.limit + result.skip}{' '}
-    entries of {result.totalProducts}
+ <div className={styles.border}>
+     {!isSimilar && result.products.length >0 &&    <p style={{ marginLeft: '20px' }}>
+    Showing {result.products.length}  of&nbsp;
+    {result.totalProducts} products
   </p>}
-    <div className={`${styles.listContainer} ${styles.border}`}>
-       
+    <div className={`${styles.listContainer}`}>
       {data.map(product => (
         <ProductCard key={product._id} product={product} />
       ))}

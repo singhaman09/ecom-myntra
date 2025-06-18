@@ -65,6 +65,7 @@ export interface ProductCardProps {
 
 export interface ProductListProps {
  data:Product[];
+ isSimilar:boolean
 }
 export interface filters{
   category: string[];

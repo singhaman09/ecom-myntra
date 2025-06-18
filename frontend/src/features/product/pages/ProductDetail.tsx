@@ -13,9 +13,30 @@ import { addToWishlist, removeFromWishlist } from "../../wishlist/slice/wishlist
 // Lazy load components (no Suspense here)
 const SimilarProduct = React.lazy(() => import("../components/SimilarProduct"));
 const ReviewSection = React.lazy(() => import("../components/ReviewSection"));
-const ImageZoomOnHover = React.lazy(() => import("../components/ImageZoom"));
+import defaultProductImage from '../../../assets/cart.png'
+import AvailableOffers, { type Offer } from "../components/AvailableOffers";
+import ProductInfo from "../components/ProductInfo";
+import BoughtTogether from "../components/BoughtTogether";
 const Breadcrumbs = React.lazy(() => import("../utils/BreadCrumbs"));
 const ErrorPage = React.lazy(() => import("./ErrorPage"));
+const offers: Offer[] = [
+  {
+    type: 'bank',
+    title: '10% Instant Discount',
+    description: 'Get 10% instant discount on HDFC Bank Credit Cards. T&C apply.',
+  },
+  {
+    type: 'coupon',
+    title: '₹200 Off Coupon',
+    description: 'Use code SAVE200 to get ₹200 off on orders above ₹999.',
+  },
+  {
+    type: 'deal',
+    title: 'Free Gift',
+    description: 'Free travel pouch on orders above ₹1499.',
+  },
+];
+
 
 const ProductDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -78,10 +99,12 @@ const ProductDetails = () => {
     <div className={styles.container}>
       <Breadcrumbs />
       <div className={styles.gridLayout}>
-        <ImageZoomOnHover
-          src={data.selectedProduct?.product.imageUrl ? data.selectedProduct?.product.imageUrl : ""}
-          alt="Headphones"
-        />
+   <div className={styles.imgContainer}>
+   <img className={styles.Image} src={data.selectedProduct?.product.imageUrl} alt={'hey'}   onError={(e) => {
+    (e.currentTarget as HTMLImageElement).src = defaultProductImage;
+    (e.currentTarget as HTMLImageElement).onerror = null; 
+  }} />
+   </div>
         <div className={styles.productDetails}>
           {/* Brand and Title */}
           <div className={styles.brandTitle}>
@@ -120,7 +143,7 @@ const ProductDetails = () => {
           {/* Size Selection */}
           <div className={styles.sizeSection}>
             <div className={styles.sizeHeaderRow}>
-              <h3 className={styles.sizeLabel}>Size</h3>
+              <h3 className={styles.sizeLabel} style={{marginBottom:'-2px'}}>Select Size</h3>
             </div>
           </div>
           <div className={styles.sizesRow}>
@@ -155,7 +178,7 @@ const ProductDetails = () => {
           {/* Color Selection */}
           <div className={styles.sizeSection}>
             <div className={styles.sizeHeaderRow}>
-              <h3 className={styles.sizeLabel}>Color</h3>
+              <h3 className={styles.sizeLabel}>Select Color</h3>
             </div>
             <div className={styles.sizesRow}>
               {uniqueColors.map((color) => {
@@ -189,11 +212,7 @@ const ProductDetails = () => {
           </div>
 
           {/* Product Description */}
-          <div className={styles.descriptionSection}>
-            <p className={styles.descriptionText}>
-              {data?.selectedProduct?.product?.description}
-            </p>
-          </div>
+        
           {/* Action Buttons */}
           <div className={styles.actionSection}>
             {variants?.find((v) => v.size === selectedSize && v.color === selectedColor)?.stock === 0 ||
@@ -217,14 +236,14 @@ const ProductDetails = () => {
              
                 <FavoriteIcon
                   className={styles.heartIcon}
-                  sx={{ color: "#db2777", fontSize: 20, verticalAlign: "middle" }}
+                  sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
                   
                 />
                  <span>WISHLIST</span>
               </button>: <button className={`${styles.wishlistBtn}`} onClick={addWishlist}>
                 <FavoriteBorderIcon
                   className={styles.heartIcon}
-                  sx={{ color: "#db2777", fontSize: 20, verticalAlign: "middle" }}
+                  sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
                 />
                <span>WISHLIST</span>
             </button>}
@@ -242,7 +261,10 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+      <AvailableOffers offers={offers}/>
+      <ProductInfo/>
       <ReviewSection />
+      <BoughtTogether/>
       <SimilarProduct />
     </div>
   );

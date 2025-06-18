@@ -14,16 +14,16 @@ const customAxios = axios.create({
 // Thunk for fetching products
 export const getProducts = createAsyncThunk< 
   getProductsInterface,                          // Return type
-  { filters: filters; slug: string | undefined,searchParams:URLSearchParams },    // Argument type
+  { filters: filters; slug: string | undefined,searchParams:URLSearchParams,page:Number },    // Argument type
   { rejectValue: string }                       // Rejection type
 >(
   'products/getProducts',
-  async ({ filters, slug='all',searchParams}, thunkAPI) => {
+  async ({ filters, slug='all',searchParams,page}, thunkAPI) => {
     try {
     const selectedSort=searchParams.get('sort') || 'new'
       // const currentPage=searchParams.get('page') || '1'
       const response = await customAxios.get(`/${slug}`, {
-        params: { category:filters.category.toString(),subCategory:filters.subCategory.toString(),brand:filters.brand.toString(),color:filters.color.toString(),gender:filters.gender,price:filters.price.toString(),sort:selectedSort,page:1}
+        params: { category:filters.category.toString(),subCategory:filters.subCategory.toString(),brand:filters.brand.toString(),color:filters.color.toString(),gender:filters.gender,price:filters.price.toString(),sort:selectedSort,page:page}
       });
       return response.data;
     } catch (error: any) {
