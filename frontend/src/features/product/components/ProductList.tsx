@@ -12,7 +12,7 @@ const ProductList: React.FC<ProductListProps> = ({
  const result=useProductSelector(state=>state.product)
   return (
  <div className={styles.border}>
-     {!isSimilar && result.products.length >0 &&    <p style={{ marginLeft: '20px' }}>
+     {!isSimilar && result.products.length >0 &&    <p style={{ marginLeft: '20px',fontFamily:'Work sans' }}>
     Showing {result.products.length}  of&nbsp;
     {result.totalProducts} products
   </p>}

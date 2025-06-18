@@ -1,21 +1,30 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styles from './css/HeroSection.module.css';
 
-const HeroSection = ({ slides }) => {
+type Slide = {
+  id: string;
+  backgroundImage: string;
+  title: string;
+  subtitle: string;
+  buttonText: string;
+  onButtonClick: () => void;
+};
+
+const HeroSection = ({ slides }: { slides: Slide[] }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const slideInterval = useRef(null);
+  const slideInterval = useRef<number | null>(null);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+  }, [slides.length]);
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const goToSlide = (index) => {
+  const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
@@ -25,13 +34,17 @@ const HeroSection = ({ slides }) => {
         nextSlide();
       }, 5000);
     }
-    return () => clearInterval(slideInterval.current);
-  }, [isPaused, currentSlide]);
+    return () => {
+      if (slideInterval.current !== null) {
+        clearInterval(slideInterval.current);
+      }
+    };
+  }, [isPaused, nextSlide]);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: nextSlide,
     onSwipedRight: prevSlide,
-    preventDefaultTouchmoveEvent: true,
+    preventScrollOnSwipe: true,
     trackMouse: true,
   });
 

@@ -5,7 +5,6 @@
   top: 0;
   z-index: 50;
 }
-
 .topBanner {
   background-color: #f6f1e9;
   padding: 0.5rem 0;
@@ -13,8 +12,8 @@
 }
 
 .bannerText {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.875rem;
-  color: #edeff1;
 }
 
 @media (max-width: 768px) {
@@ -103,6 +102,7 @@
 }
 
 .navLink {
+  font-family: 'Work Sans', sans-serif;
   color: #374151;
   font-weight: 600;
   font-size: 0.875rem;
@@ -145,6 +145,7 @@
 }
 
 .searchInput {
+  font-family: 'Work Sans', sans-serif;
   width: 80%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
   background-color: #f9fafb;
@@ -200,6 +201,7 @@
 }
 
 .userActionText {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.75rem;
   color: #374151;
   font-weight: 600;
@@ -308,4 +310,30 @@
 .mobileNavLink:hover {
   color:  #00a65a;
   border-color:  #00a65a;
+}
+.suggestionsList {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 99;
+  background: #fff;
+  color: #222;
+  border-radius: 0 0 0.5rem 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin: 0;
+  padding: 0.5rem 0;
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.suggestionItem {
+  padding: 0.75rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.suggestionItem:hover {
+  background: #f3f4f6;
 }
