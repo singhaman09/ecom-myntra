@@ -150,12 +150,12 @@ const Footer: React.FC = () => {
               <span>In case of any concern, <a href="#" className={styles.contactLink}>Contact Us</a></span>
             </div>
             <div className={styles.copyright}>
-              © 2024 www.myntra.com. All rights reserved.
+              © 2024 www.wyntra.com. All rights reserved.
             </div>
           </div>
           
           <div className={styles.companyInfo}>
-            <p>A Flipkart company</p>
+            <p>A Demo company</p>
           </div>
         </div>
       </div>

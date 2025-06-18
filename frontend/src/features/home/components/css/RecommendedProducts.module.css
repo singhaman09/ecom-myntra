@@ -1,0 +1,195 @@
+.section {
+    padding: 3rem 0;
+    background-color: #f9f9f9;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .title {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+  }
+  
+  @media (min-width: 768px) {
+    .title {
+      font-size: 1.75rem;
+    }
+  }
+  
+  .viewAllButton {
+    font-family: 'Work Sans', sans-serif;
+    background: none;
+    border: none;
+    color: #0a5d5d;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .productsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .productsGrid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  
+  .productCard {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .productCard:hover {
+    transform: translateY(-5px);
+  }
+  
+  .imageWrapper {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .productImage {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  @media (min-width: 768px) {
+    .productImage {
+      height: 180px;
+    }
+  }
+  
+  .favoriteButton {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .favoriteButton.active {
+    color: #e74c3c;
+  }
+  
+  .productInfo {
+    text-align: left;
+  }
+  
+  .productName {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  
+  @media (min-width: 768px) {
+    .productName {
+      font-size: 1rem;
+    }
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    gap: 0.25rem;
+  }
+  
+  .star {
+    color: #ddd;
+    font-size: 0.75rem;
+  }
+  
+  .star.filled {
+    color: #ffd700;
+  }
+  
+  .ratingText {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.7rem;
+    color: #666;
+    margin-left: 0.25rem;
+  }
+  
+  @media (min-width: 768px) {
+    .star {
+      font-size: 0.875rem;
+    }
+    
+    .ratingText {
+      font-size: 0.75rem;
+    }
+  }
+  
+  .priceWrapper {
+    margin-bottom: 1rem;
+  }
+  
+  .price {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #333;
+    margin-right: 0.5rem;
+  }
+  
+  .originalPrice {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.875rem;
+    color: #999;
+    text-decoration: line-through;
+  }
+  
+  .addToCartButton {
+    font-family: 'Work Sans', sans-serif;
+    background-color: #0a5d5d;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    font-size: 0.875rem;
+  }
+  
+  .addToCartButton:hover {
+    background-color: #085a5a;
+  }
+  

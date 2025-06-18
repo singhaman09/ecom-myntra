@@ -43,7 +43,7 @@
   color: #104b3f;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'Georgia', serif;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 /* Subtitle */
@@ -52,12 +52,12 @@
   color: #1c1c1c;
   margin-top: 0.5rem;
   line-height: 1.4;
-  font-family: Arial, sans-serif;
+  font-family:'Times New Roman', Times, serif;
 }
 
 .instruction strong {
   font-weight: bold;
-  font-family: 'Georgia', serif;
+  font-family:'Times New Roman', Times, serif;
 }
 
 /* Form */
@@ -75,12 +75,14 @@
 }
 
 .label {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
   color: #333;
 }
 
 .input {
+  font-family: 'Work Sans', sans-serif;
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
@@ -102,6 +104,7 @@
 
 /* Error Message */
 .errorMessage {
+  font-family: 'Work Sans', sans-serif;
   color: #d9534f;
   font-size: 0.85rem;
   margin-top: 0.25rem;
@@ -109,6 +112,7 @@
 
 /* Terms & Conditions */
 .termsContainer {
+  font-family: 'Work Sans', sans-serif;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -124,6 +128,7 @@
 }
 
 .termsText a {
+  font-family: 'Work Sans', sans-serif;
   color: #007f5f;
   text-decoration: underline;
   font-weight: 500;
@@ -131,6 +136,7 @@
 
 /* Submit Button */
 .submitButton {
+  font-family: 'Work Sans', sans-serif;
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
@@ -154,12 +160,14 @@
 
 /* Forgot Password */
 .troubleText {
+  font-family: 'Work Sans', sans-serif;
   text-align: center;
   font-size: 0.875rem;
   color: #555;
 }
 
 .troubleLink {
+  font-family: 'Work Sans', sans-serif;
   background: none;
   border: none;
   color: #007f5f;
@@ -178,6 +186,7 @@
 }
 
 .link {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.9rem;
   color: #007f5f;
   text-decoration: underline;
@@ -225,6 +234,7 @@
 }
 
 .dividerText {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.85rem;
   color: #555;
   font-weight: 500;
@@ -268,6 +278,7 @@
 }
 
 .skipButton {
+  font-family: 'Work Sans', sans-serif;
   background: none;
   border: none;
   font-size: 1rem;

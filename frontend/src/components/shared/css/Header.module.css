@@ -13,8 +13,8 @@
 }
 
 .bannerText {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.875rem;
-  color: #edeff1;
 }
 
 @media (max-width: 768px) {
@@ -103,6 +103,7 @@
 }
 
 .navLink {
+  font-family: 'Work Sans', sans-serif;
   color: #374151;
   font-weight: 600;
   font-size: 0.875rem;
@@ -145,6 +146,7 @@
 }
 
 .searchInput {
+  font-family: 'Work Sans', sans-serif;
   width: 80%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
   background-color: #f9fafb;
@@ -200,6 +202,7 @@
 }
 
 .userActionText {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.75rem;
   color: #374151;
   font-weight: 600;
