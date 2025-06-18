@@ -31,6 +31,9 @@ const ProductPage: React.FC = () => {
     gender: undefined,
     price:[]
   });
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [slug]);
   
   // Memoized filter values for performance and stability
 useEffect(()=>{
@@ -90,13 +93,11 @@ useEffect(()=>{
     }));
   }, []);
   const handleReset = useCallback(() => {
-   
     const newParams = new URLSearchParams(searchParams.toString());
       ['category', 'brand', 'color', 'gender', 'price', 'subCategory'].forEach(param =>
         newParams.delete(param)
         
       );
-    
   setSearchParams(newParams, { replace: true });
   setFilters({
     category: [],
@@ -142,14 +143,15 @@ const apply=()=>{
 const fetchMoreData = () => {
   setPage(prev => prev + 1);
 };
+
   // Render
   return (
     <div>
       <div className={styles.container}>
         <Breadcrumbs />
         
-        {data.loading ? (
-          <Loader />
+        {data.loading && page==1? (
+          <Loader isInitial={true}/>
         ) 
         : data.error ?
          (
@@ -182,7 +184,7 @@ const fetchMoreData = () => {
                     dataLength={data.products.length}
                     next={fetchMoreData}
                     hasMore={data.totalProducts>data.products.length}
-                    loader={<p>Loading...</p>}
+                    loader={data.loading && page > 1 && <Loader isInitial={false}/>}
                     endMessage={
                       <p style={{ textAlign: 'center', margin: '2rem 0' }}>
                         <b>No more products to show.</b>

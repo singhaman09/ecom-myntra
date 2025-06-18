@@ -92,7 +92,7 @@ const ProductDetails = () => {
   const productId=id || ''
   dispatch(addToWishlist(productId))
  }
-  if (data.loading) return <Loader />;
+  if (data.loading) return <Loader  isInitial={true}/>;
   if (data.error) return <ErrorPage />;
 
   return (
