@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./styles/AddressSection.module.css";
 import type { Address } from "../types/cart";
+import { STATIC_ADDRESSES } from "../staticData/StaticData";
 
 interface AddressSectionProps {
   address: Address | null;
@@ -27,21 +28,18 @@ const AddressSection: React.FC<AddressSectionProps> = ({
   );
 
   const renderNoAddress = () => (
-    <>
-      <div className={styles.addressHeader}>
-        <div className={styles.addressLabel}>Deliver To:</div>
-      </div>
-      <div className={styles.noAddress}>
-        <span>No address selected</span>
-        <button
-          className={styles.addAddressButton}
-          onClick={onChangeAddress}
-        >
-          ADD ADDRESS
-        </button>
-      </div>
-    </>
-  );
+  <>
+    <div className={styles.addressHeader}>
+      <div className={styles.addressLabel}>Deliver To:</div>
+    </div>
+    <div className={styles.noAddress}>
+      <span>Divine PG , Mamura , Sector 66 , Noida , Uttar Pradesh, 201301, INDIA</span> 
+      <button className={styles.addAddressButton} onClick={onChangeAddress}>
+        Add Address
+      </button>
+    </div>
+  </>
+);
 
   return (
     <div className={styles.addressSection}>
@@ -50,7 +48,7 @@ const AddressSection: React.FC<AddressSectionProps> = ({
       </div>
       {address && (
         <button className={styles.changeAddress} onClick={onChangeAddress}>
-          CHANGE ADDRESS
+          Change Address
         </button>
       )}
     </div>

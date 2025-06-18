@@ -1,11 +1,11 @@
 /* Complete the styles for the Cart Actions component */
-
+/* 
 .cartListSection {
   margin-bottom: 24px;
   width: 100%;
-}
+} */
 
-.itemsHeader {
+/* .itemsHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -69,7 +69,7 @@
 }
 
 /* 🔥 Mobile & Tablet Responsive Styling */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .itemsHeader {
     flex-direction: column;
     align-items: flex-start;
@@ -84,16 +84,16 @@
     width: 100%;
     font-size: 13px;
     gap: 12px;
-  }
-
+  } */
+/* 
   .moveButtons {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
     margin-left: 0;
     gap: 10px;
-  }
-
+  } */
+/* 
   .removeSelectedButton,
   .moveSelectedButton {
     width: 100%;
@@ -103,13 +103,13 @@
     border: none;
     background-color: #fff;
     border-radius: 5px;
-  }
-
+  } */
+/* 
   .verticalDivider {
     display: none;
   }
-}
-
+} */
+/* 
 @media (max-width: 380px) {
   .selectAllText {
     font-size: 11px;
@@ -120,4 +120,4 @@
     font-size: 10.5px;
     padding: 6px 10px;
   }
-}
+} */ 

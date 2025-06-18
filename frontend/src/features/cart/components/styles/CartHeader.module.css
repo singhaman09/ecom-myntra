@@ -1,9 +1,13 @@
 .cartHeader {
   width: 100%;
-  padding: 16px 24px;
-  border-bottom: 1px solid #eee;
-  background: #044236;
-  font-family: 'Segoe UI', sans-serif;
+  padding: 14px 32px;
+  background: #044236; /* Subtle green gradient */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15); /* Softer glassy border */
+  font-family: 'Inter', 'Segoe UI', sans-serif; /* Modern font stack */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow for elevation */
+  position: sticky; /* Sticky header for better UX */
+  top: 0;
+  z-index: 10;
 }
 
 .progressBar {
@@ -11,104 +15,163 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto; /* Center content */
 }
 
 .logoLink {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 23px;
+  font-weight: 700;
+  font-family: sans-serif;
   color: #fff;
   text-decoration: none;
-  white-space: nowrap;
+  letter-spacing: -0.5px;
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoLink:hover {
+  transform: scale(1.05); /* Subtle zoom on hover */
+  color: #e0f7fa; /* Light cyan hover */
 }
 
 .progressElement {
   flex: 1;
   display: flex;
   justify-content: center;
-  min-width: 200px;
+  min-width: 220px;
 }
 
 .progressList {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
+  gap: 20px;
+  position: relative;
 }
 
 .step {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  color: #b4b4b4;
+  color: #b0bec5; /* Softer gray for inactive */
   text-transform: uppercase;
   position: relative;
-  padding: 6px 12px;
-  border-radius: 3px;
-  white-space: nowrap;
-  cursor: default;
-  transition: all 0.2s ease;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.step::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.step:hover::after {
+  width: 50%; /* Underline effect on hover */
 }
 
 .activeStep {
   color: #fff;
-  font-weight: 700;
+  font-weight: 600;
+  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.activeStep::after {
+  width: 70%; /* Wider underline for active step */
 }
 
 .completedStep {
   color: #4caf50;
-  background: none ;
   cursor: pointer;
+  background: none;
+}
+
+.completedStep::after {
+  background: #4caf50; /* Green underline for completed */
+  width: 50%;
 }
 
 .completedStep:hover {
-  background-color: #fff;
+  transform: translateY(-2px); /* Lift effect */
 }
 
 .divider {
-  width: 40px;
-  height: 2px;
-  background-color: #ccc;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, #b0bec5, #e0e0e0); /* Gradient divider */
+  margin: 0 8px;
+  transition: background 0.3s ease;
+}
+
+.activeStep + .divider,
+.completedStep + .divider {
+  background: linear-gradient(to right, #4caf50, #81c784); /* Green gradient for completed/active */
 }
 
 .securityWrapper {
-  font-size: 12px;
-  color: #4caf50;
+  font-size: 13px;
+  color: #81c784; /* Lighter green */
   font-weight: 600;
-  margin-right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   white-space: nowrap;
+  transition: color 0.3s ease;
 }
 
 .securityIcon {
-  color: #4caf50;
-  margin-right: 8px;
+  color: #81c784;
+  font-size: 16px;
+  animation: pulse 2s infinite ease-in-out; /* Pulsing effect */
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 
 @media (max-width: 768px) {
   .cartHeader {
-    padding: 12px 16px;
+    padding: 16px 20px;
   }
 
   .logoLink {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .progressList {
-    gap: 8px;
+    gap: 12px;
   }
 
   .step,
   .activeStep,
   .completedStep {
-    font-size: 12px;
-    padding: 4px 8px;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .step::after {
+    bottom: -3px;
   }
 
   .divider {
-    width: 24px;
+    width: 30px;
+    margin: 0 6px;
   }
 
   .securityWrapper {
@@ -116,14 +179,15 @@
     text-align: center;
     width: 100%;
     order: 3;
-    margin-top: 10px;
+    margin-top: 12px;
+    font-size: 12px;
   }
 
   .progressElement {
     justify-content: center;
     width: 100%;
     order: 2;
-    margin-top: 10px;
+    margin-top: 12px;
   }
 
   .logo {
@@ -132,21 +196,43 @@
 }
 
 @media (max-width: 480px) {
+  .cartHeader {
+    padding: 12px 16px;
+  }
+
   .progressBar {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 10px;
   }
 
   .progressList {
-    justify-content: flex-start;
-    gap: 6px;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .step,
+  .activeStep,
+  .completedStep {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .step::after {
+    bottom: -2px;
   }
 
   .divider {
-    display: none;
+    display: none; /* Hide divider for compact layout */
   }
 
   .securityWrapper {
-    font-size: 10px;
+    font-size: 11px;
+    gap: 6px;
+  }
+
+  .securityIcon {
+    font-size: 14px;
   }
 }
