@@ -1,4 +1,3 @@
-
 .section:nth-child(1){
   padding-top: 10px;
 }
@@ -42,10 +41,8 @@
 }
 .filterHeader p{
   cursor: pointer;
+  font-family: 'Times New Roman', Times, serif;
 }
-
-
-
 
 
   .closeButton{
@@ -59,7 +56,7 @@
     width: 100px;
     font-weight: bold;
     font-size: 1rem;
-   
+    font-family: 'Work Sans', sans-serif;
     border-radius: 10px;
   }
 
@@ -77,6 +74,7 @@
   font-weight: bold;
   color: #111827;
   margin-bottom: 1rem;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .radioGroup {
@@ -108,12 +106,14 @@
 .checkboxLabel {
   cursor: pointer;
   flex: 1;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .brandHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: 'Work Sans', sans-serif;
  
 }
 
@@ -129,6 +129,7 @@
   cursor: pointer;
   flex: 1;
   font-size: 0.95rem;
+  font-family: 'Work Sans', sans-serif;
 }
 
 
@@ -150,7 +151,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  font-family: 'Work Sans', sans-serif;
 }
 
 .colorRow {
@@ -170,6 +171,7 @@
 .colorLabel {
   cursor: pointer;
   font-size: 0.95rem;
+  font-family: 'Work Sans', sans-serif;
 }
 
 /* Hide sidebar on mobile if not open */
@@ -187,9 +189,10 @@
 
 .footer{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 50px;
   margin: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .footer button{
   height: 45px;
@@ -199,6 +202,7 @@
 .apply{
   background-color: #004d40;
   color: white;
+  font-family: 'Work Sans', sans-serif;
 }
 .verticalTabsBody {
   display: flex;
@@ -231,6 +235,7 @@
   height: 80px;
   text-align: center;
   border-bottom: 1px solid #e0e0e0;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .tabButton.active,

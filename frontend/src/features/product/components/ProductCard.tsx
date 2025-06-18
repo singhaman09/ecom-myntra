@@ -8,6 +8,7 @@ import { renderStars } from '../utils/RenderStars';
 import { averageRating } from '../utils/Reviews';
 import { useProductSelector } from '../hooks/storeHooks';
 import SelectShadeSizeModal from './SelectSizeModal';
+import defaultProductImage from '../../../assets/cart.png'
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
   const data=useProductSelector(state=>state.wishlist.items)
@@ -23,6 +24,11 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           src={product.imageUrl} 
           alt={product.name}
           className={styles.productImage}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = defaultProductImage;
+           
+            (e.currentTarget as HTMLImageElement).onerror = null;
+          }}
         />
         
         {/* Wishlist Button */}

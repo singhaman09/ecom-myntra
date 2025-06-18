@@ -36,7 +36,9 @@ const UpperFilterBar: React.FC<UpperFilterProps> = ({
       </button>
       {open && (
         <div className={styles.modal}>
+         
           <div className={styles.sortValue}>
+          <button className={styles.close} onClick={()=>setOpen(false)} aria-label="Close">&times;</button>
             <ol>
               {sortOptions.map(({ value, label }) => (
                 <li key={String(value)} onClick={() => { handleSortChange(value); setOpen(false); }} className={selectedSort==value ?`${styles.sortValueSelected}`:''}>
@@ -44,7 +46,7 @@ const UpperFilterBar: React.FC<UpperFilterProps> = ({
                 </li>
               ))}
             </ol>
-            <button onClick={() => setOpen(false)}>Close</button>
+            
           </div>
         </div>
       )}
@@ -57,7 +59,7 @@ const UpperFilterBar: React.FC<UpperFilterProps> = ({
           type="button"
           aria-label="Open filters"
         >
-          <span><FilterIcon size={'16px'} color='#3D857E'/></span>
+          <span><FilterIcon size={'16px'} color='#3D857E'/></span>&nbsp;
           Filters
         </button>
         </div>

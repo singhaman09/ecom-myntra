@@ -7,11 +7,12 @@ import { useProductSelector } from '../hooks/storeHooks';
 const ProductCard=React.lazy(()=>import('./ProductCard'));
 const ProductList: React.FC<ProductListProps> = ({
   data,
+  isSimilar=false
 }) => {
  const result=useProductSelector(state=>state.product)
   return (
  <div className={styles.border}>
-     {result.products.length >0 &&    <p style={{ marginLeft: '20px' }}>
+     {!isSimilar && result.products.length >0 &&    <p style={{ marginLeft: '20px' }}>
     Showing {result.products.length}  of&nbsp;
     {result.totalProducts} products
   </p>}

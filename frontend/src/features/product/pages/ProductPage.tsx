@@ -192,7 +192,7 @@ const fetchMoreData = () => {
                     {data.products.length ?  
                      <ProductList
                     data={data.products}
-                 
+                  isSimilar={false}
                   />:<ProductNotFoundPage isSimilar={false} /> }
                     </InfiniteScroll>
                 

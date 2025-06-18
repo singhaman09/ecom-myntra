@@ -186,7 +186,7 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
       </div>
       <div className={styles.footer}>
         <button className={styles.apply} onClick={apply}>Apply</button>
-        {hasAnyFilter && <button onClick={handleReset}>CLEAR ALL</button>}
+        {hasAnyFilter && <button onClick={handleReset} style={{fontFamily: 'Work Sans'}}>CLEAR ALL</button>}
       </div>
     </div>
   );

@@ -18,6 +18,7 @@
   margin-top: 2px;
   font-size: 1rem;
   cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
 }
 .innerContainer{
     position: relative;
@@ -34,11 +35,13 @@
 .innerContainer p{
     font-size: 1rem;
     color: grey;
+    font-family: 'Work Sans', sans-serif;
 }
 .sortDropdownContainer {
   display: flex;
   align-items: center;
-  gap:20px;
+  justify-content: space-between;
+  
   margin-bottom: 8px;
 }
 @media (max-width:900px){
@@ -49,6 +52,7 @@
 .sortLabel {
   font-weight: 500;
   color: #374151;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .sortSelect {
@@ -76,6 +80,7 @@
   cursor: pointer;
   font-weight: 500;
   transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
   }
 
 
@@ -98,6 +103,7 @@
   cursor: pointer;
   font-weight: 500;
   transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
 }
 
 
@@ -105,10 +111,8 @@
   position: absolute;
   top: 40px;
   left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 1000;
+  padding-left: 10px;
 }
 
 .sortValue {
@@ -117,22 +121,28 @@
   border-radius: 8px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   min-width: 240px;
+  
 }
 
 .sortValue ol {
   list-style: none;
-  padding: 0;
-  margin: 0 0 16px 0;
+ padding: 0;
+  margin: 20px 0 16px 0;
 }
 
 .sortValue li {
-  padding: 10px 0;
+  padding: 10px 10px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
   font-size: 16px;
   transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
 }
-
+.close{
+  position: absolute;
+  right: 10px;
+  top: -4px;
+}
 .sortValue li:last-child {
   border-bottom: none;
 }
