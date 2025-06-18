@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./styles/AddressSection.module.css";
 import type { Address } from "../types/cart";
-import { STATIC_ADDRESSES } from "../staticData/StaticData";
 
 interface AddressSectionProps {
   address: Address | null;

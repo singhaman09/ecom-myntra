@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import type { CartItem } from "../types/cart";
-import { updateItemSize } from "../redux/cartSlice";
 import { useAppDispatch } from "../hooks/useAppDispatch";
+import { updateItemSize, incrementItemQuantity, decrementItemQuantity } from "../redux/cartSlice";
+import type { CartItem } from "../types/cart";
 import { DISCOUNT } from "../staticData/StaticData";
 import bin from "../../../assets/bin.png";
 import styles from "./styles/CartList.module.css";
 
 interface CartListProps {
   items: CartItem[];
-  onQuantityChange: (id: string, qty: number) => void;
+  onQuantityChange?: (id: string, action: "increment" | "decrement") => void;
   onSelect: (id: string, selected: boolean) => void;
   selectedItems: string[];
   onRemove: (id: string) => void;
@@ -22,13 +22,11 @@ const CartList: React.FC<CartListProps> = ({
   onRemove,
 }) => {
   const dispatch = useAppDispatch();
-
   const [sizeModalItem, setSizeModalItem] = useState<CartItem | null>(null);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
-  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
-    null
-  );
+  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(null);
   const [itemToRemove, setItemToRemove] = useState<string | null>(null);
+  const [loadingItems, setLoadingItems] = useState<Set<string>>(new Set());
 
   const openSizeModal = (item: CartItem) => setSizeModalItem(item);
   const closeSizeModal = () => setSizeModalItem(null);
@@ -43,14 +41,49 @@ const CartList: React.FC<CartListProps> = ({
     closeSizeModal();
   };
 
+  const handleIncrement = async (item: CartItem) => {
+    if (loadingItems.has(item.productId)) return;
+    setLoadingItems((prev) => new Set(prev).add(item.productId));
+    try {
+      await dispatch(incrementItemQuantity(item.productId)).unwrap();
+      onQuantityChange?.(item.productId, "increment");
+    } catch (error) {
+      console.error("Failed to increment quantity:", error);
+      alert("Error updating quantity. Please try again.");
+    } finally {
+      setLoadingItems((prev) => {
+        const next = new Set(prev);
+        next.delete(item.productId);
+        return next;
+      });
+    }
+  };
+
+  const handleDecrement = async (item: CartItem) => {
+    if (item.quantity <= 1 || loadingItems.has(item.productId)) return;
+    setLoadingItems((prev) => new Set(prev).add(item.productId));
+    try {
+      await dispatch(decrementItemQuantity(item.productId)).unwrap();
+      onQuantityChange?.(item.productId, "decrement");
+    } catch (error) {
+      console.error("Failed to decrement quantity:", error);
+    } finally {
+      setLoadingItems((prev) => {
+        const next = new Set(prev);
+        next.delete(item.productId);
+        return next;
+      });
+    }
+  };
+
   return (
     <div className={styles.cartList}>
       {items.length === 0 ? (
         <p className={styles.emptyCart}>Your cart is empty.</p>
       ) : (
         items.map((item) => (
-          <div className={styles.cartItemWrapper}>
-            <div key={item.productId} className={styles.cartItem}>
+          <div className={styles.cartItemWrapper} key={item.productId}>
+            <div className={styles.cartItem}>
               <div className={styles.imageWrapper}>
                 <button
                   className={`${styles.heartBtn} ${
@@ -90,22 +123,20 @@ const CartList: React.FC<CartListProps> = ({
                   <div className={styles.qtyControls}>
                     <button
                       className={styles.qtyBtn}
-                      onClick={() =>
-                        item.quantity > 1 &&
-                        onQuantityChange(item.productId, item.quantity - 1)
-                      }
-                      disabled={item.quantity <= 1}
+                      onClick={() => handleDecrement(item)}
+                      disabled={item.quantity <= 1 || loadingItems.has(item.productId)}
+                      aria-label="Decrease quantity"
                     >
-                      −
+                      {loadingItems.has(item.productId) && item.quantity > 1 ? "..." : "−"}
                     </button>
                     <span className={styles.qtyValue}>{item.quantity}</span>
                     <button
                       className={styles.qtyBtn}
-                      onClick={() =>
-                        onQuantityChange(item.productId, item.quantity + 1)
-                      }
+                      onClick={() => handleIncrement(item)}
+                      disabled={loadingItems.has(item.productId)}
+                      aria-label="Increase quantity"
                     >
-                      +
+                      {loadingItems.has(item.productId) ? "..." : "+"}
                     </button>
                   </div>
                 </div>
@@ -132,7 +163,7 @@ const CartList: React.FC<CartListProps> = ({
                 setShowRemoveModal(true);
               }}
             >
-              {<img src={bin} alt="Remove" />}
+              <img src={bin} alt="Remove" />
               Remove
             </button>
           </div>

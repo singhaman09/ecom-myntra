@@ -4,11 +4,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaTag } from "react-icons/fa";
 import CartHeader from "../components/CartHeader";
 import CartList from "../components/CartList";
-import { DISCOUNT, STATIC_COUPONS, STATIC_OFFERS } from "../staticData/StaticData";
+import {
+  DISCOUNT,
+  STATIC_COUPONS,
+  STATIC_OFFERS,
+} from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
 import AddressSection from "../components/AddressSection";
 import OffersSection from "../components/OffersSection";
-// import CartActions from "../components/CartActions";
 import RemoveModal from "../components/modals/RemoveModal";
 import CouponModal from "../components/modals/CouponModal";
 import ChangeAddressModal from "../components/modals/ChangeAddressModal";
@@ -17,11 +20,13 @@ import styles from "../components/styles/CartPage.module.css";
 import type { Address, Coupon } from "../types/cart";
 import {
   fetchCart,
-  updateItemQuantity,
   deleteCartItem,
   moveToWishlist,
+  incrementItemQuantity,
+  decrementItemQuantity,
 } from "../redux/cartSlice";
 import type { RootState, AppDispatch } from "../../../store/store";
+import RecommendedProduct from "../components/RecommendedProducts";
 
 const CartPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +45,7 @@ const CartPage: React.FC = () => {
   const [offers, setOffers] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
-  const appliedCouponDiscount = 10;
+  const appliedCouponDiscount = 10; // In rupees
   const [availableCoupons, setAvailableCoupons] = useState<Coupon[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
@@ -65,14 +70,28 @@ const CartPage: React.FC = () => {
     setOffers(STATIC_OFFERS);
   }, []);
 
-  const handleQtyChange = (id: string, quantity: number) => {
-    dispatch(updateItemQuantity({ id, quantity }));
+  const handleQtyChange = async (
+    id: string,
+    action: "increment" | "decrement"
+  ) => {
+    try {
+      if (action === "increment") {
+        await dispatch(incrementItemQuantity(id)).unwrap();
+      } else if (action === "decrement") {
+        const item = items.find((i) => i.productId === id);
+        if (item && item.quantity > 1) {
+          await dispatch(decrementItemQuantity(id)).unwrap();
+        }
+      }
+    } catch (error) {
+      console.error(`Failed to ${action} quantity:`, error);
+      alert(`Error updating quantity. Please try again.`);
+    }
   };
 
   const handleRemove = (id: string) => {
     dispatch(deleteCartItem(id));
   };
-
 
   const handleMoveToWishlist = async () => {
     await Promise.all(selectedItems.map((id) => dispatch(moveToWishlist(id))));
@@ -104,7 +123,9 @@ const CartPage: React.FC = () => {
     0
   );
   const totalPrice = items.reduce(
-    (acc, item) => acc + (item.price - DISCOUNT) * item.quantity,
+    (acc, item) =>
+      acc +
+      (item.price - Math.floor((item.price * DISCOUNT) / 100)) * item.quantity,
     0
   );
   const finalPrice = totalPrice - appliedCouponDiscount;
@@ -114,7 +135,7 @@ const CartPage: React.FC = () => {
 
   return (
     <>
-      <CartHeader activeStep = "BAG" />
+      <CartHeader activeStep="BAG" />
       {items.length > 0 ? (
         <div className={styles.cartPage}>
           <div className={styles.mainContent}>
@@ -128,16 +149,6 @@ const CartPage: React.FC = () => {
                 showMoreOffers={showMoreOffers}
                 toggleOffersDropdown={toggleOffersDropdown}
               />
-              {/* <CartActions
-                items={items}
-                selectedItems={selectedItems}
-                setSelectedItems={setSelectedItems}
-                setModalAction={(action) => {
-                  setModalAction(action);
-                  navigate("/cart?modal=remove");
-                }}
-                setShowRemoveModal={() => navigate("/cart?modal=remove")}
-              /> */}
               <div ref={cartListRef} className={styles.cartListSection}>
                 <CartList
                   items={items}
@@ -174,7 +185,7 @@ const CartPage: React.FC = () => {
               />
             </div>
           </div>
-
+          <RecommendedProduct />
           {modal === "remove" && (
             <RemoveModal
               showRemoveModal={true}
@@ -213,4 +224,3 @@ const CartPage: React.FC = () => {
 };
 
 export default CartPage;
-		

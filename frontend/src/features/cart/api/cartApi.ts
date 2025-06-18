@@ -56,20 +56,7 @@ export const removeCartItemAPI = async (productId: string) => {
   }
 };
 
-// 4.)  Remove Selected Items from Cart by taking ids in array (string)
-
-// export const removeSelectedCartItemsAPI = async (productIds: string[]) => {
-//   try {
-//     const response = await apiClient.post<Cart>("/cart/", {
-//       ids: productIds,
-//     });
-//     return response.data.items;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-// Update size of selected item by (id and newsize)
+//4.)  Update size of selected item by (id and newsize)
 
 export const updateCartItemSizeAPI = async (
   productId: string,
@@ -84,13 +71,24 @@ export const updateCartItemSizeAPI = async (
   }
 };
 
-// 5.) Update Cart items Quantity by (product id, and number)
-
-export const updateCartItemQuantityAPI = async (
-  productId: string
-  // quantity: number
+// 5.) Increment cart item quantity
+export const incrementCartItemQuantityAPI = async (
+  productId: string,
 ) => {
   try {
+    const response = await apiClient.post<Cart>(`/cart/${productId}`);
+    return response.data.items;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 6.)  Decrement cart item quantity
+export const decrementCartItemQuantityAPI = async (
+  productId: string,
+) => {
+  try {
+   
     const response = await apiClient.put<Cart>(`/cart/${productId}`);
     return response.data.items;
   } catch (error) {
@@ -98,7 +96,7 @@ export const updateCartItemQuantityAPI = async (
   }
 };
 
-// 6.) move to wishlist by product id
+// 7.) move to wishlist by product id
 
 export const moveItemToWishlistAPI = async (productId: string) => {
   try {
