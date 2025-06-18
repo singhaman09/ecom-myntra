@@ -38,7 +38,7 @@
   color: #104b3f;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'Georgia', serif;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 /* Subtitle */
@@ -47,21 +47,23 @@
   color: #1c1c1c;
   margin-top: 0.5rem;
   line-height: 1.4;
-  font-family: Arial, sans-serif;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .instruction strong {
   font-weight: bold;
-  font-family: 'Georgia', serif;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .title {
+  font-family: 'Times New Roman', Times, serif;
   font-size: 1.5rem;
   font-weight: bold;
   color: #003d29;
 }
 
 .subtitle {
+  font-family: 'Times New Roman', Times, serif;
   color: #333;
   font-size: 0.875rem;
   margin-top: 0.25rem;
@@ -85,6 +87,7 @@
 }
 
 .label {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   color: #003d29;
@@ -92,6 +95,7 @@
 }
 
 .input {
+  font-family: 'Work Sans', sans-serif;
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -115,6 +119,7 @@
 }
 
 .errorMessage {
+  font-family: 'Work Sans', sans-serif;
   margin-top: 0.25rem;
   font-size: 0.75rem;
   color: #ff6b6b;
@@ -125,12 +130,14 @@
 }
 
 .requirementsTitle {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.75rem;
   color: #003d29;
   margin-bottom: 0.25rem;
 }
 
 .requirementsList {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.75rem;
   margin: 0;
   padding: 0;
@@ -149,6 +156,7 @@
 }
 
 .serverError {
+  font-family: 'Work Sans', sans-serif;
   background-color: #ffeaea;
   border: 1px solid #ff6b6b;
   color: #c62828;
@@ -158,6 +166,7 @@
 }
 
 .submitButton {
+  font-family: 'Work Sans', sans-serif;
   padding: 0.875rem;
   background-color: #003d29;
   color: white;
@@ -186,6 +195,7 @@
 }
 
 .link {
+  font-family: 'Work Sans', sans-serif;
   color: #003d29;
   text-decoration: none;
   font-size: 0.875rem;
@@ -236,6 +246,7 @@
 }
 
 .oauthButton {
+  font-family: 'Work Sans', sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,6 +276,7 @@
 }
 
 .skipButton {
+  font-family: 'Work Sans', sans-serif;
   background: none;
   border: none;
   font-size: 1rem;

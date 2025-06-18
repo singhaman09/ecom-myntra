@@ -60,40 +60,6 @@ const AppRoutes: React.FC = () => {
           element: <ProductPage />,
         },
         {
-          element: <AuthRoute />,
-          children: [
-            {
-              path: "login",
-              element: <Login />,
-            },
-            {
-              path: "signup",
-              element: <Register />,
-            },
-            {
-              path: "verify-email",
-              element: <VerifyEmail />,
-            },
-            {
-              path: "forgot-password",
-              children: [
-                {
-                  path: "",
-                  element: <ForgotPassword />,
-                },
-                {
-                  path: "verify-otp",
-                  element: <VerifyOtpForgotPass />,
-                },
-                {
-                  path: "reset-password",
-                  element: <ResetPassword />,
-                },
-              ],
-            },
-          ],
-        },
-        {
           element: <ProtectedRoute />,
           children: [
             {

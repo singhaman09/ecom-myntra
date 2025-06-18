@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ChevronDown, Grid3X3 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ChevronDown, Grid3X3, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import styles from "./css/CategoryDropDown.module.css";
 
@@ -195,6 +195,7 @@ const categoryData: Category[] = [
     ],
   },
 ];
+
 interface CategoryDropdownProps {
   isOpen: boolean;
   onClose: () => void;
@@ -213,12 +214,26 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("men");
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const currentCategory = categoryData.find(
     (cat) => cat.id === selectedCategory
   );
 
   const handleMouseEnter = () => {
+    if (isMobile) return;
+    
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       setHoverTimeout(null);
@@ -227,13 +242,17 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
   };
 
   const handleMouseLeave = () => {
+    if (isMobile) return;
+    
     const timeout = setTimeout(() => {
       setIsDropdownOpen(false);
-    }, 200); // Small delay to allow moving to dropdown
+    }, 100); // Reduced delay for better UX
     setHoverTimeout(timeout);
   };
 
   const handleDropdownMouseEnter = () => {
+    if (isMobile) return;
+    
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       setHoverTimeout(null);
@@ -241,6 +260,7 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
   };
 
   const handleDropdownMouseLeave = () => {
+    if (isMobile) return;
     setIsDropdownOpen(false);
   };
 
@@ -252,6 +272,18 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
     setIsDropdownOpen(false);
   };
 
+  const handleButtonClick = () => {
+    if (isMobile) {
+      setIsDropdownOpen(!isDropdownOpen);
+    }
+  };
+
+  const handleBackdropClick = () => {
+    if (isMobile) {
+      setIsDropdownOpen(false);
+    }
+  };
+
   return (
     <div className={styles.categoriesContainer}>
       {/* Categories Button */}
@@ -261,31 +293,56 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
         }`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={handleButtonClick}
       >
         <Grid3X3 className={styles.categoriesIcon} />
         <span>Categories</span>
-        <ChevronDown className={styles.categoriesIcon} />
+        <ChevronDown className={`${styles.categoriesIcon} ${styles.chevronIcon}`} />
       </div>
+
+      {/* Mobile Backdrop */}
+      {isMobile && isDropdownOpen && (
+        <div 
+          className={styles.backdrop} 
+          onClick={handleBackdropClick}
+        />
+      )}
 
       {/* Dropdown */}
       <div
-        className={`${styles.dropdown} ${isDropdownOpen ? styles.active : ""}`}
+        className={`${styles.dropdown} ${isDropdownOpen ? styles.active : ""} ${
+          isMobile ? styles.mobile : ""
+        }`}
         onMouseEnter={handleDropdownMouseEnter}
         onMouseLeave={handleDropdownMouseLeave}
       >
         <div className={styles.dropdownContent}>
+          {/* Mobile Close Button */}
+          {isMobile && (
+            <div className={styles.mobileHeader}>
+              <h2>Categories</h2>
+              <button 
+                className={styles.closeButton}
+                onClick={() => setIsDropdownOpen(false)}
+              >
+                <X size={24} />
+              </button>
+            </div>
+          )}
+
           {/* Categories Section */}
           <div className={styles.categoriesSection}>
             {categoryData.map((category) => (
               <div
                 key={category.id}
                 className={`${styles.categoryItem} ${
-                  activeCategory === category.id ? styles.active : ""
+                  selectedCategory === category.id ? styles.active : ""
                 }`}
+                onClick={() => handleCategoryClick(category.id)}
               >
                 <Link
                   to={category.path}
-                  onClick={onClose}
+                  onClick={handleLinkClick}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {category.name}
