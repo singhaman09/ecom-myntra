@@ -1,6 +1,6 @@
 export interface Order {
   id: string;
-  status: 'delivered' | 'pending' | 'shipped' | 'cancelled' | 'processing' | 'returned';
+  status: 'delivered' | 'Pending' | 'shipped' | 'cancelled' | 'processing' | 'returned';
   deliveryDate: string;
   orderDate: string;
   exchangeReturnWindow?: string;

@@ -6,10 +6,39 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.toggleBar {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 16px;
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  color: #ff3f6c;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.toggleBtn:hover {
+  background-color: #f8f8f8;
+}
+
 .filterSection {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-width: 600px;
+}
+
+.filterSection h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .filterGroup {
@@ -18,11 +47,28 @@
   gap: 6px;
 }
 
+.filterGroup label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
 .rangeInputs,
 .dateInputs {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.rangeInputs span,
+.dateInputs span {
+  color: #555;
+  font-size: 14px;
+}
+
+.rangeInputs input,
+.dateInputs input {
+  flex: 1;
 }
 
 .select,
@@ -58,6 +104,11 @@
   .dateInputs {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .rangeInputs span,
+  .dateInputs span {
+    text-align: center;
   }
 
   .filterActions {

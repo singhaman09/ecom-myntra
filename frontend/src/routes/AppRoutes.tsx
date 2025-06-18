@@ -27,6 +27,7 @@ import PrivacyPolicy from "../features/profile/pages/Legal/PrivacyPolicy";
 import Profile from "../features/profile/pages/Profile/Profile";
 import Notifications from "../features/profile/pages/Notifications/Notifications";
 import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
+import HelpSupport from "../features/help&support/pages/HelpSupport";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -41,6 +42,10 @@ const AppRoutes: React.FC = () => {
         {
           path: "products",
           element: <ProductPage />,
+        },
+        {
+          path: "helpsupport",
+          element: <HelpSupport />,
         },
         {
           path: "products/:slug",
@@ -126,7 +131,9 @@ const AppRoutes: React.FC = () => {
                 {
                   path: "privacy",
                   element: <PrivacyPolicy/>,
-                },
+                }
+                
+
               ]
             },
              
@@ -149,6 +156,7 @@ const AppRoutes: React.FC = () => {
                 
               ),
             },
+            
             
           ],
           

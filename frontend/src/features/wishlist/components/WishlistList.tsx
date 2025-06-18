@@ -27,9 +27,7 @@ const WishlistList: React.FC = () => {
   }, [dispatch]);
 
   const handleRemoveFromWishlist = (itemId: string) => {
-    if (window.confirm('Are you sure you want to remove this item from your wishlist?')) {
-      dispatch(removeFromWishlist(itemId));
-    }
+    dispatch(removeFromWishlist(itemId));
   };
 
   const handleMoveToCart = (itemId: string) => {
@@ -75,21 +73,6 @@ const WishlistList: React.FC = () => {
         <div className={styles.listInfo}>
           <p>{totalItems} items in your wishlist</p>
         </div>
-
-        {/* <div className={styles.listControls}>
-          <label>
-            Show:
-            <select
-              value={itemsPerPage}
-              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-            >
-              <option value={6}>6 per page</option>
-              <option value={12}>12 per page</option>
-              <option value={24}>24 per page</option>
-              <option value={48}>48 per page</option>
-            </select>
-          </label>
-        </div> */}
       </div>
 
       {paginatedItems.length === 0 ? (
