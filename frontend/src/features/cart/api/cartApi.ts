@@ -13,7 +13,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGIyNGFmMjU2ODVmODVkMWQ0ZjJmNCIsImVtYWlsIjoic2hyaXZhc3RhdmthcnRpa2V5QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI5ZjcyMTFhZS00ZmNlLTQzNTItYTc0ZS1kYTI0NjgwYjdhODUiLCJpYXQiOjE3NTAxNDAxNDEsImV4cCI6MTc1MDIyNjU0MX0.-vqMx-1n93SrNgqiRgxjPRyZT2OQ77WteR8GNBWGQlk";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGIyNGFmMjU2ODVmODVkMWQ0ZjJmNCIsImVtYWlsIjoic2hyaXZhc3RhdmthcnRpa2V5QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI2MjNlOWI3MC05MmE1LTRiMDAtODhjMC1hZDU1YTU1OWMxZGQiLCJpYXQiOjE3NTAyMjk1ODIsImV4cCI6MTc1MDMxNTk4Mn0.6YRi4xXVRvSydLlkLCwmV57wYLv80wEn2gfIqoeTqrw";
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -27,6 +27,7 @@ apiClient.interceptors.request.use((config) => {
 export const getCartAPI = async () => {
   try {
     const response = await apiClient.get<Cart>("/cart");
+    console.log(response.data);
     return response.data.items;
   } catch (error) {
     throw error;
@@ -57,16 +58,16 @@ export const removeCartItemAPI = async (productId: string) => {
 
 // 4.)  Remove Selected Items from Cart by taking ids in array (string)
 
-export const removeSelectedCartItemsAPI = async (productIds: string[]) => {
-  try {
-    const response = await apiClient.post<Cart>("/cart/", {
-      ids: productIds,
-    });
-    return response.data.items;
-  } catch (error) {
-    throw error;
-  }
-};
+// export const removeSelectedCartItemsAPI = async (productIds: string[]) => {
+//   try {
+//     const response = await apiClient.post<Cart>("/cart/", {
+//       ids: productIds,
+//     });
+//     return response.data.items;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 // Update size of selected item by (id and newsize)
 

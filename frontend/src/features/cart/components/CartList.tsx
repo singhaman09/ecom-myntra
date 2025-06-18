@@ -3,6 +3,7 @@ import type { CartItem } from "../types/cart";
 import { updateItemSize } from "../redux/cartSlice";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { DISCOUNT } from "../staticData/StaticData";
+import bin from "../../../assets/bin.png";
 import styles from "./styles/CartList.module.css";
 
 interface CartListProps {
@@ -24,7 +25,9 @@ const CartList: React.FC<CartListProps> = ({
 
   const [sizeModalItem, setSizeModalItem] = useState<CartItem | null>(null);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
-  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(null);
+  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
+    null
+  );
   const [itemToRemove, setItemToRemove] = useState<string | null>(null);
 
   const openSizeModal = (item: CartItem) => setSizeModalItem(item);
@@ -46,7 +49,81 @@ const CartList: React.FC<CartListProps> = ({
         <p className={styles.emptyCart}>Your cart is empty.</p>
       ) : (
         items.map((item) => (
-          <div key={item.productId} className={styles.cartItem}>
+          <div className={styles.cartItemWrapper}>
+            <div key={item.productId} className={styles.cartItem}>
+              <div className={styles.imageWrapper}>
+                <button
+                  className={`${styles.heartBtn} ${
+                    selectedItems.includes(item.productId) ? styles.filled : ""
+                  }`}
+                  onClick={() =>
+                    onSelect(
+                      item.productId,
+                      !selectedItems.includes(item.productId)
+                    )
+                  }
+                  aria-label="Toggle Wishlist"
+                >
+                  ❤
+                </button>
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className={styles.itemImage}
+                />
+              </div>
+
+              <div className={styles.itemDetails}>
+                <h3 className={styles.itemName}>{item.name}</h3>
+                <p className={styles.itemDesc}>{item.desc}</p>
+
+                <div className={styles.optionsRow}>
+                  <span
+                    className={styles.itemSize}
+                    onClick={() => openSizeModal(item)}
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  >
+                    Size: {item.size} ▾
+                  </span>
+
+                  {/* Qty Controls */}
+                  <div className={styles.qtyControls}>
+                    <button
+                      className={styles.qtyBtn}
+                      onClick={() =>
+                        item.quantity > 1 &&
+                        onQuantityChange(item.productId, item.quantity - 1)
+                      }
+                      disabled={item.quantity <= 1}
+                    >
+                      −
+                    </button>
+                    <span className={styles.qtyValue}>{item.quantity}</span>
+                    <button
+                      className={styles.qtyBtn}
+                      onClick={() =>
+                        onQuantityChange(item.productId, item.quantity + 1)
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles.priceRow}>
+                  <span className={styles.currentPrice}>
+                    ₹{item.price - Math.floor((item.price * DISCOUNT) / 100)}
+                  </span>
+                  <span className={styles.originalPrice}>₹{item.price}</span>
+                  <span className={styles.discount}>{DISCOUNT}% OFF</span>
+                </div>
+
+                <p className={styles.deliveryInfo}>
+                  ✅ Delivery by <strong>Tomorrow</strong>
+                </p>
+              </div>
+            </div>
+
             <button
               className={styles.removeBtn}
               onClick={() => {
@@ -55,77 +132,9 @@ const CartList: React.FC<CartListProps> = ({
                 setShowRemoveModal(true);
               }}
             >
-              ✕
+              {<img src={bin} alt="Remove" />}
+              Remove
             </button>
-
-            <div className={styles.imageWrapper}>
-              <button
-                className={`${styles.heartBtn} ${
-                  selectedItems.includes(item.productId) ? styles.filled : ""
-                }`}
-                onClick={() =>
-                  onSelect(item.productId, !selectedItems.includes(item.productId))
-                }
-                aria-label="Toggle Wishlist"
-              >
-                ❤
-              </button>
-              <img
-                src={item.image}
-                alt={item.name}
-                className={styles.itemImage}
-              />
-            </div>
-
-            <div className={styles.itemDetails}>
-              <h3 className={styles.itemName}>{item.name}</h3>
-              <p className={styles.itemDesc}>{item.desc}</p>
-
-              <div className={styles.optionsRow}>
-                <span
-                  className={styles.itemSize}
-                  onClick={() => openSizeModal(item)}
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                >
-                  Size: {item.size} ▾
-                </span>
-
-                {/* Qty Controls */}
-                <div className={styles.qtyControls}>
-                  <button
-                    className={styles.qtyBtn}
-                    onClick={() =>
-                      item.quantity > 1 &&
-                      onQuantityChange(item.productId, item.quantity - 1)
-                    }
-                    disabled={item.quantity <= 1}
-                  >
-                    −
-                  </button>
-                  <span className={styles.qtyValue}>{item.quantity}</span>
-                  <button
-                    className={styles.qtyBtn}
-                    onClick={() =>
-                      onQuantityChange(item.productId, item.quantity + 1)
-                    }
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles.priceRow}>
-                <span className={styles.currentPrice}>
-                  ₹{item.price - Math.floor((item.price * DISCOUNT) / 100)}
-                </span>
-                <span className={styles.originalPrice}>₹{item.price}</span>
-                <span className={styles.discount}>{DISCOUNT}% OFF</span>
-              </div>
-
-              <p className={styles.deliveryInfo}>
-                ✅ Delivery by <strong>Tomorrow</strong>
-              </p>
-            </div>
           </div>
         ))
       )}
@@ -199,21 +208,21 @@ const CartList: React.FC<CartListProps> = ({
             <div className={styles.modalBottom}>
               <p className={styles.sizeLabel}>Select Size</p>
               <div className={styles.sizeOptions}>
-                {(sizeModalItem.availableSizes || ["S", "M", "L", "XL", "XXL"]).map(
-                  (size) => (
-                    <button
-                      key={size}
-                      className={`${styles.sizeCircle} ${
-                        size === sizeModalItem.size ? styles.activeSize : ""
-                      }`}
-                      onClick={() =>
-                        handleSizeChange(sizeModalItem.productId, size)
-                      }
-                    >
-                      {size}
-                    </button>
-                  )
-                )}
+                {(
+                  sizeModalItem.availableSizes || ["S", "M", "L", "XL", "XXL"]
+                ).map((size) => (
+                  <button
+                    key={size}
+                    className={`${styles.sizeCircle} ${
+                      size === sizeModalItem.size ? styles.activeSize : ""
+                    }`}
+                    onClick={() =>
+                      handleSizeChange(sizeModalItem.productId, size)
+                    }
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
             </div>
             <button className={styles.doneBtn} onClick={closeSizeModal}>

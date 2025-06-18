@@ -1,115 +1,215 @@
-/* Complete the CSS for AddressSection component - RESPONSIVE DONE */
-
 .addressSection {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 16px;
+  padding: 20px; /* Slightly increased for breathing room */
   background-color: #fff;
-  border: 1px solid #ffe6d9;
-  border-radius: 3px;
-  margin-bottom: 10px;
+  border: 1px solid #ffe6d9; /* Warm, subtle border */
+  border-radius: 6px; /* Softer corners */
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle elevation */
+  transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+.addressSection:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Lift effect on hover */
 }
 
 .address {
   flex: 1;
+  
 }
 
 .addressHeader {
   display: flex;
   flex-direction: row;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center; /* Align label and name vertically */
 }
 
 .addressLabel {
   font-size: 14px;
   color: #333;
+  font-weight: 600;
+  background: #fff; /* Subtle badge effect */
+  border-radius: 12px;
+  transition: background 0.3s ease;
 }
 
+
 .nameAndPincode {
-  font-size: 14px;
-  color: #333;
-  font-weight: bold;
+  font-size: 15px; /* Slightly larger for emphasis */
+  color: #222;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
 
 .addressDetails {
-  font-size: 12px;
+  font-size: 13px; /* Slightly larger for readability */
   color: #555;
-  margin-bottom: 6px;
+  line-height: 1.5; /* Improved readability */
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.addressDetails:hover {
+  color: #333; /* Darken slightly on hover */
 }
 
 .noAddress {
   display: flex;
   flex-direction: row;
-  align-items: center; /* Aligns items vertically centered */
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  font-size: 13px;
+  gap: 16px;
+  font-size: 14px;
   color: #888;
+  /* padding: 12px; */
+  background: #fff; /* Warm background for empty state */
+  border-radius: 4px;
 }
+
 .addAddressButton {
+  width: 118px; /* Fixed width as specified */
   background-color: #044236;
   border: 1px solid #044236;
   color: #fff;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 4px;
+  padding: 8px 16px;
+  font-family: sans-serif;
+  font-size: 14px; /* Increased from 10px for better readability */
+  font-weight: 50;
+  border-radius: 3px;
   cursor: pointer;
-  text-transform: uppercase;
-  align-self: center; /* Ensures vertical centering in flex context */
+  align-self: center; /* Centers vertically in flex container */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .addAddressButton:hover {
-  background: #2dbc9f;
+  background: linear-gradient(
+    135deg,
+    #06654e 0%,
+    #088c6a 100%
+  ); /* Gradient for premium feel */
+  transform: translateY(-2px); /* Lift effect */
+  box-shadow: 0 4px 12px rgba(6, 101, 78, 0.3); /* Green-tinted shadow */
+  border-color: #088c6a; /* Match gradient */
+}
+
+.addAddressButton:active {
+  transform: scale(1); /* Reset scale on click */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .changeAddress {
   background-color: #044236;
-  border: 1px solid #08681f;
+  border: 1px solid #044236; /* Match addAddressButton */
   color: #fff;
-  padding: 7px 12px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 8px 16px; /* Consistent padding */
+  font-family: "Inter", sans-serif; /* Modern font */
+  font-size: 13px;
+  font-weight: 500;
   border-radius: 3px;
   cursor: pointer;
   align-self: center;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .changeAddress:hover {
-  background-color: #57e7ca;
+  background: linear-gradient(
+    135deg,
+    #06654e 0%,
+    #088c6a 100%
+  ); /* Gradient for premium feel */
+  transform: translateY(-2px); /* Lift effect */
+  box-shadow: 0 4px 12px rgba(6, 101, 78, 0.3); /* Green-tinted shadow */
+  border-color: #088c6a; /* Match gradient */
+}
+
+.changeAddress:active {
+  transform: translateY(0); /* Reset lift on click */
+  box-shadow: 0 2px 6px rgba(6, 101, 78, 0.2);
 }
 
 @media (max-width: 768px) {
   .addressSection {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px; /* Add spacing between stacked blocks */
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .address {
+    padding-right: 0; /* Remove right padding in column layout */
   }
 
   .noAddress {
-    flex-direction: row; /* Keep row layout for inline appearance */
-    align-items: center; /* Maintain vertical alignment */
-    justify-content: flex-start; /* Align to start for better mobile layout */
-    gap: 8px; /* Slightly reduce gap for smaller screens */
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .addAddressButton {
+    width: fit-content;
+    padding: 7px 14px;
+    font-size: 13px;
   }
 
   .changeAddress {
     align-self: flex-start;
     width: fit-content;
-  }
-
-  .addAddressButton {
-    width: fit-content;
-    padding: 5px 10px; /* Slightly smaller padding for mobile */
-    font-size: 11px; /* Slightly smaller font for mobile */
+    padding: 7px 14px;
+    font-size: 12px;
   }
 
   .addressHeader {
     flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .nameAndPincode {
+    font-size: 14px;
+  }
+
+  .addressDetails {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .addressSection {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+
+  .noAddress {
+    flex-direction: column; /* Stack for very small screens */
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .addAddressButton,
+  .changeAddress {
+    width: 100%; /* Full-width buttons for small screens */
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .addressHeader {
     gap: 4px;
+  }
+
+  .addressLabel {
+    font-size: 13px;
+    padding: 3px 6px;
   }
 
   .nameAndPincode {
@@ -117,6 +217,6 @@
   }
 
   .addressDetails {
-    font-size: 12px;
+    font-size: 11px;
   }
 }

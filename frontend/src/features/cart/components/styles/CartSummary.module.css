@@ -6,16 +6,17 @@
   padding: 12px;
   background-color: #fff;
   border-left: 1px solid #ddd;
-  border-radius: 6px;
+  border-top: none;
+  border-right: none;
   margin-bottom: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .summaryTitle {
-  font-size: 12px;
-  font-weight: 500;
+  /* font-size: 19px; */
+  font-size: 40px;
+  font-weight: 700;
   color: #333;
-  text-transform: uppercase;
   margin-bottom: 4px;
 }
 
@@ -108,7 +109,7 @@
   }
 
   .summaryTitle {
-    font-size: 15px;
+    font-size: 12px;
   }
 
   .priceItem {
@@ -139,11 +140,11 @@
 /* Large screens (desktops, ≥769px) */
 @media (min-width: 769px) {
   .cartSummary {
-    padding: 20px;
+    padding: 10px;
   }
 
   .summaryTitle {
-    font-size: 14px;
+    font-size: 20px;
   } 
 
   .priceItem {
