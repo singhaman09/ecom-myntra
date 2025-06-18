@@ -42,7 +42,7 @@ const SimilarProduct: React.FC = () => {
       
         { data.selectedProduct && similarProducts.length > 0 ? (
           <>
-            <ProductList data={data.selectedProduct?.similarProducts} isSimilar={false}/>
+            <ProductList data={data.selectedProduct?.similarProducts} isSimilar={true}/>
             <div className={styles.allContainer}>
               {showMoreButtons.map(({ label, path }) => (
                 <div className={styles.buttonContainer} key={label}>

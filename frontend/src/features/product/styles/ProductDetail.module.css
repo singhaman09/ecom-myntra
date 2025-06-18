@@ -1,3 +1,4 @@
+/* Container for the whole page */
 .container {
   max-width: 110rem;
   margin-left: auto;
@@ -5,16 +6,15 @@
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
- 
 }
 
+/* Responsive container padding */
 @media (min-width: 640px) {
   .container {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
 }
-
 @media (min-width: 1024px) {
   .container {
     padding-left: 2rem;
@@ -22,6 +22,7 @@
   }
 }
 
+/* Grid layout for image and details */
 .gridLayout {
   display: grid;
   grid-template-columns: 1fr;
@@ -29,7 +30,6 @@
   align-items: flex-start;
   margin-bottom: 20px;
 }
-
 @media (min-width: 768px) {
   .gridLayout {
     grid-template-columns: 1fr 1fr;
@@ -38,41 +38,40 @@
   }
 }
 
+/* Image container */
 .imgContainer {
   width: 100%;
   display: flex;
-  justify-content: center;
   background: #fff;
   border-radius: 1rem;
-  overflow: hidden;
-  padding: 1rem;
+  height: 100%;
+  
   box-sizing: border-box;
- 
+  min-height: 180px;
 }
 
+/* Product image */
 .Image {
-  width: 700px;
-  height: auto;
-  height: 800px;
   object-fit: cover;
-  display: block;
-  margin: 0 auto;
+  width: 100%;
   border-radius: 1rem;
   transition: box-shadow 0.2s;
+  max-height: 45vw;
+  border-radius: 1rem;
 }
+
+
 
 @media (max-width: 767px) {
-  .imgContainer {
-    min-height: 180px;
-    padding: 0.5rem;
-  }
-  .Image {
-    max-width: 100%;
-    max-height: 220px;
-    margin-top: 0;
+  .gridLayout {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
   }
 }
 
+
+
+/* Product details section */
 .productDetails {
   display: flex;
   flex-direction: column;
@@ -150,8 +149,6 @@
   font-family: 'Work Sans', sans-serif;
 }
 
-
-
 .sizeHeaderRow {
   display: flex;
   align-items: center;
@@ -193,10 +190,6 @@
   color: white;
   background-color: #67c4bb;
 }
-
-
-
-
 
 .featuresList {
   font-size: 0.97rem;
@@ -282,7 +275,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
-
 }
 
 .deliveryTitle {
@@ -307,7 +299,6 @@
   background-color: transparent;
   pointer-events: none;
   color: black;
-  
 }
 
 .sizeBtnOutOfStock::after {

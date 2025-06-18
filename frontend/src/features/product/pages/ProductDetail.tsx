@@ -236,14 +236,14 @@ const ProductDetails = () => {
              
                 <FavoriteIcon
                   className={styles.heartIcon}
-                  sx={{ color: "#db2777", fontSize: 20, verticalAlign: "middle" }}
+                  sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
                   
                 />
                  <span>WISHLIST</span>
               </button>: <button className={`${styles.wishlistBtn}`} onClick={addWishlist}>
                 <FavoriteBorderIcon
                   className={styles.heartIcon}
-                  sx={{ color: "#db2777", fontSize: 20, verticalAlign: "middle" }}
+                  sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
                 />
                <span>WISHLIST</span>
             </button>}

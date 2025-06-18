@@ -50,7 +50,7 @@ const BoughtTogether: React.FC = () => {
   return (
     <div className={styles.container}>
         <div>
-      <h3 className={styles.title}>Bought Together</h3>
+      <h3 className={styles.title}>Frequently Bought Together</h3>
 
       
       <div className={styles.productsRow}>
