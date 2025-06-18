@@ -39,22 +39,24 @@ const OrderDetailPage: React.FC = () => {
     );
   }
 
+  const handleNeedHelp = () => {
+    // Handle need help action here
+    console.log('Need help requested for order:', orderId);
+  };
+
   return (
     <Layout>
       <div className={styles.orderDetailPage}>
-        <div className={styles.header}>
-          <Link to="/orders" className={styles.backLink}>
-            ← Back to Orders
-          </Link>
-          </div>
       <div className={styles.header}>
+        <Link to="/orders" className={styles.backLink}>
+            ←
+          </Link>
           <h1 className={styles.title}>Order Details</h1>
-          <div className={styles.orderId}>#{order.id.slice(-8)}</div>
-      </div>  
+          </div>  
 
         <div className={styles.content}>
           <OrderDetailCard order={order} />
-          <OrderTrackingCard order={order} />
+          <OrderTrackingCard order={order} onNeedHelp={handleNeedHelp} />
           <PaymentSummaryCard order={order} />
         </div>
       </div>

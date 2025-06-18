@@ -19,7 +19,12 @@ const ReviewCard: React.FC<Review> = ({
         </div>
         <span className={styles.ratingValue}>{rating}/5</span>
       </div>
-
+      <div className={styles.metaRow}>
+        <div className={styles.metaLeft}>
+          <span className={styles.userName}>{reviewerName}</span>
+                 </div>
+        <button className={styles.reportButton}>Report this</button>
+      </div>
       {/* Review Title */}
       <h4 className={styles.title}>{title}</h4>
 
@@ -27,13 +32,18 @@ const ReviewCard: React.FC<Review> = ({
       <p className={styles.comment}>{comment}</p>
 
       {/* Review Meta */}
-      <div className={styles.metaRow}>
-        <div className={styles.metaLeft}>
-          <span className={styles.userName}>{reviewerName}</span>
-                 </div>
-        <span>{formatDate(createdAt)}</span>
+     <div>
+    <div className={styles.helpOuter}>
+    <div className={styles.helpfulContainer}>
+      <h4>Was this helpul?</h4>
+      <p className={styles.count}>4 found this helpful</p>
       </div>
-
+      <div className={styles.buttonContainer}>
+        <button>Yes</button>
+        <button>No</button>
+      </div>
+    </div>
+     </div>
     </div>
   );
 };

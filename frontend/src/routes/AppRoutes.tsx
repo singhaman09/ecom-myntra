@@ -27,6 +27,7 @@ import PrivacyPolicy from "../features/profile/pages/Legal/PrivacyPolicy";
 import Profile from "../features/profile/pages/Profile/Profile";
 import Notifications from "../features/profile/pages/Notifications/Notifications";
 import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
+import HelpSupport from "../features/help&support/pages/HelpSupport";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -43,6 +44,10 @@ const AppRoutes: React.FC = () => {
           element: <ProductPage />,
         },
         {
+          path: "helpsupport",
+          element: <HelpSupport />,
+        },
+        {
           path: "products/:slug",
           element: <ProductPage />,
         },
@@ -53,40 +58,6 @@ const AppRoutes: React.FC = () => {
         {
           path: ":slug",
           element: <ProductPage />,
-        },
-        {
-          element: <AuthRoute />,
-          children: [
-            {
-              path: "login",
-              element: <Login />,
-            },
-            {
-              path: "signup",
-              element: <Register />,
-            },
-            {
-              path: "verify-email",
-              element: <VerifyEmail />,
-            },
-            {
-              path: "forgot-password",
-              children: [
-                {
-                  path: "",
-                  element: <ForgotPassword />,
-                },
-                {
-                  path: "verify-otp",
-                  element: <VerifyOtpForgotPass />,
-                },
-                {
-                  path: "reset-password",
-                  element: <ResetPassword />,
-                },
-              ],
-            },
-          ],
         },
         {
           element: <ProtectedRoute />,
@@ -126,7 +97,9 @@ const AppRoutes: React.FC = () => {
                 {
                   path: "privacy",
                   element: <PrivacyPolicy/>,
-                },
+                }
+                
+
               ]
             },
              
@@ -149,6 +122,7 @@ const AppRoutes: React.FC = () => {
                 
               ),
             },
+            
             
           ],
           

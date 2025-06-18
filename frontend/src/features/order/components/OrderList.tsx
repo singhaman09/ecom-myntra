@@ -160,32 +160,32 @@ import { FiFilter } from 'react-icons/fi';
 import OrderFilters from './OderFilters'
 
 // Placeholder FilterComponent
-const FilterComponent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  return (
-    <div className={styles.filterPanel}>
-      <div className={styles.filterHeader}>
-        <h3>Filter Orders</h3>
-        <button className={styles.closeButton} onClick={onClose} aria-label="Close filter">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M18 6L6 18" />
-            <path d="M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-      <p>Filter options will be implemented here</p>
-    </div>
-  );
-};
+// const FilterComponent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+//   return (
+//     <div className={styles.filterPanel}>
+//       <div className={styles.filterHeader}>
+//         <h3>Filter Orders</h3>
+//         <button className={styles.closeButton} onClick={onClose} aria-label="Close filter">
+//           <svg
+//             xmlns="http://www.w3.org/2000/svg"
+//             width="20"
+//             height="20"
+//             viewBox="0 0 24 24"
+//             fill="none"
+//             stroke="currentColor"
+//             strokeWidth="2"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           >
+//             <path d="M18 6L6 18" />
+//             <path d="M6 6l12 12" />
+//           </svg>
+//         </button>
+//       </div>
+//       <p>Filter options will be implemented here</p>
+//     </div>
+//   );
+// };
 
 interface OrderListProps {
   onRatingSubmit: (orderId: string, rating: number) => Promise<boolean>;
@@ -228,6 +228,7 @@ const OrderList: React.FC<OrderListProps> = ({
   const endIndex = startIndex + itemsPerPage;
   const paginatedOrders = filteredOrders.slice(startIndex, endIndex);
   const totalPages = Math.ceil(totalOrders / itemsPerPage);
+  
 
   if (loading) {
     return (
@@ -302,15 +303,22 @@ const OrderList: React.FC<OrderListProps> = ({
       ) : (
         <>
           <div className={styles.ordersGrid}>
-            {paginatedOrders.map((order) => (
+            {filteredOrders.map((order) => (
               <OrderCard
-                key={order.id}
-                order={order}
-                onRatingSubmit={onRatingSubmit}
-                onWriteReview={onWriteReview}
-                onExchangeReturn={onExchangeReturn}
-                onBuyAgain={onBuyAgain}
-              />
+          key={order.id}
+          orderData={{
+            orderId: order.id,
+            itemCount: order.items.length,
+            status: order.status,
+            product: {
+              name: order.items[0].name,
+              image: order.items[0].image,
+              orderDate: order.orderDate,
+              paymentMode: "Debit Card", // Adjust as needed
+            },
+            price: order.total,
+          }}
+        />
             ))}
           </div>
 

@@ -60,16 +60,18 @@
 
 // export default OrderTrackingCard;
 
-
 import React from 'react';
 import type { Order } from '../types/orders';
 import styles from '../css/ordertracking.module.css';
+import { useNavigate } from 'react-router-dom';
 
 interface OrderTrackingCardProps {
   order: Order;
 }
 
 const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
+  const navigate = useNavigate();
+
   const getStatusText = (status: string) => {
     switch (status) {
       case 'delivered':
@@ -91,6 +93,11 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
       month: 'short',
       year: 'numeric',
     });
+  };
+
+  const handleNeedHelp = () => {
+    navigate("/helpsupport", { state: { order } });
+
   };
 
   const isDelivered = order.status === 'delivered';
@@ -131,9 +138,7 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
           <div className={styles.date}>{formatDate('2021-08-03')}</div>
         </div>
       </div>
-      <div className={styles.currentStatus}>
-        Current Status: {getStatusText(order.status)}
-      </div>
+
       {order.trackingInfo && (
         <div className={styles.trackingInfo}>
           <div>Courier: {order.trackingInfo.courier}</div>
@@ -155,10 +160,10 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
         {isDelivered ? (
           <>
             <button className={styles.returnExchangeBtn}>Return / Exchange</button>
-            <button className={styles.helpBtn}>Need Help</button>
+            <button className={styles.helpBtn} onClick={handleNeedHelp}>Need Help</button>
           </>
         ) : (
-          <button className={styles.helpBtn}>Need Help</button>
+          <button className={styles.helpBtn} onClick={handleNeedHelp}>Need Help</button>
         )}
       </div>
     </div>

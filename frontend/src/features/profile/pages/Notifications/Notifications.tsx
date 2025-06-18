@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { 
-  CheckCheck, 
-  Trash2, 
+import React, { useEffect, useRef } from 'react';
+import {
   AlertCircle,
   Loader2,
   BellOff,
-  Clock
-} from 'lucide-react'; 
+  Clock,
+  CheckCheck
+} from 'lucide-react';
 import styles from './Notifications.module.css';
-import { useSelector } from 'react-redux'; 
+import { useSelector } from 'react-redux';
 import { useAppDispatch, type RootState } from '../../redux/hooks';
 import {
   fetchNotifications,
@@ -17,26 +16,42 @@ import {
   markAllAsRead,
   clearError
 } from '../../redux/slices/notificationSlice';
-import type {Notification, MarkAsReadRequest, DeleteNotificationRequest} from '../../types/profile.types'; 
+import type { Notification, MarkAsReadRequest, DeleteNotificationRequest } from '../../types/profile.types';
 
 const Notifications: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { 
-    notifications, 
-    unreadCount, 
-    loading, 
-    error, 
-    pagination 
-  } = useSelector((state: RootState) => state.notifications); 
+  const {
+    notifications,
+    unreadCount,
+    loading,
+    error,
+    pagination
+  } = useSelector((state: RootState) => state.notifications);
 
-  const [swipingId, setSwipingId] = useState<string | null>(null);
-  const touchStartX = useRef<number>(0);
-  const touchCurrentX = useRef<number>(0);
+  const dragStartX = useRef<number>(0);
+  const dragEndX = useRef<number>(0);
 
   useEffect(() => {
-    
     dispatch(fetchNotifications({ page: 1, limit: 10 }));
   }, [dispatch]);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    dragStartX.current = e.clientX;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent, notificationId: string) => {
+    dragEndX.current = e.clientX;
+    const deltaX = dragStartX.current - dragEndX.current;
+    if (deltaX > 80) {
+      dispatch(deleteNotifications({ notificationIds: [notificationId] } as DeleteNotificationRequest));
+    }
+  };
+
+  const handleNotificationClick = (notification: Notification) => {
+    if (!notification.isRead) {
+      dispatch(markNotificationsAsRead({ notificationIds: [notification.id] } as MarkAsReadRequest));
+    }
+  };
 
   const handleMarkAllAsRead = () => {
     dispatch(markAllAsRead());
@@ -44,24 +59,11 @@ const Notifications: React.FC = () => {
 
   const handleLoadMore = () => {
     if (pagination.hasMore && !loading) {
-      dispatch(fetchNotifications({ 
-        page: pagination.page + 1, 
-        limit: pagination.limit 
+      dispatch(fetchNotifications({
+        page: pagination.page + 1,
+        limit: pagination.limit
       }));
     }
-  };
-
-  const handleNotificationClick = (notification: Notification) => {
-    if (!notification.isRead) {
-      
-      dispatch(markNotificationsAsRead({ notificationIds: [notification.id] } as MarkAsReadRequest));
-    }
-  };
-
-  const handleDelete = (notificationId: string) => {
-    
-    dispatch(deleteNotifications({ notificationIds: [notificationId] } as DeleteNotificationRequest));
-    setSwipingId(null);
   };
 
   const formatTimeAgo = (timestamp: string) => {
@@ -73,7 +75,7 @@ const Notifications: React.FC = () => {
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
     if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    
+
     return time.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -90,40 +92,13 @@ const Notifications: React.FC = () => {
     });
   };
 
-  
-  const handleTouchStart = (e: React.TouchEvent, notificationId: string) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchCurrentX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent, notificationId: string) => {
-    touchCurrentX.current = e.touches[0].clientX;
-    const deltaX = touchStartX.current - touchCurrentX.current;
-    
-    if (deltaX > 50) { 
-      setSwipingId(notificationId);
-    } else if (deltaX < -20) {
-      setSwipingId(null);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    touchStartX.current = 0;
-    touchCurrentX.current = 0;
-  };
-
   if (error) {
     return (
       <div className={styles.notificationsContainer}>
         <div className={styles.errorState}>
           <AlertCircle size={20} />
           <span>{error}</span>
-          <button 
-            onClick={() => dispatch(clearError())}
-            className="btn btn-secondary"
-          >
-            Dismiss
-          </button>
+          <button onClick={() => dispatch(clearError())}>Dismiss</button>
         </div>
       </div>
     );
@@ -134,9 +109,7 @@ const Notifications: React.FC = () => {
       <div className={styles.notificationsHeader}>
         <div className={styles.headerLeft}>
           <h2 className={styles.headerTitle}>Notifications</h2>
-          {unreadCount > 0 && (
-            <span className={styles.unreadBadge}>{unreadCount}</span>
-          )}
+          {unreadCount > 0 && <span className={styles.unreadBadge}>{unreadCount}</span>}
         </div>
         {unreadCount > 0 && (
           <button
@@ -167,13 +140,10 @@ const Notifications: React.FC = () => {
             {notifications.map((notification: Notification) => (
               <div
                 key={notification.id}
-                className={`${styles.notificationItem} ${
-                  !notification.isRead ? styles.unread : ''
-                } ${swipingId === notification.id ? styles.swiping : ''}`}
+                className={`${styles.notificationItem} ${!notification.isRead ? styles.unread : ''}`}
                 onClick={() => handleNotificationClick(notification)}
-                onTouchStart={(e) => handleTouchStart(e, notification.id)}
-                onTouchMove={(e) => handleTouchMove(e, notification.id)}
-                onTouchEnd={handleTouchEnd}
+                onMouseDown={handleMouseDown}
+                onMouseUp={(e) => handleMouseUp(e, notification.id)}
               >
                 <div className={styles.notificationContent}>
                   <h3 className={styles.notificationTitle}>
@@ -188,18 +158,6 @@ const Notifications: React.FC = () => {
                     <span>•</span>
                     <span>{formatTime(notification.timestamp)}</span>
                   </div>
-                </div>
-
-                <div className={styles.swipeActions}>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(notification.id);
-                    }}
-                  >
-                    <Trash2 size={20} />
-                  </button>
                 </div>
               </div>
             ))}

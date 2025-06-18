@@ -19,7 +19,8 @@ const OrderDetailCard: React.FC<OrderDetailCardProps> = ({ order }) => {
 
   return (
     <div className={styles.orderDetailCard}>
-      <h2 className={styles.sectionTitle}>Order Items</h2>
+     <div className={styles.orderId}>{order.id.slice(-8)}</div>
+     <div>Ordered on: {formatDate(order.orderDate)}</div>
       {order.items.map((item) => (
         <div key={item.id} className={styles.item}>
           <img
@@ -38,19 +39,6 @@ const OrderDetailCard: React.FC<OrderDetailCardProps> = ({ order }) => {
           </div>
         </div>
       ))}
-      <div className={styles.orderMeta}>
-        <div>Ordered on: {formatDate(order.orderDate)}</div>
-        {order.deliveryDate && (
-          <div>Delivered on: {formatDate(order.deliveryDate)}</div>
-        )}
-        {order.deliveryAddress && (
-          <div className={styles.address}>
-            Delivery Address: {order.deliveryAddress.name},{" "}
-            {order.deliveryAddress.addressLine1}, {order.deliveryAddress.city},{" "}
-            {order.deliveryAddress.state} - {order.deliveryAddress.pincode}
-          </div>
-        )}
-      </div>
     </div>
   );
 };

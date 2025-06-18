@@ -8,6 +8,7 @@ import { renderStars } from '../utils/RenderStars';
 import { averageRating } from '../utils/Reviews';
 import { useProductSelector } from '../hooks/storeHooks';
 import SelectShadeSizeModal from './SelectSizeModal';
+import defaultProductImage from '../../../assets/cart.png'
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
   const data=useProductSelector(state=>state.wishlist.items)
@@ -23,6 +24,11 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           src={product.imageUrl} 
           alt={product.name}
           className={styles.productImage}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = defaultProductImage;
+           
+            (e.currentTarget as HTMLImageElement).onerror = null;
+          }}
         />
         
         {/* Wishlist Button */}
@@ -58,18 +64,18 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           <div className={styles.stars}>
             {renderStars(avgRating)}
           </div>
-          <span className={styles.ratingCount}>({avgRating>0 ?avgRating.toFixed(1) :0})</span>
+          <span className={styles.ratingCount}>({product.reviews.length})</span>
         </div>
         
         {/* Pricing */}
         <div className={styles.pricing}>
           <span className={styles.discountedPrice}>
-            ₹{product.price}
+            ₹{Math.round(product.price)}
           </span>
           {product.price > ((product.price * discountPercentage)/100) && (
             <>
               <span className={styles.originalPrice}>
-                ₹{product.price+((product.price * discountPercentage)/100)}
+                ₹{Math.round(product.price+((product.price * discountPercentage)/100))}
               </span>
               <span className={styles.discountPercent}>
                 ({discountPercentage}% OFF)

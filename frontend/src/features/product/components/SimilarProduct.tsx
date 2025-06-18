@@ -38,11 +38,11 @@ const SimilarProduct: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h3>SIMILAR PRODUCTS</h3>
+      <h3 style={{fontFamily:'Times New Roman'}}>SIMILAR PRODUCTS</h3>
       
         { data.selectedProduct && similarProducts.length > 0 ? (
           <>
-            <ProductList data={data.selectedProduct?.similarProducts} />
+            <ProductList data={data.selectedProduct?.similarProducts} isSimilar={true}/>
             <div className={styles.allContainer}>
               {showMoreButtons.map(({ label, path }) => (
                 <div className={styles.buttonContainer} key={label}>

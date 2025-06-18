@@ -74,7 +74,7 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
     inStock: false,
   },
   {
-    _id: "2",
+    _id: "3",
     productId: "mock2",
     name: "Mock Laptop",
     price: 45999,
@@ -82,7 +82,7 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
     inStock: false,
   },
   {
-    _id: "2",
+    _id: "4",
     productId: "mock2",
     name: "Mock Laptop",
     price: 45999,
@@ -91,7 +91,7 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
     inStock: true,
   },
   {
-    _id: "2",
+    _id: "5",
     productId: "mock2",
     name: "Mock Laptop",
     price: 45999,
@@ -100,7 +100,7 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
     inStock: true,
   },
   {
-    _id: "2",
+    _id: "6",
     productId: "mock2",
     name: "Mock Laptop",
     price: 45999,
