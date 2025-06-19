@@ -5,8 +5,7 @@ export const STATIC_CART_ITEMS: CartItem[] = [
   {
     productId: "P001",
     name: "Nike Air Max 270",
-    brand: "Nike",
-    desc: "Comfortable and stylish sneakers perfect for casual wear.",
+    description: "Comfortable and stylish sneakers perfect for casual wear.",
     price: 8999,
     image:
       "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=120&q=80",
@@ -16,8 +15,7 @@ export const STATIC_CART_ITEMS: CartItem[] = [
   {
     productId: "P002",
     name: "Levi's 511 Slim Fit Jeans",
-    brand: "Levi's",
-    desc: "Mid-rise slim fit denim with stretch for comfort.",
+    description: "Mid-rise slim fit denim with stretch for comfort.",
     price: 3599,
     image:
       "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=120&q=80",
@@ -27,8 +25,7 @@ export const STATIC_CART_ITEMS: CartItem[] = [
   {
     productId: "P003",
     name: "Apple AirPods Pro (2nd Gen)",
-    brand: "Apple",
-    desc: "Active Noise Cancellation with better battery and sound.",
+    description: "Active Noise Cancellation with better battery and sound.",
     price: 24999,
     image:
       "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=120&q=80",
@@ -82,6 +79,8 @@ export const STATIC_ADDRESSES: Address[] = [
 ];
 
 export const DISCOUNT = 28;
+export const dummyImage =
+  "https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=120&q=80";
 
 export const Recommended_items: Product[] = [
   {
@@ -157,3 +156,4 @@ export const Recommended_items: Product[] = [
     category: "Laptops",
   },
 ];
+
