@@ -1,65 +1,3 @@
-// import React from 'react';
-// import type { Order } from '../types/orders';
-// import styles from '../css/ordertracking.module.css'
-
-// interface OrderTrackingCardProps {
-//   order: Order;
-// }
-
-// const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
-//   const getStatusText = (status: string) => {
-//     switch (status) {
-//       case 'delivered':
-//         return 'Delivered';
-//       case 'shipped':
-//         return 'Shipped';
-//       case 'pending':
-//         return 'Processing';
-//       case 'cancelled':
-//         return 'Cancelled';
-//       default:
-//         return status;
-//     }
-//   };
-
-//   const formatDate = (dateString: string) => {
-//     return new Date(dateString).toLocaleDateString('en-IN', {
-//       day: 'numeric',
-//       month: 'short',
-//       year: 'numeric',
-//     });
-//   };
-
-//   return (
-//     <div className={styles.orderTrackingCard}>
-//       <h2 className={styles.sectionTitle}>Order Status</h2>
-//       <div className={styles.status}>
-//         <span className={styles.statusLabel}>Current Status:</span>
-//         <span className={styles.statusValue}>{getStatusText(order.status)}</span>
-//       </div>
-//       {order.trackingInfo && (
-//         <div className={styles.trackingInfo}>
-//           <div>Courier: {order.trackingInfo.courier}</div>
-//           <div>Tracking ID: {order.trackingInfo.trackingId}</div>
-//           {order.trackingInfo.trackingUrl && (
-//             <a href={order.trackingInfo.trackingUrl} className={styles.trackingLink}>
-//               Track Order
-//             </a>
-//           )}
-//           {order.trackingInfo.estimatedDelivery && (
-//             <div>Estimated Delivery: {formatDate(order.trackingInfo.estimatedDelivery)}</div>
-//           )}
-//           {order.trackingInfo.currentLocation && (
-//             <div>Current Location: {order.trackingInfo.currentLocation}</div>
-//           )}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default OrderTrackingCard;
-
 import React from 'react';
 import type { Order } from '../types/orders';
 import styles from '../css/ordertracking.module.css';
@@ -72,8 +10,8 @@ interface OrderTrackingCardProps {
 const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
   const navigate = useNavigate();
 
-  const getStatusText = (status: string) => {
-    switch (status) {
+  const getStatusText = (status: string): string => {
+    switch (status.toLowerCase()) {
       case 'delivered':
         return 'Delivered';
       case 'shipped':
@@ -82,12 +20,17 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
         return 'Processing';
       case 'cancelled':
         return 'Cancelled';
+      case 'processing':
+        return 'Processing';
+      case 'returned':
+        return 'Returned';
       default:
-        return 'Delivered';
+        return 'Unknown';
     }
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-IN', {
       day: 'numeric',
       month: 'short',
@@ -95,12 +38,23 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
     });
   };
 
-  const handleNeedHelp = () => {
-    navigate("/helpsupport", { state: { order } });
-
+  // Estimate timeline dates based on orderDate
+  const getTimelineDates = () => {
+    const orderDate = new Date(order.orderDate);
+    return {
+      placed: formatDate(order.orderDate),
+      picked: formatDate(new Date(orderDate.getTime() + 24 * 60 * 60 * 1000).toISOString()),
+      shipped: formatDate(new Date(orderDate.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString()),
+      delivered: order.status === 'delivered' ? formatDate(order.deliveryDate) : 'N/A',
+    };
   };
 
-  const isDelivered = order.status === 'delivered';
+  const timelineDates = getTimelineDates();
+  const isDelivered = order.status.toLowerCase() === 'delivered';
+
+  const handleNeedHelp = () => {
+    navigate('/helpsupport', { state: { order } });
+  };
 
   return (
     <div className={styles.orderTrackingCard}>
@@ -108,38 +62,36 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
       <div className={styles.timeline}>
         <div className={styles.timelineItem}>
           <div className={styles.statusCircle}>
-            {order.status === 'delivered' || order.status === 'shipped' || order.status === 'pending' ? '✓' : '○'}
+            {['pending', 'processing', 'shipped', 'delivered', 'returned'].includes(order.status.toLowerCase()) ? '✓' : '○'}
           </div>
           <div className={styles.statusText}>Order placed</div>
-          <div className={styles.date}>{formatDate('2021-07-31')}</div>
+          <div className={styles.date}>{timelineDates.placed}</div>
         </div>
         <div className={styles.timelineLine}></div>
         <div className={styles.timelineItem}>
           <div className={styles.statusCircle}>
-            {order.status === 'delivered' || order.status === 'shipped' ? '✓' : '○'}
+            {['shipped', 'delivered', 'returned'].includes(order.status.toLowerCase()) ? '✓' : '○'}
           </div>
           <div className={styles.statusText}>Order picked</div>
-          <div className={styles.date}>{formatDate('2021-08-01')}</div>
+          <div className={styles.date}>{timelineDates.picked}</div>
         </div>
         <div className={styles.timelineLine}></div>
         <div className={styles.timelineItem}>
           <div className={styles.statusCircle}>
-            {order.status === 'delivered' ? '✓' : '○'}
+            {['delivered', 'returned'].includes(order.status.toLowerCase()) ? '✓' : '○'}
           </div>
           <div className={styles.statusText}>Shipped</div>
-          <div className={styles.date}>{formatDate('2021-08-02')}</div>
+          <div className={styles.date}>{timelineDates.shipped}</div>
         </div>
         <div className={styles.timelineLine}></div>
         <div className={styles.timelineItem}>
-          <div className={styles.statusCircle}>
-            {order.status === 'delivered' ? '✓' : '○'}
-          </div>
+          <div className={styles.statusCircle}>{isDelivered ? '✓' : '○'}</div>
           <div className={styles.statusText}>Delivered</div>
-          <div className={styles.date}>{formatDate('2021-08-03')}</div>
+          <div className={styles.date}>{timelineDates.delivered}</div>
         </div>
       </div>
 
-      {order.trackingInfo && (
+      {order.trackingInfo ? (
         <div className={styles.trackingInfo}>
           <div>Courier: {order.trackingInfo.courier}</div>
           <div>Tracking ID: {order.trackingInfo.trackingId}</div>
@@ -155,7 +107,10 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
             <div>Current Location: {order.trackingInfo.currentLocation}</div>
           )}
         </div>
+      ) : (
+        <div className={styles.trackingInfo}>Tracking information not available</div>
       )}
+
       <div className={styles.buttons}>
         {isDelivered ? (
           <>

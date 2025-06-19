@@ -149,15 +149,15 @@
 
 
 
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchOrders, setCurrentPage, setItemsPerPage } from '../slice/orderSlice';
-import OrderCard from './OrderCard';
-import Button from '../../../components/UI/Button';
-import styles from '../css/orderList.module.css';
-import { useNavigate } from 'react-router-dom';
-import { FiFilter } from 'react-icons/fi';
-import OrderFilters from './OderFilters'
+// import React, { useEffect, useState } from 'react';
+// import { useAppDispatch, useAppSelector } from '../hooks/redux';
+// import { fetchOrders, setCurrentPage, setItemsPerPage } from '../slice/orderSlice';
+// import OrderCard from './OrderCard';
+// import Button from '../../../components/UI/Button';
+// import styles from '../css/orderList.module.css';
+// import { useNavigate } from 'react-router-dom';
+// import { FiFilter } from 'react-icons/fi';
+// import OrderFilters from './OderFilters'
 
 // Placeholder FilterComponent
 // const FilterComponent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -186,6 +186,15 @@ import OrderFilters from './OderFilters'
 //     </div>
 //   );
 // };
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { fetchOrders, setCurrentPage, setItemsPerPage } from '../slice/orderSlice';
+import OrderCard from './OrderCard';
+import Button from '../../../components/UI/Button';
+import styles from '../css/orderList.module.css';
+import { useNavigate } from 'react-router-dom';
+import { FiFilter } from 'react-icons/fi';
+import OrderFilters from './OderFilters'; // Fixed typo: OderFilters -> OrderFilters
 
 interface OrderListProps {
   onRatingSubmit: (orderId: string, rating: number) => Promise<boolean>;
@@ -195,10 +204,10 @@ interface OrderListProps {
 }
 
 const OrderList: React.FC<OrderListProps> = ({
-  onRatingSubmit,
-  onWriteReview,
-  onExchangeReturn,
-  onBuyAgain,
+  // onRatingSubmit,
+  // onWriteReview,
+  // onExchangeReturn,
+  // onBuyAgain,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -215,9 +224,9 @@ const OrderList: React.FC<OrderListProps> = ({
     dispatch(setCurrentPage(page));
   };
 
-  const handleItemsPerPageChange = (items: number) => {
-    dispatch(setItemsPerPage(items));
-  };
+  // const handleItemsPerPageChange = (items: number) => {
+  //   dispatch(setItemsPerPage(items));
+  // };
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);
@@ -228,7 +237,6 @@ const OrderList: React.FC<OrderListProps> = ({
   const endIndex = startIndex + itemsPerPage;
   const paginatedOrders = filteredOrders.slice(startIndex, endIndex);
   const totalPages = Math.ceil(totalOrders / itemsPerPage);
-  
 
   if (loading) {
     return (
@@ -253,15 +261,12 @@ const OrderList: React.FC<OrderListProps> = ({
   return (
     <div className={styles.orderList}>
       <div className={styles.listHeader}>
-        
         <div className={styles.listInfo}>
-{/* <p>{totalOrders} orders found</p> */}
-
+          {/* <p>{totalOrders} orders found</p> */}
         </div>
         <div className={styles.titlelistInfo}>
           <h2>My Orders</h2>
         </div>
-        
         <div className={styles.listControls}>
           <button
             className={styles.filterButton}
@@ -303,22 +308,11 @@ const OrderList: React.FC<OrderListProps> = ({
       ) : (
         <>
           <div className={styles.ordersGrid}>
-            {filteredOrders.map((order) => (
+            {paginatedOrders.map((order) => (
               <OrderCard
-          key={order.id}
-          orderData={{
-            orderId: order.id,
-            itemCount: order.items.length,
-            status: order.status,
-            product: {
-              name: order.items[0].name,
-              image: order.items[0].image,
-              orderDate: order.orderDate,
-              paymentMode: "Debit Card", // Adjust as needed
-            },
-            price: order.total,
-          }}
-        />
+                key={order.id}
+                order={order}
+              />
             ))}
           </div>
 

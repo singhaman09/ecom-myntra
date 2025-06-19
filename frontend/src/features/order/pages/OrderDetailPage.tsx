@@ -1,18 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useOrders } from '../hooks/useOrders';
 import Layout from '../components/Layout';
 import OrderDetailCard from '../components/OrderDetailCard';
 import OrderTrackingCard from '../components/OrderTrackingCard';
 import PaymentSummaryCard from '../components/PaymentSummaryCard';
 import styles from '../css/orderdetailPage.module.css';
 import type { Order } from '../types/orders';
+import { apiService } from '../api';
 
 const OrderDetailPage: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const { orders, loading, error } = useOrders();
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const order = orders.find((o) => o.id === orderId);
+  useEffect(() => {
+    const fetchOrder = async () => {
+      if (!orderId) return;
+      try {
+        setLoading(true);
+        const fetchedOrder = await apiService.getOrderById(orderId);
+        setOrder(fetchedOrder);
+      } catch (err) {
+        setError('Failed to load order details');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrder();
+  }, [orderId]);
 
   if (loading) {
     return (
@@ -39,24 +55,18 @@ const OrderDetailPage: React.FC = () => {
     );
   }
 
-  const handleNeedHelp = () => {
-    // Handle need help action here
-    console.log('Need help requested for order:', orderId);
-  };
-
   return (
     <Layout>
       <div className={styles.orderDetailPage}>
-      <div className={styles.header}>
-        <Link to="/orders" className={styles.backLink}>
+        <div className={styles.header}>
+          <Link to="/orders" className={styles.backLink}>
             ←
           </Link>
           <h1 className={styles.title}>Order Details</h1>
-          </div>  
-
+        </div>
         <div className={styles.content}>
           <OrderDetailCard order={order} />
-          <OrderTrackingCard order={order} onNeedHelp={handleNeedHelp} />
+          <OrderTrackingCard order={order} />
           <PaymentSummaryCard order={order} />
         </div>
       </div>

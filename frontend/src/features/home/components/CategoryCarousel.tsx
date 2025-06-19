@@ -34,6 +34,11 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
     { id: '13', name: 'Hoodies', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center', type: 'other' },
     { id: '14', name: 'Skirts', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center', type: 'other' },
     { id: '15', name: 'Suits', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center', type: 'other' },
+    { id: '16', name: 'Shorts', image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=100&h=100&fit=crop&crop=center', type: 'other' },
+    { id: '17', name: 'Sale', image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100&h=100&fit=crop&crop=center', type: 'sale' },
+    { id: '18', name: 'Hoodies', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center', type: 'other' },
+    { id: '19', name: 'Skirts', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center', type: 'other' },
+    { id: '20', name: 'Suits', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center', type: 'other' },
   ];
 
   const categoryData = categories || defaultCategories;
@@ -114,7 +119,6 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
                   <div
                     key={category.id}
                     className={styles.categoryItem}
-                    onClick={() => console.log(`Selected: ${category.name}`)}
                   >
                     <div className={styles.categoryIcon}>
                       <img 
