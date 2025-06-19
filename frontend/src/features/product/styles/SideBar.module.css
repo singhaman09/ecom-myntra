@@ -264,4 +264,30 @@
 .tabHeader {
   display: none;
 }
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.colorSwatchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.colorSwatch {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 1.5px solid #d1d5db;
+  box-shadow: 0 0 0 1px #e5e7eb;
+}
+
+.colorName {
+  font-size: 1rem;
+  color: #222;
+}
 

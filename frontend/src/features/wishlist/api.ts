@@ -3,7 +3,7 @@ import type { AxiosResponse } from 'axios';
 import type { WishlistItem } from './types/wishlist';
 import shoes from '../../assets/shoes.jpeg';
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 const API_BASE_URL = 'https://d6ab-14-194-22-202.ngrok-free.app';
 const token = localStorage.getItem('token');

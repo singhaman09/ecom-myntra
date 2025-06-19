@@ -9,8 +9,6 @@ const customAxios = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-
 // Thunk for fetching products
 export const getProducts = createAsyncThunk< 
   getProductsInterface,                          // Return type

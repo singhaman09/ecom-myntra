@@ -17,6 +17,7 @@ import defaultProductImage from '../../../assets/cart.png'
 import AvailableOffers, { type Offer } from "../components/AvailableOffers";
 import ProductInfo from "../components/ProductInfo";
 import BoughtTogether from "../components/BoughtTogether";
+import { getColorCodeFromString } from "../utils/colorsMapping";
 const Breadcrumbs = React.lazy(() => import("../utils/BreadCrumbs"));
 const ErrorPage = React.lazy(() => import("./ErrorPage"));
 const offers: Offer[] = [
@@ -193,8 +194,8 @@ const ProductDetails = () => {
                   <button
                     key={color}
                     onClick={() => handleColor(color)}
-                    className={`${styles.sizeBtn} ${
-                      selectedColor === color ? styles.sizeBtnSelected : ""
+                    className={`${styles.colorBtn} ${
+                      selectedColor === color ? styles.colorBtnSelected : ""
                     } ${
                       isOutOfStock ||
                       notCompatible.color === color ||
@@ -203,8 +204,9 @@ const ProductDetails = () => {
                         : ""
                     }`}
                     disabled={isOutOfStock}
+                    style={{backgroundColor:`${getColorCodeFromString(color)}`}}
                   >
-                    {color}
+                   
                   </button>
                 );
               })}
