@@ -83,7 +83,7 @@ const Register: React.FC = () => {
         <div className={styles.signupCard}>
           <div className={styles.header}>
             <div className={styles.loginHeader}>
-              <h1 className={styles.brand}>THE BODY SHOP</h1>
+              <h1 className={styles.brand}>THE Wyntra SHOP</h1>
               <p className={styles.instruction}>
                 Sign Up Using Your
                 <br />
