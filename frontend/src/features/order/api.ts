@@ -1,113 +1,169 @@
-import type { Order, OrderStatus } from '../order/types/orders';
+import axios from "axios";
+import type { AxiosResponse } from "axios";
+import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
 
-const API_BASE_URL = 'https://your.api.endpoint';
+const API_BASE_URL = "http://172.50.0.244:3333/orders";
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGFiNzVlMzY5ZjM4Yzk1MTE3NWRiYiIsImVtYWlsIjoidmlzaGFseWR2NzQzQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiJkOWE0NTU2OC1mYjc3LTQ0NDQtOTRiYi1iYTQ2MDdlMDk2ZDUiLCJpYXQiOjE3NTAzMjg5OTYsImV4cCI6MTc1MDQxNTM5Nn0.LBg1mGD9TYO4bqhUUlI-eUE63H4-4gozYxN_FJMHAZQ"
+  
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+    Authorization: `Bearer ${token}`,
+  },
+});
 
-async function handleResponse(response: Response) {
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'API Error');
-  }
-  return response.json();
+interface OrderApiResponse {
+  _id: string;
+  userId: string;
+  products: {
+    productId: string;
+    description: string;
+    color: string;
+    size: string;
+    quantity: number;
+    price: number;
+    _id: string;
+  }[];
+  address: {
+    name: string;
+    phoneNumber: string;
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    postalCode: string;
+    _id: string;
+  };
+  totalPrice: number;
+  status: string;
+  paymentStatus: string;
+  reviews: any[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  paymentUrl: string;
+  sessionId: string;
 }
+
+interface OrderApiUpdateResponse {
+  data: OrderApiResponse;
+  success: boolean;
+  message?: string;
+}
+
+const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
+  // Normalize status to match OrderStatus and OrderTrackingCard
+  const statusMap: Record<string, OrderStatus> = {
+    PENDING: "Pending",
+    PROCESSING: "processing",
+    SHIPPED: "shipped",
+    DELIVERED: "delivered",
+    CANCELLED: "cancelled",
+    RETURNED: "returned",
+  };
+
+  return {
+    id: apiOrder._id,
+    customerName: apiOrder.address.name || "Unknown", // Use address name as fallback
+    orderDate: apiOrder.createdAt,
+    deliveryDate: apiOrder.status === "DELIVERED" ? apiOrder.updatedAt : "", // Only set if delivered
+    total: apiOrder.totalPrice,
+    totalAmount: apiOrder.totalPrice,
+    status: statusMap[apiOrder.status.toUpperCase()] || "Pending",
+    items: apiOrder.products.map(
+      (product): OrderItem => ({
+        id: product._id,
+        name: product.description,
+        brand: "Unknown", // TODO: Fetch from product API if available
+        image: "", // TODO: Fetch from product API or use placeholder
+        size: product.size,
+        color: product.color,
+        price: product.price,
+        quantity: product.quantity,
+        isReturnable: apiOrder.status !== "CANCELLED" && apiOrder.status !== "RETURNED",
+        isExchangeable: apiOrder.status !== "CANCELLED" && apiOrder.status !== "RETURNED",
+      })
+    ),
+    deliveryAddress: {
+      id: apiOrder.address._id,
+      name: apiOrder.address.name,
+      addressLine1: apiOrder.address.street,
+      city: apiOrder.address.city,
+      state: apiOrder.address.state,
+      pincode: apiOrder.address.postalCode,
+      country: apiOrder.address.country,
+      phoneNumber: apiOrder.address.phoneNumber,
+    } as Address,
+    canRate: apiOrder.reviews.length === 0 && apiOrder.status === "DELIVERED",
+    rating: 0, // TODO: Fetch from reviews if available
+    exchangeReturnWindow:
+      apiOrder.status === "DELIVERED"
+        ? new Date(new Date(apiOrder.updatedAt).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        : "", // 7-day window after delivery
+    // trackingInfo: undefined, // TODO: Fetch from tracking API if available
+    // paymentMethod: undefined, // TODO: Derive from paymentUrl/sessionId if possible
+  };
+};
 
 export const apiService = {
-  // Orders APIs
-  async getOrders(): Promise<Order[]> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          id: 'order1',
-          customerName: 'Aman Singh',
-          orderDate: '2025-06-08T10:00:00Z',
-          total: 1200,
-          totalAmount: 1200,
-          status: 'pending',
-          deliveryDate: '2025-06-12T00:00:00Z',
-          canRate: true,
-          rating: 0,
-          exchangeReturnWindow: '2025-06-20T00:00:00Z',
-          trackingInfo: {
-            courier: 'Delhivery',
-            trackingId: 'TRK12345',
-          },
-          items: [
-            {
-              id: 'item1',
-              name: 'White Sneakers',
-              brand: 'Nike',
-              price: 1200,
-              quantity: 1,
-              size: '10',
-              color: 'White',
-              image: 'https://media.istockphoto.com/id/1324847242/photo/pair-of-white-leather-trainers-on-white-background.jpg?s=612x612&w=0&k=20&c=2ebHfBhvCJ9_y4YzRsUqi0SeVWX-oqraGTBCZ9lmFOQ=',
-            },
-          ],
-        },
-        {
-          id: 'order2',
-          customerName: 'Ravi Verma',
-          orderDate: '2025-06-05T14:00:00Z',
-          total: 750,
-          totalAmount: 750,
-          status: 'processing',
-          deliveryDate: '2025-06-11T00:00:00Z',
-          canRate: false,
-          rating: 4,
-          exchangeReturnWindow: '2025-06-18T00:00:00Z',
-          trackingInfo: {
-            courier: 'Bluedart',
-            trackingId: 'BD234567',
-          },
-          items: [
-            {
-              id: 'item2',
-              name: 'Casual Shirt',
-              brand: 'Levis',
-              price: 750,
-              quantity: 1,
-              size: 'L',
-              color: 'Blue',
-              image: 'https://pngimg.com/d/dress_shirt_PNG8070.png',
-            },
-          ],
-        },
-      ]);
-    }, 800);
-  });
-}
-,
+  getOrders: async (): Promise<Order[]> => {
+    try {
+      const response: AxiosResponse<OrderApiResponse[]> = await axiosInstance.get("/user");
+      return response.data.map(mapApiOrderToOrder);
+    } catch (error) {
+      throw new Error("Failed to fetch orders");
+    }
+  },
 
-  async updateOrderStatus(orderId: string, status: OrderStatus): Promise<{ data: Order }> {
-    return {
-  data: {
-    id: orderId,
-    customerName: 'Mock User',
-    orderDate: new Date().toISOString(),
-    total: 1000,
-    totalAmount: 1000,
-    status,
-    deliveryDate: new Date().toISOString(),
-    canRate: false,
-    rating: 0,
-    exchangeReturnWindow: new Date().toISOString(),
-    trackingInfo: {
-      courier: 'MockCourier',
-      trackingId: 'MOCK123',
-    },
-    items: [],
+  getOrderById: async (orderId: string): Promise<Order> => {
+    try {
+      const response: AxiosResponse<OrderApiResponse> = await axiosInstance.get(`/${orderId}`);
+      return mapApiOrderToOrder(response.data);
+    } catch (error) {
+      throw new Error("Failed to fetch order details");
+    }
+  },
+
+  updateOrderStatus: async (orderId: string, status: OrderStatus): Promise<Order> => {
+    try {
+      const statusMap: Record<OrderStatus, string> = {
+        delivered: "DELIVERED",
+        Pending: "PENDING",
+        shipped: "SHIPPED",
+        cancelled: "CANCELLED",
+        processing: "PROCESSING",
+        returned: "RETURNED",
+      };
+
+      const response: AxiosResponse<OrderApiUpdateResponse> = await axiosInstance.patch(`/orders/${orderId}`, {
+        status: statusMap[status],
+      });
+      return mapApiOrderToOrder(response.data.data);
+    } catch (error) {
+      throw new Error("Failed to update order status");
+    }
+  },
+
+  cancelOrder: async (orderId: string): Promise<void> => {
+    try {
+      await axiosInstance.patch(`/orders/${orderId}`, { status: "CANCELLED" });
+    } catch (error) {
+      throw new Error("Failed to cancel order");
+    }
+  },
+
+  submitRating: async (orderId: string, rating: number): Promise<{ success: boolean }> => {
+    try {
+      const response: AxiosResponse<{ success: boolean; message?: string }> = await axiosInstance.post(
+        `/orders/${orderId}/review`,
+        { rating }
+      );
+      return { success: response.data.success };
+    } catch (error) {
+      throw new Error("Failed to submit rating");
+    }
   },
 };
-
-  },
-
-  async cancelOrder(orderId: string): Promise<void> {
-    return;
-  },
-
-  async submitRating(orderId: string, rating: number): Promise<{ success: boolean }> {
-    return { success: true };
-  },
-};
-
-export type ApiService = typeof apiService;

@@ -29,7 +29,7 @@ const RecentPurchaseSection: React.FC<RecentPurchaseSectionProps> = ({ order }) 
       <h3 className={styles.sectionTitle}>Need help with recent purchase ?</h3>
       <div className={styles.orderItem}>
         <div className={styles.productImage}>
-          <img src="/api/placeholder/60/60" alt="Product" />
+          <img src="" alt="Product" />
         </div>
         <div className={styles.orderDetails}>
           <h4 className={styles.productName}>Anti-Dandruff Shampoo</h4>

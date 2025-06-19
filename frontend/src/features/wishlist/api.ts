@@ -1,26 +1,33 @@
-import axios from 'axios';
-import type { AxiosResponse } from 'axios'; 
-import type { WishlistItem } from './types/wishlist';
-import shoes from '../../assets/shoes.jpeg';
+import axios from "axios";
+import type { AxiosResponse } from "axios";
+import type { WishlistItem } from "./types/wishlist";
+import shoes from "../../assets/shoes.jpeg";
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
-const API_BASE_URL = 'https://d6ab-14-194-22-202.ngrok-free.app';
-const token = localStorage.getItem('token');
-
-const axiosInstance = axios.create({
+const API_BASE_URL = "https://931a-14-194-22-202.ngrok-free.app";
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGZhZDc0YmRiNTc1MTQ1MmY5OGMxNSIsImVtYWlsIjoiMzAzMDFpdEBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImRldmljZUlkIjoiNjJlNjc0YzktZGI3Mi00NmQ5LTkzZWYtZjU4YjY2MjIxNjM2IiwiaWF0IjoxNzUwMzM3NjI5LCJleHAiOjE3NTA0MjQwMjl9.rnMSpJRSNY1MPH6YAvq9jv5C122nqxs83v_JRFGfmFc";
+  
+  
+  const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',
-    'Authorization': `Bearer ${token}`
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+    Authorization: `Bearer ${token}`,
   },
 });
-
 interface WishlistApiResponse {
   _id: string;
   userId: string;
-  items: WishlistItemApiResponse[];
+  items: {
+    productId: string;
+    name: string;
+    price: number;
+    image: string;
+    _id: string;
+  }[];
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -32,14 +39,16 @@ interface WishlistItemApiResponse {
   price: number;
   image: string;
   _id: string;
-  inStock: boolean;
+  inStock: true;
 }
 
-const mapApiItemToWishlistItem = (apiItem: WishlistItemApiResponse): WishlistItem => ({
+const mapApiItemToWishlistItem = (
+  apiItem: WishlistItemApiResponse
+): WishlistItem => ({
   id: apiItem._id,
   productId: apiItem.productId,
   name: apiItem.name,
-  brand: 'Unknown',
+  brand: "Unknown",
   price: apiItem.price,
   originalPrice: undefined,
   discount: undefined,
@@ -48,13 +57,12 @@ const mapApiItemToWishlistItem = (apiItem: WishlistItemApiResponse): WishlistIte
   reviewCount: 0,
   size: undefined,
   color: undefined,
-  inStock: apiItem.inStock,
+  inStock: true,
   dateAdded: new Date().toISOString(),
-  category: 'Unknown',
-  description: 'No description available',
+  category: "Unknown",
+  description: "No description available",
   addedAt: new Date(),
 });
-
 
 const mockWishlistItems: WishlistItemApiResponse[] = [
   {
@@ -121,10 +129,11 @@ export const apiService = {
     }
 
     try {
-      const response: AxiosResponse<WishlistApiResponse> = await axiosInstance.get('/wishlist');
+      const response: AxiosResponse<WishlistApiResponse> =
+        await axiosInstance.get("/wishlist");
       return response.data.items.map(mapApiItemToWishlistItem);
     } catch {
-      throw new Error('Failed to fetch wishlist items');
+      throw new Error("Failed to fetch wishlist items");
     }
   },
 
@@ -145,53 +154,55 @@ export const apiService = {
 
     try {
       const response: AxiosResponse<WishlistItemApiResponse> =
-        await axiosInstance.post('/wishlist/add', productId);
+        await axiosInstance.post("/wishlist/add", productId);
       return mapApiItemToWishlistItem(response.data);
     } catch {
-      throw new Error('Failed to add item to wishlist');
+      throw new Error("Failed to add item to wishlist");
     }
   },
 
   removeFromWishlist: async (itemId: string): Promise<void> => {
     if (USE_MOCK) {
       await simulateDelay();
-      const index = mockWishlistItems.findIndex(item => item._id === itemId);
+      const index = mockWishlistItems.findIndex((item) => item._id === itemId);
       if (index !== -1) {
         mockWishlistItems.splice(index, 1);
         return;
       }
-      throw new Error('Item not found in mock data');
+      throw new Error("Item not found in mock data");
     }
 
     try {
-      await axiosInstance.delete(`/wishlist/item/${itemId}`);
+      await axiosInstance.delete(`/wishlist/items/${itemId}`);
     } catch {
-      throw new Error('Failed to remove item from wishlist');
+      throw new Error("Failed to remove item from wishlist");
     }
   },
 
   moveToCart: async (itemId: string): Promise<void> => {
     if (USE_MOCK) {
       await simulateDelay();
-      const index = mockWishlistItems.findIndex(item => item._id === itemId);
+      const index = mockWishlistItems.findIndex((item) => item._id === itemId);
       if (index !== -1) {
         mockWishlistItems.splice(index, 1);
         return;
       }
-      throw new Error('Item not found in mock data');
+      throw new Error("Item not found in mock data");
     }
 
     try {
       await axiosInstance.post(`/cart/add/${itemId}`);
     } catch {
-      throw new Error('Failed to move item to cart');
+      throw new Error("Failed to move item to cart");
     }
   },
 
   updateWishlistItem: async (item: WishlistItem): Promise<WishlistItem> => {
     if (USE_MOCK) {
       await simulateDelay();
-      const index = mockWishlistItems.findIndex(apiItem => apiItem._id === item.id);
+      const index = mockWishlistItems.findIndex(
+        (apiItem) => apiItem._id === item.id
+      );
       if (index !== -1) {
         const updated: WishlistItemApiResponse = {
           _id: item.id,
@@ -204,7 +215,7 @@ export const apiService = {
         mockWishlistItems[index] = updated;
         return mapApiItemToWishlistItem(updated);
       }
-      throw new Error('Mock item not found');
+      throw new Error("Mock item not found");
     }
 
     try {
@@ -218,7 +229,7 @@ export const apiService = {
         await axiosInstance.put(`/wishlist/item/${item.id}`, payload);
       return mapApiItemToWishlistItem(response.data);
     } catch {
-      throw new Error('Failed to update wishlist item');
+      throw new Error("Failed to update wishlist item");
     }
   },
 };
