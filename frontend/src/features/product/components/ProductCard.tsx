@@ -9,6 +9,7 @@ import { averageRating } from '../utils/Reviews';
 import { useProductSelector } from '../hooks/storeHooks';
 import SelectShadeSizeModal from './SelectSizeModal';
 import defaultProductImage from '../../../assets/cart.png'
+import { toast } from 'react-toastify';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
   const data=useProductSelector(state=>state.wishlist.items)
@@ -92,9 +93,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
                   
         onClose={() => setModalOpen(false)}
         onConfirm={(selection) => {
-          alert(
-            `You selected shade: ${selection.shade.name} and size: ${selection.size.label}`
-          );
+          toast.success("Added successfully")
           setModalOpen(false);
         }}
       />}

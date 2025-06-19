@@ -184,13 +184,30 @@
 .sizeBtn:hover {
   border-color: #9ca3af;
 }
+.colorBtn{
+  min-width: 3rem;
+  height: 3rem;
 
+  background: #fff;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 .sizeBtnSelected {
   border-color: #3D857E;
   color: white;
   background-color: #67c4bb;
 }
+.colorBtnSelected {
+  border: 4px solid #3D857E !important; 
+  box-shadow: 0 0 0 2px #b2dfdb44;     
+  z-index: 1;
 
+  
+}
 .featuresList {
   font-size: 0.97rem;
   color: #6b7280;

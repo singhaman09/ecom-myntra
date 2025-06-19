@@ -28,6 +28,7 @@ import Profile from "../features/profile/pages/Profile/Profile";
 import Notifications from "../features/profile/pages/Notifications/Notifications";
 import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 import HelpSupport from "../features/help&support/pages/HelpSupport";
+import { PRODUCT_ROUTES } from "../features/product/Constants/Routes";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -40,7 +41,7 @@ const AppRoutes: React.FC = () => {
           element: <Home />,
         },
         {
-          path: "products",
+          path: PRODUCT_ROUTES.list,
           element: <ProductPage />,
         },
         {
@@ -48,17 +49,14 @@ const AppRoutes: React.FC = () => {
           element: <HelpSupport />,
         },
         {
-          path: "products/:slug",
+          path:PRODUCT_ROUTES.Specific_list,
           element: <ProductPage />,
         },
         {
-          path: "productDetails/:id",
+          path: PRODUCT_ROUTES.details,
           element: <ProductDetails />,
         },
-        {
-          path: ":slug",
-          element: <ProductPage />,
-        },
+      
         {
           element: <ProtectedRoute />,
           children: [

@@ -123,19 +123,19 @@ useEffect(()=>{
   );
   
 const apply=()=>{
-  if(filters.category.length>0) searchParams.append('category',filters.category.toString())
+  if(filters.category.length>0) searchParams.set('category',filters.category.toString())
   else searchParams.delete('category')
-  if(filters.brand.length>0)   searchParams.append('brand',filters.brand.toString())
+  if(filters.brand.length>0 )   searchParams.set('brand',filters.brand.toString())
     else searchParams.delete('brand')
- if(filters.subCategory.length>0) searchParams.append('subCategory',filters.subCategory.toString())
+ if(filters.subCategory.length>0) searchParams.set('subCategory',filters.subCategory.toString())
   else searchParams.delete('subCategory')
-  if(filters.color.length>0)  searchParams.append('color',filters.color.toString())
+  if(filters.color.length>0 )  searchParams.set('color',filters.color.toString())
     else searchParams.delete('color')
-  if(filters.gender){
-    searchParams.append('gender',filters.gender)
+  if(filters.gender ){
+    searchParams.set('gender',filters.gender)
   }
   else searchParams.delete('gender')
-  if(filters.price.length>0) searchParams.append('price',filters.price.toString())
+  if(filters.price.length>0 ) searchParams.set('price',filters.price.toString())
   else searchParams.delete('price')
   setSearchParams(searchParams,{replace:true})
   setIsDrawerOpen(false)
