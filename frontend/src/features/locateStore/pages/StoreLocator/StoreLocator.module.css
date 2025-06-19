@@ -1,0 +1,76 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    min-height: 100vh;
+  }
+  
+ 
+  
+  .storeOffersSection {
+    padding: 1rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  
+  .nearestStoresHeader {
+    padding: 0 1rem 0.5rem 1rem;
+  }
+  
+  .toggleContainer {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .storeList {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .mapView {
+    padding: 0 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      max-width: 1200px;
+      padding: 1.5rem;
+    }
+  
+    .headerSearchWrapper {
+      padding: 1.5rem;
+    }
+  
+    .storeOffersSection {
+      padding: 1.5rem;
+    }
+  
+    .nearestStoresHeader {
+      padding: 0 1.5rem 0.75rem 1.5rem;
+    }
+  
+    .toggleContainer {
+      padding: 0 1.5rem;
+    }
+  
+    .storeList,
+    .mapView {
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  
+    @media (min-width: 1024px) {
+      .mapView {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+    }
+  }

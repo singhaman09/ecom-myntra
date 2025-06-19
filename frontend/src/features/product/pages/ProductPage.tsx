@@ -52,9 +52,9 @@ useEffect(()=>{
 
   // Fetch products when filters or slug change
   useEffect(() => {
-    dispatch(getProducts({ filters, slug ,searchParams,page}));
+    dispatch(getProducts({ slug ,searchParams,page}));
    
-  }, [dispatch, searchParams, slug,page]);
+  }, [dispatch, searchParams,slug,page]);
 
   // Helper to update filters
   const handleFilterChange = (key: keyof typeof filters, value: string, checked: boolean) => {

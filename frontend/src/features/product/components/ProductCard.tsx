@@ -35,8 +35,8 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         {/* Wishlist Button */}
         <button className={styles.wishlistBtn}   onClick={(event) => {event.stopPropagation()}}>
           {data.find(val=>val.productId==product._id)
-            ? <FavoriteIcon style={{ color: '#ef4444' }} />
-            : <FavoriteBorderIcon style={{ color: '#6b7280' }} />
+            ? <FavoriteIcon style={{ color: '#3D857E' }} />
+            : <FavoriteBorderIcon style={{ color: '#3D857E' }} />
           }
         </button>
         

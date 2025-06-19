@@ -20,6 +20,7 @@ import BoughtTogether from "../components/BoughtTogether";
 import { getColorCodeFromString } from "../utils/colorsMapping";
 const Breadcrumbs = React.lazy(() => import("../utils/BreadCrumbs"));
 const ErrorPage = React.lazy(() => import("./ErrorPage"));
+
 const offers: Offer[] = [
   {
     type: 'bank',
@@ -38,15 +39,14 @@ const offers: Offer[] = [
   },
 ];
 
-
 const ProductDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
   const dispatch = useProductDispatch();
   const result = useProductSelector((state) => state);
-  const data=result.product
-  const cartData=result.cart
-  const wishlistData=result.wishlist
+  const data = result.product;
+  const cartData = result.cart;
+  const wishlistData = result.wishlist;
   const variants = data?.selectedProduct?.product?.variants || [];
   const uniqueColors = useMemo(() => [...new Set(variants.map((v) => v.color))], [variants]);
   const uniqueSizes = useMemo(() => [...new Set(variants.map((v) => v.size))], [variants]);
@@ -54,10 +54,34 @@ const ProductDetails = () => {
   const selectedSize = searchParams.get("size") || uniqueSizes[0] || "";
   const selectedColor = searchParams.get("color") || uniqueColors[0] || "";
   
+  // New state for image handling
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
+  
+  // Mock multiple images - replace with actual product images from your data
+  const productImages = useMemo(() => {
+    const mainImage = data?.selectedProduct?.product?.imageUrl;
+    if (!mainImage) return [defaultProductImage];
+    
+    // If your product has multiple images, use them. Otherwise, create variants for demo
+    const images =  [
+      mainImage,
+      mainImage, 
+      mainImage,
+      mainImage
+    ];
+    
+    return images;
+  }, [data?.selectedProduct?.product]);
+
   useEffect(() => {
     dispatch(getProductDetails(id));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [dispatch, id]);
+
+  useEffect(() => {
+    setSelectedImageIndex(0);
+  }, [id]);
 
   const handleSize = (size: string) => {
     setNotCompatible({ color: "", size: "" });
@@ -76,36 +100,105 @@ const ProductDetails = () => {
     searchParams.set("color", color);
     setSearchParams(searchParams, { replace: true });
   };
-   
-  const addToBag=()=>{
-    const productId=id || ''
-    dispatch(addCartItem(productId))
-  }
- const removeFromBag=()=>{
-  const productId=id || ''
-  dispatch(deleteCartItem(productId))
- }
- const removeWishlist=()=>{
-  const productId=id || ''
-  dispatch(removeFromWishlist(productId))
- }
- const addWishlist=()=>{
-  const productId=id || ''
-  dispatch(addToWishlist(productId))
- }
-  if (data.loading) return <Loader  isInitial={true}/>;
+
+  const handleImageSelect = (index: number) => {
+    setSelectedImageIndex(index);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    (e.currentTarget as HTMLImageElement).src = defaultProductImage;
+    (e.currentTarget as HTMLImageElement).onerror = null;
+  };
+
+  const addToBag = () => {
+    const productId = id || '';
+    dispatch(addCartItem(productId));
+  };
+
+  const removeFromBag = () => {
+    const productId = id || '';
+    dispatch(deleteCartItem(productId));
+  };
+
+  const removeWishlist = () => {
+    const productId = id || '';
+    dispatch(removeFromWishlist(productId));
+  };
+
+  const addWishlist = () => {
+    const productId = id || '';
+    dispatch(addToWishlist(productId));
+  };
+
+  if (data.loading) return <Loader isInitial={true} />;
   if (data.error) return <ErrorPage />;
 
   return (
     <div className={styles.container}>
       <Breadcrumbs />
       <div className={styles.gridLayout}>
-   <div className={styles.imgContainer}>
-   <img className={styles.Image} src={data.selectedProduct?.product.imageUrl} alt={'hey'}   onError={(e) => {
-    (e.currentTarget as HTMLImageElement).src = defaultProductImage;
-    (e.currentTarget as HTMLImageElement).onerror = null; 
-  }} />
-   </div>
+        <div className={styles.imgContainer}>
+          {/* Main Image Display */}
+          <div className={styles.mainImageContainer}>
+            <img 
+              className={`${styles.mainImage} ${isZoomed ? styles.zoomed : ''}`}
+              src={productImages[selectedImageIndex]} 
+              alt={`${data?.selectedProduct?.product?.name} - Image ${selectedImageIndex + 1}`}
+              onError={handleImageError}
+              onClick={() => setIsZoomed(!isZoomed)}
+            />
+            
+            {/* Image Navigation Arrows */}
+            {productImages.length > 1 && (
+              <>
+                <button 
+                  className={`${styles.imageNavBtn} ${styles.prevBtn}`}
+                  onClick={() => setSelectedImageIndex(prev => 
+                    prev === 0 ? productImages.length - 1 : prev - 1
+                  )}
+                  disabled={productImages.length <= 1}
+                >
+                  &#8249;
+                </button>
+                <button 
+                  className={`${styles.imageNavBtn} ${styles.nextBtn}`}
+                  onClick={() => setSelectedImageIndex(prev => 
+                    prev === productImages.length - 1 ? 0 : prev + 1
+                  )}
+                  disabled={productImages.length <= 1}
+                >
+                  &#8250;
+                </button>
+              </>
+            )}
+            
+            {/* Image Counter */}
+            {productImages.length > 1 && (
+              <div className={styles.imageCounter}>
+                {selectedImageIndex + 1} / {productImages.length}
+              </div>
+            )}
+          </div>
+          
+          {/* Thumbnail Images */}
+          {productImages.length > 1 && (
+            <div className={styles.thumbnailContainer}>
+              {productImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`${data?.selectedProduct?.product?.name} - Thumbnail ${index + 1}`}
+                  className={`${styles.thumbnail} ${
+                    selectedImageIndex === index ? styles.thumbnailActive : ''
+                  }`}
+                  onClick={() => handleImageSelect(index)}
+                  onError={handleImageError}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className={styles.productDetails}>
           {/* Brand and Title */}
           <div className={styles.brandTitle}>
@@ -127,14 +220,14 @@ const ProductDetails = () => {
           {/* Price */}
           <div className={styles.priceSection}>
             <div className={styles.priceRow}>
-              <span className={styles.price}>{data?.selectedProduct?.product?.price}</span>
+              <span className={styles.price}>{ data?.selectedProduct?.product?.price && "₹"+Math.round(data?.selectedProduct?.product?.price)}</span>
               <span className={styles.oldPrice}>
                 {data?.selectedProduct?.product?.price
-                  ? data?.selectedProduct?.product?.price +
+                  ?'₹'+Math.round( data?.selectedProduct?.product?.price +
                     (data?.selectedProduct?.product?.price
                       ? (40 * data?.selectedProduct?.product?.price) / 100
-                      : 0)
-                  : data?.selectedProduct?.product?.price}
+                      : 0))
+                  : data?.selectedProduct?.product?.price && '₹'+Math.round(data?.selectedProduct?.product?.price)}
               </span>
               <span className={styles.discount}>40% OFF</span>
             </div>
@@ -206,15 +299,12 @@ const ProductDetails = () => {
                     disabled={isOutOfStock}
                     style={{backgroundColor:`${getColorCodeFromString(color)}`}}
                   >
-                   
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Product Description */}
-        
           {/* Action Buttons */}
           <div className={styles.actionSection}>
             {variants?.find((v) => v.size === selectedSize && v.color === selectedColor)?.stock === 0 ||
@@ -222,7 +312,6 @@ const ProductDetails = () => {
               (v) =>
                 v.size === selectedSize &&
                 v.color === selectedColor 
-               
             ) ||  data.selectedProduct?.product.totalStock === 0 ? (
               <button className={styles.notifyButton}>Notify Me</button>
             ) : (
@@ -235,11 +324,9 @@ const ProductDetails = () => {
               className={`${styles.wishlistBtn} ${styles.wishlistBtnSelected}`}
               onClick={removeWishlist}
             >
-             
                 <FavoriteIcon
                   className={styles.heartIcon}
                   sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
-                  
                 />
                  <span>WISHLIST</span>
               </button>: <button className={`${styles.wishlistBtn}`} onClick={addWishlist}>
@@ -249,9 +336,8 @@ const ProductDetails = () => {
                 />
                <span>WISHLIST</span>
             </button>}
-             
-           
           </div>
+          
           {/* Delivery Info */}
           <div className={styles.deliverySection}>
             <h4 className={styles.deliveryTitle}>Delivery Options</h4>
