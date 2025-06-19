@@ -17,7 +17,9 @@ import type {
   VerifyOtpRequest,
   VerifyOtpResponse,
   ResetPasswordRequest,
-  ResetPasswordResponse
+  ResetPasswordResponse,
+  LogoutRequest,
+  logoutResponse
 } from '../types';
 
 // Add skipAuth: true to these calls since they don't need authentication
@@ -55,3 +57,8 @@ export const resetPasswordAPI = async (data: ResetPasswordRequest): Promise<Rese
   const res = await apiClient.post('/users/forgot-password/reset', data, { skipAuth: true });
   return res.data;
 };
+
+export const logoutAPI = async (data: LogoutRequest): Promise<logoutResponse> => {
+  const res = await apiClient.post('/users/logout', data, { skipAuth: false});
+  return res.data;
+}

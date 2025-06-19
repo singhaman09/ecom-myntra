@@ -267,7 +267,7 @@
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .desktopGrid {
-    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: repeat(4, 1fr); */
     max-width: 600px;
   }
   

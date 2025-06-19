@@ -55,9 +55,6 @@ const Home = () => {
         {/* 4. Hot Summer Sale Offer Banner */}
         <SummerSaleBanner />
 
-        {/* 5. Join the Club */}
-        {/* <JoinTheClub /> */}
-
         {/* 6. Trending Products */}
         <TrendingProducts />
 

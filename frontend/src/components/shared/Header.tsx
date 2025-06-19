@@ -89,7 +89,7 @@ const Header: React.FC = () => {
     const timeout = setTimeout(() => {
       setIsCategoryDropdownOpen(false);
       setActiveCategoryHover("");
-    }, 150);
+    }, 250);
     setHoverTimeout(timeout);
   };
 

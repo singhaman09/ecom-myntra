@@ -10,7 +10,8 @@ import {
   verifyOtp,
   resetPassword,
   clearAuthState,
-  clearRegistrationData
+  clearRegistrationData,
+  logoutUser
 } from '../authSlice';
 import type { 
   LoginCredentials, 
@@ -65,6 +66,13 @@ export const useAuth = () => {
     },
     [dispatch]
   );
+  const logoutRequest = useCallback(
+    async (accessToken: string) => {
+      const result = await dispatch(logoutUser({accessToken})).unwrap();
+      return result;
+    },
+    [dispatch]
+  );
 
   const verifyOtpRequest = useCallback(
     async (data: VerifyOtpData) => {
@@ -104,6 +112,7 @@ export const useAuth = () => {
     verifyOtp: verifyOtpRequest,
     resetPassword: resetPasswordRequest,
     signOut,
+    logoutRequest,
     clearError,
     clearAuthState: clearError,
     clearRegistrationData: clearRegData,

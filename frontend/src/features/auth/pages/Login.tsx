@@ -51,7 +51,7 @@ const Login: React.FC = () => {
         <div className={styles.loginCard}>
           <div className={styles.header}>
             <div className={styles.loginHeader}>
-              <h1 className={styles.brand}>THE BODY SHOP</h1>
+              <h1 className={styles.brand}>THE Wyntra SHOP</h1>
               <p className={styles.instruction}>
                 Sign In Using Your
                 <br />
