@@ -1,7 +1,7 @@
 import React from 'react';
 import { Star, Plus } from 'lucide-react';
-import styles from '../styles/BoughtTogether.module.css';
-import defaultProductImage from '../../../assets/cart.png'
+import styles from './BoughtTogether.module.css';
+import defaultProductImage from '../../../../../assets/cart.png'
 interface Product {
   id: string;
   name: string;

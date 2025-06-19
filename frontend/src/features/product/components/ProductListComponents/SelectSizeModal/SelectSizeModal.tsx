@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "../styles/ShadeSize.module.css";
-import type {  Shade, Size } from "../interfaces/ProductInterfaces";
+import styles from "./ShadeSize.module.css";
+import type {  Shade, Size } from "../../../interfaces/ProductInterfaces";
 import { MoveLeft } from "lucide-react";
 
 interface SelectShadeSizeModalProps {

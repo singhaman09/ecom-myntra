@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "../styles/SideBar.module.css";
-import { getColorCodeFromString } from "../utils/colorsMapping";
+import styles from "../SideBarMain/SideBar.module.css";
+import { getColorCodeFromString } from "../../../utils/colorsMapping";
 
 interface SideBarFiltersProps {
   data: string[];

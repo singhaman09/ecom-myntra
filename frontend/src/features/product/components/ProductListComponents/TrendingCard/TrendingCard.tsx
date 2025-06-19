@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../styles/TrendingCard.module.css";
+import styles from "./TrendingCard.module.css";
 
 const TrendingCard = () => {
   const [expanded, setExpanded] = useState(false);

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Slider } from "@mui/material";
-import type { SideBarMainProps } from "../interfaces/ProductInterfaces";
-import styles from "../styles/SideBar.module.css";
-import { useProductSelector } from "../hooks/storeHooks";
+import type { SideBarMainProps } from "../../../interfaces/ProductInterfaces";
+import styles from "./SideBar.module.css";
+import { useProductSelector } from "../../../hooks/storeHooks";
 
 // Lazy Load 
-const SideBarFilters = React.lazy(() => import('./SideBarFilters'));
+const SideBarFilters = React.lazy(() => import('../SideBarFilters/SideBarFilters'));
 
 const tabList = [
   { key: "category", label: "Category" },

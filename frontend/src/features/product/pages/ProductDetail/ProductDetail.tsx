@@ -1,25 +1,25 @@
 import React, { useEffect, useState, useMemo } from "react";
-import styles from "../styles/ProductDetail.module.css";
+import styles from "./ProductDetail.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { renderStars } from "../utils/RenderStars";
+import { renderStars } from "../../utils/RenderStars";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useProductDispatch, useProductSelector } from "../hooks/storeHooks";
-import { getProductDetails } from "../productAPI";
-import Loader from "../utils/Loader";
-import { averageRating } from "../utils/Reviews";
-import { addCartItem, deleteCartItem } from "../../cart/redux/cartSlice";
-import { addToWishlist, removeFromWishlist } from "../../wishlist/slice/wishlistSlice";
+import { useProductDispatch, useProductSelector } from "../../hooks/storeHooks";
+import { getProductDetails } from "../../productAPI";
+import Loader from "../../utils/Loader";
+import { averageRating } from "../../utils/Reviews";
+import { addCartItem, deleteCartItem } from "../../../cart/redux/cartSlice";
+import { addToWishlist, removeFromWishlist } from "../../../wishlist/slice/wishlistSlice";
 // Lazy load components (no Suspense here)
-const SimilarProduct = React.lazy(() => import("../components/SimilarProduct"));
-const ReviewSection = React.lazy(() => import("../components/ReviewSection"));
-import defaultProductImage from '../../../assets/cart.png'
-import AvailableOffers, { type Offer } from "../components/AvailableOffers";
-import ProductInfo from "../components/ProductInfo";
-import BoughtTogether from "../components/BoughtTogether";
-import { getColorCodeFromString } from "../utils/colorsMapping";
-const Breadcrumbs = React.lazy(() => import("../utils/BreadCrumbs"));
-const ErrorPage = React.lazy(() => import("./ErrorPage"));
+const SimilarProduct = React.lazy(() => import("../../components/ProductDetailsComponents/similarProducts/SimilarProduct"));
+const ReviewSection = React.lazy(() => import("../../components/ProductDetailsComponents/Reviews/ReviewSection"));
+import defaultProductImage from '../../../../assets/cart.png'
+import AvailableOffers, { type Offer } from "../../components/ProductDetailsComponents/offers/AvailableOffers";
+import ProductInfo from "../../components/ProductDetailsComponents/ProductInfo/ProductInfo";
+import BoughtTogether from "../../components/ProductDetailsComponents/BoughtTogether/BoughtTogether";
+import { getColorCodeFromString } from "../../utils/colorsMapping";
+const Breadcrumbs = React.lazy(() => import("../../utils/BreadCrumbs/BreadCrumbs"));
+const ErrorPage = React.lazy(() => import("../Error/ErrorPage"));
 
 const offers: Offer[] = [
   {

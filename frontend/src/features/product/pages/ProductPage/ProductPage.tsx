@@ -1,20 +1,20 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import styles from '../styles/ProductPage.module.css';
+import styles from './ProductPage.module.css';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { getProducts } from '../productAPI';
-import { useProductDispatch, useProductSelector } from '../hooks/storeHooks';
-import Loader from '../utils/Loader';
-import type { filters } from '../interfaces/ProductInterfaces';
-import TrendingCard from '../components/TrendingCard';
+import { getProducts } from '../../productAPI';
+import { useProductDispatch, useProductSelector } from '../../hooks/storeHooks';
+import Loader from '../../utils/Loader';
+import type { filters } from '../../interfaces/ProductInterfaces';
+import TrendingCard from '../../components/ProductListComponents/TrendingCard/TrendingCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
 // Lazy load components
-const Breadcrumbs = React.lazy(() => import('../utils/BreadCrumbs'));
-const SideBarMain = React.lazy(() => import('../components/SideBarMain'));
-const ProductList = React.lazy(() => import('../components/ProductList'));
-const UpperFilterBar = React.lazy(() => import('../components/UpperFilterBar'));
-const Pagination = React.lazy(() => import('../components/Pagination'));
-const ProductNotFoundPage = React.lazy(() => import('./ProductNotFoundPage'));
-const ErrorPage = React.lazy(() => import('./ErrorPage'));
+const Breadcrumbs = React.lazy(() => import('../../utils/BreadCrumbs/BreadCrumbs'));
+const SideBarMain = React.lazy(() => import('../../components/filtersComponents/SideBarMain/SideBarMain'));
+const ProductList = React.lazy(() => import('../../components/ProductListComponents/ProductList/ProductList'));
+const UpperFilterBar = React.lazy(() => import('../../components/filtersComponents/UpperFIlterBar/UpperFilterBar'));
+
+const ProductNotFoundPage = React.lazy(() => import('../ProductNotFound/ProductNotFoundPage'));
+const ErrorPage = React.lazy(() => import('../Error/ErrorPage'));
 
 const ProductPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

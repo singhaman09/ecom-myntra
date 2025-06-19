@@ -1,9 +1,9 @@
 import React, {  useMemo, useState } from 'react';
-import styles from '../styles/ReviewSection.module.css';
+import styles from './ReviewSection.module.css';
 import StarIcon from '@mui/icons-material/Star';
-import { renderStars } from '../utils/RenderStars';
-import { averageRating, formatNumber } from '../utils/Reviews';
-import { useProductSelector } from '../hooks/storeHooks';
+import { renderStars } from '../../../utils/RenderStars';
+import { averageRating, formatNumber } from '../../../utils/Reviews';
+import { useProductSelector } from '../../../hooks/storeHooks';
 
 //Lazy Load
 const ReviewCard=React.lazy(()=>import('./ReviewCard'));

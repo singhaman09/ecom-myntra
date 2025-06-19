@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from '../styles/ProductList.module.css';
-import type { ProductListProps } from '../interfaces/ProductInterfaces';
-import { useProductSelector } from '../hooks/storeHooks';
+import styles from './ProductList.module.css';
+import type { ProductListProps } from '../../../interfaces/ProductInterfaces';
+import { useProductSelector } from '../../..//hooks/storeHooks';
 
 //Lazy Load Components
-const ProductCard=React.lazy(()=>import('./ProductCard'));
+const ProductCard=React.lazy(()=>import('../ProductCard/ProductCard'));
 const ProductList: React.FC<ProductListProps> = ({
   data,
   isSimilar=false

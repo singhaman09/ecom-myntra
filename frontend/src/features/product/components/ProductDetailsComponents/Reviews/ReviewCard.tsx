@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import styles from '../styles//ReviewCard.module.css';
-import type { Review } from '../interfaces/ProductInterfaces';
-import { renderStars } from '../utils/RenderStars';
-import { formatDate } from '../utils/Reviews';
+import styles from './ReviewCard.module.css';
+import type { Review } from '../../../interfaces/ProductInterfaces';
+import { renderStars } from '../../../utils/RenderStars';
+import { formatDate } from '../../../utils/Reviews';
 const ReviewCard: React.FC<Review> = ({
   reviewerName,
   rating,

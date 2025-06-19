@@ -1,4 +1,4 @@
-import styles from '../styles/ProductNotFoundPage.module.css';
+import styles from './ProductNotFoundPage.module.css';
 const ProductNotFoundPage:React.FC<{isSimilar:boolean}>=({isSimilar})=> {
   
   return (

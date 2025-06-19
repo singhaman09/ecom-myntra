@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, Plus, Minus, Truck, FastForward } from 'lucide-react';
-import styles from '../styles/ProductInfo.module.css';
+import styles from './ProductInfo.module.css';
 
 interface IngredientItem {
   name: string;

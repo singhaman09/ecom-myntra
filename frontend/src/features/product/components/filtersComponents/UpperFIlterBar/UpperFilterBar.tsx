@@ -1,6 +1,6 @@
 import React, {  useCallback, useState } from 'react';
-import type { UpperFilterProps } from '../interfaces/ProductInterfaces';
-import styles from '../styles/UpperFilterBar.module.css';
+import type { UpperFilterProps } from '../../../interfaces/ProductInterfaces';
+import styles from './UpperFilterBar.module.css';
 import { useSearchParams } from 'react-router-dom';
 import { ArrowUpDown, FilterIcon } from 'lucide-react';
 

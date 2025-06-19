@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/AvailableOffers.module.css';
+import styles from './AvailableOffers.module.css';
 import { FaTag, FaCreditCard, FaGift } from 'react-icons/fa';
 
 export interface Offer {

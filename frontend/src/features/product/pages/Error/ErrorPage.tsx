@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/ErrorPage.module.css'; // Create this CSS module for styling
+import styles from './ErrorPage.module.css'; // Create this CSS module for styling
 
 const ErrorPage: React.FC<{ message?: string }> = ({ message }) => {
   const handleRetry = () => window.location.reload();

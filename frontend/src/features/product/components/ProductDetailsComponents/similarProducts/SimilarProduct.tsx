@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from '../styles/SimilarProduct.module.css';
-import { useProductSelector } from '../hooks/storeHooks';
+import styles from './SimilarProduct.module.css';
+import { useProductSelector } from '../../../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom';
-import { PRODUCT_ROUTES } from '../Constants/Routes';
+import { PRODUCT_ROUTES } from '../../../Constants/Routes';
 
 // Lazy load components
-const ProductList = React.lazy(() => import('./ProductList'));
-const ProductNotFoundPage = React.lazy(() => import('../pages/ProductNotFoundPage'));
+const ProductList = React.lazy(() => import('../../ProductListComponents/ProductList/ProductList'));
+const ProductNotFoundPage = React.lazy(() => import('../../../pages/ProductNotFound/ProductNotFoundPage'));
 
 const SimilarProduct: React.FC = () => {
   const data = useProductSelector(state => state.product);

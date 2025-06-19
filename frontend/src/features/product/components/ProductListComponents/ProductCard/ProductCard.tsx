@@ -1,14 +1,14 @@
 import React, { memo, useMemo, useState } from 'react';
-import styles from '../styles/ProductCard.module.css';
+import styles from './ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import type { ProductCardProps } from '../interfaces/ProductInterfaces';
+import type { ProductCardProps } from '../../../interfaces/ProductInterfaces';
 import { useNavigate } from 'react-router-dom';
-import { renderStars } from '../utils/RenderStars';
-import { averageRating } from '../utils/Reviews';
-import { useProductSelector } from '../hooks/storeHooks';
-import SelectShadeSizeModal from './SelectSizeModal';
-import defaultProductImage from '../../../assets/cart.png'
+import { renderStars } from '../../../utils/RenderStars';
+import { averageRating } from '../../../utils/Reviews';
+import { useProductSelector } from '../../../hooks/storeHooks';
+import SelectShadeSizeModal from '../SelectSizeModal/SelectSizeModal';
+import defaultProductImage from '../../../../../assets/cart.png'
 import { toast } from 'react-toastify';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
