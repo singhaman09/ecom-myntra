@@ -27,18 +27,20 @@ const AddressSection: React.FC<AddressSectionProps> = ({
   );
 
   const renderNoAddress = () => (
-  <>
-    <div className={styles.addressHeader}>
-      <div className={styles.addressLabel}>Deliver To:</div>
-    </div>
-    <div className={styles.noAddress}>
-      <span>Divine PG , Mamura , Sector 66 , Noida , Uttar Pradesh, 201301, INDIA</span> 
-      <button className={styles.addAddressButton} onClick={onChangeAddress}>
-        Add Address
-      </button>
-    </div>
-  </>
-);
+    <>
+      <div className={styles.addressHeader}>
+        <div className={styles.addressLabel}>Deliver To:</div>
+      </div>
+      <div className={styles.noAddress}>
+        <span>
+          Siddharth Pandey, Near Rahul furniture chitikpur raniyan Kanpur dehat, Kanpur, Uttar Pradesh, 209304
+        </span>
+        <button className={styles.addAddressButton} onClick={onChangeAddress}>
+          Add Address
+        </button>
+      </div>
+    </>
+  );
 
   return (
     <div className={styles.addressSection}>

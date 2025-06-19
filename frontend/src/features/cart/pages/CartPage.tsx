@@ -4,11 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaTag } from "react-icons/fa";
 import CartHeader from "../components/CartHeader";
 import CartList from "../components/CartList";
-import {
-  DISCOUNT,
-  STATIC_COUPONS,
-  STATIC_OFFERS,
-} from "../staticData/StaticData";
+import { DISCOUNT, STATIC_COUPONS, STATIC_OFFERS } from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
 import AddressSection from "../components/AddressSection";
 import OffersSection from "../components/OffersSection";
@@ -22,8 +18,6 @@ import {
   fetchCart,
   deleteCartItem,
   moveToWishlist,
-  incrementItemQuantity,
-  decrementItemQuantity,
 } from "../redux/cartSlice";
 import type { RootState, AppDispatch } from "../../../store/store";
 import RecommendedProduct from "../components/RecommendedProducts";
@@ -45,7 +39,7 @@ const CartPage: React.FC = () => {
   const [offers, setOffers] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
-  const appliedCouponDiscount = 10; // In rupees
+  const appliedCouponDiscount = 10;
   const [availableCoupons, setAvailableCoupons] = useState<Coupon[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
@@ -70,31 +64,22 @@ const CartPage: React.FC = () => {
     setOffers(STATIC_OFFERS);
   }, []);
 
-  const handleQtyChange = async (
-    id: string,
-    action: "increment" | "decrement"
-  ) => {
-    try {
-      if (action === "increment") {
-        await dispatch(incrementItemQuantity(id)).unwrap();
-      } else if (action === "decrement") {
-        const item = items.find((i) => i.productId === id);
-        if (item && item.quantity > 1) {
-          await dispatch(decrementItemQuantity(id)).unwrap();
-        }
-      }
-    } catch (error) {
-      console.error(`Failed to ${action} quantity:`, error);
-      alert(`Error updating quantity. Please try again.`);
-    }
+  useEffect(() => {
+    // Debug log to inspect cart items after state updates
+    console.log("Cart items:", items);
+  }, [items]);
+
+  const handleQtyChange = (productId: string, action: "increment" | "decrement") => {
+    // No-op: CartList handles dispatches
+    console.log(`Quantity change: ${action} for productId ${productId}`);
   };
 
-  const handleRemove = (id: string) => {
-    dispatch(deleteCartItem(id));
+  const handleRemove = (productId: string) => {
+    dispatch(deleteCartItem(productId));
   };
 
   const handleMoveToWishlist = async () => {
-    await Promise.all(selectedItems.map((id) => dispatch(moveToWishlist(id))));
+    await Promise.all(selectedItems.map((productId) => dispatch(moveToWishlist(productId))));
     setSelectedItems([]);
     navigate("/cart");
     setModalAction(null);
@@ -110,25 +95,31 @@ const CartPage: React.FC = () => {
     navigate("/cart");
   };
 
-  const handleSelect = (id: string, selected: boolean) => {
+  const handleSelect = (productId: string, selected: boolean) => {
     setSelectedItems((prev) =>
-      selected ? [...prev, id] : prev.filter((i) => i !== id)
+      selected ? [...prev, productId] : prev.filter((i) => i !== productId)
     );
   };
 
   const toggleOffersDropdown = () => setShowMoreOffers((prev) => !prev);
 
-  const totalMRP = items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-  const totalPrice = items.reduce(
-    (acc, item) =>
-      acc +
-      (item.price - Math.floor((item.price * DISCOUNT) / 100)) * item.quantity,
-    0
-  );
+  // Robust price calculations with defensive checks
+  const totalMRP = items.reduce((acc, item) => {
+    const price = typeof item.price === 'number' ? item.price : 0;
+    const quantity = typeof item.quantity === 'number' ? item.quantity : 0;
+    return acc + price * quantity;
+  }, 0);
+
+  const totalPrice = items.reduce((acc, item) => {
+    const price = typeof item.price === 'number' ? item.price : 0;
+    const quantity = typeof item.quantity === 'number' ? item.quantity : 0;
+    return acc + (price - DISCOUNT) * quantity;
+  }, 0);
+
   const finalPrice = totalPrice - appliedCouponDiscount;
+
+  // Debug logs for price calculations
+  console.log("Price calculations:", { totalMRP, totalPrice, finalPrice });
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
@@ -149,6 +140,7 @@ const CartPage: React.FC = () => {
                 showMoreOffers={showMoreOffers}
                 toggleOffersDropdown={toggleOffersDropdown}
               />
+              
               <div ref={cartListRef} className={styles.cartListSection}>
                 <CartList
                   items={items}
@@ -180,12 +172,13 @@ const CartPage: React.FC = () => {
               </div>
               <CartSummary
                 totalItems={items.length}
-                totalPrice={finalPrice}
-                totalMRP={totalMRP}
+                totalPrice={Number.isNaN(finalPrice) ? 0 : finalPrice}
+                totalMRP={Number.isNaN(totalMRP) ? 0 : totalMRP}
               />
             </div>
           </div>
           <RecommendedProduct />
+
           {modal === "remove" && (
             <RemoveModal
               showRemoveModal={true}

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../hooks/useAppDispatch";
-import { updateItemSize, incrementItemQuantity, decrementItemQuantity } from "../redux/cartSlice";
+import {
+  updateItemSize,
+  incrementItemQuantity,
+  decrementItemQuantity,
+} from "../redux/cartSlice";
 import type { CartItem } from "../types/cart";
 import { DISCOUNT } from "../staticData/StaticData";
 import bin from "../../../assets/bin.png";
@@ -24,7 +28,9 @@ const CartList: React.FC<CartListProps> = ({
   const dispatch = useAppDispatch();
   const [sizeModalItem, setSizeModalItem] = useState<CartItem | null>(null);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
-  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(null);
+  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
+    null
+  );
   const [itemToRemove, setItemToRemove] = useState<string | null>(null);
   const [loadingItems, setLoadingItems] = useState<Set<string>>(new Set());
 
@@ -49,7 +55,6 @@ const CartList: React.FC<CartListProps> = ({
       onQuantityChange?.(item.productId, "increment");
     } catch (error) {
       console.error("Failed to increment quantity:", error);
-      alert("Error updating quantity. Please try again.");
     } finally {
       setLoadingItems((prev) => {
         const next = new Set(prev);
@@ -82,103 +87,124 @@ const CartList: React.FC<CartListProps> = ({
         <p className={styles.emptyCart}>Your cart is empty.</p>
       ) : (
         items.map((item) => (
-          <div className={styles.cartItemWrapper} key={item.productId}>
-            <div className={styles.cartItem}>
-              <div className={styles.imageWrapper}>
-                <button
-                  className={`${styles.heartBtn} ${
-                    selectedItems.includes(item.productId) ? styles.filled : ""
-                  }`}
-                  onClick={() =>
-                    onSelect(
-                      item.productId,
-                      !selectedItems.includes(item.productId)
-                    )
-                  }
-                  aria-label="Toggle Wishlist"
-                >
-                  ❤
-                </button>
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className={styles.itemImage}
-                />
-              </div>
+          <div className={styles.cartItemContainer} key={item.productId}>
+            <div className={styles.cartItemWrapper}>
+              {/* Wishlist Slide-in (left) */}
+              <button
+                className={styles.wishlistBtnOverlay}
+                onClick={() => {
+                  setItemToRemove(item.productId);
+                  setModalAction("wishlist");
+                  setShowRemoveModal(true);
+                }}
+              >
+                <span>♡</span>
+                Wishlist
+              </button>
 
-              <div className={styles.itemDetails}>
-                <h3 className={styles.itemName}>{item.name}</h3>
-                <p className={styles.itemDesc}>{item.desc}</p>
-
-                <div className={styles.optionsRow}>
-                  <span
-                    className={styles.itemSize}
-                    onClick={() => openSizeModal(item)}
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+              {/* Cart Item Details */}
+              <div className={styles.cartItem}>
+                <div className={styles.imageWrapper}>
+                  <button
+                    className={`${styles.heartBtn} ${
+                      selectedItems.includes(item.productId)
+                        ? styles.filled
+                        : ""
+                    }`}
+                    onClick={() =>
+                      onSelect(
+                        item.productId,
+                        !selectedItems.includes(item.productId)
+                      )
+                    }
                   >
-                    Size: {item.size} ▾
-                  </span>
+                    ❤
+                  </button>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className={styles.itemImage}
+                  />
+                </div>
 
-                  {/* Qty Controls */}
-                  <div className={styles.qtyControls}>
-                    <button
-                      className={styles.qtyBtn}
-                      onClick={() => handleDecrement(item)}
-                      disabled={item.quantity <= 1 || loadingItems.has(item.productId)}
-                      aria-label="Decrease quantity"
+                <div className={styles.itemDetails}>
+                  <h3 className={styles.itemName}>{item.name}</h3>
+                  <p className={styles.itemDesc}>{item.description}</p>
+
+                  <div className={styles.optionsRow}>
+                    <span
+                      className={styles.itemSize}
+                      onClick={() => openSizeModal(item)}
                     >
-                      {loadingItems.has(item.productId) && item.quantity > 1 ? "..." : "−"}
-                    </button>
-                    <span className={styles.qtyValue}>{item.quantity}</span>
-                    <button
-                      className={styles.qtyBtn}
-                      onClick={() => handleIncrement(item)}
-                      disabled={loadingItems.has(item.productId)}
-                      aria-label="Increase quantity"
-                    >
-                      {loadingItems.has(item.productId) ? "..." : "+"}
-                    </button>
+                      Size: {item.size} ▾
+                    </span>
+
+                    <div className={styles.qtyControls}>
+                      <button
+                        className={styles.qtyBtn}
+                        onClick={() => handleDecrement(item)}
+                        disabled={
+                          item.quantity <= 1 || loadingItems.has(item.productId)
+                        }
+                      >
+                        {loadingItems.has(item.productId) && item.quantity > 1
+                          ? "..."
+                          : "−"}
+                      </button>
+                      <span className={styles.qtyValue}>{item.quantity}</span>
+                      <button
+                        className={styles.qtyBtn}
+                        onClick={() => handleIncrement(item)}
+                        disabled={loadingItems.has(item.productId)}
+                      >
+                        {loadingItems.has(item.productId) ? "..." : "+"}
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                <div className={styles.priceRow}>
-                  <span className={styles.currentPrice}>
-                    ₹{item.price - Math.floor((item.price * DISCOUNT) / 100)}
-                  </span>
-                  <span className={styles.originalPrice}>₹{item.price}</span>
-                  <span className={styles.discount}>{DISCOUNT}% OFF</span>
-                </div>
+                  <div className={styles.priceRow}>
+                    <span className={styles.currentPrice}>
+                      ₹
+                      {(
+                        item.price - Math.floor((item.price * DISCOUNT) / 100)
+                      ).toFixed(2)}
+                    </span>
+                    <span className={styles.originalPrice}>₹{item.price}</span>
+                    <span className={styles.discount}>{DISCOUNT}% OFF</span>
+                  </div>
 
-                <p className={styles.deliveryInfo}>
-                  ✅ Delivery by <strong>Tomorrow</strong>
-                </p>
+                  <p className={styles.deliveryInfo}>
+                    ✅ Delivery by <strong>Tomorrow</strong>
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <button
-              className={styles.removeBtn}
-              onClick={() => {
-                setItemToRemove(item.productId);
-                setModalAction("remove");
-                setShowRemoveModal(true);
-              }}
-            >
-              <img src={bin} alt="Remove" />
-              Remove
-            </button>
+              {/* Remove Slide-in (right) */}
+              <button
+                className={styles.removeBtnOverlay}
+                onClick={() => {
+                  setItemToRemove(item.productId);
+                  setModalAction("remove");
+                  setShowRemoveModal(true);
+                }}
+              >
+                <img src={bin} alt="Remove" />
+                Remove
+              </button>
+            </div>
           </div>
         ))
       )}
 
-      {/* Remove Modal */}
+      {/* Remove / Wishlist Modal */}
       {showRemoveModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.removeModal}>
             <h3 className={styles.modalTitle}>
-              {modalAction === "remove" ? "Remove Items" : "Move to Wishlist"}
+              {modalAction === "remove" ? "Remove Item" : "Move to Wishlist"}
             </h3>
             <p className={styles.modalMessage}>
-              Are you sure you want to {modalAction} the selected items?
+              Are you sure you want to {modalAction} this item?
             </p>
             <div className={styles.modalActions}>
               <button
@@ -218,11 +244,10 @@ const CartList: React.FC<CartListProps> = ({
                 className={styles.modalImage}
               />
               <div className={styles.modalInfo}>
-                <h3 className={styles.modalBrand}>{sizeModalItem.brand}</h3>
                 <p className={styles.modalName}>{sizeModalItem.name}</p>
                 <div className={styles.priceBlock}>
                   <span className={styles.modalCurrentPrice}>
-                    ₹{sizeModalItem.price - DISCOUNT}
+                    ₹{(sizeModalItem.price - DISCOUNT).toFixed(2)}
                   </span>
                   <span className={styles.modalOriginalPrice}>
                     ₹{sizeModalItem.price}
@@ -231,9 +256,6 @@ const CartList: React.FC<CartListProps> = ({
                     {Math.round((DISCOUNT / sizeModalItem.price) * 100)}% OFF
                   </span>
                 </div>
-                <p className={styles.seller}>
-                  Seller: {sizeModalItem.brand} India Pvt Ltd
-                </p>
               </div>
             </div>
             <div className={styles.modalBottom}>

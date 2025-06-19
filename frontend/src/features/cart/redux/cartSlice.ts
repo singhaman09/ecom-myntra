@@ -9,7 +9,7 @@ import {
   updateCartItemSizeAPI,
 } from "../api/cartApi";
 
-import type { CartState } from "../types/cart";
+import type { CartState, CartItem } from "../types/cart";
 
 const initialState: CartState = {
   cart: [],
@@ -77,7 +77,7 @@ export const incrementItemQuantity = createAsyncThunk(
   "cart/incrementQuantity",
   async (id: string, { rejectWithValue }) => {
     try {
-      const updatedItems = await incrementCartItemQuantityAPI(id);
+      const updatedItems: CartItem[] = await incrementCartItemQuantityAPI(id);
       return { id, updatedItems };
     } catch (err: any) {
       return rejectWithValue(err.message || "Error incrementing quantity");
@@ -90,7 +90,7 @@ export const decrementItemQuantity = createAsyncThunk(
   "cart/decrementQuantity",
   async (id: string, { rejectWithValue }) => {
     try {
-      const updatedItems = await decrementCartItemQuantityAPI(id);
+      const updatedItems: CartItem[] = await decrementCartItemQuantityAPI(id);
       return { id, updatedItems };
     } catch (err: any) {
       return rejectWithValue(err.message || "Error decrementing quantity");
@@ -192,7 +192,15 @@ const cartSlice = createSlice({
       .addCase(incrementItemQuantity.fulfilled, (state, action) => {
         state.loading = false;
         const { id, updatedItems } = action.payload;
-        state.cart = updatedItems;
+        const updatedItem = updatedItems.find((item) => item.productId === id);
+        if (updatedItem) {
+          const existingItem = state.cart.find((item) => item.productId === id);
+          if (existingItem) {
+            existingItem.quantity = updatedItem.quantity;
+          } else {
+            state.cart = [...state.cart, updatedItem];
+          }
+        }
       })
       .addCase(incrementItemQuantity.rejected, (state, action) => {
         state.loading = false;
@@ -207,7 +215,15 @@ const cartSlice = createSlice({
       .addCase(decrementItemQuantity.fulfilled, (state, action) => {
         state.loading = false;
         const { id, updatedItems } = action.payload;
-        state.cart = updatedItems;
+        const updatedItem = updatedItems.find((item) => item.productId === id);
+        if (updatedItem) {
+          const existingItem = state.cart.find((item) => item.productId === id);
+          if (existingItem) {
+            existingItem.quantity = updatedItem.quantity;
+          } else {
+            state.cart = [...state.cart, updatedItem];
+          }
+        }
       })
       .addCase(decrementItemQuantity.rejected, (state, action) => {
         state.loading = false;
