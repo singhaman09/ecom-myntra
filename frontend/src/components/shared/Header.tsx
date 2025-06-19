@@ -4,12 +4,27 @@ import styles from "./css/Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import CategoryDropdown from "./CategoryDropDown";
 
+const dummySuggestions = [
+  "Shoes",
+  "T-Shirts",
+  "Jackets",
+  "Jeans",
+  "Watches",
+  "Bags",
+  "Sunglasses",
+  "Hats",
+  "Belts",
+  "Shorts"
+];
+
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [activeCategoryHover, setActiveCategoryHover] = useState<string>("");
   const [value, setValue] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const navigate = useNavigate();
 
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -33,9 +48,34 @@ const Header: React.FC = () => {
     if (value.trim()) {
       navigate(`/products/${value}`);
       setValue("");
+      setIsSuggestionsOpen(false);
     }
   };
 
+  // --- Search Suggestion Logic ---
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setValue(val);
+    if (val.trim().length > 0) {
+      
+      const filtered = dummySuggestions.filter(s =>
+        s.toLowerCase().includes(val.toLowerCase())
+      );
+      setSuggestions(filtered);
+      setIsSuggestionsOpen(true);
+    } else {
+      setSuggestions([]);
+      setIsSuggestionsOpen(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setValue(suggestion);
+    setIsSuggestionsOpen(false);
+    navigate(`/products/${suggestion}`);
+  };
+
+  // --- Category Dropdown Logic ---
   const handleCategoryHover = (category: string) => {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -140,17 +180,32 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Desktop Search Bar */}
-          <div className={styles.searchContainer}>
+          <div className={styles.searchContainer} style={{ position: "relative" }}>
             <div className={styles.searchWrapper}>
               <Search className={styles.searchIcon} />
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} autoComplete="off">
                 <input
                   type="text"
                   placeholder="Search for products, brands and more"
                   className={styles.searchInput}
-                  onChange={(e) => setValue(e.target.value)}
+                  onChange={handleInputChange}
                   value={value}
+                  onFocus={() => value && setIsSuggestionsOpen(true)}
+                  onBlur={() => setTimeout(() => setIsSuggestionsOpen(false), 120)}
                 />
+                {isSuggestionsOpen && suggestions.length > 0 && (
+                  <ul className={styles.suggestionsList}>
+                    {suggestions.map((s, i) => (
+                      <li
+                        key={i}
+                        className={styles.suggestionItem}
+                        onMouseDown={() => handleSuggestionClick(s)}
+                      >
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </form>
             </div>
           </div>
@@ -196,17 +251,33 @@ const Header: React.FC = () => {
           className={`${styles.mobileSearch} ${
             isMobileSearchOpen ? styles.active : ""
           }`}
+          style={{ position: "relative" }}
         >
           <div className={styles.mobileSearchWrapper}>
             <Search className={styles.searchIcon} />
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <input
                 type="text"
                 placeholder="Search for products, brands and more"
                 className={styles.searchInput}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={handleInputChange}
                 value={value}
+                onFocus={() => value && setIsSuggestionsOpen(true)}
+                onBlur={() => setTimeout(() => setIsSuggestionsOpen(false), 120)}
               />
+              {isSuggestionsOpen && suggestions.length > 0 && (
+                <ul className={styles.suggestionsList}>
+                  {suggestions.map((s, i) => (
+                    <li
+                      key={i}
+                      className={styles.suggestionItem}
+                      onMouseDown={() => handleSuggestionClick(s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </form>
           </div>
         </div>
