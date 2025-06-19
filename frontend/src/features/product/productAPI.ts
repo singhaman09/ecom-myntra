@@ -12,16 +12,21 @@ const customAxios = axios.create({
 // Thunk for fetching products
 export const getProducts = createAsyncThunk< 
   getProductsInterface,                          // Return type
-  { filters: filters; slug: string | undefined,searchParams:URLSearchParams,page:Number },    // Argument type
+  {  slug: string | undefined,searchParams:URLSearchParams,page:Number },    // Argument type
   { rejectValue: string }                       // Rejection type
 >(
   'products/getProducts',
-  async ({ filters, slug='all',searchParams,page}, thunkAPI) => {
+  async ({  slug='all',searchParams,page}, thunkAPI) => {
     try {
     const selectedSort=searchParams.get('sort') || 'new'
-      // const currentPage=searchParams.get('page') || '1'
+   const category=searchParams.getAll('category')
+   const subCategory=searchParams.getAll('subCategory')
+   const color=searchParams.getAll('color')
+   const  brand=searchParams.getAll('brand')
+   const price=searchParams.get('price')?.split(',').map(Number) || []
+   const gender=searchParams.get('gender') || undefined
       const response = await customAxios.get(`/${slug}`, {
-        params: { category:filters.category.toString(),subCategory:filters.subCategory.toString(),brand:filters.brand.toString(),color:filters.color.toString(),gender:filters.gender,price:filters.price.toString(),sort:selectedSort,page:page}
+        params: { category:category.toString(),subCategory:subCategory.toString(),brand:brand.toString(),color:color.toString(),gender:gender,price:price.toString(),sort:selectedSort,page:page}
       });
       return response.data;
     } catch (error: any) {
