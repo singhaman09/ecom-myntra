@@ -3,9 +3,7 @@ import type { AxiosResponse } from "axios";
 import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
 
 const API_BASE_URL = "http://172.50.0.244:3333/orders";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGFiNzVlMzY5ZjM4Yzk1MTE3NWRiYiIsImVtYWlsIjoidmlzaGFseWR2NzQzQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiJkOWE0NTU2OC1mYjc3LTQ0NDQtOTRiYi1iYTQ2MDdlMDk2ZDUiLCJpYXQiOjE3NTAzMjg5OTYsImV4cCI6MTc1MDQxNTM5Nn0.LBg1mGD9TYO4bqhUUlI-eUE63H4-4gozYxN_FJMHAZQ"
-  
+const token = localStorage.getItem('token')
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {

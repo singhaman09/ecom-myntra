@@ -6,9 +6,7 @@ import shoes from "../../assets/shoes.jpeg";
 const USE_MOCK = false;
 
 const API_BASE_URL = "https://931a-14-194-22-202.ngrok-free.app";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGZhZDc0YmRiNTc1MTQ1MmY5OGMxNSIsImVtYWlsIjoiMzAzMDFpdEBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImRldmljZUlkIjoiNjJlNjc0YzktZGI3Mi00NmQ5LTkzZWYtZjU4YjY2MjIxNjM2IiwiaWF0IjoxNzUwMzM3NjI5LCJleHAiOjE3NTA0MjQwMjl9.rnMSpJRSNY1MPH6YAvq9jv5C122nqxs83v_JRFGfmFc";
-  
+const token = localStorage.getItem('token')
   
   const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
