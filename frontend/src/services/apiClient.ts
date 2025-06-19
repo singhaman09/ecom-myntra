@@ -7,7 +7,7 @@ declare module 'axios' {
 }
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3001/', // Replace with your actual API
+  baseURL: 'http://localhost:3001/',
   headers: {
     'Content-Type': 'application/json',
   },
