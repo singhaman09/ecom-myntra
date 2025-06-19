@@ -1,12 +1,12 @@
 export interface User {
-  id: number;
+  id: string;
   name: string;
   email: string;
 }
 
 export interface LoginCredentials {
   email: string;
-  password: string;
+  password: string ;
 }
 
 export interface RegisterData extends LoginCredentials {
@@ -129,6 +129,16 @@ export interface ResetPasswordRequest {
 }
 
 export interface ResetPasswordResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+}
+
+export interface LogoutRequest {
+  accessToken: string;
+}
+
+export interface logoutResponse {
   success: boolean;
   statusCode: number;
   message: string;

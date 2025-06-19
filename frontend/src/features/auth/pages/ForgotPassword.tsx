@@ -34,7 +34,7 @@ const ForgotPassword: React.FC = () => {
 
   // Clear auth state on component mount
   useEffect(() => {
-    // clearAuthState();
+    clearAuthState();
   }, [clearAuthState]);
 
   // Redirect to login after successful password reset request
@@ -65,7 +65,7 @@ const ForgotPassword: React.FC = () => {
       <div className={styles.mainContent}>
         <div className={styles.forgotCard}>
           <div className={styles.header}>
-            <h1 className={styles.brand}>THE BODY SHOP</h1>
+            <h1 className={styles.brand}>THE Wyntra SHOP</h1>
             <h2 className={styles.title}>Forgot your password?</h2>
             <p className={styles.subtitle}>
               Enter your email address and we'll send you a link to reset your

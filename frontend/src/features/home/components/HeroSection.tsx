@@ -32,7 +32,7 @@ const HeroSection = ({ slides }: { slides: Slide[] }) => {
     if (!isPaused) {
       slideInterval.current = setInterval(() => {
         nextSlide();
-      }, 5000);
+      }, 4000);
     }
     return () => {
       if (slideInterval.current !== null) {
@@ -77,8 +77,8 @@ const HeroSection = ({ slides }: { slides: Slide[] }) => {
       ))}
 
       {/* Arrows */}
-      <button onClick={prevSlide} className={styles.arrowLeft}>&lt;</button>
-      <button onClick={nextSlide} className={styles.arrowRight}>&gt;</button>
+      {/* <button onClick={prevSlide} className={styles.arrowLeft}>&lt;</button>
+      <button onClick={nextSlide} className={styles.arrowRight}>&gt;</button> */}
 
       {/* Dots */}
       <div className={styles.dots}>
