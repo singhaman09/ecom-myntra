@@ -44,17 +44,20 @@
 
 .title {
   font-size: 3rem;
+  font-family: 'Druk', sans-serif;
   margin-bottom: 0.5rem;
   animation: slideUp 1s ease-in-out;
 }
 
 .subtitle {
+  font-family: 'Work Sans', sans-serif;
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
   animation: slideUp 1.2s ease-in-out;
 }
 
 .button {
+  font-family: 'Work Sans', sans-serif;
   padding: 10px 25px;
   background-color: #ff3f6c;
   border: none;

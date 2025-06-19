@@ -9,13 +9,13 @@ interface SaleBannerProps {
   onCtaClick?: () => void;
 }
 
-const SaleBanners = ({ 
+const SaleBanners: React.FC<SaleBannerProps> = ({ 
   title, 
   subtitle, 
   backgroundImage, 
   ctaText, 
   onCtaClick 
-}: SaleBannerProps) => {
+}) => {
   return (
     <section className={styles.saleBanner}>
       <div className={styles.container}>

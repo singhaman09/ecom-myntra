@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import  type {  filters, getProductsInterface, SelectedProduct } from './interfaces/ProductInterfaces';
 // Custom Axios instance
 const customAxios = axios.create({
-  baseURL: 'http://172.50.5.124:3000/products',
+  baseURL: 'http://0.0.0.0:3000/products',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

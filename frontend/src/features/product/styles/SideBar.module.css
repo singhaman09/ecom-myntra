@@ -284,10 +284,12 @@
   border-radius: 50%;
   border: 1.5px solid #d1d5db;
   box-shadow: 0 0 0 1px #e5e7eb;
+  margin-bottom: 20px;
 }
 
 .colorName {
   font-size: 1rem;
   color: #222;
+  margin-bottom: 20px;
 }
 
