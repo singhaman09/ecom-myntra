@@ -1,0 +1,319 @@
+.container {
+    min-height: 100vh;
+    background-color: #f6f1e9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .decorativeElements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  .element {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .element1 {
+    top: 15%;
+    left: 10%;
+    color: #f59e0b;
+    transform: rotate(-15deg);
+  }
+  
+  .element2 {
+    top: 20%;
+    right: 15%;
+    color: #ef4444;
+    font-size: 18px;
+  }
+  
+  .element3 {
+    top: 25%;
+    left: 15%;
+    color: #10b981;
+    font-size: 20px;
+  }
+  
+  .element4 {
+    top: 35%;
+    right: 20%;
+    color: #f59e0b;
+    font-size: 16px;
+  }
+  
+  .element5 {
+    bottom: 30%;
+    left: 12%;
+    color: #8b5cf6;
+    font-size: 22px;
+  }
+  
+  .element6 {
+    bottom: 25%;
+    right: 10%;
+    color: #ef4444;
+    font-size: 18px;
+    transform: rotate(15deg);
+  }
+  
+  .element7 {
+    top: 45%;
+    left: 8%;
+    color: #6b7280;
+    font-size: 12px;
+  }
+  
+  .element8 {
+    bottom: 35%;
+    right: 25%;
+    color: #f59e0b;
+    font-size: 14px;
+  }
+  
+  .element9 {
+    top: 60%;
+    left: 20%;
+    color: #10b981;
+    font-size: 16px;
+  }
+  
+  .element10 {
+    bottom: 40%;
+    left: 25%;
+    color: #6b7280;
+    font-size: 10px;
+  }
+  
+  .element11 {
+    top: 18%;
+    left: 25%;
+    color: #f59e0b;
+    font-size: 20px;
+  }
+  
+  .element12 {
+    top: 55%;
+    right: 15%;
+    color: #ef4444;
+    font-size: 16px;
+  }
+  
+  .element13 {
+    bottom: 20%;
+    left: 30%;
+    color: #8b5cf6;
+    font-size: 14px;
+  }
+  
+  .element14 {
+    top: 40%;
+    right: 8%;
+    color: #10b981;
+    font-size: 18px;
+  }
+  
+  .element15 {
+    bottom: 45%;
+    right: 30%;
+    color: #f59e0b;
+    font-size: 12px;
+  }
+  
+  .mainContent {
+    text-align: center;
+    z-index: 10;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .checkIcon {
+    width: 420px;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+  }
+  
+  .checkmark {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .title {
+
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 16px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 40px;
+    font-family: 'Work Sans', sans-serif;;
+  }
+  
+  .button {
+    background-color: #047857;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    transition: all 0.2s ease;
+    font-family: 'Work Sans', sans-serif;
+  }
+  
+  .button:hover {
+    background-color: #065f46;
+    transform: translateY(-1px);
+  }
+  
+  /* Tablet styles */
+  @media (max-width: 768px) {
+    .title {
+      font-size: 24px;
+    }
+    
+    .subtitle {
+      font-size: 14px;
+    }
+    
+    .checkIcon {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .element {
+      font-size: 20px;
+    }
+    
+    .element2, .element6 {
+      font-size: 16px;
+    }
+    
+    .element3, .element11 {
+      font-size: 18px;
+    }
+    
+    .element4 {
+      font-size: 14px;
+    }
+    
+    .element5 {
+      font-size: 20px;
+    }
+    
+    .element7 {
+      font-size: 10px;
+    }
+    
+    .element8 {
+      font-size: 12px;
+    }
+    
+    .element9, .element12 {
+      font-size: 14px;
+    }
+    
+    .element10 {
+      font-size: 8px;
+    }
+    
+    .element13 {
+      font-size: 12px;
+    }
+    
+    .element14 {
+      font-size: 16px;
+    }
+    
+    .element15 {
+      font-size: 10px;
+    }
+  }
+  
+  /* Mobile styles */
+  @media (max-width: 480px) {
+    .container {
+      padding: 16px;
+    }
+    
+    .title {
+      font-size: 22px;
+    }
+    
+    .checkIcon {
+      width: 280px;
+      height: 280px;
+      margin-bottom: 24px;
+    }
+    
+    .button {
+      padding: 14px 28px;
+      font-size: 15px;
+    }
+    
+    .element {
+      font-size: 18px;
+    }
+    
+    .element2, .element6, .element12 {
+      font-size: 14px;
+    }
+    
+    .element3, .element11 {
+      font-size: 16px;
+    }
+    
+    .element4 {
+      font-size: 12px;
+    }
+    
+    .element5 {
+      font-size: 18px;
+    }
+    
+    .element7 {
+      font-size: 8px;
+    }
+    
+    .element8, .element13 {
+      font-size: 10px;
+    }
+    
+    .element9 {
+      font-size: 12px;
+    }
+    
+    .element10 {
+      font-size: 6px;
+    }
+    
+    .element14 {
+      font-size: 14px;
+    }
+    
+    .element15 {
+      font-size: 8px;
+    }
+  }

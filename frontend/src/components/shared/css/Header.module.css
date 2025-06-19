@@ -5,16 +5,15 @@
   top: 0;
   z-index: 50;
 }
-
 .topBanner {
-  background-color: #fdf2f8;
+  background-color: #f6f1e9;
   padding: 0.5rem 0;
   text-align: center;
 }
 
 .bannerText {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.875rem;
-  color: #374151;
 }
 
 @media (max-width: 768px) {
@@ -29,13 +28,13 @@
 
 .bannerTextPink {
   font-weight: 600;
-  color: #ec4899;
+  color: #00a65a;
 }
 
 .container {
-  max-width: 100%;
+  max-width: 70%;
   margin: 0 auto;
-  padding: 0 3rem;
+  padding: 0rem;
 }
 
 .headerContent {
@@ -50,6 +49,10 @@
   .headerContent {
     height: 3.5rem;
   }
+  .container {
+    padding: 0 1rem;
+    max-width: 100%;
+  }
 }
 
 .logo {
@@ -60,7 +63,7 @@
 .logoText {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ec4899;
+  color:  #0c3d32;
   text-decoration: none;
 }
 
@@ -82,11 +85,15 @@
   display: none;
   gap: 2rem;
   margin-left: 3rem;
+  position: relative;
 }
 
 @media (min-width: 769px) {
   .nav {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    
   }
 }
 
@@ -95,6 +102,7 @@
 }
 
 .navLink {
+  font-family: 'Work Sans', sans-serif;
   color: #374151;
   font-weight: 600;
   font-size: 0.875rem;
@@ -106,7 +114,7 @@
 }
 
 .navLink:hover {
-  color: #ec4899;
+  color:  #00a65a;
 }
 
 
@@ -137,6 +145,7 @@
 }
 
 .searchInput {
+  font-family: 'Work Sans', sans-serif;
   width: 80%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
   background-color: #f9fafb;
@@ -148,7 +157,7 @@
 }
 
 .searchInput:focus {
-  kerning: 2px solid #ec4899;
+  kerning: 2px solid  #00a65a;
   border-color: transparent;
 }
 
@@ -174,7 +183,7 @@
 
 .userAction:hover .userActionIcon,
 .userAction:hover .userActionText {
-  color: #ec4899;
+  color:  #00a65a;
 }
 
 .userActionIcon {
@@ -192,6 +201,7 @@
 }
 
 .userActionText {
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.75rem;
   color: #374151;
   font-weight: 600;
@@ -212,7 +222,7 @@
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
-  background-color: #ef4444;
+  background-color:  #0c3d32;
   color: white;
   font-size: 0.75rem;
   border-radius: 50%;
@@ -298,6 +308,32 @@
 }
 
 .mobileNavLink:hover {
-  color: #ec4899;
-  border-color: #ec4899;
+  color:  #00a65a;
+  border-color:  #00a65a;
+}
+.suggestionsList {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 99;
+  background: #fff;
+  color: #222;
+  border-radius: 0 0 0.5rem 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin: 0;
+  padding: 0.5rem 0;
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.suggestionItem {
+  padding: 0.75rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.suggestionItem:hover {
+  background: #f3f4f6;
 }

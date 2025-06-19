@@ -1,11 +1,58 @@
-/* Main container */
-.container {
-  flex: 1;
+/* Wishlist List Styles */
+.wishlistList {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f5f5f6; /* Myntra's light background */
 }
 
-/* Loading state */
+/* List Header */
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #ecf0f1;
+  font-family: 'Work Sans';
+}
+
+.listInfo h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 4px 0;
+  font-family: 'Work Sans';
+}
+
+.listInfo p {
+  color: #7f8c8d;
+  margin: 0;
+  font-family: 'Work Sans';
+  font-size: 16px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.itemsPerPageSelect {
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.itemsPerPageSelect:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Loading State */
 .loading {
   display: flex;
   flex-direction: column;
@@ -18,8 +65,8 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #ff3f6c; /* Myntra's pink accent */
+  border: 4px solid #ecf0f1;
+  border-top: 4px solid #3498db;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -30,7 +77,13 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Error state */
+.loading p {
+  color: #7f8c8d;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Error State */
 .error {
   display: flex;
   flex-direction: column;
@@ -38,22 +91,18 @@
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-}
-
-.error h3 {
-  margin: 0 0 8px 0;
-  color: #282c3f; /* Myntra's dark text */
-  font-size: 20px;
-  font-weight: 500;
+  background: #fff5f5;
+  border-radius: 12px;
+  border: 1px solid #fed7d7;
 }
 
 .error p {
-  margin: 0 0 20px 0;
-  color: #94969f; /* Myntra's secondary text */
-  font-size: 14px;
+  color: #e53e3e;
+  font-size: 16px;
+  margin: 0 0 16px 0;
 }
 
-/* Empty wishlist state */
+/* Empty State */
 .emptyWishlist {
   display: flex;
   flex-direction: column;
@@ -61,174 +110,150 @@
   justify-content: center;
   padding: 80px 20px;
   text-align: center;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #dee2e6;
 }
 
 .emptyIcon {
   font-size: 64px;
-  margin-bottom: 20px;
-  color: #ff3f6c; /* Myntra's pink accent */
-  opacity: 0.7;
+  color: #ced4da;
+  margin-bottom: 16px;
 }
 
 .emptyWishlist h3 {
-  margin: 0 0 8px 0;
   font-size: 24px;
   font-weight: 600;
-  color: #282c3f;
+  color: #495057;
+  margin: 0 0 8px 0;
 }
 
 .emptyWishlist p {
-  margin: 0 0 24px 0;
-  color: #94969f;
+  color: #6c757d;
   font-size: 16px;
+  margin: 0 0 24px 0;
+  max-width: 400px;
 }
 
-/* List header */
-.listHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 0 10px;
-}
-
-.listInfo h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #282c3f;
-  margin: 0 0 8px 0;
-}
-
-.listInfo p {
-  font-size: 14px;
-  color: #94969f;
-}
-
-.listControls label {
-  font-size: 14px;
-  color: #282c3f;
-  margin-right: 10px;
-}
-
-.listControls select {
-  padding: 8px 12px;
-  border: 1px solid #d4d5d9;
-  border-radius: 4px;
-  background-color: #fff;
-  font-size: 14px;
-  color: #282c3f;
-  cursor: pointer;
-}
-
-.listControls select:focus {
-  outline: none;
-  border-color: #ff3f6c;
-}
-
-/* Items grid */
+/* Items Grid */
 .itemsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 0 10px;
+  gap: 24px;
+  margin-bottom: 32px;
 }
 
 /* Pagination */
 .pagination {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 20px 0;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0;
+  border-top: 1px solid #ecf0f1;
+}
+
+.pageNumbers {
+  display: flex;
+  gap: 4px;
 }
 
 .pageButton {
-  padding: 8px 14px;
-  border: 1px solid #d4d5d9;
-  border-radius: 4px;
-  background-color: #fff;
-  font-size: 14px;
-  color: #282c3f;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #495057;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pageButton:hover {
-  background-color: #ff3f6c;
-  color: #fff;
-  border-color: #ff3f6c;
-}
-
-.pageButton.active {
-  background-color: #ff3f6c;
-  color: #fff;
-  border-color: #ff3f6c;
-  font-weight: 600;
-}
-
-/* Wishlist stats */
-.wishlistStats {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-.stat {
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-width: 40px;
   text-align: center;
 }
 
-.statValue {
-  display: block;
-  font-size: 20px;
-  font-weight: 600;
-  color: #282c3f;
+.pageButton:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
 }
 
-.statLabel {
-  font-size: 14px;
-  color: #94969f;
+.pageButton.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
+.pageButton.active:hover {
+  background: #2980b9;
+  border-color: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
   .itemsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .listHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .wishlistStats {
-    flex-direction: column;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
   }
 }
 
-@media (max-width: 480px) {
-  .container {
-    padding: 10px;
+@media (max-width: 768px) {
+  .wishlistList {
+    padding: 16px;
   }
-
+  
+  .listHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
   .listInfo h2 {
-    font-size: 20px;
+    font-size: 24px;
   }
-
+  
+  .controls {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .itemsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .pageNumbers {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .emptyWishlist {
+    padding: 60px 20px;
+  }
+  
+  .emptyIcon {
+    font-size: 48px;
+  }
+  
   .emptyWishlist h3 {
     font-size: 20px;
   }
+}
 
-  .emptyWishlist p {
-    font-size: 14px;
+@media (max-width: 480px) {
+  .itemsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .pageButton {
+    padding: 6px 10px;
+    font-size: 13px;
+    min-width: 36px;
   }
 }

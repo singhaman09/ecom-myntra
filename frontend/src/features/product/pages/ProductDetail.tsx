@@ -8,26 +8,52 @@ import { useProductDispatch, useProductSelector } from "../hooks/storeHooks";
 import { getProductDetails } from "../productAPI";
 import Loader from "../utils/Loader";
 import { averageRating } from "../utils/Reviews";
-
+import { addCartItem, deleteCartItem } from "../../cart/redux/cartSlice";
+import { addToWishlist, removeFromWishlist } from "../../wishlist/slice/wishlistSlice";
 // Lazy load components (no Suspense here)
 const SimilarProduct = React.lazy(() => import("../components/SimilarProduct"));
 const ReviewSection = React.lazy(() => import("../components/ReviewSection"));
-const ImageZoomOnHover = React.lazy(() => import("../components/ImageZoom"));
+import defaultProductImage from '../../../assets/cart.png'
+import AvailableOffers, { type Offer } from "../components/AvailableOffers";
+import ProductInfo from "../components/ProductInfo";
+import BoughtTogether from "../components/BoughtTogether";
+import { getColorCodeFromString } from "../utils/colorsMapping";
 const Breadcrumbs = React.lazy(() => import("../utils/BreadCrumbs"));
 const ErrorPage = React.lazy(() => import("./ErrorPage"));
+const offers: Offer[] = [
+  {
+    type: 'bank',
+    title: '10% Instant Discount',
+    description: 'Get 10% instant discount on HDFC Bank Credit Cards. T&C apply.',
+  },
+  {
+    type: 'coupon',
+    title: '₹200 Off Coupon',
+    description: 'Use code SAVE200 to get ₹200 off on orders above ₹999.',
+  },
+  {
+    type: 'deal',
+    title: 'Free Gift',
+    description: 'Free travel pouch on orders above ₹1499.',
+  },
+];
+
 
 const ProductDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
   const dispatch = useProductDispatch();
-  const data = useProductSelector((state) => state.product);
+  const result = useProductSelector((state) => state);
+  const data=result.product
+  const cartData=result.cart
+  const wishlistData=result.wishlist
   const variants = data?.selectedProduct?.product?.variants || [];
   const uniqueColors = useMemo(() => [...new Set(variants.map((v) => v.color))], [variants]);
   const uniqueSizes = useMemo(() => [...new Set(variants.map((v) => v.size))], [variants]);
   const [notCompatible, setNotCompatible] = useState({ color: "", size: "" });
   const selectedSize = searchParams.get("size") || uniqueSizes[0] || "";
   const selectedColor = searchParams.get("color") || uniqueColors[0] || "";
-
+  
   useEffect(() => {
     dispatch(getProductDetails(id));
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -50,18 +76,36 @@ const ProductDetails = () => {
     searchParams.set("color", color);
     setSearchParams(searchParams, { replace: true });
   };
-
-  if (data.loading) return <Loader />;
+   
+  const addToBag=()=>{
+    const productId=id || ''
+    dispatch(addCartItem(productId))
+  }
+ const removeFromBag=()=>{
+  const productId=id || ''
+  dispatch(deleteCartItem(productId))
+ }
+ const removeWishlist=()=>{
+  const productId=id || ''
+  dispatch(removeFromWishlist(productId))
+ }
+ const addWishlist=()=>{
+  const productId=id || ''
+  dispatch(addToWishlist(productId))
+ }
+  if (data.loading) return <Loader  isInitial={true}/>;
   if (data.error) return <ErrorPage />;
 
   return (
     <div className={styles.container}>
       <Breadcrumbs />
       <div className={styles.gridLayout}>
-        <ImageZoomOnHover
-          src={data.selectedProduct?.product.imageUrl ? data.selectedProduct?.product.imageUrl : ""}
-          alt="Headphones"
-        />
+   <div className={styles.imgContainer}>
+   <img className={styles.Image} src={data.selectedProduct?.product.imageUrl} alt={'hey'}   onError={(e) => {
+    (e.currentTarget as HTMLImageElement).src = defaultProductImage;
+    (e.currentTarget as HTMLImageElement).onerror = null; 
+  }} />
+   </div>
         <div className={styles.productDetails}>
           {/* Brand and Title */}
           <div className={styles.brandTitle}>
@@ -100,7 +144,7 @@ const ProductDetails = () => {
           {/* Size Selection */}
           <div className={styles.sizeSection}>
             <div className={styles.sizeHeaderRow}>
-              <h3 className={styles.sizeLabel}>Size</h3>
+              <h3 className={styles.sizeLabel} style={{marginBottom:'-2px'}}>Select Size</h3>
             </div>
           </div>
           <div className={styles.sizesRow}>
@@ -135,7 +179,7 @@ const ProductDetails = () => {
           {/* Color Selection */}
           <div className={styles.sizeSection}>
             <div className={styles.sizeHeaderRow}>
-              <h3 className={styles.sizeLabel}>Color</h3>
+              <h3 className={styles.sizeLabel}>Select Color</h3>
             </div>
             <div className={styles.sizesRow}>
               {uniqueColors.map((color) => {
@@ -150,8 +194,8 @@ const ProductDetails = () => {
                   <button
                     key={color}
                     onClick={() => handleColor(color)}
-                    className={`${styles.sizeBtn} ${
-                      selectedColor === color ? styles.sizeBtnSelected : ""
+                    className={`${styles.colorBtn} ${
+                      selectedColor === color ? styles.colorBtnSelected : ""
                     } ${
                       isOutOfStock ||
                       notCompatible.color === color ||
@@ -160,8 +204,9 @@ const ProductDetails = () => {
                         : ""
                     }`}
                     disabled={isOutOfStock}
+                    style={{backgroundColor:`${getColorCodeFromString(color)}`}}
                   >
-                    {color}
+                   
                   </button>
                 );
               })}
@@ -169,11 +214,7 @@ const ProductDetails = () => {
           </div>
 
           {/* Product Description */}
-          <div className={styles.descriptionSection}>
-            <p className={styles.descriptionText}>
-              {data?.selectedProduct?.product?.description}
-            </p>
-          </div>
+        
           {/* Action Buttons */}
           <div className={styles.actionSection}>
             {variants?.find((v) => v.size === selectedSize && v.color === selectedColor)?.stock === 0 ||
@@ -186,26 +227,30 @@ const ProductDetails = () => {
               <button className={styles.notifyButton}>Notify Me</button>
             ) : (
               <>
-              {1?<button className={styles.addToBagBtn}>ADD TO BAG</button>:<button className={styles.addToBagBtn}>REMOVE FROM BAG</button>}
+              {cartData.cart.length<=0 || cartData.cart.find(val=>val.productId!=id)?<button className={styles.addToBagBtn} onClick={addToBag}>ADD TO BAG</button>:<button className={styles.addToBagBtn} onClick={removeFromBag}>REMOVE FROM BAG</button>}
               </>
             )}
 
-            <button
-              className={`${styles.wishlistBtn} ${0 ? styles.wishlistBtnSelected : ""}`}
+            { wishlistData.items.find(val=>val.productId==id)?  <button
+              className={`${styles.wishlistBtn} ${styles.wishlistBtnSelected}`}
+              onClick={removeWishlist}
             >
-              {0 ? (
+             
                 <FavoriteIcon
                   className={styles.heartIcon}
-                  sx={{ color: "#db2777", fontSize: 20, verticalAlign: "middle" }}
+                  sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
+                  
                 />
-              ) : (
+                 <span>WISHLIST</span>
+              </button>: <button className={`${styles.wishlistBtn}`} onClick={addWishlist}>
                 <FavoriteBorderIcon
                   className={styles.heartIcon}
-                  sx={{ color: "#db2777", fontSize: 20, verticalAlign: "middle" }}
+                  sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
                 />
-              )}
-              <span>WISHLIST</span>
-            </button>
+               <span>WISHLIST</span>
+            </button>}
+             
+           
           </div>
           {/* Delivery Info */}
           <div className={styles.deliverySection}>
@@ -218,7 +263,10 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+      <AvailableOffers offers={offers}/>
+      <ProductInfo/>
       <ReviewSection />
+      <BoughtTogether/>
       <SimilarProduct />
     </div>
   );

@@ -19,11 +19,22 @@ const CouponModal: React.FC<CouponModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+    <div className={styles.modalOverlay} onClick={onClose} role="presentation">
+      <div
+        className={styles.modalContent}
+        role="dialog"
+        aria-labelledby="coupon-modal-title"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+      >
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>AVAILABLE COUPONS</h2>
-          <button className={styles.modalClose} onClick={onClose}>
+          <h2 id="coupon-modal-title" className={styles.modalTitle}>
+            Available Coupons
+          </h2>
+          <button
+            className={styles.modalClose}
+            onClick={onClose}
+            aria-label="Close coupon modal"
+          >
             ✕
           </button>
         </div>
@@ -31,15 +42,29 @@ const CouponModal: React.FC<CouponModalProps> = ({
           <p className={styles.noCoupons}>No available coupons at this time.</p>
         ) : (
           <div className={styles.couponList}>
-            {availableCoupons.map((coupon) => (
-              <div key={coupon.code} className={styles.couponItem}>
-                <div className={styles.wrapitems}>
+            {availableCoupons.map((coupon, index) => (
+              <div
+                key={coupon.code}
+                className={`${styles.couponItem} ${
+                  index < availableCoupons.length - 1 ? styles.couponBorder : ""
+                }`}
+              >
+                <div className={styles.couponWrapper}>
                   <div className={styles.couponIcon}>
-                    <FaTag />
+                    <FaTag aria-hidden="true" />
                   </div>
                   <div className={styles.couponDetails}>
                     <div className={styles.couponHeader}>
-                      <span className={styles.couponCode}>{coupon.code}</span>
+                      <button
+                        className={styles.couponCode}
+                        onClick={() => {
+                          onApplyCoupon(coupon);
+                          onClose();
+                        }}
+                        aria-label={`Apply coupon ${coupon.code}`}
+                      >
+                        {coupon.code}
+                      </button>
                       <button
                         className={styles.applyCouponButton}
                         onClick={() => {
@@ -50,16 +75,18 @@ const CouponModal: React.FC<CouponModalProps> = ({
                         Apply
                       </button>
                     </div>
+                    <p className={styles.couponDescription}>
+                      {coupon.description}
+                    </p>
+                    <div className={styles.couponMeta}>
+                      <span className={styles.couponDiscount}>
+                        Save ₹{coupon.discount}
+                      </span>
+                      <span className={styles.couponExpires}>
+                        Valid till {coupon.expires}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <p className={styles.couponDescription}>{coupon.description}</p>
-                <div className={styles.couponMeta}>
-                  <span className={styles.couponDiscount}>
-                    Save ₹{coupon.discount}
-                  </span>
-                  <span className={styles.couponExpires}>
-                    Valid till {coupon.expires}
-                  </span>
                 </div>
               </div>
             ))}
@@ -67,7 +94,7 @@ const CouponModal: React.FC<CouponModalProps> = ({
         )}
         <div className={styles.modalActions}>
           <button className={styles.closeButton} onClick={onClose}>
-            CANCEL
+            Cancel
           </button>
         </div>
       </div>

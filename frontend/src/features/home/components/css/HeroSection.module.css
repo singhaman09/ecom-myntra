@@ -1,9 +1,11 @@
 .hero {
   position: relative;
-  width: 100%;
+  width: 70%;
   height: 600px;
+  margin: 1rem auto;
+  border-radius: 30px;
   overflow: hidden;
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
 }
 
 .slide {
@@ -42,17 +44,20 @@
 
 .title {
   font-size: 3rem;
+  font-family: 'Druk', sans-serif;
   margin-bottom: 0.5rem;
   animation: slideUp 1s ease-in-out;
 }
 
 .subtitle {
+  font-family: 'Work Sans', sans-serif;
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
   animation: slideUp 1.2s ease-in-out;
 }
 
 .button {
+  font-family: 'Work Sans', sans-serif;
   padding: 10px 25px;
   background-color: #ff3f6c;
   border: none;
@@ -69,7 +74,7 @@
 .arrowLeft, .arrowRight {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-100%);
   background: white;
   border: 1px solid #ccc;
   padding: 10px;
@@ -116,4 +121,108 @@
 @keyframes slideUp {
   from { transform: translateY(50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    width: 100%;
+    height: 500px;
+    border-radius: 0px;
+    margin: 0%;
+  }
+}
+
+/* Tablet Styles */
+@media (max-width: 768px) {
+  .hero {
+    width: 100%;
+    height: 500px;
+    border-radius: 0px;
+    margin: 0%;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .button {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .arrowLeft, .arrowRight {
+    padding: 8px;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 480px) {
+  .hero {
+    width: 100%;
+    height: 400px;
+    margin: 0;
+    border-radius: 0;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .button {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+  
+  .arrowLeft, .arrowRight {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+  
+  .arrowLeft {
+    left: 5px;
+  }
+  
+  .arrowRight {
+    right: 5px;
+  }
+  
+  .dots {
+    bottom: 10px;
+  }
+  
+  .dot {
+    height: 8px;
+    width: 8px;
+    margin: 0 3px;
+  }
+}
+
+/* Extra Small Mobile Styles */
+@media (max-width: 320px) {
+  .hero {
+    height: 350px;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .button {
+    padding: 6px 15px;
+    font-size: 0.8rem;
+  }
 }

@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700&display=swap');
+.offersSection {
+  border-radius: 0.7rem;
+  padding: 1.2rem 1rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #1a202c;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.offerList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  
+}
+
+@media (min-width: 600px) {
+  .offerList {
+    grid-template-columns: 1fr 1fr;
+  }
+  .offersSection{
+    margin-top: 0rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .offerList {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.offerCard {
+  background: #fff;
+  border-radius: 0.7rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1rem 1rem 0.8rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  min-height: 90px;
+  transition: box-shadow 0.2s;
+}
+
+.offerCard:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.icon {
+  font-size: 1.4rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.offerMain {
+  font-weight: 500;
+  color: #222;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.offerDesc {
+  display: block;
+  color: #374151;
+  font-size: 0.98rem;
+  margin-top: 2px;
+  font-family: 'Work Sans', sans-serif;
+}

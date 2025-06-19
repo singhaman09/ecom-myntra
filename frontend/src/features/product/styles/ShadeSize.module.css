@@ -1,0 +1,164 @@
+/* SelectShadeSizeModal.module.css */
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+  position: relative;
+  max-height: 90vh; /* ensures modal doesn't exceed viewport */
+  overflow-y: auto;  /* allows inner scrolling if needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+  
+  .closeButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .productInfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .productImage {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    margin-right: 16px;
+    object-fit: cover;
+  }
+  
+  .productName {
+    margin: 0;
+    font-size: 1.2em;
+    font-family: 'Work Sans', sans-serif;
+  }
+  
+  .productDesc {
+    color: #888;
+    margin: 4px 0 0 0;
+    font-family: 'Work Sans', sans-serif;
+  }
+  
+  .shadesLabel,
+  .sizesLabel {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  .shadesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  
+  .shadeCircle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #eee;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border 0.2s;
+    position: relative;
+  }
+  
+  .shadeSelected {
+    border: 3px solid #222;
+  }
+  
+  .shadeCheck {
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    text-shadow: 0 0 2px #000;
+  }
+  
+  .sizesList {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  
+  .sizeButton {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    transition: border 0.2s, background 0.2s;
+    font-family: 'Work Sans', sans-serif;
+  }
+  
+  .sizeSelected {
+    border: 2px solid #222;
+    background: #eee;
+  }
+  
+  .confirmButton {
+    padding: 12px 24px;
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 1;
+    margin-top: 24px;
+    width: 100%;
+    font-size: 1em;
+    transition: opacity 0.2s;
+    font-family: 'Work Sans', sans-serif;
+  }
+  
+  .confirmButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  .priceTag {
+    margin-top: 16px;
+    color: #888;
+    font-size: 18px;
+    text-align: center;
+    font-family: 'Work Sans', sans-serif;
+  }
+  .backContainer{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap:5px;
+  }
+  .backButton{
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+  }

@@ -22,6 +22,7 @@
   }
   
   .title {
+    font-family: 'Times New Roman', Times, serif;
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -53,6 +54,7 @@
   }
   
   .otpDigit {
+    font-family: 'Work Sans', sans-serif;
     width: 45px;
     height: 45px;
     text-align: center;
@@ -74,6 +76,7 @@
   }
   
   .verifyButton {
+    font-family: 'Work Sans', sans-serif;
     width: 100%;
     padding: 0.875rem;
     background-color: #ff3f6c;
@@ -99,6 +102,7 @@
   }
   
   .errorMessage {
+    font-family: 'Work Sans', sans-serif;
     color: #ff3f6c;
     font-size: 14px;
     text-align: center;
@@ -110,6 +114,7 @@
   }
   
   .successMessage {
+    font-family: 'Work Sans', sans-serif;
     color: #4caf50;
     font-size: 14px;
     text-align: center;
@@ -121,6 +126,7 @@
   }
   
   .backButton {
+    font-family: 'Work Sans', sans-serif;
     display: block;
     width: 100%;
     text-align: center;

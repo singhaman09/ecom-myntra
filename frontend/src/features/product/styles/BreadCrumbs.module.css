@@ -27,10 +27,11 @@
   color: #555;
   white-space: nowrap;
   min-width: 0;
+  font-family: 'work sans' sans-serif;
 }
 
 .breadcrumbLink {
-  color: #1976d2;
+  color: #3D857E;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
@@ -39,6 +40,7 @@
   max-width: 120px;
   display: inline-block;
   vertical-align: bottom;
+  font-family: 'work sans' sans-serif;
 }
 
 .breadcrumbLink:hover {

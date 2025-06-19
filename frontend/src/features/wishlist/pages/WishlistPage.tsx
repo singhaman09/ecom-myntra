@@ -5,6 +5,7 @@ import WishlistList from '../components/WishlistList';
 import Button from '../../../components/UI/Button';
 import styles from '../css/wishlistPage.module.css';
 import Layout from '../../../components/shared/Layout';
+import Sidebar from '../../order/components/Sidebar';
 
 const WishlistPage: React.FC = () => {
   const { items, loading } = useAppSelector((state) => state.wishlist);
@@ -34,7 +35,7 @@ const WishlistPage: React.FC = () => {
             Keep track of items you love and want to purchase later
           </p>
         </div>
-
+{/* 
         <div className={styles.button}>
           <Button onClick={handleContinueShopping} variant="secondary">
             Continue Shopping
@@ -45,14 +46,15 @@ const WishlistPage: React.FC = () => {
               Clear Wishlist
             </Button>
           )}
-        </div>
+        </div> */}
       </div>
 
       <div className={styles.pageContent}>
         
-        <aside className={styles.sidebar}>
-          <WishlistFilters />
-        </aside>
+        {/* <aside className={styles.sidebar}>
+          {/* <WishlistFilters /> 
+          <Sidebar isVisible={true} onClose={() => {}}/>
+        </aside>  */}
 
         <main className={styles.mainContent}>
           <WishlistList />

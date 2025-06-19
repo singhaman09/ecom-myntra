@@ -2,258 +2,150 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  /* padding: 20px; */
   max-width: 100%;
 }
 
+/* ===== Empty Cart Message ===== */
 .emptyCart {
   text-align: center;
   font-size: 18px;
   color: #999;
-  margin-top: 50px;
+  margin-top: 60px;
   font-weight: 500;
 }
+
+/* ===== Cart Item Container ===== */
+.cartItemWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border: 1px solid #f2f2f2;
+  border-radius: 3px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  overflow: visible; /* Ensure no clipping of child elements */
+  position: relative; /* Establish stacking context for removeBtn */
+}
+
+/* ===== Cart Item Details ===== */
 .cartItem {
   display: flex;
-  gap: 14px;
-  padding: 14px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background-color: #fff;
-  position: relative;
-  transition: box-shadow 0.3s ease;
-  height: auto;
-  max-width: 100%; /* 👈 don't restrict it like before */
+  gap: 18px;
+  padding: 8px;
+  background: #fff;
+  width: 80%; /* Allocate space for cart item content */
+  height: 100%;
 }
 
-
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.customModal {
-  background-color: #fff;
-  border-radius: 10px;
-  width: 360px;
-  padding: 20px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.closeModal {
+/* ===== Remove Button ===== */
+.removeBtn {
   position: absolute;
-  top: 10px;
-  right: 14px;
-  font-size: 20px;
-  background: none;
+  top: 0;
+  right: 0;
+  width: 20%; /* Occupy right 20% */
+  height: 100%; /* Span full height */
+  background: #fff; /* Match cartItemWrapper background */
   border: none;
+  font-size: 16px; /* Adjusted for text */
+  color: #fff; /* Text color white */
   cursor: pointer;
-  color: #888;
-}
-
-.modalTop {
+  padding: 8px; /* Padding for clickable area */
+  border-radius: 3px;
   display: flex;
-  gap: 16px;
-  margin-bottom: 12px;
+  flex-direction: column; /* Stack icon and text vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  gap: 6px; /* Space between icon and text */
+  min-width: 60px; /* Ensure sufficient width */
+  min-height: 40px; /* Ensure sufficient height */
+  z-index: 3; /* Above other elements */
+  opacity: 0; /* Invisible by default */
+  transition: opacity 0.5s ease-in-out, background-color 0.7s ease-in-out; /* Slower, smoother transition */
 }
 
-.modalImage {
-  width: 72px;
-  height: 96px;
-  object-fit: cover;
-  border-radius: 6px;
+/* Hover effect on cartItemWrapper */
+.cartItemWrapper:hover .removeBtn {
+  opacity: 1; /* Visible on hover */
+  background: #ff3f6c; /* Pink background on hover */
 }
 
-.modalInfo {
-  flex: 1;
+/* Direct hover on removeBtn */
+.removeBtn:hover {
+  background-color: #e6395f; /* Slightly darker on direct hover */
 }
 
-.modalBrand {
-  font-size: 16px;
+/* Style for icon inside removeBtn */
+.removeBtn img {
+  width: 18px; /* Size icon appropriately */
+  height: 18px;
+  filter: brightness(0) invert(1); /* Ensure icon is white */
+}
+
+/* Ensure text is white */
+.removeBtn span {
+  color: #fff; /* Explicitly set text color to white */
   font-weight: 600;
-  margin: 0;
 }
 
-.modalName {
-  font-size: 13px;
-  color: #444;
-  margin: 4px 0;
-}
-
-.priceBlock {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-  margin: 4px 0;
-}
-
-.modalCurrentPrice {
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.modalOriginalPrice {
-  font-size: 13px;
-  text-decoration: line-through;
-  color: #888;
-}
-
-.modalDiscount {
-  font-size: 13px;
-  color: #ff3f6c;
-}
-
-.seller {
-  font-size: 11px;
-  color: #555;
-}
-
-.modalBottom {
-  margin-top: 12px;
-}
-
-.sizeLabel {
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-
-.sizeOptions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.sizeCircle {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  font-size: 14px;
-  background-color: #fff;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.sizeCircle:hover {
-  border-color: #ff3f6c;
-}
-
-.activeSize {
-  background-color: #ff3f6c;
-  color: #fff;
-  border-color: #ff3f6c;
-}
-
-.doneBtn {
-  margin-top: 16px;
-  width: 100%;
-  background-color: #ff3f6c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.doneBtn:hover {
-  background-color: #e6355d;
-}
-
+/* Rest of your CSS remains unchanged */
 .imageWrapper {
   position: relative;
-  width: 110px;
-  height: 140px;
+  width: 120px;
+  height: 150px;
   flex-shrink: 0;
 }
 
 .itemCheckbox {
   position: absolute;
-  top: 6px;
-  left: 6px;
-  z-index: 2;
+  top: 8px;
+  left: 8px;
   transform: scale(1.3);
-  cursor: pointer;
   accent-color: #ff3f6c;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .itemImage {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 3px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: 120%;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.heartBtn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #374151;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.3s ease;
+  margin-right: 8px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transform: scale(1);
+}
+
+.heartBtn:hover {
+  transform: scale(1.2);
+  color: #ff6b81;
+}
+
+.filled {
+  color: #ff3f6c;
 }
 
 .itemDetails {
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-.itemSize {
-  text-decoration: none !important;
-  background-color: #f5f5f6;
-  margin-top: 10px;
-  font-weight: 600;
-}
-
-.itemQuantity {
-  background-color: #f5f5f6;
-}
-
-.itemQty {
-  background-color: #f5f5f6;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  text-decoration: none !important;
-  margin-top: 10px;
-}
-
-.deliveryInfo {
-  font-size: 14px;
-  color: #0d0d0d; /* calm green for delivery info */
-  margin-top: 8px;
-  /* font-weight: 500; */
-}
-
-.deliveryInfo strong {
-  font-weight: 700;
-  color: #090909; /* slightly darker green for emphasis */
-}
-
-
-.quantitySelect {
-  padding: 6px 8px;
-  font-size: 13px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  background-color: #fff;
-  cursor: pointer;
-  appearance: none;
-  transition: border-color 0.2s;
-}
-
-.quantitySelect:hover {
-  border-color: #ff3f6c;
+  justify-content: space-between;
 }
 
 .itemName {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  margin-top: 0;
   margin-bottom: 6px;
   color: #222;
 }
@@ -261,34 +153,68 @@
 .itemDesc {
   font-size: 12px;
   color: #666;
-  margin-bottom: 0px;
-  margin-top: 0;
+  margin-bottom: 4px;
 }
 
 .optionsRow {
   display: flex;
-  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
   font-size: 14px;
   color: #444;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
+  margin: 7px 0;
 }
 
-.quantitySelect {
-  margin-left: 6px;
-  padding: 4px 10px;
-  border-radius: 6px;
+.itemSize {
+  padding: 6px 8px;
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none !important;
   border: 1px solid #ccc;
+}
+
+.qtyControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qtyControls button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background-color: #3b9281;
+  color: #fff;
   font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.qtyControls button:hover {
+  background-color: #31766b;
+}
+
+.qtyControls span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2e7d32;
+  min-width: 24px;
+  text-align: center;
 }
 
 .priceRow {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 6px;
   font-size: 15px;
   font-weight: 500;
-  margin-top: 8px;
 }
 
 .currentPrice {
@@ -303,33 +229,384 @@
 
 .discount {
   color: #d32f2f;
-  /* font-weight: 300; */
   font-size: 13px;
 }
 
-.removeBtn {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  color: #bbb;
-  cursor: pointer;
-  z-index: 3;
-  transition: color 0.2s ease;
+.deliveryInfo {
+  font-size: 13px;
+  color: #0d0d0d;
+  margin-top: 8px;
 }
 
+.deliveryInfo strong {
+  font-weight: 700;
+  color: #000;
+}
+.cartList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 100%;
+}
+
+/* ===== Empty Cart Message ===== */
+.emptyCart {
+  text-align: center;
+  font-size: 18px;
+  color: #999;
+  margin-top: 60px;
+  font-weight: 500;
+}
+
+/* ===== Cart Item Container ===== */
+.cartItemWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border: 1px solid #f2f2f2;
+  border-radius: 3px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  overflow: visible; /* Ensure no clipping of child elements */
+  position: relative; /* Establish stacking context for removeBtn */
+}
+
+/* ===== Cart Item Details ===== */
+.cartItem {
+  display: flex;
+  gap: 18px;
+  padding: 8px;
+  background: #fff;
+  width: 80%; /* Allocate space for cart item content */
+  height: 100%;
+}
+
+/* ===== Remove Button ===== */
+.removeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%; /* Occupy right 20% */
+  height: 100%; /* Span full height */
+  background: #fff; /* Match cartItemWrapper background */
+  border: none;
+  font-size: 16px; /* Adjusted for text */
+  color: #fff; /* Text color white */
+  cursor: pointer;
+  padding: 8px; /* Padding for clickable area */
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column; /* Stack icon and text vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  gap: 6px; /* Space between icon and text */
+  min-width: 60px; /* Ensure sufficient width */
+  min-height: 40px; /* Ensure sufficient height */
+  z-index: 3; /* Above other elements */
+  opacity: 0; /* Invisible by default */
+  transition: opacity 0.5s ease-in-out, background-color 0.7s ease-in-out; /* Slower, smoother transition */
+}
+
+/* Hover effect on cartItemWrapper */
+.cartItemWrapper:hover .removeBtn {
+  opacity: 1; /* Visible on hover */
+  background: #ff3f6c; /* Pink background on hover */
+}
+
+/* Direct hover on removeBtn */
 .removeBtn:hover {
+  background-color: #e6395f; /* Slightly darker on direct hover */
+}
+
+/* Style for icon inside removeBtn */
+.removeBtn img {
+  width: 18px; /* Size icon appropriately */
+  height: 18px;
+  filter: brightness(0) invert(1); /* Ensure icon is white */
+}
+
+/* Ensure text is white */
+.removeBtn span {
+  color: #fff; /* Explicitly set text color to white */
+  font-weight: 600;
+}
+
+/* Rest of your CSS remains unchanged */
+.imageWrapper {
+  position: relative;
+  width: 120px;
+  height: 150px;
+  flex-shrink: 0;
+}
+
+.itemCheckbox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transform: scale(1.3);
+  accent-color: #ff3f6c;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.itemImage {
+  width: 100%;
+  height: 120%;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.heartBtn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #374151;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.3s ease;
+  margin-right: 8px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transform: scale(1);
+}
+
+.heartBtn:hover {
+  transform: scale(1.2);
+  color: #ff6b81;
+}
+
+.filled {
   color: #ff3f6c;
 }
 
-/* Responsive styles */
+.itemDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.itemName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #222;
+}
+
+.itemDesc {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.optionsRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 14px;
+  color: #444;
+  margin: 7px 0;
+}
+
+.itemSize {
+  padding: 6px 8px;
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none !important;
+  border: 1px solid #ccc;
+}
+
+.qtyControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qtyControls button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background-color: #3b9281;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.qtyControls button:hover {
+  background-color: #31766b;
+}
+
+.qtyControls span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2e7d32;
+  min-width: 24px;
+  text-align: center;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.currentPrice {
+  color: #222;
+}
+
+.originalPrice {
+  color: #aaa;
+  text-decoration: line-through;
+  font-size: 13px;
+}
+
+.discount {
+  color: #d32f2f;
+  font-size: 13px;
+}
+
+.deliveryInfo {
+  font-size: 13px;
+  color: #0d0d0d;
+  margin-top: 8px;
+}
+
+.deliveryInfo strong {
+  font-weight: 700;
+  color: #000;
+}
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.removeModal {
+  background: #fff;
+  border-radius: 6px;
+  padding: 16px;
+  width: min(90%, 320px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.modalMessage {
+  font-size: 0.875rem;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirmBtn {
+  background: #ff3333;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.confirmBtn:hover {
+  background: #cc2929;
+}
+
+.cancelBtn {
+  background: #e5e5e5;
+  color: #222;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cancelBtn:hover {
+  background: #d1d1d1;
+}
+
+@media (max-width: 400px) {
+  .removeModal {
+    padding: 12px;
+    width: min(90%, 280px);
+  }
+
+  .modalTitle {
+    font-size: 1.125rem;
+  }
+
+  .modalMessage {
+    font-size: 0.8rem;
+  }
+
+  .confirmBtn,
+  .cancelBtn {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+  }
+}
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== Responsive Styles ===== */
 @media (max-width: 768px) {
+  .cartItemWrapper {
+    flex-direction: column;
+  }
+
   .cartItem {
+    width: 100%;
     flex-direction: column;
     align-items: center;
-    padding: 16px;
+  }
+
+  .removeBtn {
+    width: 100%; /* Full width on mobile */
+    height: auto; /* Allow natural height */
+    padding: 8px 12px;
+    min-width: 60px;
+    min-height: 40px;
+    opacity: 1; /* Always visible on mobile */
+    background: #ff3f6c; /* Always pink on mobile */
+    position: static; /* Remove absolute positioning */
   }
 
   .imageWrapper {
@@ -343,101 +620,48 @@
     text-align: center;
   }
 
-  .optionsRow {
-    justify-content: center;
-  }
-
+  .optionsRow,
   .priceRow {
     justify-content: center;
   }
+}
+
+/* ===== Responsive Styles ===== */
+@media (max-width: 768px) {
+  .cartItemWrapper {
+    flex-direction: column;
+  }
+
+  .cartItem {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
 
   .removeBtn {
-    top: 6px;
-    right: 6px;
+    width: 100%; /* Full width on mobile */
+    height: auto; /* Allow natural height */
+    padding: 8px 12px;
+    min-width: 60px;
+    min-height: 40px;
+    opacity: 1; /* Always visible on mobile */
+    background: #ff3f6c; /* Always pink on mobile */
+    position: static; /* Remove absolute positioning */
   }
-}
 
-
-/* ===== Modal Overlay ===== */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-/* ===== Modal Box Styling ===== */
-.modalContent,
-.removeModal {
-  background-color: #ffffff;
-  padding: 24px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 360px;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  animation: fadeInScale 0.3s ease-in-out;
-}
-
-/* ===== Modal Buttons Layout ===== */
-.modalActions {
-  margin-top: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* ===== Action Buttons ===== */
-.modalRemove,
-.modalWishlist,
-.cancelBtn,
-.confirmBtn {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 14px;
-  white-space: nowrap;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.modalRemove,
-.confirmBtn {
-  background-color: #ff4d4f;
-  color: white;
-}
-
-.modalWishlist,
-.cancelBtn {
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-/* ===== Divider (Optional) ===== */
-.modalDivider {
-  width: 1px;
-  height: 22px;
-  background-color: #ccc;
-  opacity: 0.7;
-}
-
-/* ===== Animations ===== */
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+  .imageWrapper {
+    width: 100px;
+    height: 130px;
+    margin-bottom: 12px;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+
+  .itemDetails {
+    width: 100%;
+    text-align: center;
+  }
+
+  .optionsRow,
+  .priceRow {
+    justify-content: center;
   }
 }

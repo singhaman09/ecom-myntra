@@ -97,14 +97,13 @@ const ordersSlice = createSlice({
       let filtered = [...state.orders];
 
       if (state.filters.status) {
-        filtered = filtered.filter(order => order.status === state.filters.status);
+        filtered = filtered.filter(order => order.status.toLowerCase() === state.filters.status!.toLowerCase());
       }
 
       if (state.filters.searchQuery) {
         const query = state.filters.searchQuery.toLowerCase();
         filtered = filtered.filter(order =>
           order.id.toLowerCase().includes(query) ||
-          order.customerName.toLowerCase().includes(query) ||
           order.items.some(item => item.name.toLowerCase().includes(query))
         );
       }
@@ -158,7 +157,7 @@ const ordersSlice = createSlice({
       .addCase(cancelOrder.fulfilled, (state, action) => {
         const index = state.orders.findIndex(order => order.id === action.payload);
         if (index !== -1) {
-          state.orders[index].status = 'cancelled';
+          state.orders[index].status = 'Cancelled';
           ordersSlice.caseReducers.applyFilters(state);
         }
       })

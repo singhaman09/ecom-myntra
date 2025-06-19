@@ -4,7 +4,9 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { getProducts } from '../productAPI';
 import { useProductDispatch, useProductSelector } from '../hooks/storeHooks';
 import Loader from '../utils/Loader';
-
+import type { filters } from '../interfaces/ProductInterfaces';
+import TrendingCard from '../components/TrendingCard';
+import InfiniteScroll from 'react-infinite-scroll-component';
 // Lazy load components
 const Breadcrumbs = React.lazy(() => import('../utils/BreadCrumbs'));
 const SideBarMain = React.lazy(() => import('../components/SideBarMain'));
@@ -20,78 +22,127 @@ const ProductPage: React.FC = () => {
   const { slug } = useParams();
   const dispatch = useProductDispatch();
   const data = useProductSelector(state => state.product);
-
+  const [page,setPage]=useState(1)
+  const [filters, setFilters] = useState<filters>({
+    category: [],
+    subCategory: [],
+    brand: [],
+    color: [],
+    gender: undefined,
+    price:[]
+  });
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [slug]);
+  
   // Memoized filter values for performance and stability
-  const selectedCategories = useMemo(() => searchParams.getAll("category"), [searchParams]);
-  const selectedSubCategories = useMemo(() => searchParams.getAll("subCategory"), [searchParams]);
-  const selectedBrands = useMemo(() => searchParams.getAll("brand"), [searchParams]);
-  const selectedColors = useMemo(() => searchParams.getAll("color"), [searchParams]);
-  const selectedGender = searchParams.get("gender") || '';
-  const selectedPrice = useMemo(() => searchParams.get('price')?.split(',').map(Number) || [],
-    [searchParams]
-  );
+useEffect(()=>{
+ setFilters((prev)=>{
+  return {
+    category:searchParams.getAll('category'),
+    subCategory:searchParams.getAll('subCategory'),
+    color:searchParams.getAll('color'),
+    brand:searchParams.getAll('brand'),
+    price:searchParams.get('price')?.split(',').map(Number) || [],
+    gender:searchParams.get('gender') || undefined
+  }
+ })
+
+},[searchParams])
 
   // Fetch products when filters or slug change
   useEffect(() => {
-    dispatch(getProducts({ searchParams, slug }));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [dispatch, searchParams, slug]);
+    dispatch(getProducts({ filters, slug ,searchParams,page}));
+   
+  }, [dispatch, searchParams, slug,page]);
 
   // Helper to update filters
-  const handleFilterChange = (key: string, value: string, checked: boolean) => {
-    const currentValues = searchParams.getAll(key);
-    let newValues: string[];
-    if (checked) {
-      newValues = [...currentValues, value];
-    } else {
-      newValues = currentValues.filter(v => v !== value);
-    }
-    searchParams.delete(key);
-    searchParams.delete('page');
-    newValues.forEach(val => searchParams.append(key, val));
-    setSearchParams(searchParams, { replace: true });
+  const handleFilterChange = (key: keyof typeof filters, value: string, checked: boolean) => {
+    setFilters(prevFilters => {
+      const currentValues = prevFilters[key] as string[] || [];
+      let newValues: string[];
+      if (checked) {
+        newValues = [...currentValues, value];
+      } else {
+        newValues = currentValues.filter(v => v !== value);
+      }
+      return {
+        ...prevFilters,
+        [key]: newValues,
+      };
+    });
   };
-
+  
   // Specific handlers for each filter
   const handleCategoryChange = useCallback((category: string, checked: boolean) =>
-    handleFilterChange('category', category, checked), [searchParams, setSearchParams]);
-
+    handleFilterChange('category', category, checked), []);
+  
   const handleSubCategoryChange = useCallback((subCategory: string, checked: boolean) =>
-    handleFilterChange('subCategory', subCategory, checked), [searchParams, setSearchParams]);
-
+    handleFilterChange('subCategory', subCategory, checked), []);
+  
   const handleBrandChange = useCallback((brand: string, checked: boolean) =>
-    handleFilterChange('brand', brand, checked), [searchParams, setSearchParams]);
-
+    handleFilterChange('brand', brand, checked), []);
+  
   const handleColorChange = useCallback((color: string, checked: boolean) =>
-    handleFilterChange('color', color, checked), [searchParams, setSearchParams]);
-
+    handleFilterChange('color', color, checked), []);
+  
   const handleGenderChange = useCallback((gender: string) => {
-    searchParams.delete('page');
-    searchParams.delete('gender');
-    searchParams.append('gender', gender);
-    setSearchParams(searchParams, { replace: true });
-  }, [searchParams, setSearchParams]);
-
-  const handleReset = useCallback((value: string, key: string) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      gender,
+    }));
+  }, []);
+  const handleReset = useCallback(() => {
     const newParams = new URLSearchParams(searchParams.toString());
-    if (value === 'all') {
       ['category', 'brand', 'color', 'gender', 'price', 'subCategory'].forEach(param =>
         newParams.delete(param)
+        
       );
-    } else {
-      newParams.delete('page');
-      newParams.delete(key, value);
-    }
-    setSearchParams(newParams, { replace: true });
+  setSearchParams(newParams, { replace: true });
+  setFilters({
+    category: [],
+    subCategory: [],
+    brand: [],
+    color: [],
+    gender: undefined,
+    price: []
+  });
   }, [searchParams, setSearchParams]);
 
-  const handleChange = useCallback(( event: React.SyntheticEvent | Event,newValue: number | number[]) => {
-    const valueArray = Array.isArray(newValue) ? newValue : [newValue];
-    searchParams.delete('page');
-    searchParams.delete('price');
-    searchParams.append('price', valueArray.toString());
-    setSearchParams(searchParams, { replace: true });
-  }, [searchParams, setSearchParams]);
+  const handlePriceChange = useCallback(
+   
+    (event: React.SyntheticEvent | Event, newValue: number | number[]) => {
+      const valueArray = Array.isArray(newValue) ? newValue : [newValue];
+      
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        price: valueArray,
+      }));
+    },
+    []
+  );
+  
+const apply=()=>{
+  if(filters.category.length>0) searchParams.set('category',filters.category.toString())
+  else searchParams.delete('category')
+  if(filters.brand.length>0 )   searchParams.set('brand',filters.brand.toString())
+    else searchParams.delete('brand')
+ if(filters.subCategory.length>0) searchParams.set('subCategory',filters.subCategory.toString())
+  else searchParams.delete('subCategory')
+  if(filters.color.length>0 )  searchParams.set('color',filters.color.toString())
+    else searchParams.delete('color')
+  if(filters.gender ){
+    searchParams.set('gender',filters.gender)
+  }
+  else searchParams.delete('gender')
+  if(filters.price.length>0 ) searchParams.set('price',filters.price.toString())
+  else searchParams.delete('price')
+  setSearchParams(searchParams,{replace:true})
+  setIsDrawerOpen(false)
+}
+const fetchMoreData = () => {
+  setPage(prev => prev + 1);
+};
 
   // Render
   return (
@@ -99,21 +150,15 @@ const ProductPage: React.FC = () => {
       <div className={styles.container}>
         <Breadcrumbs />
         
-        {data.loading ? (
-          <Loader />
+        {data.loading && page==1? (
+          <Loader isInitial={true}/>
         ) 
         : data.error ?
          (
           <ErrorPage />
-          ) : data.products.length > 0 ? (
+          ) :   (
           <>
-            <p style={{ marginLeft: '20px' }}>
-              Showing {data.skip + 1} -{' '}
-              {data.limit + data.skip > data.totalProducts
-                ? data.totalProducts
-                : data.limit + data.skip}{' '}
-              entries of {data.totalProducts}
-            </p>
+          <TrendingCard/>
             <div className={styles.sideBarContainer}>
              
                 <SideBarMain
@@ -125,42 +170,40 @@ const ProductPage: React.FC = () => {
                   handleColorChange={handleColorChange}
                   handleReset={handleReset}
                   handleGenderChange={handleGenderChange}
-                  selectedBrands={selectedBrands}
-                  selectedCategories={selectedCategories}
-                  selectedGender={selectedGender}
-                  selectedColors={selectedColors}
-                  handleChange={handleChange}
-                  selectedPrice={selectedPrice}
-                  selectedSubCategories={selectedSubCategories}
+                  filters={filters}
+                  handleChange={handlePriceChange}
+                  apply={apply}
                 />
               
               <div className={styles.sortContainer}>
                
                   <UpperFilterBar
                     setIsDrawerOpen={setIsDrawerOpen}
-                    handleReset={handleReset}
-                    selectedBrands={selectedBrands}
-                    selectedColors={selectedColors}
-                    selectedCategories={selectedCategories}
-                    selectedGender={selectedGender}
-                    selectedSubCategories={selectedSubCategories}
-                  />
-                  <ProductList
-                    isSimilar={false}
-                    selectedBrands={selectedBrands}
-                    selectedColors={selectedColors}
-                    selectedCategories={selectedCategories}
-                    selectedGender={selectedGender}
-                    selectedSubCategories={selectedSubCategories}
-                  />
-                  <Pagination pageCount={Math.ceil(data.totalProducts / data.limit)} />
+                    />
+                    <InfiniteScroll
+                    dataLength={data.products.length}
+                    next={fetchMoreData}
+                    hasMore={data.totalProducts>data.products.length}
+                    loader={data.loading && page > 1 && <Loader isInitial={false}/>}
+                    endMessage={
+                      <p style={{ textAlign: 'center', margin: '2rem 0' }}>
+                        <b>No more products to show.</b>
+                      </p>
+                    }
+                    >
+                    {data.products.length ?  
+                     <ProductList
+                    data={data.products}
+                  isSimilar={false}
+                  />:<ProductNotFoundPage isSimilar={false} /> }
+                    </InfiniteScroll>
+                
+                 
                
               </div>
             </div>
           </>
-        ) : (          
-          <ProductNotFoundPage isSimilar={false} />       
-        )}
+        ) }
         {isDrawerOpen && (
           <div
             className={styles.overlay}

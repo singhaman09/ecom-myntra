@@ -16,6 +16,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
+  font-family: 'Work Sans';
 }
 
 .headerContent {
@@ -24,15 +25,19 @@
 
 .headerContent h1 {
   font-size: 28px;
+  text-align: center;
   font-weight: 700;
   color: #282c3f;
-  margin: 0 0 8px 0;
+  font-family: 'Work Sans';
+  margin: 9px 0 8px 0;
 }
 
 .pageDescription {
   font-size: 16px;
+  text-align: center;
   color: #535766;
   margin: 0 0 8px 0;
+  font-family: 'Work Sans';
   line-height: 1.4;
 }
 
@@ -52,6 +57,7 @@
   display: flex;
   gap: 0;
   min-height: calc(100vh - 120px);
+  
 }
 
 .sidebar {
@@ -60,14 +66,14 @@
   border-right: 1px solid #e9e9ed;
   position: sticky;
   top: 0;
-  height: fit-content;
+  /* height: fit-content; */
   flex-shrink: 0;
 }
 
 .mainContent {
   flex: 1;
   padding: 20px 24px;
-  background: #f5f5f6;
+  background: #fff;
 }
 
 .loadingState {
@@ -115,6 +121,10 @@
   margin: 0 0 24px 0;
   line-height: 1.4;
 }
+.button{
+  display: flex;
+  gap: 8px;
+}
 
 /* Breadcrumb styles (keeping existing functionality) */
 .breadcrumb {
@@ -134,7 +144,7 @@
 }
 
 .breadcrumbLink:hover {
-  color: #ff3e6c;
+  color:  #00a65a;
 }
 
 .breadcrumbSeparator {

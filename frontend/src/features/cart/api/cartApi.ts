@@ -13,7 +13,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGIyNGFmMjU2ODVmODVkMWQ0ZjJmNCIsImVtYWlsIjoic2hyaXZhc3RhdmthcnRpa2V5QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI1OTE2YzFlYS03ODA1LTQwNjgtYTllOC01MjMzZjdhOWUzNzciLCJpYXQiOjE3NDk4MDIxMTcsImV4cCI6MTc0OTg4ODUxN30.foyAr8PYL2uJCSeZELBn10jjzEmSVk-u-RBw6DHRb38";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGIyNGFmMjU2ODVmODVkMWQ0ZjJmNCIsImVtYWlsIjoic2hyaXZhc3RhdmthcnRpa2V5QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI2MjNlOWI3MC05MmE1LTRiMDAtODhjMC1hZDU1YTU1OWMxZGQiLCJpYXQiOjE3NTAyMjk1ODIsImV4cCI6MTc1MDMxNTk4Mn0.6YRi4xXVRvSydLlkLCwmV57wYLv80wEn2gfIqoeTqrw";
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -27,9 +27,9 @@ apiClient.interceptors.request.use((config) => {
 export const getCartAPI = async () => {
   try {
     const response = await apiClient.get<Cart>("/cart");
+    console.log(response.data);
     return response.data.items;
   } catch (error) {
-    console.log("Error fetching cart : " + error);
     throw error;
   }
 };
@@ -38,10 +38,9 @@ export const getCartAPI = async () => {
 
 export const addCartItemsAPI = async (productId: string) => {
   try {
-    const response = await apiClient.post<Cart>("/cart/items", { productId });
+    const response = await apiClient.post<Cart>(`/cart/${productId}`);
     return response.data.items;
   } catch (error) {
-    console.log("Error adding item to cart: " + error);
     throw error;
   }
 };
@@ -50,24 +49,37 @@ export const addCartItemsAPI = async (productId: string) => {
 
 export const removeCartItemAPI = async (productId: string) => {
   try {
-    const response = await apiClient.delete<Cart>("/cart/items/" + productId);
+    const response = await apiClient.delete<Cart>(`/cart/${productId}`);
     return response.data.items;
   } catch (error) {
-    console.log("Error removing item from cart: " + error);
     throw error;
   }
 };
 
 // 4.)  Remove Selected Items from Cart by taking ids in array (string)
 
-export const removeSelectedCartItemsAPI = async (ids: string[]) => {
+// export const removeSelectedCartItemsAPI = async (productIds: string[]) => {
+//   try {
+//     const response = await apiClient.post<Cart>("/cart/", {
+//       ids: productIds,
+//     });
+//     return response.data.items;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+// Update size of selected item by (id and newsize)
+
+export const updateCartItemSizeAPI = async (
+  productId: string,
+  newSize: string
+) => {
   try {
-    const response = await apiClient.post<Cart>("/cart/items/delete-many", {
-      ids,
-    });
-    return response.data.items;
+    const res = await apiClient.put<Cart>(`/cart/${productId}/${newSize}`);
+    console.log(res.data);
+    return res.data;
   } catch (error) {
-    console.log("Error removing selected items from cart: " + error);
     throw error;
   }
 };
@@ -75,16 +87,13 @@ export const removeSelectedCartItemsAPI = async (ids: string[]) => {
 // 5.) Update Cart items Quantity by (product id, and number)
 
 export const updateCartItemQuantityAPI = async (
-  productId: string,
-  quantity: number
+  productId: string
+  // quantity: number
 ) => {
   try {
-    const response = await apiClient.put<Cart>(`/cart/items/${productId}`, {
-      quantity,
-    });
+    const response = await apiClient.put<Cart>(`/cart/${productId}`);
     return response.data.items;
   } catch (error) {
-    console.log("Error updating cart item quantity: " + error);
     throw error;
   }
 };
@@ -94,11 +103,10 @@ export const updateCartItemQuantityAPI = async (
 export const moveItemToWishlistAPI = async (productId: string) => {
   try {
     const response = await apiClient.put<Cart>(
-      `/cart/items/${productId}/move-to-wishlist`
+      `/cart/${productId}/move-to-wishlist`
     );
     return response.data.items;
   } catch (error) {
-    console.log("Error moving item to wishlist: " + error);
     throw error;
   }
 };

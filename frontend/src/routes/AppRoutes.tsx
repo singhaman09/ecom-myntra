@@ -26,6 +26,9 @@ import TermsOfUse from "../features/profile/pages/Legal/TermsOfUse";
 import PrivacyPolicy from "../features/profile/pages/Legal/PrivacyPolicy";
 import Profile from "../features/profile/pages/Profile/Profile";
 import Notifications from "../features/profile/pages/Notifications/Notifications";
+import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
+import HelpSupport from "../features/help&support/pages/HelpSupport";
+import { PRODUCT_ROUTES } from "../features/product/Constants/Routes";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -38,55 +41,22 @@ const AppRoutes: React.FC = () => {
           element: <Home />,
         },
         {
-          path: "products",
+          path: PRODUCT_ROUTES.list,
           element: <ProductPage />,
         },
         {
-          path: "products/:slug",
+          path: "helpsupport",
+          element: <HelpSupport />,
+        },
+        {
+          path:PRODUCT_ROUTES.Specific_list,
           element: <ProductPage />,
         },
         {
-          path: "productDetails/:id",
+          path: PRODUCT_ROUTES.details,
           element: <ProductDetails />,
         },
-        {
-          path: ":slug",
-          element: <ProductPage />,
-        },
-        {
-          element: <AuthRoute />,
-          children: [
-            {
-              path: "login",
-              element: <Login />,
-            },
-            {
-              path: "signup",
-              element: <Register />,
-            },
-            {
-              path: "verify-email",
-              element: <VerifyEmail />,
-            },
-            {
-              path: "forgot-password",
-              children: [
-                {
-                  path: "",
-                  element: <ForgotPassword />,
-                },
-                {
-                  path: "verify-otp",
-                  element: <VerifyOtpForgotPass />,
-                },
-                {
-                  path: "reset-password",
-                  element: <ResetPassword />,
-                },
-              ],
-            },
-          ],
-        },
+      
         {
           element: <ProtectedRoute />,
           children: [
@@ -125,7 +95,9 @@ const AppRoutes: React.FC = () => {
                 {
                   path: "privacy",
                   element: <PrivacyPolicy/>,
-                },
+                }
+                
+
               ]
             },
              
@@ -149,12 +121,51 @@ const AppRoutes: React.FC = () => {
               ),
             },
             
+            
           ],
           
         },
         {
           path: "*",
           element: <div>404 - Page Not Found</div>,
+        },
+      ],
+    },
+    {
+      element: <AuthRoute />,
+      children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "signup",
+          element: <Register />,
+        },
+        {
+          path: "reg-success",
+          element: <CongratulationsPage />
+        },
+        {
+          path: "verify-email",
+          element: <VerifyEmail />,
+        },
+        {
+          path: "forgot-password",
+          children: [
+            {
+              path: "",
+              element: <ForgotPassword />,
+            },
+            {
+              path: "verify-otp",
+              element: <VerifyOtpForgotPass />,
+            },
+            {
+              path: "reset-password",
+              element: <ResetPassword />,
+            },
+          ],
         },
       ],
     },

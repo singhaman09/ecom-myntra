@@ -59,7 +59,7 @@
 }
 
 .checkButton {
-  background: #FF3F6C;
+  background: #044236;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -102,7 +102,7 @@
 .addressItem {
   display: flex;
   align-items: flex-start;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   border-radius: 4px;
   padding: 10px;
   margin-bottom: 10px;
@@ -148,7 +148,7 @@
 .deleteButton {
   background: none;
   border: none;
-  color: #FF3F6C;
+  color: #044236;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -165,7 +165,7 @@
   align-items: center;
   background: none;
   border: none;
-  color: #FF3F6C;
+  color:  black;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -200,7 +200,7 @@
 
 .deliverButton {
   width: 100%;
-  background: #FF3F6C;
+  background: #044236;
   color: #fff;
   border: none;
   padding: 10px;
@@ -234,7 +234,8 @@
 }
 
 .saveButton {
-  background: #FF3F6C;
+  background: #044236;
+  color: #fff;
   border: none;
   color: #fff;
 }

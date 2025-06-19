@@ -1,0 +1,128 @@
+.recommendedContainer {
+  max-width: 1060px;
+  margin-top: 30px;
+  padding: 9px 16px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.recommendedHeading {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 2%;
+  margin-bottom: 1.5rem;
+  color: #222;
+  text-align: center;
+}
+
+.recommendedGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  justify-items: center;
+}
+
+.productCard {
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.productCard img {
+  width: 100%;
+  height: 280px;
+  object-fit: contain;
+  border-bottom: 1px solid #eee;
+}
+
+.productInfo {
+  text-align: center;
+  padding: 0.5rem; /* Add padding to control spacing */
+}
+
+.productInfo h3 {
+  font-size: 1rem;
+  color: #333;
+  margin: 0 0 0.2rem; /* Tighten margin, override default */
+}
+
+.brand {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 0.2rem; /* Reduce margin */
+}
+
+.price {
+  font-weight: bold;
+  font-size: 1rem;
+  margin: 0 0 0.2rem; /* Reduce margin */
+}
+
+.original {
+  font-size: 0.8rem;
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 5px;
+}
+
+.discount {
+  font-size: 0.8rem;
+  color: #2b8a3e;
+  margin: 0 0 0.2rem; /* Reduce margin */
+}
+
+.addButton {
+  background-color: #044236;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+  margin: 0; /* Remove any margin */
+  display: block; /* Ensure it takes full width */
+  width: 100%; /* Make button full-width for consistency */
+}
+
+.addButton:hover {
+  background: linear-gradient(
+    135deg,
+    #06654e 0%,
+    #088c6a 100%
+  ); /* Gradient for premium feel */
+  transform: translateY(-2px); /* Lift effect */
+  box-shadow: 0 4px 12px rgba(6, 101, 78, 0.3); /* Green-tinted shadow */
+  border-color: #088c6a; /* Match gradient */
+}
+
+@media (max-width: 992px) {
+  .recommendedGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .recommendedGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .recommendedGrid {
+    grid-template-columns: 1fr;
+  }
+}

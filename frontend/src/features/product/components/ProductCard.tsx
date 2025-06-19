@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import styles from '../styles/ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -6,11 +6,18 @@ import type { ProductCardProps } from '../interfaces/ProductInterfaces';
 import { useNavigate } from 'react-router-dom';
 import { renderStars } from '../utils/RenderStars';
 import { averageRating } from '../utils/Reviews';
+import { useProductSelector } from '../hooks/storeHooks';
+import SelectShadeSizeModal from './SelectSizeModal';
+import defaultProductImage from '../../../assets/cart.png'
+import { toast } from 'react-toastify';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
+  const data=useProductSelector(state=>state.wishlist.items)
   const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
+  const [modalOpen, setModalOpen] = useState(false);
   return (
+    <>
     <div className={styles.card} onClick={()=>navigate(`/productDetails/${product._id}`)}>
       {/* Image Container */}
       <div className={styles.imageContainer}>
@@ -18,11 +25,16 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           src={product.imageUrl} 
           alt={product.name}
           className={styles.productImage}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = defaultProductImage;
+           
+            (e.currentTarget as HTMLImageElement).onerror = null;
+          }}
         />
         
         {/* Wishlist Button */}
         <button className={styles.wishlistBtn}   onClick={(event) => {event.stopPropagation()}}>
-          {1
+          {data.find(val=>val.productId==product._id)
             ? <FavoriteIcon style={{ color: '#ef4444' }} />
             : <FavoriteBorderIcon style={{ color: '#6b7280' }} />
           }
@@ -53,18 +65,18 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
           <div className={styles.stars}>
             {renderStars(avgRating)}
           </div>
-          <span className={styles.ratingCount}>({avgRating>0 ?avgRating.toFixed(1) :0})</span>
+          <span className={styles.ratingCount}>({product.reviews.length})</span>
         </div>
         
         {/* Pricing */}
         <div className={styles.pricing}>
           <span className={styles.discountedPrice}>
-            ₹{product.price}
+            ₹{Math.round(product.price)}
           </span>
           {product.price > ((product.price * discountPercentage)/100) && (
             <>
               <span className={styles.originalPrice}>
-                ₹{product.price+((product.price * discountPercentage)/100)}
+                ₹{Math.round(product.price+((product.price * discountPercentage)/100))}
               </span>
               <span className={styles.discountPercent}>
                 ({discountPercentage}% OFF)
@@ -72,8 +84,20 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
             </>
           )}
         </div>
+        <button className={styles.addToBag} onClick={(event)=>{event.stopPropagation(),setModalOpen(true)}}>Select Shade</button>
+         
       </div>
+    
     </div>
+      { modalOpen &&  <SelectShadeSizeModal
+                  
+        onClose={() => setModalOpen(false)}
+        onConfirm={(selection) => {
+          toast.success("Added successfully")
+          setModalOpen(false);
+        }}
+      />}
+      </>
   );
 };
 

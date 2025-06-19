@@ -1,35 +1,27 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import  type {  getProductsInterface, SelectedProduct } from './interfaces/ProductInterfaces';
+import  type {  filters, getProductsInterface, SelectedProduct } from './interfaces/ProductInterfaces';
 // Custom Axios instance
 const customAxios = axios.create({
-  baseURL: 'http://172.50.5.124:3000/products',
+  baseURL: 'http://0.0.0.0:3000/products',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-
 // Thunk for fetching products
 export const getProducts = createAsyncThunk< 
   getProductsInterface,                          // Return type
-  { searchParams: URLSearchParams; slug: string | undefined },    // Argument type
+  { filters: filters; slug: string | undefined,searchParams:URLSearchParams,page:Number },    // Argument type
   { rejectValue: string }                       // Rejection type
 >(
   'products/getProducts',
-  async ({ searchParams, slug='all'}, thunkAPI) => {
+  async ({ filters, slug='all',searchParams,page}, thunkAPI) => {
     try {
-      const selectedCategories=searchParams.getAll("category")
-      const selectedSubCategories=searchParams.getAll("subCategory")
-      const selectedBrands=searchParams.getAll("brand")
-      const selectedColors=searchParams.getAll("color")
-      const selectedGender=searchParams.get("gender") || ''
-      const selectedPrice=searchParams.get('price')
-      const selectedSort=searchParams.get('sort') || ''
-      const currentPage=searchParams.get('page') || '1'
+    const selectedSort=searchParams.get('sort') || 'new'
+      // const currentPage=searchParams.get('page') || '1'
       const response = await customAxios.get(`/${slug}`, {
-        params: { category:selectedCategories.toString(),subCategory:selectedSubCategories.toString(),brand:selectedBrands.toString(),color:selectedColors.toString(),gender:selectedGender,price:selectedPrice,sort:selectedSort,page:currentPage}
+        params: { category:filters.category.toString(),subCategory:filters.subCategory.toString(),brand:filters.brand.toString(),color:filters.color.toString(),gender:filters.gender,price:filters.price.toString(),sort:selectedSort,page:page}
       });
       return response.data;
     } catch (error: any) {

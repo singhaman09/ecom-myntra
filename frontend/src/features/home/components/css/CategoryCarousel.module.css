@@ -1,0 +1,294 @@
+/* CategoryCarousel.module.css */
+
+.container {
+  width: 100%;
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 20px 0;
+  position: relative;
+}
+
+.carouselWrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.categoriesContainer {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scroll-snap-type: x mandatory;
+}
+
+.categoriesContainer::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+.categoriesPage {
+  flex: 0 0 100%;
+  display: grid;
+  gap: 20px;
+  padding: 10px 20px;
+  scroll-snap-align: start;
+}
+
+/* Desktop: Single row layout */
+.desktopGrid {
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Mobile: Two rows layout */
+.mobileGrid {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.categoryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 15px 10px;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.categoryItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.categoryItem:hover::before {
+  opacity: 1;
+}
+
+.categoryItem:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+.categoryItem:active {
+  transform: translateY(-2px) scale(1.01);
+  transition: all 0.1s ease;
+}
+
+.categoryIcon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.categoryIcon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: rotate(45deg);
+  transition: all 0.5s ease;
+  opacity: 0;
+}
+
+.categoryItem:hover .categoryIcon::before {
+  animation: shimmer 0.6s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+.categoryItem:hover .categoryIcon {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.categoryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.categoryItem:hover .categoryImage {
+  transform: scale(1.05);
+}
+
+.categoryName {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Work Sans', sans-serif;
+  color: #333;
+  text-align: center;
+  line-height: 1.3;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.categoryItem:hover .categoryName {
+  color: #2563eb;
+}
+
+/* Pagination dots */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background-color: #d1d5db;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 0;
+  position: relative;
+}
+
+.dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.dot:hover {
+  background-color: #9ca3af;
+  transform: scale(1.3);
+}
+
+.dot:hover::before {
+  background-color: rgba(156, 163, 175, 0.2);
+}
+
+.activeDot {
+  background-color: #3b82f6;
+  width: 12px;
+  height: 12px;
+  transform: scale(1);
+}
+
+.activeDot:hover {
+  background-color: #2563eb;
+  transform: scale(1.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px 0;
+  }
+  
+  .categoriesPage {
+    gap: 15px;
+    padding: 5px 15px;
+  }
+  
+  .categoryItem {
+    padding: 12px 8px;
+  }
+  
+  .categoryIcon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .categoryName {
+    font-size: 12px;
+    max-width: 70px;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .activeDot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .desktopGrid {
+    /* grid-template-columns: repeat(4, 1fr); */
+    max-width: 600px;
+  }
+  
+  .categoryIcon {
+    width: 65px;
+    height: 65px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    padding: 25px 0;
+  }
+  
+  .categoryIcon {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .categoryName {
+    font-size: 14px;
+    max-width: 90px;
+  }
+}

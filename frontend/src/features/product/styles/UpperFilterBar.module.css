@@ -18,6 +18,7 @@
   margin-top: 2px;
   font-size: 1rem;
   cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
 }
 .innerContainer{
     position: relative;
@@ -34,17 +35,24 @@
 .innerContainer p{
     font-size: 1rem;
     color: grey;
+    font-family: 'Work Sans', sans-serif;
 }
 .sortDropdownContainer {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  
   margin-bottom: 8px;
 }
-
+@media (max-width:900px){
+  .sortDropdownContainer{
+    justify-content: space-around;
+  }
+}
 .sortLabel {
   font-weight: 500;
   color: #374151;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .sortSelect {
@@ -63,26 +71,95 @@
 
 }
 
-.sortSelect:focus {
-  border-color: #db2777;
-  outline: none;
-}
-.btn {
-  display: none;
+
+  .btn {
+  font-size: 18px;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
+  }
+
+
+.sortButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+  margin-top: 7px;
+
+  
 }
 
-@media (max-width: 900px) {
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.6rem 1.2rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #111827;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    
-  }
+.sortButton {
+  font-size: 18px;
+  background-color: transparent;
+
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
+}
+
+
+.modal {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  z-index: 1000;
+  padding-left: 10px;
+}
+
+.sortValue {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  min-width: 240px;
+  
+}
+
+.sortValue ol {
+  list-style: none;
+ padding: 0;
+  margin: 20px 0 16px 0;
+}
+
+.sortValue li {
+  padding: 10px 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
+}
+.close{
+  position: absolute;
+  right: 10px;
+  top: -4px;
+}
+.sortValue li:last-child {
+  border-bottom: none;
+}
+
+.sortValue li:hover {
+  background: burlywood;
+}
+.sortValueSelected{
+  background-color: #004d40 ;
+  color: white;
+ 
+}
+.sortValue button {
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: #eee;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }

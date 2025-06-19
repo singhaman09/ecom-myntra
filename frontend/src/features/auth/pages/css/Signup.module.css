@@ -1,237 +1,302 @@
 .container {
-    min-height: 100vh;
-    background-color: #ffeee6;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .banner {
-    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-    padding: 2rem 1rem;
-    text-align: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .bannerContent {
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-  }
-  
-  .bannerTitle {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  
-  .bannerSubtitle {
-    font-size: 1rem;
-    opacity: 0.9;
-  }
-  
-  .bannerCode {
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-weight: 600;
-    display: inline-block;
-    margin-top: 0.5rem;
-  }
-  
+  min-height: 100vh;
+  background-color: #f6f1e9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.mainContent {
+  width: 100%;
+  max-width: 480px;
+  /* padding: 2rem; */
+}
+
+.signupCard {
+  width: 100%;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  text-align: center;
+  /* margin-bottom: 2rem; */
+}
+/* Brand Logo/Text */
+.signupHeader {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.brand {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #104b3f;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Subtitle */
+.instruction {
+  font-size: 1.3rem;
+  color: #1c1c1c;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.instruction strong {
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #003d29;
+}
+
+.subtitle {
+  font-family: 'Times New Roman', Times, serif;
+  color: #333;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.7rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.7rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #003d29;
+  margin-bottom: 0.25rem;
+}
+
+.input {
+  font-family: 'Work Sans', sans-serif;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #003d29;
+  background-color: white;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #003d29;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+.inputError {
+  border-color: #ff6b6b;
+}
+
+.errorMessage {
+  font-family: 'Work Sans', sans-serif;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ff6b6b;
+}
+
+.passwordRequirements {
+  margin-top: 0.5rem;
+}
+
+.requirementsTitle {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.75rem;
+  color: #003d29;
+  margin-bottom: 0.25rem;
+}
+
+.requirementsList {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.requirementValid {
+  color: #03a685;
+}
+
+.requirementInvalid {
+  color: #ff6b6b;
+}
+
+.serverError {
+  font-family: 'Work Sans', sans-serif;
+  background-color: #ffeaea;
+  border: 1px solid #ff6b6b;
+  color: #c62828;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.submitButton {
+  font-family: 'Work Sans', sans-serif;
+  padding: 0.875rem;
+  background-color: #003d29;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.submitButton:hover {
+  background-color: #00281c;
+}
+
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.linkContainer {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.link {
+  font-family: 'Work Sans', sans-serif;
+  color: #003d29;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
   .mainContent {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
+    padding: 1.5rem;
+    box-shadow: none;
+    border-radius: 0;
   }
-  
-  .signupCard {
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .header {
-    text-align: left;
-    margin-bottom: 2rem;
-  }
-  
-  .title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #282c3f;
-    margin-bottom: 0.5rem;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .fieldGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .field {
-    max-width: 92%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #282c3f;
-    margin-bottom: 0.5rem;
-  }
-  
-  .input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d4d5d9;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    color: #282c3f;
-    background-color: white;
-    transition: border-color 0.2s;
-  }
-  
-  .input:focus {
-    outline: none;
-    border-color: #ff3f6c;
-  }
-  
-  .input::placeholder {
-    color: #94969f;
-  }
-  
-  .inputError {
-    border-color: #ff6b6b;
-  }
-  
-  .errorMessage {
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    color: #ff6b6b;
-  }
-  
-  .passwordRequirements {
-    margin-top: 0.5rem;
-  }
-  
-  .requirementsTitle {
-    font-size: 0.75rem;
-    color: #696e79;
-    margin-bottom: 0.25rem;
-  }
-  
-  .requirementsList {
-    font-size: 0.75rem;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    list-style: none;
-    padding: 0;
-  }
-  
-  .requirementValid {
-    color: #03a685;
-  }
-  
-  .requirementInvalid {
-    color: #ff6b6b;
-  }
-  
-  .serverError {
-    background-color: #ffeaea;
-    border: 1px solid #ff6b6b;
-    color: #c62828;
-    padding: 0.75rem;
-    border-radius: 4px;
-    font-size: 0.875rem;
-  }
-  
-  .submitButton {
-    width: 100%;
-    padding: 0.875rem;
-    background-color: #ff3f6c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .submitButton:hover {
-    background-color: #e5365f;
-  }
-  
-  .submitButton:disabled {
-    background-color: #d4d5d9;
-    cursor: not-allowed;
-  }
-  
-  .linkContainer {
-    text-align: center;
-    margin-top: 1.5rem;
-  }
-  
-  .link {
-    color: #ff3f6c;
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  
-  .link:hover {
-    text-decoration: underline;
-  }
-  
-  @media (max-width: 768px) {
-    .bannerTitle {
-      font-size: 1.5rem;
-    }
-    
-    .bannerSubtitle {
-      font-size: 0.875rem;
-    }
-    
-    .signupCard {
-      padding: 1.5rem;
-      margin: 1rem;
-      border-radius: 0;
-      box-shadow: none;
-      border-top: 1px solid #d4d5d9;
-    }
-    
-    .mainContent {
-      padding: 0;
-      align-items: flex-start;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .banner {
-      padding: 1.5rem 1rem;
-    }
-    
-    .signupCard {
-      margin: 0;
-    }
-  }
-  
+}
+
+
+/* Divider between normal login and OAuth */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.dividerText {
+  font-size: 0.85rem;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Google OAuth Button */
+.oauthContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.oauthButton {
+  font-family: 'Work Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.oauthButton:hover {
+  background-color: #f5f5f5;
+}
+
+.oauthButton img {
+  width: 20px;
+  height: 20px;
+}
+
+.skip {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.skipButton {
+  font-family: 'Work Sans', sans-serif;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight:500;
+  color: #000;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  letter-spacing: 0.5px;
+}
+
+.arrowIcon {
+  width: 14px;
+  height: 14px;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.skipButton:hover .arrowIcon {
+  transform: translateX(2px);
+}

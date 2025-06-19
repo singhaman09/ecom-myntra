@@ -49,7 +49,7 @@ const mockOrders: Order[] = [
     items: [
       {
         id: 'item1',
-        name: 'Casual Shirt',
+        name: 'Casual Pant',
         brand: 'Levis',
         image: 'https://via.placeholder.com/80',
         size: 'M',
@@ -108,6 +108,7 @@ export const useOrders = () => {
       setLoading(false);
     }
   };
+  
 
   const filterOrders = () => {
     if (!searchTerm.trim()) {
@@ -124,7 +125,7 @@ export const useOrders = () => {
     setFilteredOrders(filtered);
   };
 
-  const submitRating = async (orderId: string, rating: number) => {
+    const submitRating = async (orderId: string, rating: number) => {
     try {
       // API call or state update logic here
       return true;

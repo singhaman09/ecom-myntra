@@ -22,6 +22,7 @@
   }
   
   .title {
+    font-family: 'Times New Roman', Times, serif;
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -29,11 +30,13 @@
   }
   
   .subtitle {
+    font-family: 'Times New Roman', Times, serif;
     color: #94969f;
     font-size: 0.875rem;
   }
   
   .emailHighlight {
+    font-family: 'Work Sans', sans-serif;
     font-weight: 500;
     color: #282c3f;
   }
@@ -52,6 +55,7 @@
   }
   
   .verifyButton {
+    font-family: 'Work Sans', sans-serif;
     width: 100%;
     padding: 0.875rem;
     background-color: #ff3f6c;
@@ -77,6 +81,7 @@
   }
   
   .resendContainer {
+    font-family: 'Work Sans', sans-serif;
     margin-top: 1.5rem;
     text-align: center;
     font-size: 0.875rem;
@@ -84,6 +89,7 @@
   }
   
   .resendButton {
+    font-family: 'Work Sans', sans-serif;
     color: #ff3f6c;
     background: none;
     border: none;

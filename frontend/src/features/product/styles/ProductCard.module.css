@@ -1,3 +1,4 @@
+
 .card {
   background: #fff;
   border-radius: 12px;
@@ -18,7 +19,7 @@
 
 .productImage {
   width: 100%;
-  height: 260px;
+  height: 230px;
   object-fit: cover;
   transition: transform 0.3s;
   display: block;
@@ -40,6 +41,7 @@
   transition: opacity 0.3s, background 0.2s;
   border: none;
   cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .card:hover .wishlistBtn {
@@ -50,30 +52,32 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  background: #db2777;
+  background: #004d40;
   color: #fff;
   font-size: 12px;
   font-weight: 500;
   padding: 3px 8px;
   border-radius: 6px;
-
+  font-family: 'Work Sans', sans-serif;
 }
 
 .info {
-  padding: 16px;
+  padding: 16px;  
+ font-family: 'Work Sans', sans-serif;
 }
 
 .brand {
-  color: #6b7280;
+  color: #333333;
   font-size: 13px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 4px;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .title {
-  color: #22223b;
+  color: #333333;
   font-size: 15px;
   font-weight: 400;
   margin-bottom: 8px;
@@ -81,6 +85,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .ratingRow {
@@ -99,28 +104,43 @@
 .ratingCount {
   font-size: 12px;
   color: #6b7280;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .pricing {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .discountedPrice {
   color: #18181b;
   font-weight: bold;
   font-size: 15px;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .originalPrice {
   color: #9ca3af;
   font-size: 14px;
   text-decoration: line-through;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .discountPercent {
-  color: #db2777;
+  color: #004d40;
   font-size: 12px;
   font-weight: 500;
+  font-family: 'Work Sans', sans-serif;
+}
+.addToBag{
+  background-color:#004d40 ;
+  color: white;
+  font-weight: bold;
+  width: 80%;
+  margin-top: 15px;
+  font-size: 18px;
+  padding: 10px;
+  font-family: 'Work Sans', sans-serif;
 }

@@ -1,13 +1,14 @@
 export interface CartItem {
   productId: string;
   name: string;
-  brand: string;
   desc: string;
   price: number;
-  discount: number; // make sure this isn't optional
+  // discount: number;
   image: string;
-  size: string;
+  brand: string;
   quantity: number;
+  size: string;
+  availableSizes?: string[]; // ✅ added for modal size options
 }
 
 

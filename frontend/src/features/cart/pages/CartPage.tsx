@@ -4,11 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaTag } from "react-icons/fa";
 import CartHeader from "../components/CartHeader";
 import CartList from "../components/CartList";
-import { STATIC_COUPONS, STATIC_OFFERS } from "../staticData/StaticData";
+import { DISCOUNT, STATIC_COUPONS, STATIC_OFFERS } from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
 import AddressSection from "../components/AddressSection";
 import OffersSection from "../components/OffersSection";
-import CartActions from "../components/CartActions";
+// import CartActions from "../components/CartActions";
 import RemoveModal from "../components/modals/RemoveModal";
 import CouponModal from "../components/modals/CouponModal";
 import ChangeAddressModal from "../components/modals/ChangeAddressModal";
@@ -19,7 +19,6 @@ import {
   fetchCart,
   updateItemQuantity,
   deleteCartItem,
-  deleteSelectedItems,
   moveToWishlist,
 } from "../redux/cartSlice";
 import type { RootState, AppDispatch } from "../../../store/store";
@@ -74,11 +73,6 @@ const CartPage: React.FC = () => {
     dispatch(deleteCartItem(id));
   };
 
-  const handleRemoveSelected = () => {
-    dispatch(deleteSelectedItems(selectedItems));
-    setSelectedItems([]);
-    navigate("/cart");
-  };
 
   const handleMoveToWishlist = async () => {
     await Promise.all(selectedItems.map((id) => dispatch(moveToWishlist(id))));
@@ -110,44 +104,41 @@ const CartPage: React.FC = () => {
     0
   );
   const totalPrice = items.reduce(
-    (acc, item) => acc + (item.price - item.discount) * item.quantity,
+    (acc, item) => acc + (item.price - DISCOUNT) * item.quantity,
     0
   );
   const finalPrice = totalPrice - appliedCouponDiscount;
 
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
+
   return (
     <>
-      <CartHeader activeStep="BAG" />
-      <div className={styles.cartPage}>
-        <div className={styles.mainContent}>
-          <div className={styles.leftSection}>
-            <AddressSection
-              address={selectedAddress}
-              onChangeAddress={() => navigate("/cart?modal=address")}
-            />
-            <OffersSection
-              offers={offers}
-              showMoreOffers={showMoreOffers}
-              toggleOffersDropdown={toggleOffersDropdown}
-            />
-            <CartActions
-              items={items}
-              selectedItems={selectedItems}
-              setSelectedItems={setSelectedItems}
-              setModalAction={(action) => {
-                setModalAction(action);
-                navigate("/cart?modal=remove");
-              }}
-              setShowRemoveModal={() => navigate("/cart?modal=remove")}
-            />
-            <div ref={cartListRef} className={styles.cartListSection}>
-              {loading ? (
-                <div className={styles.loading}>Loading...</div>
-              ) : error ? (
-                <div className={styles.error}>
-                  {error || "Unable to load cart items. Please try again later."}
-                </div>
-              ) : items.length > 0 ? (
+      <CartHeader activeStep = "BAG" />
+      {items.length > 0 ? (
+        <div className={styles.cartPage}>
+          <div className={styles.mainContent}>
+            <div className={styles.leftSection}>
+              <AddressSection
+                address={selectedAddress}
+                onChangeAddress={() => navigate("/cart?modal=address")}
+              />
+              <OffersSection
+                offers={offers}
+                showMoreOffers={showMoreOffers}
+                toggleOffersDropdown={toggleOffersDropdown}
+              />
+              {/* <CartActions
+                items={items}
+                selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
+                setModalAction={(action) => {
+                  setModalAction(action);
+                  navigate("/cart?modal=remove");
+                }}
+                setShowRemoveModal={() => navigate("/cart?modal=remove")}
+              /> */}
+              <div ref={cartListRef} className={styles.cartListSection}>
                 <CartList
                   items={items}
                   onQuantityChange={handleQtyChange}
@@ -155,72 +146,71 @@ const CartPage: React.FC = () => {
                   selectedItems={selectedItems}
                   onRemove={handleRemove}
                 />
-              ) : (
-                <EmptyCart />
-              )}
+              </div>
+            </div>
+
+            <div className={styles.rightSection}>
+              <div className={styles.couponsSection}>
+                <div className={styles.couponsHeader}>
+                  <span className={styles.couponsTitle}>COUPONS</span>
+                </div>
+                <div className={styles.applyCoupons}>
+                  <FaTag className={styles.tagIcon} />
+                  <span className={styles.applyCouponsText}>
+                    Apply Coupons{" "}
+                  </span>
+                  <button
+                    className={styles.applyButton}
+                    onClick={() => navigate("/cart?modal=coupon")}
+                  >
+                    Apply
+                  </button>
+                </div>
+              </div>
+              <CartSummary
+                totalItems={items.length}
+                totalPrice={finalPrice}
+                totalMRP={totalMRP}
+              />
             </div>
           </div>
 
-          <div className={styles.rightSection}>
-            <div className={styles.couponsSection}>
-              <div className={styles.couponsHeader}>
-                <span className={styles.couponsTitle}>COUPONS</span>
-              </div>
-              <div className={styles.applyCoupons}>
-                <FaTag className={styles.tagIcon} />
-                <span className={styles.applyCouponsText}>
-                  Apply Coupons{" "}
-                </span>
-                <button
-                  className={styles.applyButton}
-                  onClick={() => navigate("/cart?modal=coupon")}
-                >
-                  APPLY
-                </button>
-              </div>
-            </div>
-            <CartSummary
-              totalItems={items.length}
-              totalPrice={finalPrice}
-              totalMRP={totalMRP}
-              onCheckout={() => alert("Proceeding to checkout...")}
+          {modal === "remove" && (
+            <RemoveModal
+              showRemoveModal={true}
+              modalAction={modalAction}
+              selectedItems={selectedItems}
+              handleMoveToWishlist={handleMoveToWishlist}
+              setShowRemoveModal={() => navigate("/cart")}
+              setModalAction={setModalAction}
             />
-          </div>
+          )}
+
+          {modal === "coupon" && (
+            <CouponModal
+              isOpen={true}
+              onClose={() => navigate("/cart")}
+              onApplyCoupon={handleApplyCoupon}
+              availableCoupons={availableCoupons}
+            />
+          )}
+
+          {modal === "address" && (
+            <ChangeAddressModal
+              isOpen={true}
+              onClose={() => navigate("/cart")}
+              onSave={handleSaveAddress}
+              onUpdateAddresses={(addrs) => setAddresses(addrs)}
+              addresses={addresses}
+            />
+          )}
         </div>
-
-        {modal === "remove" && (
-          <RemoveModal
-            showRemoveModal={true}
-            modalAction={modalAction}
-            selectedItems={selectedItems}
-            handleRemoveSelected={handleRemoveSelected}
-            handleMoveToWishlist={handleMoveToWishlist}
-            setShowRemoveModal={() => navigate("/cart")}
-            setModalAction={setModalAction}
-          />
-        )}
-
-        {modal === "coupon" && (
-          <CouponModal
-            isOpen={true}
-            onClose={() => navigate("/cart")}
-            onApplyCoupon={handleApplyCoupon}
-            availableCoupons={availableCoupons}
-          />
-        )}
-
-        {modal === "address" && (
-          <ChangeAddressModal
-            isOpen={true}
-            onClose={() => navigate("/cart")}
-            onSave={handleSaveAddress}
-            onUpdateAddresses={(addrs) => setAddresses(addrs)}
-            addresses={addresses}
-          />
-        )}
-      </div>
+      ) : (
+        <EmptyCart />
+      )}
     </>
   );
 };
 
 export default CartPage;
+		
