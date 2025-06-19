@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { loginAPI, registerAPI, forgotPasswordAPI, verifyEmailAPI, resendOtpAPI, verifyOtpAPI, resetPasswordAPI } from './services/authAPI';
+import { loginAPI, registerAPI, forgotPasswordAPI, verifyEmailAPI, resendOtpAPI, verifyOtpAPI, resetPasswordAPI, logoutAPI } from './services/authAPI';
 import { setToken, clearToken, getToken } from './utils/tokenUtils';
 import { AxiosError } from 'axios';
-import type { AuthState, LoginCredentials, RegisterData, ResendOtpData, ResetPasswordData, VerifyEmailData, VerifyOtpData } from './types';
+import type { AuthState, LoginCredentials, LogoutRequest, RegisterData, ResendOtpData, ResetPasswordData, VerifyEmailData, VerifyOtpData } from './types';
 
 
 const initialState: AuthState = {
@@ -19,6 +19,7 @@ const initialState: AuthState = {
   },
   emailVerified: false,
 };    
+
 
 export const handleThunkError = (error: unknown, errorMessage: string) => {
   let message = errorMessage;
@@ -117,13 +118,27 @@ export const verifyOtp = createAsyncThunk(
 
 export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
-  async (data: ResetPasswordData, thunkAPI) => {
+  async (accessToken: string, thunkAPI) => {
     try {
-      const response = await resetPasswordAPI(data);
+      const response = await resetPasswordAPI(accessToken);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(
         handleThunkError(error, 'An error occurred during password reset')
+      );
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (data: LogoutRequest, thunkAPI) => {
+    try {
+      const response = await logoutAPI(data);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        handleThunkError(error, 'An error occurred during logout')
       );
     }
   }
@@ -172,7 +187,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = {
-          id: parseInt(action.payload.data.user._id, 10),
+          id: action.payload.data.user._id,
           name: action.payload.data.user.name,
           email: action.payload.data.user.email,
         }; 

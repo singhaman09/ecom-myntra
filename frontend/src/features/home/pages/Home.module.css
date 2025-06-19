@@ -2,9 +2,13 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    
   }
   
   .main {
     flex: 1;
     background-color: #f6f1e9;
+    overflow-x: hidden;
+    /* margin: 0%;
+    padding: 0%; */
   }

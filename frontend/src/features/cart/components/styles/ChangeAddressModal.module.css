@@ -102,7 +102,7 @@
 .addressItem {
   display: flex;
   align-items: flex-start;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   border-radius: 4px;
   padding: 10px;
   margin-bottom: 10px;
@@ -165,7 +165,7 @@
   align-items: center;
   background: none;
   border: none;
-  color: #FF3F6C;
+  color:  black;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;

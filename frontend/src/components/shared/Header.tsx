@@ -3,6 +3,20 @@ import { Search, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
 import styles from "./css/Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import CategoryDropdown from "./CategoryDropDown";
+import { PRODUCT_ROUTES } from "../../features/product/Constants/Routes";
+
+const dummySuggestions = [
+  "Shoes",
+  "T-Shirts",
+  "Jackets",
+  "Jeans",
+  "Watches",
+  "Bags",
+  "Sunglasses",
+  "Hats",
+  "Belts",
+  "Shorts"
+];
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -10,6 +24,8 @@ const Header: React.FC = () => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [activeCategoryHover, setActiveCategoryHover] = useState<string>("");
   const [value, setValue] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const navigate = useNavigate();
 
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -31,11 +47,35 @@ const Header: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (value.trim()) {
-      navigate(`/products/${value}`);
+      navigate(`${PRODUCT_ROUTES.list}/${value}`);
       setValue("");
+      setIsSuggestionsOpen(false);
     }
   };
 
+  // --- Search Suggestion Logic ---
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setValue(val);
+    if (val.trim().length > 0) {
+      const filtered = dummySuggestions.filter(s =>
+        s.toLowerCase().includes(val.toLowerCase())
+      );
+      setSuggestions(filtered);
+      setIsSuggestionsOpen(true);
+    } else {
+      setSuggestions([]);
+      setIsSuggestionsOpen(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setValue(suggestion);
+    setIsSuggestionsOpen(false);
+    navigate(`${PRODUCT_ROUTES.list}/${suggestion}`);
+  };
+
+  // --- Category Dropdown Logic ---
   const handleCategoryHover = (category: string) => {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -49,7 +89,7 @@ const Header: React.FC = () => {
     const timeout = setTimeout(() => {
       setIsCategoryDropdownOpen(false);
       setActiveCategoryHover("");
-    }, 150);
+    }, 250);
     setHoverTimeout(timeout);
   };
 
@@ -105,7 +145,7 @@ const Header: React.FC = () => {
               onMouseEnter={() => handleCategoryHover("men")}
               onMouseLeave={handleCategoryLeave}
             >
-              <Link to="/products/men" className={styles.navLink}>
+              <Link to={`${PRODUCT_ROUTES.list}/men`} className={styles.navLink}>
                 Men
               </Link>
             </div>
@@ -114,7 +154,7 @@ const Header: React.FC = () => {
               onMouseEnter={() => handleCategoryHover("women")}
               onMouseLeave={handleCategoryLeave}
             >
-              <Link to="/products/women" className={styles.navLink}>
+              <Link to={`${PRODUCT_ROUTES.list}/women`} className={styles.navLink}>
                 Women
               </Link>
             </div>
@@ -123,7 +163,7 @@ const Header: React.FC = () => {
               onMouseEnter={() => handleCategoryHover("kids")}
               onMouseLeave={handleCategoryLeave}
             >
-              <Link to="/products/kids" className={styles.navLink}>
+              <Link to={`${PRODUCT_ROUTES.list}/kids`} className={styles.navLink}>
                 Kids
               </Link>
             </div>
@@ -140,17 +180,32 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Desktop Search Bar */}
-          <div className={styles.searchContainer}>
+          <div className={styles.searchContainer} style={{ position: "relative" }}>
             <div className={styles.searchWrapper}>
               <Search className={styles.searchIcon} />
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} autoComplete="off">
                 <input
                   type="text"
                   placeholder="Search for products, brands and more"
                   className={styles.searchInput}
-                  onChange={(e) => setValue(e.target.value)}
+                  onChange={handleInputChange}
                   value={value}
+                  onFocus={() => value && setIsSuggestionsOpen(true)}
+                  onBlur={() => setTimeout(() => setIsSuggestionsOpen(false), 120)}
                 />
+                {isSuggestionsOpen && suggestions.length > 0 && (
+                  <ul className={styles.suggestionsList}>
+                    {suggestions.map((s, i) => (
+                      <li
+                        key={i}
+                        className={styles.suggestionItem}
+                        onMouseDown={() => handleSuggestionClick(s)}
+                      >
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </form>
             </div>
           </div>
@@ -196,17 +251,33 @@ const Header: React.FC = () => {
           className={`${styles.mobileSearch} ${
             isMobileSearchOpen ? styles.active : ""
           }`}
+          style={{ position: "relative" }}
         >
           <div className={styles.mobileSearchWrapper}>
             <Search className={styles.searchIcon} />
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <input
                 type="text"
                 placeholder="Search for products, brands and more"
                 className={styles.searchInput}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={handleInputChange}
                 value={value}
+                onFocus={() => value && setIsSuggestionsOpen(true)}
+                onBlur={() => setTimeout(() => setIsSuggestionsOpen(false), 120)}
               />
+              {isSuggestionsOpen && suggestions.length > 0 && (
+                <ul className={styles.suggestionsList}>
+                  {suggestions.map((s, i) => (
+                    <li
+                      key={i}
+                      className={styles.suggestionItem}
+                      onMouseDown={() => handleSuggestionClick(s)}
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </form>
           </div>
         </div>
@@ -218,13 +289,13 @@ const Header: React.FC = () => {
           }`}
         >
           <div className={styles.mobileNavLinks}>
-            <Link to="/products/men" className={styles.mobileNavLink}>
+            <Link to={`${PRODUCT_ROUTES.list}/men`} className={styles.mobileNavLink}>
               Men
             </Link>
-            <Link to="/products/women" className={styles.mobileNavLink}>
+            <Link to={`${PRODUCT_ROUTES.list}/women`} className={styles.mobileNavLink}>
               Women
             </Link>
-            <Link to="/products/kids" className={styles.mobileNavLink}>
+            <Link to={`${PRODUCT_ROUTES.list}/kids`} className={styles.mobileNavLink}>
               Kids
             </Link>
           </div>

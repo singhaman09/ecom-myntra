@@ -1,0 +1,165 @@
+.filterContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
+    /* Adjust the gap as needed */
+  }
+  
+.container{
+    padding-left: 20px;
+}
+.shadow{
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 25px 20px -20px;
+}
+.button{
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: grey;
+  margin-top: 2px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
+}
+.innerContainer{
+    position: relative;
+    border: 1px dashed grey;
+    border-radius: 20px;
+    padding: 6px;
+    height: 25px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+ 
+}
+.innerContainer p{
+    font-size: 1rem;
+    color: grey;
+    font-family: 'Work Sans', sans-serif;
+}
+.sortDropdownContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  margin-bottom: 8px;
+}
+@media (max-width:900px){
+  .sortDropdownContainer{
+    justify-content: space-around;
+  }
+}
+.sortLabel {
+  font-weight: 500;
+  color: #374151;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.sortSelect {
+  padding: 6px 32px 6px 12px;
+  font-size: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fff;
+  color: #111827;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='none' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L10 12L14 8' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px 18px;
+
+}
+
+
+  .btn {
+  font-size: 18px;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
+  }
+
+
+.sortButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+  margin-top: 7px;
+
+  
+}
+
+.sortButton {
+  font-size: 18px;
+  background-color: transparent;
+
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
+}
+
+
+.modal {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  z-index: 1000;
+  padding-left: 10px;
+}
+
+.sortValue {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  min-width: 240px;
+  
+}
+
+.sortValue ol {
+  list-style: none;
+ padding: 0;
+  margin: 20px 0 16px 0;
+}
+
+.sortValue li {
+  padding: 10px 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+  font-family: 'Work Sans', sans-serif;
+}
+.close{
+  position: absolute;
+  right: 10px;
+  top: -4px;
+}
+.sortValue li:last-child {
+  border-bottom: none;
+}
+
+.sortValue li:hover {
+  background: burlywood;
+}
+.sortValueSelected{
+  background-color: #004d40 ;
+  color: white;
+ 
+}
+.sortValue button {
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: #eee;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

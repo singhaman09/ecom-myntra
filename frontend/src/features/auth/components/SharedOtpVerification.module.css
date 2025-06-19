@@ -1,0 +1,292 @@
+/* SharedOtpVerification.module.css */
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #f6f1e9;
+  }
+  
+  .card {
+    padding: 2rem 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+  }
+  
+  .header {
+    margin-bottom: 3rem;
+  }
+  
+  .logo {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #2d5a27;
+    margin-bottom: 3rem;
+    letter-spacing: 1px;
+  }
+  
+  .title {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #2d5a27;
+    margin-bottom: 1.5rem;
+  }
+  
+  .subtitle {
+    font-family: 'Work Sans', sans-serif;
+    color: #666666;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+  
+  .emailId {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    color: #333333;
+    display: block;
+    margin-top: 0.5rem;
+  }
+  
+  .editLink {
+    color: #2d5a27;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: 0.5rem;
+  }
+  
+  .otpContainer {
+    margin: 2rem 0;
+  }
+  
+  .otpInputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  .otpInput {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-family: 'Work Sans', sans-serif;
+    color: #333333;
+    background-color: #ffffff;
+    transition: border-color 0.2s;
+  }
+  
+  .otpInput:focus {
+    outline: none;
+    border-color: #2d5a27;
+  }
+  
+  .otpInput:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+  }
+  
+  .timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    font-family: 'Work Sans', sans-serif;
+    color: #4caf50;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .timerIcon {
+    font-size: 1rem;
+  }
+  
+  .resendContainer {
+    margin: 1.5rem 0;
+  }
+  
+  .resendButton {
+    font-family: 'Work Sans', sans-serif;
+    background: none;
+    border: none;
+    color: #2d5a27;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+  
+  .resendButton:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+  
+  .resendButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .resendDisabled {
+    font-family: 'Work Sans', sans-serif;
+    color: #999999;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .errorMessage {
+    font-family: 'Work Sans', sans-serif;
+    color: #f44336;
+    font-size: 0.875rem;
+    text-align: center;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+  }
+  
+  .successMessage {
+    font-family: 'Work Sans', sans-serif;
+    color: #4caf50;
+    font-size: 0.875rem;
+    text-align: center;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background-color: #e8f5e8;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+  }
+  
+  .verifyButton {
+    font-family: 'Work Sans', sans-serif;
+    width: 70%;
+    padding: 0.875rem;
+    background-color: #a8d5a3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1rem;
+  }
+  
+  .verifyButtonActive {
+    background-color: #2d5a27;
+  }
+  
+  .verifyButton:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+  
+  .verifyButton:disabled {
+    background-color: #a8d5a3;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  .changeEmailButton {
+    font-family: 'Work Sans', sans-serif;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+    color: #2d5a27;
+    background: none;
+    border: none;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .changeEmailButton:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+  
+  .changeEmailButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    text-decoration: none;
+  }
+  
+  .backButton {
+    font-family: 'Work Sans', sans-serif;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+    color: #2d5a27;
+    background: none;
+    border: none;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .backButton:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+  
+  .backButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    text-decoration: none;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 480px) {
+    .container {
+      padding: 0;
+      align-items: flex-start;
+      padding-top: 2rem;
+    }
+    
+    .card {
+      padding: 1.5rem;
+      box-shadow: none;
+      border-radius: 0;
+      min-height: calc(100vh - 2rem);
+    }
+    
+    .otpInput {
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
+    }
+    
+    .otpInputs {
+      max-width: 250px;
+      gap: 0.375rem;
+    }
+    
+    .logo {
+      font-size: 1.125rem;
+    }
+    
+    .title {
+      font-size: 1.25rem;
+    }
+    
+    .subtitle {
+      font-size: 0.8125rem;
+    }
+  }

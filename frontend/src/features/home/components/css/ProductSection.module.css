@@ -1,0 +1,86 @@
+.section {
+  padding: 3rem 0;
+  background-color: white;
+}
+
+.section.grayBg {
+  background-color: #f9f9f9;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.75rem;
+  }
+}
+
+.viewAllButton {
+  font-family: 'Work Sans', sans-serif;
+  background: none;
+  border: none;
+  color: #0a5d5d;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .productsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .productsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.productWrapper {
+  display: block;
+}
+
+/* Hide cards 3 and 4 on mobile (index 2 and 3) */
+.hiddenOnMobile {
+  display: none;
+}
+
+/* Show card 3 on tablet (index 2) */
+@media (min-width: 768px) {
+  .hiddenOnMobile:nth-child(3) {
+    display: block;
+  }
+}
+
+/* Show all cards on desktop */
+@media (min-width: 1024px) {
+  .hiddenOnMobile {
+    display: block;
+  }
+}
