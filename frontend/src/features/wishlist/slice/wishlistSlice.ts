@@ -57,9 +57,9 @@ export const fetchWishlistItems = createAsyncThunk(
 
 export const addToWishlist = createAsyncThunk(
   "wishlist/addItem",
-  async (item: string, { rejectWithValue }) => {
+  async (productId: string, { rejectWithValue }) => {
     try {
-      const newItem = await apiService.addToWishlist(item);
+      const newItem = await apiService.addToWishlist(productId);
       return newItem;
     } catch (error) {
       return rejectWithValue("Failed to add item to wishlist");
@@ -224,9 +224,13 @@ const wishlistSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
       // Add to wishlist
+      .addCase(addToWishlist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(addToWishlist.fulfilled, (state, action) => {
+        state.loading = false;
         state.items.push(action.payload);
         if (!state.categories.includes(action.payload.category)) {
           state.categories.push(action.payload.category);
@@ -234,26 +238,32 @@ const wishlistSlice = createSlice({
         wishlistSlice.caseReducers.applyFilters(state);
       })
       .addCase(addToWishlist.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload as string;
       })
-      
       // Remove from wishlist
       .addCase(removeFromWishlist.pending, (state) => {
-        state.loading = false; // Don't show loading for remove action
+        state.loading = true;
+        state.error = null;
       })
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
+        state.loading = false;
         state.items = state.items.filter(
           (item) => item.id !== action.payload
         );
         wishlistSlice.caseReducers.applyFilters(state);
-        state.error = null;
       })
       .addCase(removeFromWishlist.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload as string;
       })
-      
       // Update wishlist item
+      .addCase(updateWishlistItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateWishlistItem.fulfilled, (state, action) => {
+        state.loading = false;
         const index = state.items.findIndex(
           (item) => item.id === action.payload.id
         );
@@ -263,15 +273,21 @@ const wishlistSlice = createSlice({
         }
       })
       .addCase(updateWishlistItem.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload as string;
       })
-      
       // Move to cart
+      .addCase(moveToCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(moveToCart.fulfilled, (state, action) => {
+        state.loading = false;
         state.items = state.items.filter((item) => item.id !== action.payload);
         wishlistSlice.caseReducers.applyFilters(state);
       })
       .addCase(moveToCart.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload as string;
       });
   },
