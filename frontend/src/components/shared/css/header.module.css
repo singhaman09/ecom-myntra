@@ -63,7 +63,7 @@
 .logoText {
   font-size: 1.5rem;
   font-weight: 700;
-  color:  #00a65a;
+  color:  #0c3d32;
   text-decoration: none;
 }
 
@@ -222,7 +222,7 @@
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
-  background-color:  #00a65a;
+  background-color:  #0c3d32;
   color: white;
   font-size: 0.75rem;
   border-radius: 50%;
