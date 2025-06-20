@@ -3,7 +3,8 @@ import type { AxiosResponse } from "axios";
 import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
 
 const API_BASE_URL = "http://172.50.0.244:3333/orders";
-const token = localStorage.getItem('token')
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGFiNzVlMzY5ZjM4Yzk1MTE3NWRiYiIsImVtYWlsIjoidmlzaGFseWR2NzQzQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiJlOTM5MjBiOC1iNWI4LTQyZGItOGM5Yi1iMjEyYzA0OWI3MTYiLCJpYXQiOjE3NTAzOTk4MTMsImV4cCI6MTc1MDQ4NjIxM30.Gsbrk_LAVIX5YXpV78o9AeJ-11euQPlEJR2Ys-NLJBM';
+// const token = localStorage.getItem('token');
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -53,7 +54,6 @@ interface OrderApiUpdateResponse {
 }
 
 const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
-  // Normalize status to match OrderStatus and OrderTrackingCard
   const statusMap: Record<string, OrderStatus> = {
     PENDING: "Pending",
     PROCESSING: "processing",
@@ -65,18 +65,18 @@ const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
 
   return {
     id: apiOrder._id,
-    customerName: apiOrder.address.name || "Unknown", // Use address name as fallback
+    customerName: apiOrder.address.name || "Unknown",
     orderDate: apiOrder.createdAt,
-    deliveryDate: apiOrder.status === "DELIVERED" ? apiOrder.updatedAt : "", // Only set if delivered
+    deliveryDate: apiOrder.status === "DELIVERED" ? apiOrder.updatedAt : "",
     total: apiOrder.totalPrice,
     totalAmount: apiOrder.totalPrice,
-    status: statusMap[apiOrder.status.toUpperCase()] || "Pending",
+status: statusMap[apiOrder.status.toUpperCase()] ?? apiOrder.status.toLowerCase(),
     items: apiOrder.products.map(
       (product): OrderItem => ({
         id: product._id,
         name: product.description,
-        brand: "Unknown", // TODO: Fetch from product API if available
-        image: "", // TODO: Fetch from product API or use placeholder
+        brand: "Unknown",
+        image: "",
         size: product.size,
         color: product.color,
         price: product.price,
@@ -96,13 +96,11 @@ const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
       phoneNumber: apiOrder.address.phoneNumber,
     } as Address,
     canRate: apiOrder.reviews.length === 0 && apiOrder.status === "DELIVERED",
-    rating: 0, // TODO: Fetch from reviews if available
+    rating: 0,
     exchangeReturnWindow:
       apiOrder.status === "DELIVERED"
         ? new Date(new Date(apiOrder.updatedAt).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString()
-        : "", // 7-day window after delivery
-    // trackingInfo: undefined, // TODO: Fetch from tracking API if available
-    // paymentMethod: undefined, // TODO: Derive from paymentUrl/sessionId if possible
+        : "",
   };
 };
 
@@ -145,9 +143,18 @@ export const apiService = {
     }
   },
 
-  cancelOrder: async (orderId: string): Promise<void> => {
+  // FIXED: Now returns the updated order data instead of void
+  cancelOrder: async (orderId: string): Promise<Order> => {
     try {
-      await axiosInstance.patch(`/orders/${orderId}`, { status: "CANCELLED" });
+      const response: AxiosResponse<OrderApiUpdateResponse> = await axiosInstance.post(`/${orderId}/cancel`, {});
+      
+      // If the cancel endpoint doesn't return the updated order, fetch it separately
+      if (response.data && response.data.data) {
+        return mapApiOrderToOrder(response.data.data);
+      } else {
+        // Fallback: fetch the updated order data
+        return await apiService.getOrderById(orderId);
+      }
     } catch (error) {
       throw new Error("Failed to cancel order");
     }

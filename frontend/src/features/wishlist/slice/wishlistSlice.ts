@@ -1,21 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { WishlistItem } from "../types/wishlist";
-import { apiService } from "../api";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { WishlistItem, WishlistFilters } from '../types/wishlist';
+import { apiService } from '../api';
 
-export interface WishlistFilters {
-  category?: string;
-  priceRange?: {
-    min: number;
-    max: number;
-  };
-  inStock?: boolean;
-  sortBy?: "name" | "price" | "dateAdded" | "rating";
-  sortOrder?: "asc" | "desc";
-  searchQuery?: string;
-}
-
-interface WishlistState {
+export interface WishlistState {
   items: WishlistItem[];
   filteredItems: WishlistItem[];
   filters: WishlistFilters;
@@ -31,8 +19,8 @@ const initialState: WishlistState = {
   items: [],
   filteredItems: [],
   filters: {
-    sortBy: "dateAdded",
-    sortOrder: "desc",
+    sortBy: 'dateAdded',
+    sortOrder: 'desc',
   },
   loading: false,
   error: null,
@@ -44,72 +32,75 @@ const initialState: WishlistState = {
 
 // Async thunks
 export const fetchWishlistItems = createAsyncThunk(
-  "wishlist/fetchItems",
+  'wishlist/fetchItems',
   async (_, { rejectWithValue }) => {
     try {
       const items = await apiService.getWishlistItems();
       return items;
     } catch (error) {
-      return rejectWithValue("Failed to fetch wishlist items");
+      return rejectWithValue('Failed to fetch wishlist items');
     }
   }
 );
 
 export const addToWishlist = createAsyncThunk(
-  "wishlist/addItem",
-  async (productId: string, { rejectWithValue }) => {
+  'wishlist/addItem',
+  async (
+    { productId, size, color }: { productId: string; size: string; color: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const newItem = await apiService.addToWishlist(productId);
+      const newItem = await apiService.addToWishlist(productId, size, color);
       return newItem;
     } catch (error) {
-      return rejectWithValue("Failed to add item to wishlist");
+      return rejectWithValue('Failed to add item to wishlist');
     }
   }
 );
 
 export const removeFromWishlist = createAsyncThunk(
-  "wishlist/removeItem",
+  'wishlist/removeItem',
   async (itemId: string, { rejectWithValue }) => {
     try {
       await apiService.removeFromWishlist(itemId);
       return itemId;
     } catch (error) {
-      return rejectWithValue("Failed to remove item from wishlist");
+      return rejectWithValue('Failed to remove item from wishlist');
     }
   }
 );
 
 export const updateWishlistItem = createAsyncThunk(
-  "wishlist/updateItem",
+  'wishlist/updateItem',
   async (item: WishlistItem, { rejectWithValue }) => {
     try {
       const updatedItem = await apiService.updateWishlistItem(item);
       return updatedItem;
     } catch (error) {
-      return rejectWithValue("Failed to update wishlist item");
+      return rejectWithValue('Failed to update wishlist item');
     }
   }
 );
 
 export const moveToCart = createAsyncThunk(
-  "wishlist/moveToCart",
+  'wishlist/moveToCart',
   async (itemId: string, { rejectWithValue, getState }) => {
     try {
       const state = getState() as { wishlist: WishlistState };
       const item = state.wishlist.items.find((item) => item.id === itemId);
       if (!item) {
-        throw new Error("Item not found");
+        throw new Error('Item not found');
       }
       await apiService.moveToCart(itemId);
       return itemId;
     } catch (error) {
-      return rejectWithValue("Failed to move item to cart");
+      return rejectWithValue('Failed to move item to cart');
     }
   }
 );
 
 const wishlistSlice = createSlice({
-  name: "wishlist",
+  name: 'wishlist',
   initialState,
   reducers: {
     setFilters: (state, action: PayloadAction<WishlistFilters>) => {
@@ -119,8 +110,8 @@ const wishlistSlice = createSlice({
     },
     clearFilters: (state) => {
       state.filters = {
-        sortBy: "dateAdded",
-        sortOrder: "desc",
+        sortBy: 'dateAdded',
+        sortOrder: 'desc',
       };
       state.currentPage = 1;
       wishlistSlice.caseReducers.applyFilters(state);
@@ -138,6 +129,12 @@ const wishlistSlice = createSlice({
       if (state.filters.category) {
         filtered = filtered.filter(
           (item) => item.category === state.filters.category
+        );
+      }
+
+      if (state.filters.brand) {
+        filtered = filtered.filter(
+          (item) => item.brand === state.filters.brand
         );
       }
 
@@ -170,24 +167,33 @@ const wishlistSlice = createSlice({
         let comparison = 0;
 
         switch (sortBy) {
-          case "name":
+          case 'name':
             comparison = a.name.localeCompare(b.name);
             break;
-          case "price":
+          case 'price':
+          case 'price-low':
             comparison = a.price - b.price;
             break;
-          case "dateAdded":
+          case 'price-high':
+            comparison = b.price - a.price;
+            break;
+          case 'dateAdded':
+          case 'newest':
+            comparison =
+              new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime();
+            break;
+          case 'oldest':
             comparison =
               new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
             break;
-          case "rating":
-            comparison = a.rating - b.rating;
+          case 'rating':
+            comparison = b.rating - a.rating;
             break;
           default:
             comparison = 0;
         }
 
-        return sortOrder === "desc" ? -comparison : comparison;
+        return sortOrder === 'desc' && !['price-low', 'oldest'].includes(sortBy || '') ? -comparison : comparison;
       });
 
       state.filteredItems = filtered;
@@ -248,9 +254,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = state.items.filter(
-          (item) => item.id !== action.payload
-        );
+        state.items = state.items.filter((item) => item.id !== action.payload);
         wishlistSlice.caseReducers.applyFilters(state);
       })
       .addCase(removeFromWishlist.rejected, (state, action) => {
@@ -264,9 +268,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(updateWishlistItem.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.items.findIndex(
-          (item) => item.id === action.payload.id
-        );
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
         if (index !== -1) {
           state.items[index] = action.payload;
           wishlistSlice.caseReducers.applyFilters(state);

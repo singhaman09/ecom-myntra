@@ -8,7 +8,7 @@ import styles from '../css/wishlistPage.module.css';
 // import Sidebar from '../../order/components/Sidebar';
 
 const WishlistPage: React.FC = () => {
-  const { items, loading } = useAppSelector((state) => state.wishlist);
+  // const { items, loading } = useAppSelector((state) => state.wishlist);
 
   const handleContinueShopping = () => {
     window.location.href = '/products';

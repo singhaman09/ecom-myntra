@@ -1,58 +1,77 @@
 .orderTrackingCard {
   background: white;
   border: 1px solid #eaeaec;
+  border-left: 4px solid #197c65;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   font-family: 'Work Sans';
-    border-left: 4px solid #197c65; /* green accent line */
-
 }
 
 .orderTrackingCard h3 {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 16px;
-  font-family: 'Work Sans';
   color: #333;
 }
 
 .timeline {
   position: relative;
-  padding-left: 25px;
-  /* border-left: 2px solid #197c65; */
-  margin-bottom: 20px;
+  margin-left: 10px;
 }
 
 .timelineItem {
   position: relative;
-  margin-bottom: 20px;
-  padding-left: 15px;
-  font-family: 'Work Sans';
+  padding-left: 30px;
+  margin-bottom: 30px;
+}
+
+.timelineItem::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 20px;
+  width: 2px;
+  height: calc(100% - 20px);
+  background-color: #ccc;
+  z-index: 0;
+}
+
+.timelineItem:last-child::before {
+  height: 0;
 }
 
 .statusCircle {
   position: absolute;
-  left: -12px;
-  top: 2px;
-  width: 20px;
-  height: 20px;
-  background: #197c65;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
+  border: 2px solid #ccc;
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: transparent;
   z-index: 1;
+}
+
+.timelineItem.active .statusCircle {
+  border-color: #197c65;
+  background-color: #197c65;
+  color: white;
 }
 
 .statusText {
   font-size: 14px;
   font-weight: 500;
   color: #333;
-  font-family: 'Work Sans';
+}
+
+.timelineItem.active .statusText {
+  color: #197c65;
 }
 
 .date {
@@ -61,32 +80,18 @@
   margin-top: 4px;
 }
 
-.trackingInfo {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #555;
-}
-
-.trackingInfo div {
-  margin-bottom: 5px;
-}
-
-.trackingInfo a {
-  color: #0b721c;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 5px;
-}
-
-.trackingInfo a:hover {
-  text-decoration: underline;
+.cancelledMessage {
+  font-size: 16px;
+  color: #d32f2f;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 0;
 }
 
 .buttons {
   margin-top: 25px;
   display: flex;
   gap: 10px;
-  font-family: 'Work Sans';
 }
 
 .returnExchangeBtn {
@@ -98,7 +103,6 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  font-family: 'Work Sans';
 }
 
 .returnExchangeBtn:hover {
@@ -114,7 +118,6 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  font-family: 'Work Sans';
 }
 
 .helpBtn:hover {

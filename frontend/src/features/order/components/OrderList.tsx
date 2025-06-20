@@ -236,6 +236,7 @@ const OrderList: React.FC<OrderListProps> = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedOrders = filteredOrders.slice(startIndex, endIndex);
+  console.log(paginatedOrders);
   const totalPages = Math.ceil(totalOrders / itemsPerPage);
 
   if (loading) {

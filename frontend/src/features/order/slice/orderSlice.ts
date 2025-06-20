@@ -157,7 +157,7 @@ const ordersSlice = createSlice({
       .addCase(cancelOrder.fulfilled, (state, action) => {
         const index = state.orders.findIndex(order => order.id === action.payload);
         if (index !== -1) {
-          state.orders[index].status = 'Cancelled';
+          state.orders[index].status = 'cancelled';
           ordersSlice.caseReducers.applyFilters(state);
         }
       })
