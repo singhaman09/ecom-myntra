@@ -8,8 +8,8 @@ import { FaHeart } from 'react-icons/fa';
 
 interface WishlistCardProps {
   item: WishlistItem;
-  onRemove: () => void;
-  onMoveToCart: () => void;
+  onRemove: () => Promise<void>;
+  onMoveToCart: () => Promise<void>;
 }
 
 const Modal: React.FC<{
@@ -21,10 +21,10 @@ const Modal: React.FC<{
   if (!isOpen) return null;
 
   return (
-    <div className={`${styles.modalOverlay}`} onClick={onClose}>
-      <div className={`${styles.modal}`} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h3>Remove Item</h3>
-        <p>Are you sure you want to remove "{itemName}" from your wishlist?</p>
+        <p>Are you sure you want to remove <strong>"{itemName}"</strong> from your wishlist?</p>
         <div className={styles.modalActions}>
           <Button onClick={onConfirm} variant="danger">
             Remove
@@ -63,13 +63,13 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
     setIsModalOpen(true);
   };
 
-  const handleConfirmRemove = () => {
-    onRemove();
+  const handleConfirmRemove = async () => {
+    await onRemove();
     setIsModalOpen(false);
   };
 
   const handleNotifyMe = () => {
-    console.log(`Notify me when ${item.name} is back in stock`);
+    alert(`Well notify you when "${item.name}" is back in stock.`);
   };
 
   const formatDate = (dateString: string) => {
@@ -81,24 +81,17 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
     });
   };
 
-  const truncateDescription = (
-    description: string,
-    maxLength: number = 100
-  ) => {
-    if (description.length <= maxLength) return description;
-    return `${description.substring(0, maxLength)}...`;
-  };
+  const truncateDescription = (description: string, maxLength = 100) =>
+    description.length <= maxLength
+      ? description
+      : `${description.slice(0, maxLength)}...`;
 
-  const getDiscountPercentage = () => {
-    if (item.originalPrice && item.originalPrice > item.price) {
-      return Math.round(
-        ((item.originalPrice - item.price) / item.originalPrice) * 100
-      );
-    }
-    return 0;
-  };
-
-  const discountPercentage = getDiscountPercentage();
+  const discountPercentage =
+    item.originalPrice && item.originalPrice > item.price
+      ? Math.round(
+          ((item.originalPrice - item.price) / item.originalPrice) * 100
+        )
+      : 0;
 
   return (
     <>
@@ -117,9 +110,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
               loading="lazy"
             />
           ) : (
-            <div className={styles.imagePlaceholder}>
-              <span>No Image Available</span>
-            </div>
+            <div className={styles.imagePlaceholder}>No Image</div>
           )}
 
           {discountPercentage > 0 && (
@@ -138,10 +129,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
             title="Remove from wishlist"
             aria-label="Remove from wishlist"
           >
-            <FaHeart
-              color="rgb(7, 119, 4)"
-              size={20}
-            />
+            <FaHeart color="rgb(7, 119, 4)" size={20} />
           </button>
         </div>
 

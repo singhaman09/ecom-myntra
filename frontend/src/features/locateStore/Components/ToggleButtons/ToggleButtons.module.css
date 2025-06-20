@@ -1,0 +1,24 @@
+
+.toggleButtonGroup {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .toggleButton {
+    flex: 1;
+    padding: 0.75rem 0;
+    text-align: center;
+    font-weight: 500;
+    transition-property: color, border-color;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    color: #6b7280;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .toggleButton.active {
+    color: #000;
+    border-bottom: 2px solid #000;
+  }

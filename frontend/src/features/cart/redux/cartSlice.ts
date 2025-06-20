@@ -3,12 +3,13 @@ import {
   getCartAPI as getCartItems,
   addCartItemsAPI as addItem,
   removeCartItemAPI as removeItem,
-  updateCartItemQuantityAPI as updateQuantity,
+  incrementCartItemQuantityAPI,
+  decrementCartItemQuantityAPI,
   moveItemToWishlistAPI,
   updateCartItemSizeAPI,
 } from "../api/cartApi";
 
-import type { CartState } from "../types/cart";
+import type { CartState, CartItem } from "../types/cart";
 
 const initialState: CartState = {
   cart: [],
@@ -55,8 +56,6 @@ export const deleteCartItem = createAsyncThunk(
   }
 );
 
-
-
 // Update size
 export const updateItemSize = createAsyncThunk(
   "cart/updateSize",
@@ -73,18 +72,28 @@ export const updateItemSize = createAsyncThunk(
   }
 );
 
-// Update quantity
-export const updateItemQuantity = createAsyncThunk(
-  "cart/updateQuantity",
-  async (
-    { id, quantity }: { id: string; quantity: number },
-    { rejectWithValue }
-  ) => {
+// Increment quantity
+export const incrementItemQuantity = createAsyncThunk(
+  "cart/incrementQuantity",
+  async (id: string, { rejectWithValue }) => {
     try {
-      await updateQuantity(id);
-      return { id, quantity };
+      const updatedItems: CartItem[] = await incrementCartItemQuantityAPI(id);
+      return { id, updatedItems };
     } catch (err: any) {
-      return rejectWithValue(err.message || "Error updating quantity");
+      return rejectWithValue(err.message || "Error incrementing quantity");
+    }
+  }
+);
+
+// Decrement quantity
+export const decrementItemQuantity = createAsyncThunk(
+  "cart/decrementQuantity",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const updatedItems: CartItem[] = await decrementCartItemQuantityAPI(id);
+      return { id, updatedItems };
+    } catch (err: any) {
+      return rejectWithValue(err.message || "Error decrementing quantity");
     }
   }
 );
@@ -175,18 +184,48 @@ const cartSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // Update Quantity
-      .addCase(updateItemQuantity.pending, (state) => {
+      // Increment Quantity
+      .addCase(incrementItemQuantity.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateItemQuantity.fulfilled, (state, action) => {
+      .addCase(incrementItemQuantity.fulfilled, (state, action) => {
         state.loading = false;
-        const { id, quantity } = action.payload;
-        const item = state.cart.find((i) => i.productId === id);
-        if (item) item.quantity = quantity;
+        const { id, updatedItems } = action.payload;
+        const updatedItem = updatedItems.find((item) => item.productId === id);
+        if (updatedItem) {
+          const existingItem = state.cart.find((item) => item.productId === id);
+          if (existingItem) {
+            existingItem.quantity = updatedItem.quantity;
+          } else {
+            state.cart = [...state.cart, updatedItem];
+          }
+        }
       })
-      .addCase(updateItemQuantity.rejected, (state, action) => {
+      .addCase(incrementItemQuantity.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // Decrement Quantity
+      .addCase(decrementItemQuantity.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(decrementItemQuantity.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id, updatedItems } = action.payload;
+        const updatedItem = updatedItems.find((item) => item.productId === id);
+        if (updatedItem) {
+          const existingItem = state.cart.find((item) => item.productId === id);
+          if (existingItem) {
+            existingItem.quantity = updatedItem.quantity;
+          } else {
+            state.cart = [...state.cart, updatedItem];
+          }
+        }
+      })
+      .addCase(decrementItemQuantity.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
@@ -206,7 +245,7 @@ const cartSlice = createSlice({
         state.error = action.payload as string;
       });
   },
-})
+});
 
 export const { resetCart } = cartSlice.actions;
 export default cartSlice.reducer;

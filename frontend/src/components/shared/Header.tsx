@@ -4,6 +4,7 @@ import styles from "./css/Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import CategoryDropdown from "./CategoryDropDown";
 import { useAuth } from "../../features/auth/hooks/useAuth";
+import { PRODUCT_ROUTES } from "../../features/product/Constants/Routes";
 
 const dummySuggestions = [
   "Shoes",
@@ -42,7 +43,7 @@ const Header: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (value.trim()) {
-      navigate(`/products/${value}`);
+      navigate(`${PRODUCT_ROUTES.list}/${value}`);
       setValue("");
       setIsSuggestionsOpen(false);
     }
@@ -53,7 +54,6 @@ const Header: React.FC = () => {
     const val = e.target.value;
     setValue(val);
     if (val.trim().length > 0) {
-      
       const filtered = dummySuggestions.filter(s =>
         s.toLowerCase().includes(val.toLowerCase())
       );
@@ -68,7 +68,7 @@ const Header: React.FC = () => {
   const handleSuggestionClick = (suggestion: string) => {
     setValue(suggestion);
     setIsSuggestionsOpen(false);
-    navigate(`/products/${suggestion}`);
+    navigate(`${PRODUCT_ROUTES.list}/${suggestion}`);
   };
 
   // --- Category Dropdown Logic ---
@@ -178,7 +178,7 @@ const Header: React.FC = () => {
               onMouseEnter={() => handleCategoryHover("men")}
               onMouseLeave={handleCategoryLeave}
             >
-              <Link to="/products/men" className={styles.navLink}>
+              <Link to={`${PRODUCT_ROUTES.list}/men`} className={styles.navLink}>
                 Men
               </Link>
             </div>
@@ -187,7 +187,7 @@ const Header: React.FC = () => {
               onMouseEnter={() => handleCategoryHover("women")}
               onMouseLeave={handleCategoryLeave}
             >
-              <Link to="/products/women" className={styles.navLink}>
+              <Link to={`${PRODUCT_ROUTES.list}/women`} className={styles.navLink}>
                 Women
               </Link>
             </div>
@@ -196,7 +196,7 @@ const Header: React.FC = () => {
               onMouseEnter={() => handleCategoryHover("kids")}
               onMouseLeave={handleCategoryLeave}
             >
-              <Link to="/products/kids" className={styles.navLink}>
+              <Link to={`${PRODUCT_ROUTES.list}/kids`} className={styles.navLink}>
                 Kids
               </Link>
             </div>
@@ -323,6 +323,23 @@ const Header: React.FC = () => {
             activeCategory=""
             isMobileTriggered={true}
           />
+        {/* Mobile Navigation */}
+        <div
+          className={`${styles.mobileNav} ${
+            isMobileMenuOpen ? styles.active : ""
+          }`}
+        >
+          <div className={styles.mobileNavLinks}>
+            <Link to={`${PRODUCT_ROUTES.list}/men`} className={styles.mobileNavLink}>
+              Men
+            </Link>
+            <Link to={`${PRODUCT_ROUTES.list}/women`} className={styles.mobileNavLink}>
+              Women
+            </Link>
+            <Link to={`${PRODUCT_ROUTES.list}/kids`} className={styles.mobileNavLink}>
+              Kids
+            </Link>
+          </div>
         </div>
       </div>
     </header>

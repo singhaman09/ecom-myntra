@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './css/ProductSection.module.css';
-import ProductCard from '../../product/components/ProductCard';
+import ProductCard from '../../product/components/ProductListComponents/ProductCard/ProductCard';
 
 interface ProductSectionProps {
   title: string;
