@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Slider } from "@mui/material";
 import type { SideBarMainProps } from "../../../interfaces/ProductInterfaces";
 import styles from "./SideBar.module.css";
@@ -50,9 +50,9 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
     !!filters.gender ||
     filters.color?.length > 0;
 
-  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
+  const handleSliderChange = useCallback((_event: Event, newValue: number | number[]) => {
     setPriceValue(newValue as number[]);
-  };
+  },[priceValue]);
 
   // Tab state
   const [activeTab, setActiveTab] = useState<string>("category");

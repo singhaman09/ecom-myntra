@@ -4,9 +4,9 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { getProducts } from '../../productAPI';
 import { useProductDispatch, useProductSelector } from '../../hooks/storeHooks';
 import Loader from '../../utils/Loader';
-import type { filters } from '../../interfaces/ProductInterfaces';
 import TrendingCard from '../../components/ProductListComponents/TrendingCard/TrendingCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import type { filters } from '../../interfaces/FilterInterfaces';
 // Lazy load components
 const Breadcrumbs = React.lazy(() => import('../../utils/BreadCrumbs/BreadCrumbs'));
 const SideBarMain = React.lazy(() => import('../../components/filtersComponents/SideBarMain/SideBarMain'));
@@ -28,7 +28,7 @@ const ProductPage: React.FC = () => {
     subCategory: [],
     brand: [],
     color: [],
-    gender: undefined,
+    gender: '',
     price:[]
   });
   useEffect(() => {
@@ -44,7 +44,7 @@ useEffect(()=>{
     color:searchParams.getAll('color'),
     brand:searchParams.getAll('brand'),
     price:searchParams.get('price')?.split(',').map(Number) || [],
-    gender:searchParams.get('gender') || undefined
+    gender:searchParams.get('gender') || ''
   }
  })
 
@@ -53,7 +53,6 @@ useEffect(()=>{
   // Fetch products when filters or slug change
   useEffect(() => {
     dispatch(getProducts({ slug ,searchParams,page}));
-   
   }, [dispatch, searchParams,slug,page]);
 
   // Helper to update filters
@@ -104,7 +103,7 @@ useEffect(()=>{
     subCategory: [],
     brand: [],
     color: [],
-    gender: undefined,
+    gender: '',
     price: []
   });
   }, [searchParams, setSearchParams]);
@@ -139,6 +138,7 @@ const apply=()=>{
   else searchParams.delete('price')
   setSearchParams(searchParams,{replace:true})
   setIsDrawerOpen(false)
+  setPage(1)
 }
 const fetchMoreData = () => {
   setPage(prev => prev + 1);
@@ -179,6 +179,7 @@ const fetchMoreData = () => {
                
                   <UpperFilterBar
                     setIsDrawerOpen={setIsDrawerOpen}
+                    setPage={setPage}
                     />
                     <InfiniteScroll
                     dataLength={data.products.length}
