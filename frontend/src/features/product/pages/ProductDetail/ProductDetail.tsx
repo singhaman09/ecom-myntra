@@ -53,7 +53,7 @@ const ProductDetails = () => {
   const [notCompatible, setNotCompatible] = useState({ color: "", size: "" });
   const selectedSize = searchParams.get("size") || uniqueSizes[0] || "";
   const selectedColor = searchParams.get("color") || uniqueColors[0] || "";
-  
+ 
   // New state for image handling
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -62,21 +62,20 @@ const ProductDetails = () => {
   const productImages = useMemo(() => {
     const mainImage = data?.selectedProduct?.product?.images?.find(val=>val.isPrimary)?.url;
     if (!mainImage) return [defaultProductImage];
-    
-    // If your product has multiple images, use them. Otherwise, create variants for demo
-    const images =  [
-      mainImage,
-      mainImage, 
-      mainImage,
-      mainImage
-    ];
-    
+    const allimages = data?.selectedProduct?.product?.images
+    .filter(val => !val.isPrimary)
+    .map(val => val.url);
+  
+  const images = [
+    mainImage,
+    ...(allimages ?? [])
+  ];
     return images;
   }, [data?.selectedProduct?.product]);
 
   useEffect(() => {
-    dispatch(getProductDetails(id));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    dispatch(getProductDetails(id));
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -85,7 +84,7 @@ const ProductDetails = () => {
 
   const handleSize = useCallback((size: string) => {
     setNotCompatible({ color: "", size: "" });
-    if (!variants.find((v) => v.size === size && v.color === selectedColor )&& selectedColor) {
+    if (!variants.find((v) => v.size === size && v.color === selectedColor ) && selectedColor) {
       setNotCompatible({ color: selectedColor, size: size });
     }
     

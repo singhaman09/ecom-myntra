@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import styles from './ProductPage.module.css';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { getProducts } from '../../productAPI';
 import { useProductDispatch, useProductSelector } from '../../hooks/storeHooks';
 import Loader from '../../utils/Loader';
@@ -23,10 +23,11 @@ const ProductPage: React.FC = () => {
   const dispatch = useProductDispatch();
   const data = useProductSelector(state => state.product);
   const [page,setPage]=useState(1)
+  const location = useLocation();
   const [filters, setFilters] = useState<filters>({
-    category: [],
-    subCategory: [],
-    brand: [],
+    category: [] ,
+    subCategory: [] ,
+    brand: [] ,
     color: [],
     gender: '',
     price:[]
@@ -37,19 +38,22 @@ const ProductPage: React.FC = () => {
   
   // Memoized filter values for performance and stability
 useEffect(()=>{
+ 
  setFilters((prev)=>{
   return {
-    category:searchParams.getAll('category'),
-    subCategory:searchParams.getAll('subCategory'),
-    color:searchParams.getAll('color'),
-    brand:searchParams.getAll('brand'),
+    category:searchParams.get('category')?.split(','),
+    subCategory:searchParams.get('subCategory')?.split('',),
+    color:searchParams.get('color')?.split(','),
+    brand:searchParams.get('brand')?.split(','),
     price:searchParams.get('price')?.split(',').map(Number) || [],
     gender:searchParams.get('gender') || ''
   }
  })
 
 },[searchParams])
-
+useEffect(()=>{
+setPage(1)
+},[location.pathname])
   // Fetch products when filters or slug change
   useEffect(() => {
     dispatch(getProducts({ slug ,searchParams,page}));
@@ -122,19 +126,19 @@ useEffect(()=>{
   );
   
 const apply=()=>{
-  if(filters.category.length>0) searchParams.set('category',filters.category.toString())
+  if(filters.category && filters.category.length>0) searchParams.set('category',filters.category.toString())
   else searchParams.delete('category')
-  if(filters.brand.length>0 )   searchParams.set('brand',filters.brand.toString())
+  if(filters.brand &&filters.brand.length>0 )   searchParams.set('brand',filters.brand.toString())
     else searchParams.delete('brand')
- if(filters.subCategory.length>0) searchParams.set('subCategory',filters.subCategory.toString())
+ if(filters.subCategory && filters.subCategory.length>0) searchParams.set('subCategory',filters.subCategory.toString())
   else searchParams.delete('subCategory')
-  if(filters.color.length>0 )  searchParams.set('color',filters.color.toString())
+  if(filters.color && filters.color.length>0 )  searchParams.set('color',filters.color.toString())
     else searchParams.delete('color')
   if(filters.gender ){
     searchParams.set('gender',filters.gender)
   }
   else searchParams.delete('gender')
-  if(filters.price.length>0 ) searchParams.set('price',filters.price.toString())
+  if(filters.price && filters.price.length>0 ) searchParams.set('price',filters.price.toString())
   else searchParams.delete('price')
   setSearchParams(searchParams,{replace:true})
   setIsDrawerOpen(false)
@@ -182,9 +186,9 @@ const fetchMoreData = () => {
                     setPage={setPage}
                     />
                     <InfiniteScroll
-                    dataLength={data.products.length}
+                    dataLength={data.products?data.products.length:0}
                     next={fetchMoreData}
-                    hasMore={data.totalProducts>data.products.length}
+                    hasMore={data.totalProducts>data.products?.length}
                     loader={data.loading && page > 1 && <Loader isInitial={false}/>}
                     endMessage={
                       <p style={{ textAlign: 'center', margin: '2rem 0' }}>
@@ -192,7 +196,7 @@ const fetchMoreData = () => {
                       </p>
                     }
                     >
-                    {data.products.length ?  
+                    {data.products?.length ?  
                      <ProductList
                     data={data.products}
                   isSimilar={false}
