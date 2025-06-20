@@ -215,12 +215,18 @@
     box-shadow: none;
     border-radius: 0;
     margin-top: 0;
+    /* Improved mobile positioning */
+    display: flex;
+    flex-direction: column;
   }
 
   .dropdown.mobile {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     width: 85%;
+    /* Add proper layering */
+    z-index: 1001;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   }
 
   .dropdown.mobile.active {
@@ -231,6 +237,10 @@
     flex-direction: column;
     min-height: 100vh;
     border-radius: 0;
+    /* Enable proper scrolling */
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
   }
 
   .mobileHeader {
@@ -240,6 +250,8 @@
     padding: 1rem 1.5rem;
     background-color: white;
     border-bottom: 1px solid #e5e7eb;
+    /* Prevent header from shrinking */
+    flex-shrink: 0;
   }
 
   .mobileHeader h2 {
@@ -255,12 +267,21 @@
     border-right: none;
     border-bottom: 1px solid #e5e7eb;
     padding: 0;
+    /* Prevent categories section from shrinking */
+    flex-shrink: 0;
+    /* Add max height and scroll if needed */
+    max-height: 200px;
+    overflow-y: auto;
   }
 
   .categoryItem {
     border-left: none;
     border-bottom: 1px solid #f3f4f6;
     padding: 1rem 1.5rem;
+    /* Improve touch targets */
+    min-height: 48px;
+    display: flex;
+    align-items: center;
   }
 
   .categoryItem:hover,
@@ -273,11 +294,17 @@
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
+    /* Enable smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Ensure it takes remaining space */
+    min-height: 0;
   }
 
   .subcategoriesGrid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    /* Remove any height constraints */
+    height: auto;
   }
 
   .subcategoryGroup {
@@ -290,14 +317,74 @@
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #00a65a;
+    /* Make titles sticky for better UX */
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
   }
 
   .subcategoryLink {
     font-family: 'Work Sans', sans-serif;
-    padding: 0.5rem 0;
+    padding: 0.75rem 0;
     font-size: 0.9rem;
+    /* Improve touch targets */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f9fafb;
+  }
+
+  .subcategoryLink:last-child {
+    border-bottom: none;
   }
 }
+
+/* Small mobile devices - UPDATE existing section */
+@media (max-width: 480px) {
+  .dropdown.mobile {
+    width: 100%;
+  }
+  
+  .subcategoriesSection {
+    padding: 0.75rem;
+  }
+  
+  .subcategoryGroup {
+    margin-bottom: 1.5rem;
+  }
+
+  .mobileHeader {
+    padding: 0.75rem 1rem;
+  }
+
+  .mobileHeader h2 {
+    font-size: 1.125rem;
+  }
+
+  .categoryItem {
+    padding: 0.875rem 1rem;
+  }
+}
+
+/* Add scroll indicators for better UX */
+.subcategoriesSection::-webkit-scrollbar {
+  width: 4px;
+}
+
+.subcategoriesSection::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.subcategoriesSection::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+.subcategoriesSection::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
 
 /* Small mobile devices */
 @media (max-width: 480px) {
