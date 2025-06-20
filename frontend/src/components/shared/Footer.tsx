@@ -6,10 +6,10 @@ import { useAuth } from '../../features/auth/hooks/useAuth';
 import { getToken } from '../../features/auth/utils/tokenUtils';
 
 const Footer: React.FC = () => {
-  const { logoutRequest, signOut } = useAuth();
-  const accessToken = getToken();
+  const { signOut } = useAuth();
+  // const accessToken = getToken();
   const handleLogoutClick = () => {
-    logoutRequest(accessToken);
+    // logoutRequest(accessToken);
     signOut();
   }
   return (

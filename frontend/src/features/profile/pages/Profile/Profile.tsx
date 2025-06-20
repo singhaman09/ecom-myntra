@@ -4,24 +4,18 @@ import styles from './Profile.module.css';
 import type { User } from '../../types/profile.types';
 import {getUser, updateUser} from '../../services/userService'; 
 
-
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<User>({
-    id: '',
-    firstName: '',
-    lastName: '',
+    _id: '',
+    name: '',
     email: '',
-    phone: '',
-    gender: 'other',
-    dateOfBirth: '',
-    avatar: ''
+    phoneNumber: ''
   });
   const [originalFormData, setOriginalFormData] = useState<User | null>(null);
-  const [fullNameInput, setFullNameInput] = useState('');
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -30,7 +24,6 @@ const Profile = () => {
         const userData = await getUser();
         setFormData(userData);
         setOriginalFormData(userData); 
-        setFullNameInput(`${userData.firstName} ${userData.lastName}`.trim());
       } catch (error) {
         console.error('Error loading user data:', error);
       } finally {
@@ -46,25 +39,11 @@ const Profile = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fullName = e.target.value;
-    setFullNameInput(fullName);
-    const names = fullName.trim().split(/\s+/);
-    setFormData(prev => ({
-      ...prev,
-      firstName: names[0] || '',
-      lastName: names.slice(1).join(' '),
-    }));
-  };
-
   const hasChanges = () => {
     if (!originalFormData) return false;
-
-    const currentFullName = fullNameInput.trim();
-    const originalFetchedFullName = `${originalFormData.firstName} ${originalFormData.lastName}`.trim();
     return (
-      currentFullName !== originalFetchedFullName ||
-      formData.phone !== originalFormData.phone
+      formData.name !== originalFormData.name ||
+      formData.phoneNumber !== originalFormData.phoneNumber
     );
   };
 
@@ -74,10 +53,12 @@ const Profile = () => {
 
     setIsUpdating(true);
     try {
-      const updatedUser = await updateUser(formData);
+      const updatedUser = await updateUser({
+        name: formData.name,
+        phoneNumber: formData.phoneNumber
+      });
       setFormData(updatedUser);
       setOriginalFormData(updatedUser);
-      setFullNameInput(`${updatedUser.firstName} ${updatedUser.lastName}`.trim());
 
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
@@ -92,7 +73,6 @@ const Profile = () => {
   const handleCancel = () => {
     if (originalFormData) {
       setFormData(originalFormData);
-      setFullNameInput(`${originalFormData.firstName} ${originalFormData.lastName}`.trim());
     }
     setIsEditing(false);
   };
@@ -126,8 +106,9 @@ const Profile = () => {
             <label className="form-label">Full Name</label>
             <input
               type="text"
-              value={fullNameInput}
-              onChange={handleFullNameChange}
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
               className="form-input"
               disabled={!isEditing || isUpdating} 
             />
@@ -152,8 +133,8 @@ const Profile = () => {
             <label className="form-label">Phone Number</label>
             <input
               type="tel"
-              name="phone"
-              value={formData.phone}
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleInputChange}
               className="form-input"
               disabled={!isEditing || isUpdating} 
@@ -189,7 +170,6 @@ const Profile = () => {
                     Saving...
                   </>
                 ) : (
-                  
                   <>
                     <Save size={16} />
                     Save Changes

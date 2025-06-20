@@ -67,8 +67,8 @@ export const useAuth = () => {
     [dispatch]
   );
   const logoutRequest = useCallback(
-    async (accessToken: string) => {
-      const result = await dispatch(logoutUser({accessToken})).unwrap();
+    async ( ) => {
+      const result = await dispatch(logoutUser()).unwrap();
       return result;
     },
     [dispatch]

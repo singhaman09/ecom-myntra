@@ -135,7 +135,7 @@ export interface ResetPasswordResponse {
 }
 
 export interface LogoutRequest {
-  accessToken: string;
+  // accessToken: string;
 }
 
 export interface logoutResponse {

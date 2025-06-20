@@ -2,70 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Home, Briefcase, MapPin, Edit2, Trash2, X } from 'lucide-react';
 import styles from './Addresses.module.css';
 import { countries } from 'countries-list';
-// import { useAppDispatch, useAppSelector } from '../../redux/hooks'; // Keep commented for now
-// import { createAddress, modifyAddress, removeAddress, fetchAddresses } from '../../redux/slices/addressSlice'; // Keep commented for now
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { createAddress, modifyAddress, removeAddress, fetchAddresses } from '../../redux/slices/addressSlice'; 
 import type { Address } from '../../types/profile.types';
 
 const countryList = Object.entries(countries)
   .map(([code, country]) => ({ code, name: (country as any).name }))
   .sort((a, b) => a.name.localeCompare(b.name));
 
-// Mock Data
-const MOCK_ADDRESSES: Address[] = [
-  {
-    id: '1',
-    type: 'home',
-    name: 'John Doe',
-    phone: '9876543210',
-    street: '123, Maple Street',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    country: 'IN',
-    postalCode: '400001',
-    isDefault: true,
-  },
-  {
-    id: '2',
-    type: 'work',
-    name: 'John Doe',
-    phone: '9876543211',
-    street: '101, Business Park, MG Road',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    country: 'IN',
-    postalCode: '560001',
-    isDefault: false,
-  },
-  {
-    id: '3',
-    type: 'other',
-    name: 'Jane Smith',
-    phone: '9876543212',
-    street: '5, Pine Avenue',
-    city: 'New Delhi',
-    state: 'Delhi',
-    country: 'IN',
-    postalCode: '110001',
-    isDefault: false,
-  },
-];
+
 
 const Addresses: React.FC = () => {
-  // Comment out Redux hooks for now
-  // const dispatch = useAppDispatch();
-  // const { items: addresses, loading, error } = useAppSelector((state) => state.address);
-
-  
-  const [addresses, setAddresses] = useState<Address[]>(MOCK_ADDRESSES);
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState<string | null>(null); 
-
+  const dispatch = useAppDispatch();
+  const { items: addresses = [], loading, error } = useAppSelector((state) => state.address);
   const [showModal, setShowModal] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
   const [formData, setFormData] = useState<Omit<Address, 'id'>>({
-    type: 'home',
+    addressType: 'home',
     name: '',
-    phone: '',
+    phoneNumber: '',
     street: '',
     city: '',
     state: '',
@@ -76,8 +31,7 @@ const Addresses: React.FC = () => {
 
 
   useEffect(() => {
-    //dispatch(fetchAddresses());
-    setAddresses(MOCK_ADDRESSES);
+    dispatch(fetchAddresses());
   }, []);
 
   const handleInputChange = (
@@ -93,16 +47,9 @@ const Addresses: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingAddress) {
-      setAddresses((prev) =>
-        prev.map((addr) =>
-          addr.id === editingAddress.id ? { ...addr, ...formData, id: addr.id } : addr
-        )
-      );
-      // dispatch(modifyAddress({ ...editingAddress, ...formData } as Address)); 
+      dispatch(modifyAddress({ ...editingAddress, ...formData } as Address)); 
     } else {
-      const newAddress = { ...formData, id: String(Date.now()) }; 
-      setAddresses((prev) => [...prev, newAddress]);
-      // dispatch(createAddress(formData)); 
+      dispatch(createAddress(formData)); 
     }
     handleCloseModal();
   };
@@ -110,9 +57,9 @@ const Addresses: React.FC = () => {
   const handleEdit = (address: Address) => {
     setEditingAddress(address);
     setFormData({
-      type: address.type,
+      addressType: address.addressType,
       name: address.name,
-      phone: address.phone,
+      phoneNumber: address.phoneNumber,
       street: address.street,
       city: address.city,
       state: address.state,
@@ -125,17 +72,16 @@ const Addresses: React.FC = () => {
 
   const handleRemove = (id: string) => {
     
-    setAddresses((prev) => prev.filter((addr) => addr.id !== id));
-    // dispatch(removeAddress(id)); 
+    dispatch(removeAddress(id)); 
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setEditingAddress(null);
     setFormData({
-      type: 'home',
+      addressType: 'home',
       name: '',
-      phone: '',
+      phoneNumber: '',
       street: '',
       city: '',
       state: '',
@@ -145,8 +91,8 @@ const Addresses: React.FC = () => {
     });
   };
 
-  const getAddressIcon = (type: string) => {
-    switch (type) {
+  const getAddressIcon = (addressType: string) => {
+    switch (addressType) {
       case 'home':
         return <Home size={16} />;
       case 'work':
@@ -176,12 +122,12 @@ const Addresses: React.FC = () => {
             <p className={styles.noAddresses}>No addresses found. Add a new one!</p>
         ) : (
           addresses.map((address: Address) => (
-            <div key={address.id} className={`${styles.addressCard} ${address.isDefault ? styles.default : ''}`}>
+            <div key={address._id} className={`${styles.addressCard} ${address.isDefault ? styles.default : ''}`}>
               <div>
                 <div className={styles.addressHeader}>
                   <div className={styles.addressType}>
-                    {getAddressIcon(address.type)}
-                    {address.type}
+                    {getAddressIcon(address.addressType)}
+                    {address.addressType}
                   </div>
                   {address.isDefault && <div className={styles.defaultBadge}>Default</div>}
                 </div>
@@ -192,7 +138,7 @@ const Addresses: React.FC = () => {
                   <p>
                     {address.city}, {address.state}, {countryList.find((c) => c.code === address.country)?.name} - {address.postalCode}
                   </p>
-                  <p className={styles.phoneNumber}>Phone: {address.phone}</p>
+                  <p className={styles.phoneNumber}>Phone: {address.phoneNumber}</p>
                 </div>
               </div>
 
@@ -200,7 +146,7 @@ const Addresses: React.FC = () => {
                 <button className={styles.actionButton} onClick={() => handleEdit(address)}>
                   <Edit2 size={14} />
                 </button>
-                <button className={`${styles.actionButton} ${styles.delete}`} onClick={() => handleRemove(address.id)}>
+                <button className={`${styles.actionButton} ${styles.delete}`} onClick={() => handleRemove(address._id)}>
                   <Trash2 size={14} />
                 </button>
               </div>
@@ -224,14 +170,14 @@ const Addresses: React.FC = () => {
                 <div className="form-group">
                   <label className="form-label">Address Type</label>
                   <div className={styles.typeSelector}>
-                    {(['home', 'work', 'other'] as const).map(type => (
+                    {(['home', 'work', 'other'] as const).map(addressType => (
                       <button
-                        key={type}
+                        key={addressType}
                         type="button"
-                        className={`${styles.typeButton} ${formData.type === type ? styles.active : ''}`}
-                        onClick={() => setFormData(prev => ({ ...prev, type }))}
+                        className={`${styles.typeButton} ${formData.addressType === addressType ? styles.active : ''}`}
+                        onClick={() => setFormData(prev => ({ ...prev, addressType }))}
                       >
-                        {type}
+                        {addressType}
                       </button>
                     ))}
                   </div>
@@ -253,8 +199,8 @@ const Addresses: React.FC = () => {
                     <label className="form-label">Phone Number</label>
                     <input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
                       onChange={handleInputChange}
                       className="form-input"
                       required

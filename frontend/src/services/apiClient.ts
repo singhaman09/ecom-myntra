@@ -7,16 +7,16 @@ declare module 'axios' {
 }
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3001/',
+  baseURL: 'http://172.50.3.140:3001/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor - only adds token if skipAuth is NOT true
+
 apiClient.interceptors.request.use(
   (config) => {
-    // Don't add token if skipAuth is true
+    
     if (!config.skipAuth) {
       const token = localStorage.getItem('auth_token');
       if (token) {

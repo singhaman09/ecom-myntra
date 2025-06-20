@@ -340,18 +340,7 @@ const ChangePassword: React.FC = () => {
             )}
           </button>
         </div>
-      </form>
-
-      <div className={styles.securityTips}>
-        <h4>Security Tips:</h4>
-        <ul>
-          <li>Use a unique password that you don't use elsewhere</li>
-          <li>Include a mix of letters, numbers, and special characters</li>
-          <li>Avoid using personal information like names or birthdays</li>
-          <li>Consider using a password manager</li>
-          <li>Change your password regularly</li>
-        </ul>
-      </div>
+      </form>    
     </div>
   );
 };

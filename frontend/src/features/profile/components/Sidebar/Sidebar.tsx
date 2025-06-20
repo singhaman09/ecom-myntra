@@ -15,14 +15,16 @@ import {
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 import type { SidebarItem } from '../../types/profile.types';
+import { useAuth } from '../../../auth/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   activeItem: string;
   onItemClick: (itemId: string) => void;
   user: {
-    firstName: string;
-    lastName: string;
+    name: string;
     email: string;
+    createdAt: string;
   };
   onLogout?: () => Promise<void>;
 }
@@ -33,8 +35,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   user,
   onLogout 
 }) => {
+  const { logoutRequest , signOut } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const navigate = useNavigate();
 
   const accountItems: SidebarItem[] = [
     {
@@ -114,9 +118,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const handleLogoutConfirm = async () => {
     if (!onLogout) {
-      // Fallback logout logic if no onLogout prop is provided
+      logoutRequest();
+      navigate('/login');
+      
       console.warn('No logout handler provided');
-      // You can add default logout logic here or just close modal
       setShowLogoutModal(false);
       return;
     }
@@ -125,11 +130,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     try {
       await onLogout();
       setShowLogoutModal(false);
-      // The parent component should handle redirect after successful logout
     } catch (error) {
       console.error('Logout failed:', error);
-      // Handle logout error - you might want to show a toast or alert
-      // For now, we'll just keep the modal open so user can try again
     } finally {
       setIsLoggingOut(false);
     }
@@ -170,8 +172,23 @@ const Sidebar: React.FC<SidebarProps> = ({
     </div>
   );
 
-  const getInitials = (firstName: string, lastName: string) => {
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  const parseNameAndGetInitials = (fullName: string) => {
+    if (!fullName) return '';
+    
+    const nameParts = fullName.trim().split(/\s+/);
+    const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
+    const lastInitial = nameParts[nameParts.length - 1]?.charAt(0).toUpperCase() || '';
+    if (nameParts.length === 1) {
+      return firstInitial;
+    }
+    
+    return firstInitial + lastInitial;
+  };
+
+  const getMemberSinceYear = (createdAt: string) => {
+    if (!createdAt) return '';
+    const year = new Date(createdAt).getFullYear();
+    return `Member Since: ${year}`;
   };
 
   return (
@@ -180,11 +197,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className={styles.sidebarContent}>
           <div className={styles.userInfo}>
             <div className={styles.avatar}>
-              {user?.firstName && user?.lastName ? getInitials(user.firstName, user.lastName) : ''}
+              {user?.name ? parseNameAndGetInitials(user.name) : ''}
             </div>
             <div className={styles.userDetails}>
-              <h3>{user.firstName} {user.lastName}</h3>
-              <p>{user.email}</p>
+              <h3>{user.name}</h3>
+              <p>{getMemberSinceYear(user.createdAt)}</p>
             </div>
           </div>       
 
