@@ -24,14 +24,15 @@ const WishlistList: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchWishlistItems());
+    console.log("fetch item")
   }, [dispatch]);
 
-  const handleRemoveFromWishlist = (itemId: string) => {
-    dispatch(removeFromWishlist(itemId));
+  const handleRemoveFromWishlist = async (itemId: string) => {
+    await dispatch(removeFromWishlist(itemId));
   };
 
-  const handleMoveToCart = (itemId: string) => {
-    dispatch(moveToCart(itemId));
+  const handleMoveToCart = async (itemId: string) => {
+    await dispatch(moveToCart(itemId));
   };
 
   const handlePageChange = (page: number) => {
@@ -89,7 +90,7 @@ const WishlistList: React.FC = () => {
               <WishlistCard
                 key={item.id}
                 item={item}
-                onRemove={() => handleRemoveFromWishlist(item.id)}
+                onRemove={() => handleRemoveFromWishlist(item.productId)}
                 onMoveToCart={() => handleMoveToCart(item.id)}
               />
             ))}
@@ -108,14 +109,14 @@ const WishlistList: React.FC = () => {
 
               <div className={styles.pageNumbers}>
                 {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => {
-                  let pageNum;
-                  if (totalPages <= 10) {
-                    pageNum = i + 1;
-                  } else {
-                    const start = Math.max(1, currentPage - 4);
-                    pageNum = start + i;
-                    if (pageNum > totalPages) pageNum = totalPages - (9 - i);
-                  }
+                  const pageNum = Math.max(
+                    1,
+                    Math.min(
+                      totalPages - 9,
+                      currentPage - 4
+                    )
+                  ) + i;
+                  if (pageNum > totalPages) return null;
 
                   return (
                     <button

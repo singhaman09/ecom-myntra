@@ -229,83 +229,85 @@
 // };
 
 // export default OrderCard;
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/orderCard.module.css';
 import shoes from '../../../assets/shoes.jpeg';
-const mockOrderData = {
-  orderId: "ORDER001927873",
-  itemCount: 1,
-  status: "Placed",
-  product: {
-    name: "shoes",
-    image: shoes,
-    orderDate: "21 June, 2021",
-    paymentMode: "Debit Card"
-  },
-  price: 1500
-};
+import type { Order } from '../types/orders';
 
 interface OrderCardProps {
-  orderData?: typeof mockOrderData;
+  order: Order;
 }
 
-const OrderCard: React.FC<OrderCardProps> = ({ orderData = mockOrderData }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const navigate = useNavigate();
-  const { orderId, itemCount, status, product, price } = orderData;
-  
+
   const getStatusColor = (status: string): string => {
     switch (status.toLowerCase()) {
-      case 'placed': return '#d4a574';
-      case 'delivered': return '#28a745';
-      case 'shipped': return '#007bff';
-      case 'cancelled': return '#dc3545';
-      default: return '#6c757d';
+      case 'placed':
+      case 'pending':
+      case 'processing':
+        return '#d4a574';
+      case 'delivered':
+        return '#28a745';
+      case 'shipped':
+        return '#007bff';
+      case 'cancelled':
+        return '#dc3545';
+      case 'returned':
+        return '#6c757d';
+      default:
+        return '#6c757d';
     }
   };
 
   const handleViewDetails = () => {
-    navigate(`/orders/order123`); 
+    navigate(`/orders/${order.id}`);
+  };
+
+  // Use first item for product details; adjust if multiple items need display
+  const primaryItem = order.items[0] || {
+    name: 'Unknown Product',
+    image: shoes,
   };
 
   return (
     <div className={styles.orderCard}>
       <div className={styles.orderHeader}>
         <div className={styles.orderInfo}>
-          <h3 className={styles.orderId}>{orderId}</h3>
-          <p className={styles.itemCount}>{itemCount} Item</p>
+          <h3 className={styles.orderId}>{order.id.slice(-8)}</h3>
+          <p className={styles.itemCount}>{order.items.length} Item{order.items.length !== 1 ? 's' : ''}</p>
         </div>
-        <div 
-          className={styles.statusBadge} 
-          style={{ backgroundColor: getStatusColor(status) }}
+        <div
+          className={styles.statusBadge}
+          style={{ backgroundColor: getStatusColor(order.status)}}
           onClick={handleViewDetails}
         >
-          {status}
+          {order.status}
         </div>
       </div>
-      
+
       <div className={styles.orderContent}>
         <div className={styles.productImage}>
-          <img 
-            src={product.image} 
-            alt={product.name}
+          <img
+            src={primaryItem.image || shoes}
+            alt={primaryItem.name}
             className={styles.productImg}
           />
         </div>
-        
+
         <div className={styles.productDetails}>
           <h4 className={styles.productName} onClick={handleViewDetails}>
-            {product.name}
+            {primaryItem.name}
           </h4>
           <div className={styles.orderMeta}>
-            <p className={styles.orderDate}>Order Date: {product.orderDate}</p>
-            <p className={styles.paymentMode}>Mode of Payment: {product.paymentMode}</p>
+            <p className={styles.orderDate}>Order Date: {new Date(order.orderDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+            <p className={styles.paymentMode}>Mode of Payment: {order.paymentMethod?.type?.toUpperCase() || 'N/A'}</p>
           </div>
         </div>
-        
+
         <div className={styles.priceSection}>
-          <span className={styles.price}>₹{price}</span>
+          <span className={styles.price}>₹{order.total.toLocaleString()}</span>
         </div>
       </div>
     </div>

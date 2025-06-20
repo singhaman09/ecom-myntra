@@ -6,8 +6,8 @@ import Home from "../features/home/pages/Home";
 import Login from "../features/auth/pages/Login";
 import Register from "../features/auth/pages/Register";
 import ForgotPassword from "../features/auth/pages/ForgotPassword";
-import ProductPage from "../features/product/pages/ProductPage";
-import ProductDetails from "../features/product/pages/ProductDetail";
+import ProductPage from "../features/product/pages/ProductPage/ProductPage";
+import ProductDetails from "../features/product/pages/ProductDetail/ProductDetail";
 import WishlistPage from "../features/wishlist/pages/WishlistPage";
 import OrdersPage from "../features/order/pages/Orderpage";
 import VerifyEmail from "../features/auth/pages/VerifyEmail";
@@ -29,6 +29,7 @@ import Notifications from "../features/profile/pages/Notifications/Notifications
 import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 import HelpSupport from "../features/help&support/pages/HelpSupport";
 import { PRODUCT_ROUTES } from "../features/product/Constants/Routes";
+import StoreLocator from "../features/locateStore/pages/StoreLocator/StoreLocator";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -121,7 +122,10 @@ const AppRoutes: React.FC = () => {
               ),
             },
             
-            
+            {
+              path:'/storeLocator',
+              element:<StoreLocator/>
+            }
           ],
           
         },

@@ -27,7 +27,6 @@
 
 /* Cart List Section */
 
-
 /* Modal */
 .modalOverlay {
   position: fixed;
@@ -136,10 +135,20 @@
   font-weight: 500;
   border-radius: 3px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+  letter-spacing: 1px;
 }
 
 .applyButton:hover {
-  background-color: #24d2af;
+  background: linear-gradient(
+    135deg,
+    #06654e 0%,
+    #088c6a 100%
+  ); /* Gradient for premium feel */
+  transform: translateY(-2px); /* Lift effect */
+  box-shadow: 0 4px 12px rgba(6, 101, 78, 0.3); /* Green-tinted shadow */
+  border-color: #088c6a; /* Match gradient */
 }
 
 /* Responsive Design */

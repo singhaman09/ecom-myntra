@@ -10,7 +10,7 @@ export interface WishlistItem {
   reviewCount: number;
   size?: string;
   color?: string;
-  inStock: boolean;
+  inStock: true;
   dateAdded: string;
   category: string;
   description: string;
@@ -25,7 +25,7 @@ export interface WishlistFilters {
     max: number;
   };
   brand: string;
-  inStock: boolean;
+  inStock: true;
   sortBy: 'newest' | 'oldest' | 'price-low' | 'price-high' | 'name';
 }
 
