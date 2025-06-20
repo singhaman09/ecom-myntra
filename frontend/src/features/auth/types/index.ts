@@ -53,8 +53,6 @@ export interface AuthState {
   passwordResetSuccess: boolean;
 }
 
-
-
 // authApi interfaces
 
 export interface AuthResponse {
@@ -134,12 +132,24 @@ export interface ResetPasswordResponse {
   message: string;
 }
 
-export interface LogoutRequest {
-  // accessToken: string;
-}
-
-export interface logoutResponse {
+// Updated logout interfaces - no request body needed
+export interface LogoutResponse {
   success: boolean;
   statusCode: number;
   message: string;
+}
+
+// New refresh token interfaces
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface RefreshTokenResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+  };
 }

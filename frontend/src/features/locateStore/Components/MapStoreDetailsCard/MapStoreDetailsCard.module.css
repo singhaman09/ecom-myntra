@@ -1,0 +1,77 @@
+
+.mapStoreDetailsCard {
+   
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .mapStoreDetailsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  
+  .mapStoreName {
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+  
+  .mapStoreDistance {
+    font-size: 0.875rem;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+  }
+  
+  .mapStoreDistanceIcon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.25rem;
+  }
+  
+  .mapStoreAddress {
+    color: #4b5563;
+    margin-bottom: 0.75rem;
+  }
+  
+  .mapStorePhone {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-bottom: 1rem;
+  }
+  
+  .mapStorePhoneIcon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+  }
+  
+  .openingHoursTitle {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .openingHoursList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  .openingHourItem {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .openingHourDay {
+    color: #4b5563;
+  }
+  
+  .openingHourTime {
+    color: #111827;
+  }

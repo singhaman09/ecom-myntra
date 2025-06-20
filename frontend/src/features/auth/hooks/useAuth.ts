@@ -11,7 +11,8 @@ import {
   resetPassword,
   clearAuthState,
   clearRegistrationData,
-  logoutUser
+  logoutUser,
+  refreshToken
 } from '../authSlice';
 import type { 
   LoginCredentials, 
@@ -66,8 +67,10 @@ export const useAuth = () => {
     },
     [dispatch]
   );
+
+  // Updated logout - no parameters needed
   const logoutRequest = useCallback(
-    async ( ) => {
+    async () => {
       const result = await dispatch(logoutUser()).unwrap();
       return result;
     },
@@ -85,6 +88,15 @@ export const useAuth = () => {
   const resetPasswordRequest = useCallback(
     async (data: ResetPasswordData) => {
       const result = await dispatch(resetPassword(data)).unwrap();
+      return result;
+    },
+    [dispatch]
+  );
+
+  // New refresh token function
+  const refreshTokenRequest = useCallback(
+    async () => {
+      const result = await dispatch(refreshToken()).unwrap();
       return result;
     },
     [dispatch]
@@ -113,6 +125,7 @@ export const useAuth = () => {
     resetPassword: resetPasswordRequest,
     signOut,
     logoutRequest,
+    refreshToken: refreshTokenRequest,
     clearError,
     clearAuthState: clearError,
     clearRegistrationData: clearRegData,

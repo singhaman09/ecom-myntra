@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const CongratulationsPage: React.FC = () => {
     const navigate = useNavigate();
   const handleShopNow = () => {
-    navigate('/');
+    navigate('/login');
   };
 
   return (

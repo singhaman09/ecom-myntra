@@ -1,11 +1,11 @@
 import React from 'react';
 import { useAppSelector } from '../../order/hooks/redux';
-import WishlistFilters from '../components/WishlistFilters';
+// import WishlistFilters from '../components/WishlistFilters';
 import WishlistList from '../components/WishlistList';
-import Button from '../../../components/UI/Button';
+// import Button from '../../../components/UI/Button';
 import styles from '../css/wishlistPage.module.css';
-import Layout from '../../../components/shared/Layout';
-import Sidebar from '../../order/components/Sidebar';
+// import Layout from '../../../components/shared/Layout';
+// import Sidebar from '../../order/components/Sidebar';
 
 const WishlistPage: React.FC = () => {
   const { items, loading } = useAppSelector((state) => state.wishlist);

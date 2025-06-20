@@ -1,11 +1,23 @@
-/* CategoryCarousel.module.css */
-
 .container {
   width: 100%;
   max-width: 70%;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px 10px; /* Reduced padding */
   position: relative;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    max-width: 70%;
+    padding: 15px 10px;
+  }
+}
+@media (max-width: 425px) {
+  .container {
+    max-width: 85%;
+    padding: 10px 5px; /* Further reduced padding */
+  }
 }
 
 .carouselWrapper {
@@ -30,8 +42,15 @@
   flex: 0 0 100%;
   display: grid;
   gap: 20px;
-  padding: 10px 20px;
+  padding: 10px 10px; /* Reduced padding */
   scroll-snap-align: start;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .categoriesPage {
+    padding: 5px 10px; /* Further reduced */
+  }
 }
 
 /* Desktop: Single row layout */

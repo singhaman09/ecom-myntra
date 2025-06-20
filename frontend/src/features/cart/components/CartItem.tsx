@@ -2,6 +2,7 @@
 import React from 'react';
 import type { CartItem } from '../types/cart';
 import styles from './styles/CartItem.module.css';
+import { DISCOUNT } from '../staticData/StaticData';
 
 interface Props {
   item: CartItem;
@@ -24,19 +25,19 @@ const CartItem: React.FC<Props> = ({ item, onRemove, onQuantityChange }) => {
         {item.desc && <p className={styles.itemDesc}>{item.desc}</p>}
         <div className={styles.priceContainer}>
           <span className={styles.itemPrice}>₹{item.price}</span>
-          {item.discount && (
+          {DISCOUNT && (
             <>
               <span className={styles.originalPrice}>
-                ₹{Math.round(item.price / (1 - item.discount / 100))}
+                ₹{Math.round(item.price / (1 - DISCOUNT / 100))}
               </span>
-              <span className={styles.discount}>{item.discount}% OFF</span>
+              <span className={styles.discount}>{DISCOUNT}% OFF</span>
             </>
           )}
         </div>
         <div className={styles.controlsContainer}>
           <div className={styles.qtyControls}>
             <button
-              onClick={() => onQuantityChange(item.id, item.quantity - 1)}
+              onClick={() => onQuantityChange(item.productId, item.quantity - 1)}
               disabled={item.quantity <= 1}
               className={styles.qtyBtn}
               aria-label="Decrease quantity"
@@ -45,7 +46,7 @@ const CartItem: React.FC<Props> = ({ item, onRemove, onQuantityChange }) => {
             </button>
             <span className={styles.qtyDisplay}>{item.quantity}</span>
             <button
-              onClick={() => onQuantityChange(item.id, item.quantity + 1)}
+              onClick={() => onQuantityChange(item.productId, item.quantity + 1)}
               className={styles.qtyBtn}
               aria-label="Increase quantity"
             >
@@ -54,7 +55,7 @@ const CartItem: React.FC<Props> = ({ item, onRemove, onQuantityChange }) => {
           </div>
           <button
             className={styles.removeBtn}
-            onClick={() => onRemove(item.id)}
+            onClick={() => onRemove(item.productId)}
             aria-label={`Remove ${item.name} from cart`}
           >
             Remove

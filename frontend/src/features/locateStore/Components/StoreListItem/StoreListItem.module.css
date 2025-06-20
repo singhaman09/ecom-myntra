@@ -1,0 +1,122 @@
+.storeListItem {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.storeListItemContent {
+  display: flex;
+  flex-direction: column; 
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.storeImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  background-color: #e5e7eb;
+  flex-shrink: 0;
+  align-self: center; 
+}
+
+.storeDetails {
+  flex: 1;
+  min-width: 0;
+  margin-top: 0; 
+}
+
+.storeName {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.storeAddress {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.storeContactInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-end;
+}
+
+.infoIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.25rem;
+}
+
+.storeHoursToday {
+  display: flex;
+  align-items: center;
+
+  font-size: 0.875rem;
+}
+
+.openHoursIcon {
+  color: #16a34a;
+}
+.button{
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #9ca3af;
+  padding: 5px;
+  width: 50px;
+  justify-content: center;
+}
+.openHoursText {
+  color: #16a34a;
+  font-weight: 500;
+  margin-left: 0.25rem;
+}
+
+.openHoursTime {
+  color: #111827;
+  margin-left: 0.25rem;
+}
+
+.listItemArrow {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin-top: 0.5rem; /* Space above arrow on mobile */
+  }
+
+
+@media (min-width: 768px) {
+  .storeListItemContent {
+    flex-direction: row;
+    align-items: center;
+
+  }
+  .storeImage {
+    align-self: flex-start;
+    width: 7rem;
+    height: 7rem;
+  }
+  .storeDetails {
+    margin-top: -20px; 
+  }
+  .listItemArrow {
+    align-self: end;
+    margin-top: 0;
+  }
+}
