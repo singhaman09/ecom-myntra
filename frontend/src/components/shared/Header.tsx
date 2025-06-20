@@ -323,23 +323,6 @@ const Header: React.FC = () => {
             activeCategory=""
             isMobileTriggered={true}
           />
-        {/* Mobile Navigation */}
-        <div
-          className={`${styles.mobileNav} ${
-            isMobileMenuOpen ? styles.active : ""
-          }`}
-        >
-          <div className={styles.mobileNavLinks}>
-            <Link to={`${PRODUCT_ROUTES.list}/men`} className={styles.mobileNavLink}>
-              Men
-            </Link>
-            <Link to={`${PRODUCT_ROUTES.list}/women`} className={styles.mobileNavLink}>
-              Women
-            </Link>
-            <Link to={`${PRODUCT_ROUTES.list}/kids`} className={styles.mobileNavLink}>
-              Kids
-            </Link>
-          </div>
         </div>
       </div>
     </header>
