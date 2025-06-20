@@ -39,7 +39,7 @@ export const createAddress = createAsyncThunk(
     try {
       const newAddr = await addAddress(address);
       if (address.isDefault) {
-        await setDefaultAddress(newAddr.id);
+        await setDefaultAddress(newAddr._id);
       }
       return newAddr;
     } catch (err) {
@@ -52,9 +52,9 @@ export const modifyAddress = createAsyncThunk(
   'addresses/modifyAddress',
   async (address: Address, { rejectWithValue }) => {
     try {
-      const updated = await updateAddress(address.id, address);
+      const updated = await updateAddress(address._id, address);
       if (address.isDefault) {
-        await setDefaultAddress(updated.id);
+        await setDefaultAddress(updated._id);
       }
       return updated;
     } catch {
@@ -81,19 +81,27 @@ const addressSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Fetch addresses
       .addCase(fetchAddresses.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchAddresses.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload;
+        state.items = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchAddresses.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
+      
+      // createAddress
+      .addCase(createAddress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(createAddress.fulfilled, (state, action) => {
+        state.loading = false;
         if (action.payload.isDefault) {
           state.items = state.items.map((addr) => ({
             ...addr,
@@ -102,19 +110,45 @@ const addressSlice = createSlice({
         }
         state.items.push(action.payload);
       })
+      .addCase(createAddress.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      
+      //modifyAddress
+      .addCase(modifyAddress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(modifyAddress.fulfilled, (state, action) => {
+        state.loading = false;
         state.items = state.items.map((addr) =>
-          addr.id === action.payload.id ? action.payload : addr
+          addr._id === action.payload._id ? action.payload : addr
         );
         if (action.payload.isDefault) {
           state.items = state.items.map((addr) => ({
             ...addr,
-            isDefault: addr.id === action.payload.id,
+            isDefault: addr._id === action.payload._id,
           }));
         }
       })
+      .addCase(modifyAddress.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      
+      //removeAddress
+      .addCase(removeAddress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(removeAddress.fulfilled, (state, action) => {
-        state.items = state.items.filter((addr) => addr.id !== action.payload);
+        state.loading = false;
+        state.items = state.items.filter((addr) => addr._id !== action.payload);
+      })
+      .addCase(removeAddress.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

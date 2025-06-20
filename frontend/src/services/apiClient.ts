@@ -15,10 +15,10 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor - only adds token if skipAuth is NOT true
+
 apiClient.interceptors.request.use(
   (config) => {
-    // Don't add token if skipAuth is true
+    
     if (!config.skipAuth) {
       const token = getToken();
       console.log(token);

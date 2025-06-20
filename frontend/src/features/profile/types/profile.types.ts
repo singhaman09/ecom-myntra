@@ -1,19 +1,26 @@
 export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
+  _id: string;
+  name: string;
   email: string;
-  phone: string;
-  gender: 'male' | 'female' | 'other';
-  dateOfBirth: string;
-  avatar?: string;
+  phoneNumber: string;
+  role?: string;
+  isActive?: string;
+  isVerified?: boolean;
+  deviceId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
+  addresses?: Address[];
+  // gender?: 'male' | 'female' | 'other';
+  // dateOfBirth?: string;
+  // avatar?: string;
 }
 
 export interface Address {
-  id: string;
-  type: 'home' | 'work' | 'other';
+  _id: string;
+  addressType: 'home' | 'work' | 'other';
   name: string;
-  phone: string;
+  phoneNumber: string;
   street: string;
   city: string;
   state: string;
@@ -33,7 +40,7 @@ export interface RawApiAddress {
   id?: string;
   type?: string;
   name?: string;
-  phone?: string;
+  phoneNumber?: string;
   street: string;
   city: string;
   state: string;
@@ -41,7 +48,6 @@ export interface RawApiAddress {
   postalCode: string;
   isDefault?: boolean;
 }
-
 
 export interface Order {
   id: string;
