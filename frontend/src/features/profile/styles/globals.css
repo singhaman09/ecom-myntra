@@ -108,7 +108,7 @@ input[type="checkbox"] {
   text-decoration: none;
   color: inherit;
   transition: var(--transition-fast);
-} */
+}
 
 /* For special Druk text (add class="druk-text" to elements) */
 /* .druk-text {
