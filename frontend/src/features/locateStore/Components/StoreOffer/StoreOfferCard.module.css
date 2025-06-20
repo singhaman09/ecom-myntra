@@ -1,38 +1,49 @@
-
 .offerCard {
-    background: linear-gradient(to right, #fb923c, #f97316);
+  background-image:
+  linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.2)),
+  url('../../../../assets/shoes.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff; /* Ensures text is visible over dark overlay */
+   position: relative;
     border-radius: 0.5rem;
     padding: 1rem;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    overflow: hidden;
+    flex: 0 0 100%;
+    width: 100%;
   }
   
   .offerContent {
-    flex: 1;
+   display: flex;
+   gap: 30px;
+   align-items: center;
   }
   
   .offerTitle {
     font-weight: 600;
     font-size: 1.125rem;
     margin-bottom: 0.5rem;
+    font-family: 'Work sans' sans-serif;
+    margin-top:0px;
   }
   
   .offerDescription {
     font-size: 0.875rem;
     opacity: 0.9;
+    font-family:'Roboto';
   }
   
   .offerImageWrapper {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
   
   .offerImage {
-    width: 3rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     object-fit: cover;
     border-radius: 0.25rem;
   }

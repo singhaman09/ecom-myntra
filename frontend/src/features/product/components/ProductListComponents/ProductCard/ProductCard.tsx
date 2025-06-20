@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import styles from './ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -16,20 +16,20 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
   const [modalOpen, setModalOpen] = useState(false);
+  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    (e.currentTarget as HTMLImageElement).src = defaultProductImage;
+    (e.currentTarget as HTMLImageElement).onerror = null;
+  },[]);
   return (
     <>
     <div className={styles.card} onClick={()=>navigate(`/productDetails/${product._id}`)}>
       {/* Image Container */}
       <div className={styles.imageContainer}>
         <img 
-          src={product.imageUrl} 
+          src={product.images?.find(val=>val.isPrimary)?.url} 
           alt={product.name}
           className={styles.productImage}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = defaultProductImage;
-           
-            (e.currentTarget as HTMLImageElement).onerror = null;
-          }}
+          onError={handleImageError}
         />
         
         {/* Wishlist Button */}
