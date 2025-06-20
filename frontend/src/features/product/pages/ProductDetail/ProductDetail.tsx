@@ -95,7 +95,7 @@ const ProductDetails = () => {
 
   const handleColor = useCallback((color: string) => {
     setNotCompatible({ color: "", size: "" });
-    if (!variants.find((v) => v.color === color && v.size === selectedSize) && selectedColor) {
+    if (!variants.find((v) => v.color === color && v.size === selectedSize) && selectedSize) {
       setNotCompatible({ color: color, size: selectedSize });
     }
     searchParams.set("color", color);
