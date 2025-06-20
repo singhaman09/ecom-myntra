@@ -3,6 +3,7 @@ import { Search, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
 import styles from "./css/Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import CategoryDropdown from "./CategoryDropDown";
+import { useAuth } from "../../features/auth/hooks/useAuth";
 import { PRODUCT_ROUTES } from "../../features/product/Constants/Routes";
 
 const dummySuggestions = [
@@ -19,25 +20,20 @@ const dummySuggestions = [
 ];
 
 const Header: React.FC = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [activeCategoryHover, setActiveCategoryHover] = useState<string>("");
+  const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-    setIsMobileSearchOpen(false);
-  };
-
-  const toggleMobileSearch = () => {
-    setIsMobileSearchOpen(!isMobileSearchOpen);
-    setIsMobileMenuOpen(false);
+  const toggleMobileCategory = () => {
+    setIsMobileCategoryOpen(!isMobileCategoryOpen);
   };
 
   const handleBagClick = () => {
@@ -108,7 +104,44 @@ const Header: React.FC = () => {
   const handleDropdownClose = () => {
     setIsCategoryDropdownOpen(false);
     setActiveCategoryHover("");
+    setIsMobileCategoryOpen(false);
   };
+
+  const handleProfileClick = () => {
+    if (isAuthenticated) {
+      navigate("/profile");
+    } else {
+      setIsProfileDropdownOpen(!isProfileDropdownOpen);
+    }
+  };
+
+  const handleSignIn = () => {
+    setIsProfileDropdownOpen(false);
+    navigate("/login");
+  };
+
+  const handleSignUp = () => {
+    setIsProfileDropdownOpen(false);
+    navigate("/signup");
+  };
+
+  // Close profile dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.profile-container')) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+
+    if (isProfileDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isProfileDropdownOpen]);
 
   return (
     <header className={styles.header}>
@@ -127,9 +160,9 @@ const Header: React.FC = () => {
             {/* Mobile Menu Button */}
             <button
               className={styles.mobileMenuButton}
-              onClick={toggleMobileMenu}
+              onClick={toggleMobileCategory}
             >
-              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {isMobileCategoryOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
             {/* Logo */}
@@ -179,7 +212,7 @@ const Header: React.FC = () => {
             </div>
           </nav>
 
-          {/* Desktop Search Bar */}
+          {/* Desktop & Tablet Search Bar */}
           <div className={styles.searchContainer} style={{ position: "relative" }}>
             <div className={styles.searchWrapper}>
               <Search className={styles.searchIcon} />
@@ -210,22 +243,27 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile Search Button */}
-          <button
-            className={styles.mobileMenuButton}
-            onClick={toggleMobileSearch}
-          >
-            <Search size={20} />
-          </button>
-
           {/* User Actions */}
           <div className={styles.userActions}>
             <div
-              className={styles.userAction}
-              onClick={() => navigate("/profile")}
+              className={`${styles.userAction} profile-container`}
+              onClick={handleProfileClick}
+              style={{ position: 'relative' }}
             >
               <User className={styles.userActionIcon} />
               <span className={styles.userActionText}>Profile</span>
+              
+              {/* Profile Dropdown for Unauthenticated Users */}
+              {!isAuthenticated && isProfileDropdownOpen && (
+                <div className={styles.profileDropdown}>
+                  <div className={styles.dropdownItem} onClick={handleSignIn}>
+                    Sign In
+                  </div>
+                  <div className={styles.dropdownItem} onClick={handleSignUp}>
+                    Sign Up
+                  </div>
+                </div>
+              )}
             </div>
             <div
               className={`${styles.userAction} ${styles.bagAction}`}
@@ -246,13 +284,8 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Search */}
-        <div
-          className={`${styles.mobileSearch} ${
-            isMobileSearchOpen ? styles.active : ""
-          }`}
-          style={{ position: "relative" }}
-        >
+        {/* Mobile Search - Always visible */}
+        <div className={styles.mobileSearch} style={{ position: "relative" }}>
           <div className={styles.mobileSearchWrapper}>
             <Search className={styles.searchIcon} />
             <form onSubmit={handleSubmit} autoComplete="off">
@@ -282,23 +315,14 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div
-          className={`${styles.mobileNav} ${
-            isMobileMenuOpen ? styles.active : ""
-          }`}
-        >
-          <div className={styles.mobileNavLinks}>
-            <Link to={`${PRODUCT_ROUTES.list}/men`} className={styles.mobileNavLink}>
-              Men
-            </Link>
-            <Link to={`${PRODUCT_ROUTES.list}/women`} className={styles.mobileNavLink}>
-              Women
-            </Link>
-            <Link to={`${PRODUCT_ROUTES.list}/kids`} className={styles.mobileNavLink}>
-              Kids
-            </Link>
-          </div>
+        {/* Mobile Category Dropdown */}
+        <div>
+          <CategoryDropdown
+            isOpen={isMobileCategoryOpen}
+            onClose={handleDropdownClose}
+            activeCategory=""
+            isMobileTriggered={true}
+          />
         </div>
       </div>
     </header>

@@ -149,7 +149,6 @@
   margin: 0 auto;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .legalContainer {
     padding: var(--spacing-lg);

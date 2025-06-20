@@ -54,7 +54,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, total
       </div>
       <div className={styles.total}>
         <span className={styles.totalLabel}>Total Amount</span>
-        <span className={styles.totalPrice}>₹{finalTotal}</span>
+        <span className={styles.totalPrice}>₹{finalTotal.toFixed(2)}</span>
       </div>
       <button
         className={styles.checkoutButton}
