@@ -26,7 +26,7 @@ const SideBarFilters: React.FC<SideFilterProps> = ({
           )}
           <input
             type="checkbox"
-            checked={selectedData.includes(item)}
+            checked={selectedData && selectedData.includes(item)}
             onChange={e => handleChange(item, e.target.checked)}
           />
         </label>

@@ -8,12 +8,12 @@ export interface sideBarInterface {
     categories:string[]
   }
   export interface filters{
-    category: string[];
-    subCategory: string[];
-    brand: string[];
-    color: string[];
+    category: string[] |undefined;
+    subCategory: string[]|undefined;
+    brand: string[]|undefined;
+    color: string[]|undefined;
     gender: string;
-    price: number[];
+    price: number[]|undefined;
   }
   export interface UpperFilterProps  {
     setIsDrawerOpen:(value:boolean)=>void
@@ -23,6 +23,6 @@ export interface sideBarInterface {
   export interface SideFilterProps {
     data: string[];
     type: string;
-    selectedData: string[];
+    selectedData: string[] | undefined;
     handleChange: (name: string, checked: boolean) => void;
   }
