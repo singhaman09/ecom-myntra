@@ -18,8 +18,9 @@ import type {
   VerifyOtpResponse,
   ResetPasswordRequest,
   ResetPasswordResponse,
-  LogoutRequest,
-  logoutResponse
+  RefreshTokenRequest,
+  RefreshTokenResponse,
+  LogoutResponse
 } from '../types';
 
 // Add skipAuth: true to these calls since they don't need authentication
@@ -58,7 +59,14 @@ export const resetPasswordAPI = async (data: ResetPasswordRequest): Promise<Rese
   return res.data;
 };
 
-export const logoutAPI = async (data: LogoutRequest): Promise<logoutResponse> => {
-  const res = await apiClient.post('/users/logout', data, { skipAuth: false});
+// Fixed logout API - DELETE method with no body, token in header
+export const logoutAPI = async (): Promise<LogoutResponse> => {
+  const res = await apiClient.delete('/users/logout', { skipAuth: false });
   return res.data;
-}
+};
+
+// New refresh token API
+export const refreshTokenAPI = async (data: RefreshTokenRequest): Promise<RefreshTokenResponse> => {
+  const res = await apiClient.post('/users/refresh-token', data, { skipAuth: true });
+  return res.data;
+};

@@ -3,14 +3,17 @@ import React from 'react';
 import { Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
 import styles from './css/Footer.module.css';
 import { useAuth } from '../../features/auth/hooks/useAuth';
-import { getToken } from '../../features/auth/utils/tokenUtils';
+import { useNavigate } from 'react-router-dom';
+// import { getToken } from '../../features/auth/utils/tokenUtils';
 
 const Footer: React.FC = () => {
-  const { logoutRequest, signOut } = useAuth();
-  const accessToken = getToken();
+  const { logoutRequest } = useAuth();
+  const navigate = useNavigate();
   const handleLogoutClick = () => {
-    logoutRequest(accessToken);
-    signOut();
+    logoutRequest();
+    navigate('/login');
+    
+    // signOut();
   }
   return (
     <footer className={styles.footer}>
@@ -65,6 +68,7 @@ const Footer: React.FC = () => {
                 <Twitter className={`${styles.socialIcon} ${styles.twitter}`} />
                 <Youtube className={`${styles.socialIcon} ${styles.youtube}`} />
                 <Instagram className={`${styles.socialIcon} ${styles.instagram}`} />
+                <button type="submit" onClick={handleLogoutClick}>logout</button>
               </div>
             </div>
           </div>
@@ -90,7 +94,6 @@ const Footer: React.FC = () => {
                   <h4>Return within 30days</h4>
                   <p>of receiving your order</p>
                 </div>
-                <button type="submit" onClick={handleLogoutClick}>logout</button>
               </div>
             </div>
           </div>

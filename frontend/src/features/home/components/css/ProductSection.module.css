@@ -8,9 +8,16 @@
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 70%;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+    padding: 0 2rem;
+  }
 }
 
 .header {
