@@ -85,16 +85,17 @@ const ProductDetails = () => {
 
   const handleSize = useCallback((size: string) => {
     setNotCompatible({ color: "", size: "" });
-    if (!variants.find((v) => v.size === size && v.color === selectedColor)) {
+    if (!variants.find((v) => v.size === size && v.color === selectedColor )&& selectedColor) {
       setNotCompatible({ color: selectedColor, size: size });
     }
+    
     searchParams.set("size", size);
     setSearchParams(searchParams, { replace: true });
   },[notCompatible,searchParams]);
 
   const handleColor = useCallback((color: string) => {
     setNotCompatible({ color: "", size: "" });
-    if (!variants.find((v) => v.color === color && v.size === selectedSize)) {
+    if (!variants.find((v) => v.color === color && v.size === selectedSize) && selectedColor) {
       setNotCompatible({ color: color, size: selectedSize });
     }
     searchParams.set("color", color);
@@ -245,7 +246,7 @@ const ProductDetails = () => {
               const sizeVariants = variants.filter((v) => v.size === size);
               const isOutOfStock = !sizeVariants.some((v) => v.stock > 0);
               const variantForSelectedColor = variants.find(
-                (v) => v.color === selectedColor && v.size === size
+                (v) => v.color == selectedColor && v.size == size
               );
               const isSelected = selectedSize === size;
               return (
