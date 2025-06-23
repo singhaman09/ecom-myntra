@@ -1,36 +1,43 @@
-/* Base styles for mobile (≤480px) */
+/* Base styles for all screens (mobile-first, optimized for responsiveness) */
 .cartSummary {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 12px;
+  gap: clamp(0.5rem, 2.5vw, 0.75rem); /* Responsive gap */
+  padding: clamp(0.5rem, 2vw, 0.75rem); /* Responsive padding */
   background-color: #fff;
-  border-left: 1px solid #ddd;
+  /* border-left: 1px solid #ddd; */
   border-top: none;
   border-right: none;
-  margin-bottom: 8px;
+  margin-bottom: clamp(0.25rem, 1.5vw, 0.5rem); /* Responsive margin */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: clamp(80%, 90vw, 95%); /* Responsive width */
+  max-width: 400px; /* Cap for mobile */
+  margin-left: auto;
+  margin-right: auto; /* Center the summary */
 }
 
 .summaryTitle {
-  /* font-size: 19px; */
-  font-size: 40px;
+  font-size: clamp(1rem, 4.5vw, 1.25rem); /* Responsive font size */
   font-weight: 700;
-  color: #333;
-  margin-bottom: 4px;
+  color: #065518;
+  margin-bottom: clamp(0.2rem, 1vw, 0.4rem); /* Responsive margin */
+  text-align: center; /* Center for mobile */
 }
 
 .priceItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: clamp(0.65rem, 2.5vw, 0.8rem); /* Responsive font size */
   color: #555;
-  padding: 4px 0;
+  padding: clamp(0.2rem, 1vw, 0.4rem) 0; /* Responsive padding */
 }
 
 .priceItem span:first-child {
   flex: 1;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Handle long text */
 }
 
 .priceItem span:last-child {
@@ -39,10 +46,10 @@
 
 .knowMore,
 .applyCoupon {
-  font-size: 12px;
+  font-size: clamp(0.65rem, 2.5vw, 0.8rem); /* Responsive font size */
   color: #044236;
   text-decoration: none;
-  margin-left: 4px;
+  margin-left: clamp(0.2rem, 1vw, 0.4rem); /* Responsive margin */
   font-weight: 600;
 }
 
@@ -65,41 +72,91 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
+  padding: clamp(0.4rem, 1.5vw, 0.6rem) 0; /* Responsive padding */
   border-top: 1px solid #ddd;
-  margin-top: 8px;
+  margin-top: clamp(0.4rem, 1.5vw, 0.6rem); /* Responsive margin */
 }
 
 .totalLabel {
-  font-size: 14px;
+  font-size: clamp(0.8rem, 3vw, 0.9rem); /* Responsive font size */
   font-weight: 600;
   color: #333;
 }
 
 .totalPrice {
-  font-size: 14px;
+  font-size: clamp(0.8rem, 3vw, 0.9rem); /* Responsive font size */
   font-weight: 600;
   color: #333;
 }
 
 .checkoutButton {
-  background-color: #08681f; /* Match app's primary color */
+  background-color: #08681f; /* Primary color */
   color: white;
   border: none;
-  padding: 12px;
-  font-size: 12px;
+  padding: clamp(0.6rem, 2.5vw, 0.8rem); /* Responsive padding */
+  font-size: clamp(0.65rem, 2.5vw, 0.8rem); /* Responsive font size */
   font-weight: 600;
   border-radius: 4px;
   cursor: pointer;
   text-transform: uppercase;
-  min-height: 44px; /* Ensure touch target size */
+  min-height: clamp(2.2rem, 9vw, 2.75rem); /* Responsive touch target */
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%; /* Full width for mobile */
+  transition: background-color 0.2s ease;
 }
 
 .checkoutButton:hover {
-  background-color: #08681f; /* Darker shade on hover */
+  background-color: #065518; /* Slightly darker shade on hover */
+}
+
+/* Mobile-specific adjustments (≤480px) */
+@media (max-width: 480px) {
+  .cartSummary {
+    padding: clamp(
+      0.5rem,
+      3vw,
+      0.75rem
+    ); /* Tighter padding for small screens */
+    width: clamp(85%, 95vw, 100%); /* Slightly wider for very small screens */
+    max-width: 360px; /* Smaller cap for tiny screens */
+  }
+
+  .summaryTitle {
+    font-size: clamp(
+      0.9rem,
+      5vw,
+      1.1rem
+    ); /* Slightly smaller for tiny screens */
+  }
+
+  .priceItem {
+    font-size: clamp(0.6rem, 2.8vw, 0.75rem); /* Smaller font */
+    padding: clamp(0.15rem, 0.8vw, 0.3rem) 0;
+  }
+
+  .knowMore,
+  .applyCoupon {
+    font-size: clamp(0.6rem, 2.8vw, 0.75rem);
+    margin-left: clamp(0.15rem, 0.8vw, 0.3rem);
+  }
+
+  .total {
+    padding: clamp(0.3rem, 1.2vw, 0.5rem) 0;
+    margin-top: clamp(0.3rem, 1.2vw, 0.5rem);
+  }
+
+  .totalLabel,
+  .totalPrice {
+    font-size: clamp(0.75rem, 2.8vw, 0.85rem);
+  }
+
+  .checkoutButton {
+    font-size: clamp(0.6rem, 2.8vw, 0.75rem);
+    padding: clamp(0.5rem, 2.8vw, 0.7rem);
+    min-height: clamp(2rem, 8vw, 2.5rem); /* Smaller touch target */
+  }
 }
 
 /* Medium screens (tablets, ≥481px) */
@@ -146,17 +203,22 @@
 
   .summaryTitle {
     font-size: 20px;
-  } 
+    text-align: start;
+  }
 
   .priceItem {
-    font-size: 14px;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 600;
     padding: 8px 0;
   }
 
   .knowMore,
   .applyCoupon {
-    font-size: 14px;
+    font-size: 13px;
     margin-left: 6px;
+    font-weight: 600;
+    text-decoration: none !important;
   }
 
   .total {

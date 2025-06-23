@@ -6,9 +6,10 @@ import type { Store } from '../../interfaces/Store';
 
 interface StoreListItemProps {
   store: Store;
+  setActiveView: (view: 'list' | 'map') => void;
 }
 
-const StoreListItem: React.FC<StoreListItemProps> = ({ store }) => {
+const StoreListItem: React.FC<StoreListItemProps> = ({ store,setActiveView }) => {
   return (
     <div className={styles.storeListItem}>
       <div className={styles.storeListItemContent}>
@@ -38,7 +39,7 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ store }) => {
             <span className={styles.openHoursTime}>{store.hours.today}</span>
           </div>
         </div>
-        <button className={styles.button}><ArrowRight className={styles.listItemArrow}  /></button>
+        <button className={styles.button}><ArrowRight className={styles.listItemArrow} onClick={()=>setActiveView('map')}  /></button>
       </div>
     </div>
   );

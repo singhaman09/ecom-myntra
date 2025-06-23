@@ -125,5 +125,6 @@
   .listItemArrow {
     align-self: end;
     margin-top: 0;
+    cursor: pointer;
   }
 }

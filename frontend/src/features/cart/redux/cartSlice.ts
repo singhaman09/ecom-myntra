@@ -17,6 +17,12 @@ const initialState: CartState = {
   error: null,
 };
 
+const addCartInterface = {
+  productId : "",
+  size : "",
+  color : "",
+}
+
 // Get all cart items
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
@@ -33,9 +39,9 @@ export const fetchCart = createAsyncThunk(
 // Add item
 export const addCartItem = createAsyncThunk(
   "cart/addItem",
-  async (productId: string, { rejectWithValue }) => {
+  async ({productId, size, color} : typeof addCartInterface,{ rejectWithValue }) => {
     try {
-      const res = await addItem(productId);
+      const res = await addItem(productId, size, color);
       return res;
     } catch (err: any) {
       return rejectWithValue(err.message || "Error adding item to cart");
