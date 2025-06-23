@@ -1,4 +1,3 @@
-// components/ContactUsModal.tsx
 import React from 'react';
 import type { ContactOption } from '../types/support';
 import styles from '../css/Helpsupport.module.css';
@@ -37,7 +36,6 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose, onWrit
     if (option.type === 'write') {
       onWriteToUs();
     } else {
-      // Handle other contact options
       console.log(`Selected: ${option.type}`);
     }
   };

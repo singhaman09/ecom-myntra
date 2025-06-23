@@ -18,6 +18,7 @@ import AvailableOffers, { type Offer } from "../../components/ProductDetailsComp
 import ProductInfo from "../../components/ProductDetailsComponents/ProductInfo/ProductInfo";
 import BoughtTogether from "../../components/ProductDetailsComponents/BoughtTogether/BoughtTogether";
 import { getColorCodeFromString } from "../../utils/colorsMapping";
+import { handleImageError } from "../../utils/HandleImageError";
 const Breadcrumbs = React.lazy(() => import("../../utils/BreadCrumbs/BreadCrumbs"));
 const ErrorPage = React.lazy(() => import("../Error/ErrorPage"));
 
@@ -104,11 +105,6 @@ const ProductDetails = () => {
   const handleImageSelect = useCallback((index: number) => {
     setSelectedImageIndex(index);
   },[selectedImageIndex]);
-
-  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-    (e.currentTarget as HTMLImageElement).src = defaultProductImage;
-    (e.currentTarget as HTMLImageElement).onerror = null;
-  },[]);
 
   const addToBag = useCallback(() => {
     const productId = id || '';

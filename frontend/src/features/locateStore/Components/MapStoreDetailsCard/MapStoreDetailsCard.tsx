@@ -43,4 +43,4 @@ const MapStoreDetailsCard: React.FC<MapStoreDetailsCardProps> = ({ store }) => {
   );
 };
 
-export default MapStoreDetailsCard;
+export default React.memo(MapStoreDetailsCard);

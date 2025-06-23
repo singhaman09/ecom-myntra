@@ -15,7 +15,7 @@ function App() {
   }, [ dispatch ]);
   return (
    <>
-    <ToastContainer position="top-center"/>
+    <ToastContainer position="top-right" autoClose={3000} />
     <AppRoutes/>
    </>
   );
