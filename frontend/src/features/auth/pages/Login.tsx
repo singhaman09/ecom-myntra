@@ -55,7 +55,7 @@ const Login: React.FC = () => {
               <p className={styles.instruction}>
                 Sign In Using Your
                 <br />
-                <strong>Mobile Number Or Email</strong>
+                <strong>Email and Password</strong>
               </p>
             </div>
           </div>

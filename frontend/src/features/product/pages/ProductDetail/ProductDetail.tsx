@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import styles from "./ProductDetail.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -53,82 +53,82 @@ const ProductDetails = () => {
   const [notCompatible, setNotCompatible] = useState({ color: "", size: "" });
   const selectedSize = searchParams.get("size") || uniqueSizes[0] || "";
   const selectedColor = searchParams.get("color") || uniqueColors[0] || "";
-  
+ 
   // New state for image handling
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   
   // Mock multiple images - replace with actual product images from your data
   const productImages = useMemo(() => {
-    const mainImage = data?.selectedProduct?.product?.imageUrl;
+    const mainImage = data?.selectedProduct?.product?.images?.find(val=>val.isPrimary)?.url;
     if (!mainImage) return [defaultProductImage];
-    
-    // If your product has multiple images, use them. Otherwise, create variants for demo
-    const images =  [
-      mainImage,
-      mainImage, 
-      mainImage,
-      mainImage
-    ];
-    
+    const allimages = data?.selectedProduct?.product?.images
+    .filter(val => !val.isPrimary)
+    .map(val => val.url);
+  
+  const images = [
+    mainImage,
+    ...(allimages ?? [])
+  ];
     return images;
   }, [data?.selectedProduct?.product]);
 
   useEffect(() => {
-    dispatch(getProductDetails(id));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    dispatch(getProductDetails(id));
   }, [dispatch, id]);
 
   useEffect(() => {
     setSelectedImageIndex(0);
   }, [id]);
 
-  const handleSize = (size: string) => {
+  const handleSize = useCallback((size: string) => {
     setNotCompatible({ color: "", size: "" });
-    if (!variants.find((v) => v.size === size && v.color === selectedColor)) {
+    if (!variants.find((v) => v.size === size && v.color === selectedColor ) && selectedColor) {
       setNotCompatible({ color: selectedColor, size: size });
     }
+    
     searchParams.set("size", size);
     setSearchParams(searchParams, { replace: true });
-  };
+  },[notCompatible,searchParams]);
 
-  const handleColor = (color: string) => {
+  const handleColor = useCallback((color: string) => {
     setNotCompatible({ color: "", size: "" });
-    if (!variants.find((v) => v.color === color && v.size === selectedSize)) {
+    if (!variants.find((v) => v.color === color && v.size === selectedSize) && selectedSize) {
       setNotCompatible({ color: color, size: selectedSize });
     }
     searchParams.set("color", color);
     setSearchParams(searchParams, { replace: true });
-  };
+  },[notCompatible,searchParams]);
 
-  const handleImageSelect = (index: number) => {
+  const handleImageSelect = useCallback((index: number) => {
     setSelectedImageIndex(index);
-  };
+  },[selectedImageIndex]);
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     (e.currentTarget as HTMLImageElement).src = defaultProductImage;
     (e.currentTarget as HTMLImageElement).onerror = null;
-  };
+  },[]);
 
-  const addToBag = () => {
+  const addToBag = useCallback(() => {
     const productId = id || '';
     dispatch(addCartItem(productId));
-  };
+  },[id]);
 
-  const removeFromBag = () => {
+  const removeFromBag = useCallback(() => {
     const productId = id || '';
     dispatch(deleteCartItem(productId));
-  };
+  },[id]);
 
-  const removeWishlist = () => {
+  const removeWishlist = useCallback(() => {
     const productId = id || '';
     dispatch(removeFromWishlist(productId));
-  };
+  },[id]);
 
-  const addWishlist = () => {
+  const addWishlist = useCallback(() => {
     const productId = id || '';
     dispatch(addToWishlist(productId));
-  };
+  },[id]);
 
   if (data.loading) return <Loader isInitial={true} />;
   if (data.error) return <ErrorPage />;
@@ -245,7 +245,7 @@ const ProductDetails = () => {
               const sizeVariants = variants.filter((v) => v.size === size);
               const isOutOfStock = !sizeVariants.some((v) => v.stock > 0);
               const variantForSelectedColor = variants.find(
-                (v) => v.color === selectedColor && v.size === size
+                (v) => v.color == selectedColor && v.size == size
               );
               const isSelected = selectedSize === size;
               return (

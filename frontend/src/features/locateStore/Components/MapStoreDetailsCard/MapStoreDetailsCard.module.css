@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700&display=swap');
 .mapStoreDetailsCard {
    
     background-color: #fff;
@@ -17,6 +17,7 @@
   .mapStoreName {
     font-weight: 600;
     font-size: 1.125rem;
+    font-family: 'Work sans' sans-serif;
   }
   
   .mapStoreDistance {
@@ -24,6 +25,7 @@
     color: #4b5563;
     display: flex;
     align-items: center;
+    font-family: 'Work sans' sans-serif;
   }
   
   .mapStoreDistanceIcon {
@@ -35,6 +37,7 @@
   .mapStoreAddress {
     color: #4b5563;
     margin-bottom: 0.75rem;
+    font-family: 'Work sans' sans-serif;
   }
   
   .mapStorePhone {
@@ -43,6 +46,7 @@
     font-size: 0.875rem;
     color: #4b5563;
     margin-bottom: 1rem;
+    font-family: 'Work sans' sans-serif;
   }
   
   .mapStorePhoneIcon {
@@ -54,6 +58,7 @@
   .openingHoursTitle {
     font-weight: 600;
     margin-bottom: 0.5rem;
+    font-family: 'Work sans' sans-serif;
   }
   
   .openingHoursList {
@@ -61,6 +66,7 @@
     flex-direction: column;
     gap: 0.25rem;
     font-size: 0.875rem;
+    font-family: 'Work sans' sans-serif;
   }
   
   .openingHourItem {
@@ -70,8 +76,10 @@
   
   .openingHourDay {
     color: #4b5563;
+    font-family: 'Work sans' sans-serif;
   }
   
   .openingHourTime {
     color: #111827;
+    font-family: 'Work sans' sans-serif;
   }
