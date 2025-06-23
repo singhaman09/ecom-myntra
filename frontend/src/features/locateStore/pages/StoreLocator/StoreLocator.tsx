@@ -62,7 +62,7 @@ const StoreLocator: React.FC = () => {
       {activeView === 'list' ? (
         <div className={styles.storeList}>
           {stores.map((store) => (
-            <StoreListItem key={store.id} store={store} />
+            <StoreListItem key={store.id} store={store} setActiveView={setActiveView} />
           ))}
         </div>
       ) : (
