@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../components/shared/css/searchInput.module.css';
+import { FiSearch } from 'react-icons/fi';
 
 interface SearchInputProps {
   value: string;
@@ -18,7 +19,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
 }) => {
   return (
     <div className={`${styles.searchContainer} ${className}`}>
-      <span className={styles.searchIcon}>🔍</span>
+      <span className={styles.searchIcon}><FiSearch/></span>
       <input
         type="text"
         value={value}

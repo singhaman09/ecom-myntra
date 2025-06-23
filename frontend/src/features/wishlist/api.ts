@@ -1,123 +1,155 @@
-import axios from "axios";
-import type { AxiosResponse } from "axios";
-import type { WishlistItem } from "./types/wishlist";
-import shoes from "../../assets/shoes.jpeg";
+import axios from 'axios';
+import type { AxiosResponse } from 'axios';
+import type { WishlistItem } from './types/wishlist';
+import shoes from '../../assets/shoes.jpeg';
 
-const USE_MOCK = false;
+const USE_MOCK = true;
 
-const API_BASE_URL = "https://931a-14-194-22-202.ngrok-free.app";
-const token = localStorage.getItem('token')
-  
-  const axiosInstance = axios.create({
+const API_BASE_URL = 'https://dd8f-14-194-22-202.ngrok-free.app';
+const token = localStorage.getItem("token");
+
+const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "true",
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
     Authorization: `Bearer ${token}`,
+    
   },
 });
+
 interface WishlistApiResponse {
   _id: string;
   userId: string;
-  items: {
-    productId: string;
-    name: string;
-    price: number;
-    image: string;
-    _id: string;
-  }[];
+  items: WishlistItemApiResponse[];
   createdAt: string;
   updatedAt: string;
   __v: number;
 }
 
 interface WishlistItemApiResponse {
+  _id: string;
   productId: string;
   name: string;
   price: number;
   image: string;
-  _id: string;
-  inStock: true;
+  category?: string;
+  description?: string;
+  variants: { _id: string; size: string; color: string; stock: number; createdAt: string; updatedAt: string; __v: number }[];
+  totalStock?: number;
+  reviews?: any[];
 }
 
-const mapApiItemToWishlistItem = (
-  apiItem: WishlistItemApiResponse
-): WishlistItem => ({
+const mapApiItemToWishlistItem = (apiItem: WishlistItemApiResponse): WishlistItem => ({
   id: apiItem._id,
   productId: apiItem.productId,
   name: apiItem.name,
-  brand: "Unknown",
+  brand: 'Unknown',
   price: apiItem.price,
   originalPrice: undefined,
   discount: undefined,
-  image: apiItem.image,
-  rating: 0,
-  reviewCount: 0,
-  size: undefined,
-  color: undefined,
-  inStock: true,
+  image: apiItem.image || shoes,
+  rating: apiItem.reviews?.length ? 3 : 0,
+  reviewCount: apiItem.reviews?.length || 0,
+  size: apiItem.variants?.[0]?.size, 
+  color: apiItem.variants?.[0]?.color, 
+  inStock: (apiItem.totalStock ?? 0) > 0,
   dateAdded: new Date().toISOString(),
-  category: "Unknown",
-  description: "No description available",
+  category: apiItem.category || 'Unknown',
+  description: apiItem.description || 'No description available',
   addedAt: new Date(),
+  variants: apiItem.variants,
+  totalStock: apiItem.totalStock,
 });
 
 const mockWishlistItems: WishlistItemApiResponse[] = [
   {
-    _id: "1",
-    productId: "mock1",
-    name: "Mock Headphones",
+    _id: '1',
+    productId: 'mock1',
+    name: 'Mock Headphones',
     price: 999,
     image: shoes,
-    inStock: true,
+    category: 'Electronics',
+    description: 'High-quality headphones',
+    variants: [
+      { _id: 'v1', size: 'One Size', color: 'Black', stock: 5, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 },
+    ],
+    totalStock: 5,
+    reviews: [],
   },
   {
-    _id: "2",
-    productId: "mock2",
-    name: "Mock Laptop",
+    _id: '2',
+    productId: 'mock2',
+    name: 'Mock Laptop',
     price: 45999,
     image: shoes,
-    inStock: false,
+    category: 'Electronics',
+    description: 'Powerful laptop',
+    variants: [
+      { _id: 'v2', size: '15-inch', color: 'Silver', stock: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 },
+    ],
+    totalStock: 0,
+    reviews: [],
   },
   {
-    _id: "3",
-    productId: "mock2",
-    name: "Mock Laptop",
+    _id: '3',
+    productId: 'mock3',
+    name: 'Mock Laptop',
     price: 45999,
     image: shoes,
-    inStock: false,
+    category: 'Electronics',
+    description: 'Powerful laptop',
+    variants: [
+      { _id: 'v3', size: '15-inch', color: 'Silver', stock: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 },
+    ],
+    totalStock: 0,
+    reviews: [],
   },
   {
-    _id: "4",
-    productId: "mock2",
-    name: "Mock Laptop",
+    _id: '4',
+    productId: 'mock4',
+    name: 'Mock Laptop',
     price: 45999,
     image: shoes,
-
-    inStock: true,
+    category: 'Electronics',
+    description: 'Powerful laptop',
+    variants: [
+      { _id: 'v4', size: '15-inch', color: 'Silver', stock: 10, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 },
+    ],
+    totalStock: 10,
+    reviews: [],
   },
   {
-    _id: "5",
-    productId: "mock2",
-    name: "Mock Laptop",
+    _id: '5',
+    productId: 'mock5',
+    name: 'Mock Laptop',
     price: 45999,
     image: shoes,
-
-    inStock: true,
+    category: 'Electronics',
+    description: 'Powerful laptop',
+    variants: [
+      { _id: 'v5', size: '15-inch', color: 'Silver', stock: 10, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 },
+    ],
+    totalStock: 10,
+    reviews: [],
   },
   {
-    _id: "6",
-    productId: "mock2",
-    name: "Mock Laptop",
+    _id: '6',
+    productId: 'mock6',
+    name: 'Mock Laptop',
     price: 45999,
     image: shoes,
-
-    inStock: true,
+    category: 'Electronics',
+    description: 'Powerful laptop',
+    variants: [
+      { _id: 'v6', size: '15-inch', color: 'Silver', stock: 10, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 },
+    ],
+    totalStock: 10,
+    reviews: [],
   },
 ];
 
-const simulateDelay = (ms: number = 500) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+const simulateDelay = (ms: number = 500) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const apiService = {
   getWishlistItems: async (): Promise<WishlistItem[]> => {
@@ -127,15 +159,14 @@ export const apiService = {
     }
 
     try {
-      const response: AxiosResponse<WishlistApiResponse> =
-        await axiosInstance.get("/wishlist");
+      const response: AxiosResponse<WishlistApiResponse> = await axiosInstance.get('/wishlist');
       return response.data.items.map(mapApiItemToWishlistItem);
     } catch {
-      throw new Error("Failed to fetch wishlist items");
+      throw new Error('Failed to fetch wishlist items');
     }
   },
 
-  addToWishlist: async (productId: string): Promise<WishlistItem> => {
+  addToWishlist: async (productId: string, size: string, color: string): Promise<WishlistItem> => {
     if (USE_MOCK) {
       await simulateDelay();
       const newItem: WishlistItemApiResponse = {
@@ -144,18 +175,21 @@ export const apiService = {
         name: `Mock Product ${mockWishlistItems.length + 1}`,
         price: 1000,
         image: shoes,
-        inStock: true,
+        category: 'Unknown',
+        description: 'Mock product description',
+        variants: [{ _id: `v${mockWishlistItems.length + 1}`, size, color, stock: 10, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 }],
+        totalStock: 10,
+        reviews: [],
       };
       mockWishlistItems.push(newItem);
       return mapApiItemToWishlistItem(newItem);
     }
 
     try {
-      const response: AxiosResponse<WishlistItemApiResponse> =
-        await axiosInstance.post("/wishlist/add", productId);
+      const response: AxiosResponse<WishlistItemApiResponse> = await axiosInstance.post(`/wishlist/add/${productId}`, { size, color });
       return mapApiItemToWishlistItem(response.data);
     } catch {
-      throw new Error("Failed to add item to wishlist");
+      throw new Error('Failed to add item to wishlist');
     }
   },
 
@@ -167,13 +201,13 @@ export const apiService = {
         mockWishlistItems.splice(index, 1);
         return;
       }
-      throw new Error("Item not found in mock data");
+      throw new Error('Item not found in mock data');
     }
 
     try {
       await axiosInstance.delete(`/wishlist/items/${itemId}`);
     } catch {
-      throw new Error("Failed to remove item from wishlist");
+      throw new Error('Failed to remove item from wishlist');
     }
   },
 
@@ -185,22 +219,20 @@ export const apiService = {
         mockWishlistItems.splice(index, 1);
         return;
       }
-      throw new Error("Item not found in mock data");
+      throw new Error('Item not found in mock data');
     }
 
     try {
-      await axiosInstance.post(`/cart/add/${itemId}`);
+      await axiosInstance.post(`/addToCart/${itemId}`);
     } catch {
-      throw new Error("Failed to move item to cart");
+      throw new Error('Failed to move item to cart');
     }
   },
 
   updateWishlistItem: async (item: WishlistItem): Promise<WishlistItem> => {
     if (USE_MOCK) {
       await simulateDelay();
-      const index = mockWishlistItems.findIndex(
-        (apiItem) => apiItem._id === item.id
-      );
+      const index = mockWishlistItems.findIndex((apiItem) => apiItem._id === item.id);
       if (index !== -1) {
         const updated: WishlistItemApiResponse = {
           _id: item.id,
@@ -208,12 +240,16 @@ export const apiService = {
           name: item.name,
           price: item.price,
           image: item.image,
-          inStock: item.inStock,
+          category: item.category,
+          description: item.description,
+          variants: item.variants,
+          totalStock: item.totalStock,
+          reviews: item.reviews || [],
         };
         mockWishlistItems[index] = updated;
         return mapApiItemToWishlistItem(updated);
       }
-      throw new Error("Mock item not found");
+      throw new Error('Mock item not found');
     }
 
     try {
@@ -222,12 +258,15 @@ export const apiService = {
         name: item.name,
         price: item.price,
         image: item.image,
+        category: item.category,
+        description: item.description,
+        variants: item.variants,
+        totalStock: item.totalStock,
       };
-      const response: AxiosResponse<WishlistItemApiResponse> =
-        await axiosInstance.put(`/wishlist/item/${item.id}`, payload);
+      const response: AxiosResponse<WishlistItemApiResponse> = await axiosInstance.put(`/wishlist/item/${item.id}`, payload);
       return mapApiItemToWishlistItem(response.data);
     } catch {
-      throw new Error("Failed to update wishlist item");
+      throw new Error('Failed to update wishlist item');
     }
   },
 };
