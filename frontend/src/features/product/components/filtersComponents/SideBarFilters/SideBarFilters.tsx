@@ -1,16 +1,8 @@
 import React from "react";
 import styles from "../SideBarMain/SideBar.module.css";
 import { getColorCodeFromString } from "../../../utils/colorsMapping";
-
-interface SideBarFiltersProps {
-  data: string[];
-  type: string;
-  selectedData: string[];
-  handleChange: (item: string, checked: boolean) => void;
-}
-
-
-const SideBarFilters: React.FC<SideBarFiltersProps> = ({
+import type { SideFilterProps } from "../../../interfaces/FilterInterfaces";
+const SideBarFilters: React.FC<SideFilterProps> = ({
   data,
   type,
   selectedData,
@@ -34,7 +26,7 @@ const SideBarFilters: React.FC<SideBarFiltersProps> = ({
           )}
           <input
             type="checkbox"
-            checked={selectedData.includes(item)}
+            checked={selectedData && selectedData.includes(item)}
             onChange={e => handleChange(item, e.target.checked)}
           />
         </label>

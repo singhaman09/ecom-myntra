@@ -1,8 +1,8 @@
 import React, {  useCallback, useState } from 'react';
-import type { UpperFilterProps } from '../../../interfaces/ProductInterfaces';
 import styles from './UpperFilterBar.module.css';
 import { useSearchParams } from 'react-router-dom';
 import { ArrowUpDown, FilterIcon } from 'lucide-react';
+import type { UpperFilterProps } from '../../../interfaces/FilterInterfaces';
 
 const sortOptions = [
   { value: 'price_asc', label: 'Price: Low to High' },
@@ -12,17 +12,18 @@ const sortOptions = [
 
 const UpperFilterBar: React.FC<UpperFilterProps> = ({
   setIsDrawerOpen,
+  setPage
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedSort = searchParams.get('sort') ?? 'new';
    const [open, setOpen] = useState(false);
   const handleSortChange = useCallback(
     (val:string) => {
-      searchParams.set('sort', val);
-      searchParams.delete('page'); // Reset page on sort change
+      searchParams.set('sort', val); 
       setSearchParams(searchParams, { replace: true });
+      setPage(1)
     },
-    [searchParams, setSearchParams]
+    [searchParams]
   );
 
 

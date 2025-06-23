@@ -37,13 +37,18 @@ const StoreLocator: React.FC = () => {
 
   return (
     <div className={styles.container}>
+     
       <div className={styles.headerSearchWrapper}>
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
-
+    
       <div className={styles.storeOffersSection}>
-        <h2 className={styles.sectionTitle}>Store Offers</h2>
+      <h2 className={styles.sectionTitle}>Store Offers</h2>
+       <div className={styles.offerCardContainer}>
+       <StoreOfferCard />
         <StoreOfferCard />
+        <StoreOfferCard />
+       </div>
       </div>
 
       <div className={styles.nearestStoresHeader}>
