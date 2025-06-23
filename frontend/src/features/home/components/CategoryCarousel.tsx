@@ -1,64 +1,241 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styles from './css/CategoryCarousel.module.css';
+import React, { 
+  useState, 
+  useEffect, 
+  useRef, 
+  useMemo, 
+  useCallback, 
+  memo 
+} from "react";
+import styles from "./css/CategoryCarousel.module.css";
 
+// Types
 interface Category {
   id: string;
   name: string;
   image: string;
-  type: 'sale' | 'trending' | 'face' | 'other';
+  type: "sale" | "trending" | "face" | "other";
 }
 
 interface CategoryCarouselProps {
   categories?: Category[];
+  onCategoryClick?: (category: Category) => void;
 }
 
-const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+interface CategoryItemProps {
+  category: Category;
+  onImageError: (categoryId: string, categoryType: string) => void;
+  onClick?: (category: Category) => void;
+}
 
-  // Default categories data with image URLs
-  const defaultCategories: Category[] = [
-    { id: '1', name: 'Shirts', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '2', name: 'T-Shirts', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop&crop=center', type: 'trending' },
-    { id: '3', name: 'Jeans', image: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '4', name: 'Dresses', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=100&h=100&fit=crop&crop=center', type: 'trending' },
-    { id: '5', name: 'Sneakers', image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '6', name: 'Jackets', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '7', name: 'Sarees', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=100&h=100&fit=crop&crop=center', type: 'face' },
-    { id: '8', name: 'Kurtas', image: 'https://images.unsplash.com/photo-1583743089690-ca20696c2818?w=100&h=100&fit=crop&crop=center', type: 'face' },
-    { id: '9', name: 'Watches', image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '10', name: 'Bags', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '11', name: 'Shorts', image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '12', name: 'Sale', image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100&h=100&fit=crop&crop=center', type: 'sale' },
-    { id: '13', name: 'Hoodies', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '14', name: 'Skirts', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '15', name: 'Suits', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '16', name: 'Shorts', image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '17', name: 'Sale', image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100&h=100&fit=crop&crop=center', type: 'sale' },
-    { id: '18', name: 'Hoodies', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '19', name: 'Skirts', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center', type: 'other' },
-    { id: '20', name: 'Suits', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center', type: 'other' },
-  ];
+// Constants
+const MOBILE_BREAKPOINT = 768;
+const MOBILE_ITEMS_PER_PAGE = 6;
+const DESKTOP_ITEMS_PER_PAGE = 5;
 
-  const categoryData = categories || defaultCategories;
+const TYPE_COLORS = {
+  sale: "linear-gradient(135deg, #ff6b6b, #ff8e8e)",
+  trending: "linear-gradient(135deg, #4ecdc4, #44b3ab)",
+  face: "linear-gradient(135deg, #ff9ff3, #f368e0)",
+  other: "linear-gradient(135deg, #a8a8a8, #888888)",
+} as const;
 
-  // Check if mobile
+// Default categories - memoized to prevent recreation
+const DEFAULT_CATEGORIES: Category[] = [
+  {
+    id: "1",
+    name: "Shirts",
+    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "2",
+    name: "T-Shirts",
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop&crop=center",
+    type: "trending",
+  },
+  {
+    id: "3",
+    name: "Jeans",
+    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "4",
+    name: "Dresses",
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=100&h=100&fit=crop&crop=center",
+    type: "trending",
+  },
+  {
+    id: "5",
+    name: "Sneakers",
+    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "6",
+    name: "Jackets",
+    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "7",
+    name: "Sarees",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=100&h=100&fit=crop&crop=center",
+    type: "face",
+  },
+  {
+    id: "8",
+    name: "Kurtas",
+    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100&h=100&fit=crop&crop=center",
+    type: "face",
+  },
+  {
+    id: "9",
+    name: "Watches",
+    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "10",
+    name: "Bags",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "11",
+    name: "Shorts",
+    image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "12",
+    name: "Sale",
+    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100&h=100&fit=crop&crop=center",
+    type: "sale",
+  },
+  {
+    id: "13",
+    name: "Hoodies",
+    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "14",
+    name: "Skirts",
+    image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "15",
+    name: "Suits",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "16",
+    name: "Accessories",
+    image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "17",
+    name: "Winter Sale",
+    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100&h=100&fit=crop&crop=center",
+    type: "sale",
+  },
+  {
+    id: "18",
+    name: "Sweatshirts",
+    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "19",
+    name: "Mini Skirts",
+    image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+  {
+    id: "20",
+    name: "Formal Wear",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center",
+    type: "other",
+  },
+];
+
+// Utility functions
+const getTypeColor = (type: Category['type']): string => TYPE_COLORS[type];
+
+const checkIsMobile = (): boolean => window.innerWidth <= MOBILE_BREAKPOINT;
+
+// Memoized CategoryItem component
+const CategoryItem = memo<CategoryItemProps>(({ 
+  category, 
+  onImageError, 
+  onClick 
+}) => {
+  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    onImageError(category.id, category.type);
+  }, [category.id, category.type, onImageError]);
+
+  const handleClick = useCallback(() => {
+    onClick?.(category);
+  }, [category, onClick]);
+
+  return (
+    <div 
+      className={styles.categoryItem}
+      onClick={handleClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      } : undefined}
+    >
+      <div className={styles.categoryIcon}>
+        <img
+          src={category.image}
+          alt={category.name}
+          className={styles.categoryImage}
+          onError={handleImageError}
+          loading="lazy"
+        />
+      </div>
+      <span className={styles.categoryName}>{category.name}</span>
+    </div>
+  );
+});
+
+CategoryItem.displayName = 'CategoryItem';
+
+// Custom hook for mobile detection
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(() => {
+    // Check if window is available (SSR safety)
+    if (typeof window === 'undefined') return false;
+    return checkIsMobile();
+  });
+
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => {
+      setIsMobile(checkIsMobile());
     };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Calculate pages based on screen size
-  const itemsPerPage = isMobile ? 6 : 5; // Mobile: 3x2 grid, Desktop: 5x1 row
-  const totalPages = Math.ceil(categoryData.length / itemsPerPage);
+  return isMobile;
+};
 
-  // Handle scroll event to update current page
+// Custom hook for scroll handling
+const useScrollHandler = (
+  containerRef: React.RefObject<HTMLDivElement>,
+  onPageChange: (page: number) => void
+) => {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -67,97 +244,141 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ categories }) => {
       const scrollLeft = container.scrollLeft;
       const containerWidth = container.clientWidth;
       const newPage = Math.round(scrollLeft / containerWidth);
-      setCurrentPage(newPage);
+      onPageChange(newPage);
     };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    // Throttle scroll events for better performance
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    container.addEventListener("scroll", throttledScroll, { passive: true });
+    return () => container.removeEventListener("scroll", throttledScroll);
+  }, [containerRef, onPageChange]);
+};
+
+// Main component
+const CategoryCarousel: React.FC<CategoryCarouselProps> = memo(({ 
+  categories, 
+  onCategoryClick 
+}) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const isMobile = useIsMobile();
+
+  // Memoize category data
+  const categoryData = useMemo(() => 
+    categories || DEFAULT_CATEGORIES, 
+    [categories]
+  );
+
+  // Memoize pagination calculations
+  const paginationData = useMemo(() => {
+    const itemsPerPage = isMobile ? MOBILE_ITEMS_PER_PAGE : DESKTOP_ITEMS_PER_PAGE;
+    const totalPages = Math.ceil(categoryData.length / itemsPerPage);
+    
+    return { itemsPerPage, totalPages };
+  }, [isMobile, categoryData.length]);
+
+  // Memoize paginated data
+  const paginatedCategories = useMemo(() => {
+    const { itemsPerPage, totalPages } = paginationData;
+    
+    return Array.from({ length: totalPages }, (_, pageIndex) =>
+      categoryData.slice(
+        pageIndex * itemsPerPage,
+        (pageIndex + 1) * itemsPerPage
+      )
+    );
+  }, [categoryData, paginationData]);
+
+  // Callback for page changes
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
   }, []);
 
-  const handleDotClick = (pageIndex: number) => {
-    if (containerRef.current) {
-      const container = containerRef.current;
-      const targetScroll = pageIndex * container.clientWidth;
-      
-      container.scrollTo({
-        left: targetScroll,
-        behavior: 'smooth'
-      });
-    }
-  };
+  // Use scroll handler hook
+  useScrollHandler(containerRef, handlePageChange);
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'sale':
-        return 'linear-gradient(135deg, #ff6b6b, #ff8e8e)';
-      case 'trending':
-        return 'linear-gradient(135deg, #4ecdc4, #44b3ab)';
-      case 'face':
-        return 'linear-gradient(135deg, #ff9ff3, #f368e0)';
-      default:
-        return 'linear-gradient(135deg, #a8a8a8, #888888)';
+  // Memoized dot click handler
+  const handleDotClick = useCallback((pageIndex: number) => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const targetScroll = pageIndex * container.clientWidth;
+    container.scrollTo({
+      left: targetScroll,
+      behavior: "smooth",
+    });
+  }, []);
+
+  // Memoized image error handler
+  const handleImageError = useCallback((categoryId: string, categoryType: string) => {
+    // Find the image element and apply fallback styling
+    const imgElement = document.querySelector(`img[alt*="${categoryId}"]`) as HTMLImageElement;
+    if (imgElement?.parentElement) {
+      imgElement.style.display = "none";
+      imgElement.parentElement.style.background = getTypeColor(categoryType as Category['type']);
     }
-  };
+  }, []);
+
+  // Memoized category click handler
+  const handleCategoryClick = useCallback((category: Category) => {
+    onCategoryClick?.(category);
+  }, [onCategoryClick]);
 
   return (
     <div className={styles.container}>
       <div className={styles.carouselWrapper}>
-        <div
-          ref={containerRef}
-          className={styles.categoriesContainer}
-        >
-          {Array.from({ length: totalPages }, (_, pageIndex) => (
+        <div ref={containerRef} className={styles.categoriesContainer}>
+          {paginatedCategories.map((pageCategories, pageIndex) => (
             <div
               key={pageIndex}
               className={`${styles.categoriesPage} ${
                 isMobile ? styles.mobileGrid : styles.desktopGrid
               }`}
             >
-              {categoryData
-                .slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage)
-                .map((category) => (
-                  <div
-                    key={category.id}
-                    className={styles.categoryItem}
-                  >
-                    <div className={styles.categoryIcon}>
-                      <img 
-                        src={category.image} 
-                        alt={category.name}
-                        className={styles.categoryImage}
-                        onError={(e) => {
-                          // Fallback to gradient background if image fails to load
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          target.parentElement!.style.background = getTypeColor(category.type);
-                        }}
-                      />
-                    </div>
-                    <span className={styles.categoryName}>{category.name}</span>
-                  </div>
-                ))}
+              {pageCategories.map((category) => (
+                <CategoryItem
+                  key={category.id}
+                  category={category}
+                  onImageError={handleImageError}
+                  onClick={onCategoryClick ? handleCategoryClick : undefined}
+                />
+              ))}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Pagination dots */}
-      {totalPages > 1 && (
+      {/* Pagination dots - only show on mobile when there are multiple pages */}
+      {isMobile && paginationData.totalPages > 1 && (
         <div className={styles.pagination}>
-          {Array.from({ length: totalPages }, (_, index) => (
+          {Array.from({ length: paginationData.totalPages }, (_, index) => (
             <button
               key={index}
               className={`${styles.dot} ${
-                currentPage === index ? styles.activeDot : ''
+                currentPage === index ? styles.activeDot : ""
               }`}
               onClick={() => handleDotClick(index)}
               aria-label={`Go to page ${index + 1}`}
+              type="button"
             />
           ))}
         </div>
       )}
     </div>
   );
-};
+});
+
+CategoryCarousel.displayName = 'CategoryCarousel';
 
 export default CategoryCarousel;

@@ -30,6 +30,7 @@ import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 import HelpSupport from "../features/help&support/pages/HelpSupport";
 import { PRODUCT_ROUTES } from "../features/product/Constants/Routes";
 import StoreLocator from "../features/locateStore/pages/StoreLocator/StoreLocator";
+import SharedOtpVerification from "../features/auth/components/SharedOtpVerification";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
