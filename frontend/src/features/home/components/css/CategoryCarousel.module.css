@@ -5,6 +5,7 @@
   padding: 20px 10px; /* Reduced padding */
   position: relative;
   box-sizing: border-box;
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 1024px) {
@@ -112,6 +113,7 @@
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  /* border: 2px solid #f3e596; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -138,6 +140,7 @@
 
 .categoryItem:hover .categoryIcon::before {
   animation: shimmer 0.6s ease-in-out;
+  
 }
 
 @keyframes shimmer {

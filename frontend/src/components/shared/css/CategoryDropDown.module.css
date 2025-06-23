@@ -132,7 +132,7 @@
 }
 
 .subcategoryItem {
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.5rem; */
 }
 
 .subcategoryLink {
@@ -193,6 +193,7 @@
 @media (max-width: 768px) {
   .categoriesContainer {
     position: static;
+
   }
 
   .categoriesButton {

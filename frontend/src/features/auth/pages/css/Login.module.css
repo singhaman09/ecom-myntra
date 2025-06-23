@@ -83,7 +83,7 @@
 
 .input {
   font-family: 'Work Sans', sans-serif;
-  width: 100%;
+  width: 92%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   border-radius: 6px;
@@ -99,13 +99,13 @@
 }
 
 .inputError {
-  border-color: #d9534f;
+  border-color: #007f5f20;
 }
 
 /* Error Message */
 .errorMessage {
   font-family: 'Work Sans', sans-serif;
-  color: #d9534f;
+  color: #0c3d32;
   font-size: 0.85rem;
   margin-top: 0.25rem;
 }
@@ -197,7 +197,7 @@
 
 /* Server Error */
 .serverError {
-  color: #d9534f;
+  color: #0c3d32;
   font-size: 0.9rem;
   text-align: center;
   margin-top: -0.5rem;
