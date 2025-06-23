@@ -24,4 +24,4 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) =>
   );
 };
 
-export default SearchBar;
+export default React.memo(SearchBar);
