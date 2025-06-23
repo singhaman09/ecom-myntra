@@ -20,6 +20,7 @@ export interface Product {
   updatedAt: string;
   description:string;
   reviews:Review []
+  variants:variant[]
 }
 
 
@@ -30,11 +31,9 @@ interface variant{
   stock:number,
   productId:string,
 }
-interface productDetails extends Product{
-  variants:variant[]
-}
+
 export interface SelectedProduct {
-  product: productDetails;
+  product:Product;
   similarProducts: Product[];
 }
 

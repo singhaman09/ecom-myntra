@@ -15,7 +15,7 @@
   border-radius: 16px;
   padding: 32px;
   width: 90%;
-  max-width: 400px;
+  max-width: 500px;
   box-shadow: 0 4px 32px rgba(0,0,0,0.08);
   position: relative;
   max-height: 90vh; /* ensures modal doesn't exceed viewport */
@@ -161,4 +161,22 @@
     border: none;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
+  }
+  .sizeBtnOutOfStock {
+    position: relative;
+    opacity: 0.5;
+    pointer-events: none;
+    color: black;
+  }
+  
+  .sizeBtnOutOfStock::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    width: 80%;
+    height: 2px;
+    background: red;
+    transform: rotate(-20deg);
+    pointer-events: none;
   }

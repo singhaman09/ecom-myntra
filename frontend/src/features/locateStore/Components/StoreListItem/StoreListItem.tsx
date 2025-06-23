@@ -45,4 +45,4 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ store,setActiveView }) =>
   );
 };
 
-export default StoreListItem;
+export default React.memo(StoreListItem);
