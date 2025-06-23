@@ -1,13 +1,14 @@
 /* ===== Page Layout ===== */
 .pageWrapper {
-  max-width: 1000px;
+  max-width: 1060px;
   margin: 0 auto;
-  padding: 7px 24px;
+  padding: 9px 16px;
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
-  background-color: #ffffff;
+  gap: 15px;
+  background-color: #F8F3E9;
   min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ===== Left Side ===== */
@@ -21,194 +22,296 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 26px !important;
 }
+
 .leftSection h2 {
-  font-size: 18px;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  margin-bottom: 1rem;
+  font-size: 22px;
+  font-weight:8700;
+  color: #333;
+  font-family: 'Times New Roman';
 }
 
 .sectionHeading {
-  margin: 1.5rem 0 0.5rem;
-  font-size: 12px;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #555;
+  margin: 20px 0 10px;
+  font-size: 15x;
+  font-weight: 700;
+  color: #535766;
+  font-family: sans-serif;
 }
 
-.addNewBtn {
-  padding: 7px 10px;
-  background-color: #fff;
+.addAddressBtn {
+  background-color: #044236;
+  color: #fff;
+  padding: 6px 12px;
+  border: 1px solid #044236;
   border-radius: 3px;
   cursor: pointer;
-  font-weight: 700;
-  transition: 0.3s ease;
-  border: 1px solid black;
-  color: #555;
-  cursor: pointer;
-  align-self: center;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: sans-serif;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.addNewBtn:hover {
-  background-color: #e12b58;
+.addAddressBtn:hover {
+  background: linear-gradient(135deg, #06654e 0%, #088c6a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 101, 78, 0.3);
+  border-color: #088c6a;
 }
 
 /* ===== Address Card Styles ===== */
 .addressCard {
-  /* border: 1px solid #ddd; */
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #fafafa;
-  margin-bottom: 1rem;
-  transition: 0.3s ease;
-   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  padding: 22px 28px;
+  border: 1.5px solid #e5e7eb78;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s, transform 0.2s;
+  font-family: inherit;
+  font-size: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  position: relative;
+}
+.addressCard:hover {
+  box-shadow: 0 8px 32px rgba(6, 101, 78, 0.13), 0 2px 12px rgba(0,0,0,0.10);
+  transform: translateY(-2px) scale(1.01);
 }
 
-.active {
-  /* border: 2px solid #ff3e6c; */
-  background-color: #fff;
-box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
+.addressCard.active {
+  box-shadow: 0 8px 32px rgba(6, 101, 78, 0.18), 0 2px 12px rgba(0,0,0,0.13);
+  /* border: 2px solid #044236; */
 }
-
 
 .radioName {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  gap: 12px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-family: inherit;
 }
 
 .name {
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  font-family: inherit;
 }
 
 .tag {
-  font-size: 0.7rem;
-  padding: 2px 6px;
-  background-color: #fce4ec;
-  color: #d81b60;
-  border-radius: 4px;
+  font-size: 12px;
+  padding: 5px 12px;
+  background-color: #f0f0f0;
+  color: #535766;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-family: inherit;
+  margin-left: 320px;
 }
 
-.addrLine,
-.phone,
-.cod {
-  font-size: 0.9rem;
+.addrLine {
+  font-size: 14px;
   color: #333;
-  margin: 0.3rem 0;
+  margin: 7px 0;
+  font-family: inherit;
+  font-weight:500;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.phone {
+  font-size: 14px;
+  color: #333;
+  margin: 5px 0;
+  font-family: inherit;
 }
 
 .cod {
-  color: #00b894;
-  font-weight: bold;
+  color: #00b098;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none !important;
+  list-style: none !important;
+  font-family: inherit;
 }
 
 /* ===== Address Action Buttons ===== */
 .actionBtns {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 14px;
+  margin-top: 14px;
 }
 
 .removeBtn,
 .editBtn {
-  padding: 0.4rem 1rem;
-  font-size: 0.85rem;
-  border: 1px solid #111;
-  background-color: transparent;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: 0.3s ease;
-}
-
-.removeBtn:hover,
-.editBtn:hover {
-  background-color: #f1f1f1;
-}
-
-.addAddressText {
-  color: #ff3e6c;
+  padding: 9px 20px;
+  font-size: 13px;
+  border: none;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 0.95rem;
-  margin-top: 1rem;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  font-family: inherit;
+}
+
+.removeBtn {
+  background: #ff4d4f;
+  color: #fff;
+}
+.removeBtn:hover {
+  background: linear-gradient(135deg, #e6393b 0%, #ff4d4f 100%);
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(255,77,79,0.18);
+}
+
+.editBtn {
+  background: #f0f0f0;
+  color: #044236;
+}
+.editBtn:hover {
+  background: linear-gradient(135deg, #eaf9f4 0%, #c6f7e2 100%);
+  color: #088c6a;
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(6, 101, 78, 0.10);
+}
+
+/* ===== Modal Styles ===== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalContent {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  width: 320px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* ===== Right Side ===== */
 .rightSection {
-  width: 400px;
+  width: 350px;
+  min-height: 0;
   margin-top: 30px;
-}
-
-/* If you ever reuse the delivery estimate box */
-.deliveryEstimate {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 16px;
   display: flex;
-  align-items: center;
-  background-color: #eaf9f4;
-  padding: 0.8rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  align-items: stretch;
 }
 
-.deliveryIcon {
-  width: 32px;
-  height: 32px;
-  margin-right: 0.8rem;
+.deliveryEstimate {
+  background-color: #eaf9f4;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+}
+
+.deliveryEstimate p {
+  margin: 0;
 }
 
 .priceBox {
-  background-color: #fafafa;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  background: #fff;
+  padding: 16px;
+  border: 1px solid #e5e7eb78;
+  border-radius: 10px;
+  font-size: 12px;
   line-height: 1.8;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
 }
 
 .priceBox p {
   display: flex;
   justify-content: space-between;
-  margin: 0.3rem 0;
+  margin: 5px 0;
+  font-size: 16px;;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 .green {
   color: #00b098;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .total {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
 .continueBtn {
   width: 100%;
-  margin-top: 1rem;
-  padding: 0.8rem;
-  font-weight: bold;
-  color: white;
-  background-color: #074b17;
-  border: none;
-  border-radius: 4px;
+  margin-top: 15px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #044236;
+  border: 1px solid #044236;
+  border-radius: 3px;
   cursor: pointer;
-  transition: 0.3s;
+  font-family: sans-serif;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .continueBtn:hover {
-  background-color: #508d5e;
+  background: linear-gradient(135deg, #06654e 0%, #088c6a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 101, 78, 0.3);
+  border-color: #088c6a;
 }
 
 /* ===== Responsive Breakpoints ===== */
+@media (min-width: 1200px) {
+  .pageWrapper {
+    max-width: 1100px;
+    padding: 16px 24px;
+  }
+
+  .rightSection {
+    width: 400px;
+    min-height: 0;
+    padding: 16px;
+  }
+}
+
 @media (max-width: 1200px) {
   .pageWrapper {
     max-width: 90%;
-    gap: 20px;
+    gap: 15px;
   }
 
   .rightSection {
     width: 300px;
+    min-height: 0;
+    padding: 16px;
   }
 }
 
@@ -222,5 +325,151 @@ box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
   .rightSection {
     width: 100%;
     margin-top: 20px;
+  }
+
+  .modalContent {
+    width: 85%;
+    padding: 16px;
+  }
+
+  .addAddressBtn,
+  .continueBtn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .sectionTop h2 {
+    font-size: 13px;
+  }
+
+  .sectionHeading {
+    font-size: 10px;
+  }
+
+  .addressCard {
+    padding: 14px 8px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .radioName {
+    font-size: 15px;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+
+  .addrLine {
+    font-size: 13px;
+  }
+
+  .phone {
+    font-size: 12px;
+  }
+
+  .cod {
+    font-size: 11px;
+  }
+
+  .tag {
+    font-size: 9px;
+  }
+
+  .removeBtn,
+  .editBtn {
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
+  .priceBox {
+    font-size: 11px;
+  }
+
+  .total {
+    font-size: 12px;
+  }
+
+  .rightSection {
+    width: 100%;
+    min-height: 0;
+    padding: 12px 0;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 8px 12px;
+  }
+
+  .modalContent {
+    width: 90%;
+    padding: 12px;
+  }
+
+  .addAddressBtn,
+  .continueBtn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .sectionTop h2 {
+    font-size: 12px;
+  }
+
+  .sectionHeading {
+    font-size: 9px;
+  }
+
+  .addressCard {
+    padding: 10px 4px;
+    font-size: 13px;
+    border-radius: 7px;
+  }
+
+  .radioName {
+    font-size: 13px;
+  }
+
+  .name {
+    font-size: 13px;
+  }
+
+  .addrLine {
+    font-size: 12px;
+  }
+
+  .phone {
+    font-size: 11px;
+  }
+
+  .cod {
+    font-size: 10px;
+  }
+
+  .tag {
+    font-size: 8px;
+    padding: 3px 6px;
+  }
+
+  .removeBtn,
+  .editBtn {
+    padding: 6px 8px;
+    font-size: 11px;
+    border-radius: 5px;
+  }
+
+  .deliveryEstimate {
+    font-size: 11px;
+  }
+
+  .priceBox {
+    font-size: 10px;
+  }
+
+  .total {
+    font-size: 11px;
   }
 }

@@ -5,6 +5,7 @@
   background-color: #ffffff;
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #F8F3E9;
 }
 
 .mainContent {
@@ -39,19 +40,36 @@
   justify-content: center;
   align-items: center;
   z-index: 999;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .modalContent {
   background: white;
   padding: 24px;
-  border-radius: 10px;
-  width: 320px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modalActions {
-  margin-top: 16px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,14 +79,18 @@
 
 .modalRemove,
 .modalWishlist {
-  flex: none;
-  padding: 8px 16px;
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 20px;
   border: none;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
   font-size: 14px;
   white-space: nowrap;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .modalRemove {
@@ -76,14 +98,27 @@
   color: white;
 }
 
+.modalRemove:hover {
+  background-color: #e6393b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(230, 57, 59, 0.3);
+}
+
 .modalWishlist {
   background-color: #f0f0f0;
   color: #333;
+  border: 1px solid #ddd;
+}
+
+.modalWishlist:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .modalDivider {
   width: 1px;
-  height: 22px;
+  height: 24px;
   background-color: #ccc;
   opacity: 0.7;
 }
@@ -93,12 +128,17 @@
   background: #fff;
   padding: 16px;
   border: 1px solid #e5e7eb78;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
 
 .couponsHeader {
   font-size: 15px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .couponsTitle {
@@ -106,18 +146,33 @@
   font-weight: 700;
   color: #535766;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tagIcon {
+  font-size: 14px;
+  color: #044236;
+  display: none;
 }
 
 .applyCoupons {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .applyCouponsText {
-  margin-left: 28px;
   font-size: 12px;
   font-weight: 600;
   font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 
 .applyCoupons span {
@@ -128,16 +183,17 @@
   background-color: #044236;
   border: 1px solid #044236;
   color: #fff;
-  padding: 6px 12px;
-  margin-left: 150px;
+  padding: 8px 16px;
   font-family: sans-serif;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease,
     box-shadow 0.3s ease;
   letter-spacing: 1px;
+  white-space: nowrap;
+  min-width: 80px;
 }
 
 .applyButton:hover {
@@ -188,8 +244,13 @@
     margin-left: 100px;
   }
 
+  .applyCoupons {
+    gap: 10px;
+  }
+
   .applyButton {
-    margin-left: 80px;
+    padding: 7px 14px;
+    font-size: 13px;
   }
 
   .productGrid {
@@ -241,27 +302,58 @@
   }
 
   .modalContent {
-    width: 85%;
-    padding: 16px;
+    width: 95%;
+    max-width: 350px;
+    padding: 20px;
+    border-radius: 12px;
   }
 
   .modalActions {
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .modalRemove,
+  .modalWishlist {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 15px;
+    border-radius: 10px;
   }
 
   .modalDivider {
     display: none;
   }
 
-  .applyButton {
-    margin-left: 0;
-    width: 100%;
-    text-align: center;
+  .couponsSection {
+    padding: 12px;
+  }
+
+  .couponsHeader {
+    margin-bottom: 8px;
+  }
+
+  .tagIcon {
+    display: block;
+  }
+
+  .applyCoupons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
 
   .applyCouponsText {
-    margin-left: 10px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .applyButton {
+    width: 100%;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 14px;
   }
 
   .productGrid {
@@ -271,6 +363,70 @@
   .productImage {
     max-width: 90px;
     height: 110px;
+  }
+
+  /* Error and Loading Mobile Styles */
+  .errorContainer {
+    min-height: 50vh;
+    padding: 16px;
+  }
+
+  .errorContent {
+    padding: 30px 20px;
+    border-radius: 10px;
+  }
+
+  .errorIcon {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+
+  .errorTitle {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .retryButton {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .loadingContainer {
+    min-height: 50vh;
+  }
+
+  .loadingSpinner {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 16px;
+  }
+
+  .loadingText {
+    font-size: 16px;
+  }
+
+  .errorBanner {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  .errorBannerIcon {
+    font-size: 18px;
+  }
+
+  .errorBannerText {
+    font-size: 13px;
+  }
+
+  .errorBannerRetry {
+    padding: 5px 10px;
+    font-size: 11px;
   }
 }
 
@@ -330,32 +486,51 @@
   }
 
   .modalContent {
-    width: 90%;
-    padding: 12px;
+    width: 98%;
+    max-width: 320px;
+    padding: 16px;
+    border-radius: 10px;
   }
 
   .modalRemove,
   .modalWishlist {
-    font-size: 12px;
-    padding: 6px 12px;
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+
+  .couponsSection {
+    padding: 10px;
+    margin-bottom: 12px;
   }
 
   .couponsHeader {
     font-size: 13px;
+    margin-bottom: 8px;
+    gap: 6px;
   }
 
   .couponsTitle {
     font-size: 10px;
   }
 
+  .tagIcon {
+    font-size: 12px;
+  }
+
+  .applyCoupons {
+    gap: 8px;
+  }
+
   .applyCouponsText {
     font-size: 11px;
-    margin-left: 5px;
+    gap: 6px;
   }
 
   .applyButton {
-    font-size: 11px;
-    padding: 5px 10px;
+    font-size: 12px;
+    padding: 8px 12px;
+    min-width: 70px;
   }
 
   .youMayAlsoLikeTitle {
@@ -405,4 +580,245 @@
     font-size: 11px;
     padding: 5px 10px;
   }
+
+  /* Error and Loading Small Mobile Styles */
+  .errorContainer {
+    min-height: 40vh;
+    padding: 12px;
+  }
+
+  .errorContent {
+    padding: 24px 16px;
+    border-radius: 8px;
+  }
+
+  .errorIcon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .errorTitle {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .errorMessage {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .offlineMessage {
+    font-size: 12px;
+    padding: 8px;
+    margin: 12px 0;
+  }
+
+  .retryButton {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .loadingContainer {
+    min-height: 40vh;
+  }
+
+  .loadingSpinner {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 12px;
+  }
+
+  .loadingText {
+    font-size: 14px;
+  }
+
+  .errorBanner {
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+
+  .errorBannerIcon {
+    font-size: 16px;
+  }
+
+  .errorBannerText {
+    font-size: 12px;
+  }
+
+  .errorBannerRetry {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+}
+
+/* Error and Loading States */
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 20px;
+  background-color: #F8F3E9;
+}
+
+.errorContent {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.errorIcon {
+  font-size: 48px;
+  color: #ff4d4f;
+  margin-bottom: 20px;
+}
+
+.errorTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+.errorMessage {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.offlineMessage {
+  font-size: 14px;
+  color: #ff9500;
+  background: #fff7e6;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 16px 0;
+  border: 1px solid #ffd591;
+}
+
+.retryButton {
+  background: linear-gradient(135deg, #044236 0%, #06654e 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.retryButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #06654e 0%, #088c6a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 101, 78, 0.3);
+}
+
+.retryButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.retryIcon {
+  font-size: 16px;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  background-color: #F8F3E9;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #044236;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingText {
+  font-size: 18px;
+  color: #666;
+  font-weight: 500;
+}
+
+.errorBanner {
+  background: linear-gradient(135deg, #fff2f0 0%, #ffebe8 100%);
+  border: 1px solid #ffccc7;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.errorBannerIcon {
+  font-size: 20px;
+  color: #ff4d4f;
+  flex-shrink: 0;
+}
+
+.errorBannerText {
+  font-size: 14px;
+  color: #d32f2f;
+  flex: 1;
+  font-weight: 500;
+}
+
+.errorBannerRetry {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.errorBannerRetry:hover:not(:disabled) {
+  background: #e6393b;
+}
+
+.errorBannerRetry:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }

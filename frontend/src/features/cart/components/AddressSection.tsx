@@ -5,11 +5,13 @@ import type { Address } from "../types/cart";
 interface AddressSectionProps {
   address: Address | null;
   onChangeAddress: () => void;
+  onAddAddress: () => void;
 }
 
 const AddressSection: React.FC<AddressSectionProps> = ({
   address,
   onChangeAddress,
+  onAddAddress,
 }) => {
   const renderAddressDetails = () => (
     <>
@@ -33,11 +35,9 @@ const AddressSection: React.FC<AddressSectionProps> = ({
       </div>
       <div className={styles.noAddress}>
         <span>
-          Siddharth Pandey, Near Rahul furniture chitikpur raniyan Kanpur dehat, Kanpur, Uttar Pradesh, 209304
+          Siddharth Pandey, Near Rahul furniture chitikpur raniyan Kanpur dehat,
+          Kanpur, Uttar Pradesh, 209304
         </span>
-        <button className={styles.addAddressButton} onClick={onChangeAddress}>
-          Add Address
-        </button>
       </div>
     </>
   );
@@ -47,11 +47,11 @@ const AddressSection: React.FC<AddressSectionProps> = ({
       <div className={styles.address}>
         {address ? renderAddressDetails() : renderNoAddress()}
       </div>
-      {address && (
-        <button className={styles.changeAddress} onClick={onChangeAddress}>
-          Change Address
-        </button>
-      )}
+      <div >
+          <button className={styles.changeAddress} onClick={onChangeAddress}>
+            Change Address
+          </button>
+      </div>
     </div>
   );
 };

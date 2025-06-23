@@ -3,26 +3,24 @@ import { useNavigate } from "react-router-dom";
 import styles from "./styles/CartHeader.module.css";
 
 interface CartHeaderProps {
-  activeStep: "BAG" | "ADDRESS" | "PAYMENT";
+  activeStep: "BAG" | "PAYMENT";
 }
 
 const CartHeader: React.FC<CartHeaderProps> = ({ activeStep }) => {
   const navigate = useNavigate();
 
-  const steps: ("BAG" | "ADDRESS" | "PAYMENT")[] = [
+  const steps: ("BAG" | "PAYMENT")[] = [
     "BAG",
-    "ADDRESS",
     "PAYMENT",
   ];
   const currentStepIndex = steps.indexOf(activeStep);
 
   const handleStepClick = (
-    step: "BAG" | "ADDRESS" | "PAYMENT",
+    step: "BAG" | "PAYMENT",
     index: number
   ) => {
     if (index < currentStepIndex) {
       if (step === "BAG") navigate("/cart");
-      if (step === "ADDRESS") navigate("/checkout/address");
       // Don't allow navigating to 'PAYMENT' directly
     }
   };
