@@ -17,6 +17,10 @@
 /* Item Container */
 .cartItemContainer {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 /* Cart Item Wrapper */
@@ -24,12 +28,18 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  border: 1px solid #f2f2f2;
+  /* border: 1px solid #f2f2f2; */
+  border-top: 1px solid #f2f2f2;
+  border-bottom: 1px solid #f2f2f2;
   border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  background-color: #F8F3E9;
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); */
+  background-color: #fff;
   position: relative;
-  transition: all 0.3s ease-in-out;
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-right 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
 }
 
 /* Cart Item Inner Content */
@@ -37,77 +47,35 @@
   display: flex;
   gap: 16px;
   padding: 12px 0;
-  width: 80%;
+  width: 60%; /* Centered and narrower */
+  margin: 0 auto;
   height: 100%;
 }
 
-/* Wishlist Overlay */
-.wishlistBtnOverlay {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%) translateX(-10px);
-  background: #3D857E;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 2;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  min-width: 70px;
-  min-height: 60px;
-}
-
-.cartItemWrapper:hover .wishlistBtnOverlay {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-  pointer-events: auto;
-}
-
-/* Remove Overlay */
-.removeBtnOverlay {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%) translateX(10px);
-  background: #F44336;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  z-index: 2;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  min-width: 70px;
-  min-height: 60px;
-}
-
-.removeBtnOverlay img {
-  width: 22px;
-  height: 22px;
-  filter: brightness(0) invert(1);
-}
-
+/* --- Region-based Hover for Overlays --- */
+.cartItemWrapper:hover .wishlistBtnOverlay,
 .cartItemWrapper:hover .removeBtnOverlay {
+  /* Remove universal hover effect for both overlays */
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cartItemWrapper.cartItemHoverLeft .wishlistBtnOverlay {
   opacity: 1;
-  transform: translateY(-50%) translateX(0);
   pointer-events: auto;
+  transform: translateY(-50%) translateX(0) scale(1.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  filter: blur(0);
+  z-index: 10;
+}
+
+.cartItemWrapper.cartItemHoverRight .removeBtnOverlay {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0) scale(1.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  filter: blur(0);
+  z-index: 10;
 }
 
 /* Wishlist Heart */
@@ -137,7 +105,7 @@
 .imageWrapper {
   position: relative;
   width: 120px;
-  height: 150px;
+  height: 180px;
   flex-shrink: 0;
 }
 
@@ -162,13 +130,14 @@
   font-weight: 700;
   margin-bottom: 2px;
   color: #222;
-  margin-top: 0;
+  margin: 0;
 }
 
 .itemDesc {
-  font-size: 14px;
+  font-size: 13px;
   color: #0a0909;
   font-weight: 400;
+  margin: 2px 0 0 0;
 }
 
 .optionsRow {
@@ -182,10 +151,9 @@
 }
 
 .itemSize {
-  padding: 6px 10px;
+  padding: 2px 1px;
   font-weight: 600;
   border-radius: 4px;
-  border: 1px solid #ccc;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -202,7 +170,7 @@
   border: 1px solid #044236;
   color: #fff;
   padding: 8px 12px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 50%;
   cursor: pointer;
@@ -249,8 +217,21 @@
 }
 
 .discount {
-  color: #d32f2f;
-  font-size: 13px;
+  position: absolute;
+  top: -2px;
+  
+  left: 3px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #044236;
+  font-size: 15px;
+  font-weight: bold;
+  pointer-events: none;
+  gap: 4px;
+  text-align: center;
 }
 
 .deliveryInfo {
@@ -381,7 +362,7 @@
 
 .modalImage {
   width: 140px;
-  height: 180px;
+  height: 210px;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #f0f0f0;
@@ -391,7 +372,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
 }
 
 .modalBrand {
@@ -401,8 +382,10 @@
 }
 
 .modalName {
-  font-size: 15px;
-  color: #4a4a4a;
+  font-size: 19px;
+  font-weight: 700;
+  color: #333333;
+  font-family: 'Times New Roman';
 }
 
 .priceBlock {
@@ -438,28 +421,35 @@
   margin-bottom: 24px;
 }
 
+.sizeSelectBlock {
+  margin-top: 18px;
+  padding: 12px 0 0 0;
+  border-top: 1px solid #eaf9f4;
+}
+
 .sizeLabel {
   font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-weight: 700;
+  color: #101010;
+  margin-bottom: 10px;
 }
 
 .sizeOptions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: flex-start;
 }
 
 .sizeCircle {
   width: 44px;
   height: 44px;
-  border: 2px solid #d1d1d1;
+  border: 2px solid #044236;
   border-radius: 50%;
   background-color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  color: #1a1a1a;
+  font-size: 15px;
+  font-weight: 600;
+  color: #044236;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -468,32 +458,33 @@
 }
 
 .sizeCircle:hover {
-  border-color: #ff3f6c;
-  background-color: #fff5f7;
-  transform: scale(1.05);
+  border-color: #088c6a;
+  background-color: #196f52;
+  color: #fff;
 }
 
 .activeSize {
-  border-color: #ff3f6c;
-  background-color: #ff3f6c;
+  border-color: #088c6a;
+  background-color: #044236;
   color: #fff;
 }
 
 .doneBtn {
   width: 100%;
   padding: 14px;
-  background-color: #ff3f6c;
+  background: linear-gradient(135deg, #06654e 0%, #088c6a 100%);
   color: #fff;
   border: none;
   border-radius: 6px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: 18px;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .doneBtn:hover {
-  background-color: #e91e63;
+  background: #044236;
   transform: translateY(-1px);
 }
 
@@ -690,4 +681,352 @@
     padding: 12px;
     font-size: 14px;
   }
+}
+
+.wishlistBtnOverlay,
+.removeBtnOverlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wishlistBtnOverlay {
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  right: auto;
+  transform: translateY(-50%) translateX(-100%) scale(0.95);
+  background: #3d857e !important;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  min-width: 70px;
+  min-height: 60px;
+  /* box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12); */
+  scale: 0.95;
+  filter: blur(0.5px);
+}
+
+.removeBtnOverlay {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  left: auto;
+  transform: translateY(-50%) translateX(100%) scale(0.95);
+  background: #f44336 !important;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 2;
+  min-width: 70px;
+  min-height: 60px;
+  /* box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12); */
+  scale: 0.95;
+  filter: blur(0.5px);
+}
+
+.removeBtnOverlay img {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+}
+
+.cartItemWrapper.cartItemHoverRight .cartItem,
+.cartItemWrapper.cartItemHoverLeft .cartItem {
+  /* Remove margin shift */
+}
+
+.cartItemWrapper.cartItemHoverRight {
+  border-right: none;
+}
+
+.cartItemWrapper.cartItemHoverLeft {
+  border-left: none;
+}
+
+.cartItemWrapper::after,
+.cartItemWrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 5;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.cartItemWrapper.cartItemHoverRight::after {
+  right: 0;
+  background: #f44336;
+  width: 18%;
+}
+
+.cartItemWrapper.cartItemHoverLeft::before {
+  left: 0;
+  background: #3d857e;
+  width: 18%;
+}
+
+@media (max-width: 600px) {
+  .cartList {
+    gap: 0.5rem; /* Responsive gap using rem */
+  }
+
+  .emptyCart {
+    font-size: 3vw; /* Scale font size with viewport */
+    margin-top: 6vw; /* Responsive margin */
+    max-width: 90%; /* Prevent overflow */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cartItem {
+    flex-direction: column; /* Stack elements vertically */
+    width: 90vw; /* Responsive width */
+    max-width: 100%; /* Prevent overflow */
+    padding: 1.5vw; /* Responsive padding */
+    gap: 1rem; /* Responsive gap */
+    margin: 0 auto; /* Center the cart item */
+  }
+
+  .imageWrapper {
+    width: 30vw; /* Responsive width */
+    max-width: 120px; /* Cap maximum width */
+    min-width: 80px; /* Minimum width */
+    height: auto; /* Maintain aspect ratio */
+    aspect-ratio: 2 / 3; /* Consistent aspect ratio */
+    display: flex; /* Center image */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin: 0 auto; /* Center the wrapper */
+  }
+
+  .itemImage {
+    width: 100%; /* Fill wrapper */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Preserve proportions */
+    border-radius: 4px;
+  }
+
+  .itemDetails {
+    gap: 0.2rem; /* Responsive gap */
+    width: 100%; /* Full width for details */
+    text-align: center; /* Center text for better aesthetics */
+  }
+
+  .itemName {
+    font-size: 3.5vw; /* Responsive font size */
+    max-width: 90%; /* Prevent overflow */
+    margin: 0 auto 0.2rem auto;
+  }
+
+  .itemDesc {
+    font-size: 2.8vw; /* Responsive font size */
+    max-width: 90%; /* Prevent overflow */
+    margin: 0.2rem auto;
+  }
+
+  .optionsRow {
+    gap: 1rem; /* Responsive gap */
+    margin: 1vw 0; /* Responsive margin */
+    justify-content: center; /* Center options */
+    flex-wrap: wrap;
+  }
+
+  .itemSize {
+    padding: 0.8vw 1.5vw; /* Responsive padding */
+    font-size: 2.8vw; /* Responsive font size */
+  }
+
+  .qtyControls {
+    gap: 0.8rem; /* Responsive gap */
+    justify-content: center; /* Center quantity controls */
+  }
+
+  .qtyBtn {
+    padding: 1vw 1.5vw; /* Responsive padding */
+    font-size: 2.5vw; /* Responsive font size */
+    line-height: 1; /* Prevent text misalignment */
+  }
+
+  .qtyValue {
+    font-size: 3vw; /* Responsive font size */
+    min-width: 5vw; /* Responsive minimum width */
+  }
+
+  .priceRow {
+    font-size: 3vw; /* Responsive font size */
+    gap: 1vw; /* Responsive gap */
+    margin-top: 1vw; /* Responsive margin */
+    justify-content: center; /* Center prices */
+  }
+
+  .currentPrice {
+    font-size: 3.5vw; /* Responsive font size */
+  }
+
+  .originalPrice {
+    font-size: 2.5vw; /* Responsive font size */
+  }
+
+  .discount {
+    font-size: 2.5vw; /* Responsive font size */
+  }
+
+  .deliveryInfo {
+    font-size: 2.5vw; /* Responsive font size */
+    margin-top: 1vw; /* Responsive margin */
+    max-width: 90%; /* Prevent overflow */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .wishlistBtnOverlay {
+    left : 0.5px; /* Responsive positioning */
+    padding: 1vw 1.5vw; /* Responsive padding */
+    font-size: 2.8vw; /* Responsive font size */
+    min-width: 10vw; /* Responsive minimum width */
+    min-height: 10vw; /* Responsive minimum height */
+    border-radius: 0;
+    
+  }
+
+  .removeBtnOverlay {
+    right : 0.5px; /* Responsive positioning */
+    padding: 1vw 1.5vw; /* Responsive padding */
+    font-size: 2.8vw; /* Responsive font size */
+    min-width: 10vw; /* Responsive minimum width */
+    min-height: 10vw; /* Responsive minimum height */
+    border-radius: 0;
+  }
+
+  .removeBtnOverlay img {
+    width: 4vw; /* Responsive image size */
+    height: 4vw; /* Responsive image size */
+  }
+
+  .heartBtn {
+    font-size: 3vw; /* Responsive font size */
+    top: 1vw; /* Responsive positioning */
+    left: 1vw; /* Responsive positioning */
+  }
+
+  .modalOverlay {
+    padding: 1.5vw; /* Responsive padding */
+  }
+
+  .removeModal {
+    max-width: 80vw; /* Responsive width */
+    padding: 2vw; /* Responsive padding */
+  }
+
+  .modalTitle {
+    font-size: 4vw; /* Responsive font size */
+    margin-bottom: 1.5vw; /* Responsive margin */
+  }
+
+  .modalMessage {
+    font-size: 2.8vw; /* Responsive font size */
+    margin-bottom: 2vw; /* Responsive margin */
+  }
+
+  .modalActions {
+    gap: 1.5vw; /* Responsive gap */
+  }
+
+  .confirmBtn,
+  .cancelBtn {
+    padding: 1.2vw 1.8vw; /* Responsive padding */
+    font-size: 3vw; /* Responsive font size */
+  }
+
+  .customModal {
+    width: 90vw; /* Responsive width */
+    max-width: 95%; /* Prevent overflow */
+    padding: 2vw; /* Responsive padding */
+  }
+
+  .modalTop {
+    flex-direction: column; /* Stack vertically */
+    gap: 1.5rem; /* Responsive gap */
+    margin-bottom: 1.5rem; /* Responsive margin */
+  }
+
+  .modalImage {
+    width: 40vw; /* Responsive width */
+    max-width: 150px; /* Cap maximum width */
+    height: auto; /* Maintain aspect ratio */
+    aspect-ratio: 2 / 3; /* Consistent aspect ratio */
+    margin: 0 auto; /* Center image */
+  }
+
+  .modalBrand {
+    font-size: 4vw; /* Responsive font size */
+  }
+
+  .modalName {
+    font-size: 3vw; /* Responsive font size */
+  }
+
+  .modalCurrentPrice {
+    font-size: 4vw; /* Responsive font size */
+  }
+
+  .modalOriginalPrice {
+    font-size: 2.8vw; /* Responsive font size */
+  }
+
+  .modalDiscount {
+    font-size: 2.8vw; /* Responsive font size */
+  }
+
+  .seller {
+    font-size: 2.5vw; /* Responsive font size */
+  }
+
+  .sizeLabel {
+    font-size: 3.5vw; /* Responsive font size */
+  }
+
+  .sizeCircle {
+    width: 8vw; /* Responsive width */
+    height: 8vw; /* Responsive height */
+    font-size: 2.8vw; /* Responsive font size */
+  }
+
+  .doneBtn {
+    padding: 2vw; /* Responsive padding */
+    font-size: 3.5vw; /* Responsive font size */
+  }
+}
+
+.carouselimg {
+  width: 80px;
+  height: 36px;
+  object-fit: contain;
+  position: relative;
+  display: inline-block;
+}
+
+.nameDiscountRow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }

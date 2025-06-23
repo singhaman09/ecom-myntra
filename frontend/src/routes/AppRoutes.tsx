@@ -14,7 +14,7 @@ import VerifyEmail from "../features/auth/pages/VerifyEmail";
 import VerifyOtpForgotPass from "../features/auth/pages/VerifyOtpForgotPass";
 import ResetPassword from "../features/auth/pages/ResetPassword";
 import CartPage from "../features/cart/pages/CartPage";
-import CheckoutAddress from "../features/cart/pages/CheckoutAddress";
+// import CheckoutAddress from "../features/cart/pages/CheckoutAddress";
 import Payment from "../features/cart/pages/Payment";
 import OrderPlaced from "../features/cart/pages/OrderPlaced";
 import MainProfile from "../features/profile/pages/Profile/MainProfile";
@@ -180,13 +180,6 @@ const AppRoutes: React.FC = () => {
           path: "/cart",
           element: (
               <CartPage />
-          ),
-        },
-
-        {
-          path: "/checkout/address",
-          element: (
-              <CheckoutAddress />
           ),
         },
 

@@ -97,7 +97,7 @@ const CouponModal: React.FC<CouponModalProps> = ({
             Cancel
           </button>
         </div>
-      </div>
+      </div> 
     </div>
   );
 };
