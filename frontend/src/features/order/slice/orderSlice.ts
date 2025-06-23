@@ -145,9 +145,9 @@ const ordersSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
-        const index = state.orders.findIndex(order => order.id === action.payload.data.id);
+        const index = state.orders.findIndex(order => order.id === action.payload.id);
         if (index !== -1) {
-          state.orders[index] = action.payload.data;
+          state.orders[index] = action.payload;
           ordersSlice.caseReducers.applyFilters(state);
         }
       })

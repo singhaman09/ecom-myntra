@@ -5,7 +5,8 @@ import StarRating from '../../../components/UI/StarRating';
 import styles from '../css/wishlistCard.module.css';
 import { useNavigate } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
-
+import { removeFromWishlist } from '../slice/wishlistSlice';
+import { useAppDispatch } from '../../order/hooks/redux';
 interface WishlistCardProps {
   item: WishlistItem;
   onRemove: () => Promise<void>;
@@ -45,6 +46,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
   onRemove,
   onMoveToCart,
 }) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(!item.image);
   const [rating, setRating] = useState(item.rating || 3);
@@ -70,8 +72,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
     try {
       await onRemove();
       setIsModalOpen(false);
-      // Force page reload to ensure latest server state
-      window.location.reload();
+      await dispatch(removeFromWishlist(item.id));
     } finally {
       setIsLoading(false);
     }
@@ -239,4 +240,4 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
   );
 };
 
-export default WishlistCard;
+export default  React.memo(WishlistCard);

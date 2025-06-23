@@ -315,4 +315,4 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   );
 };
 
-export default OrderCard;
+export default React.memo(OrderCard);

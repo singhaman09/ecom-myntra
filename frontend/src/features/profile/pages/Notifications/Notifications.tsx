@@ -67,6 +67,7 @@ const Notifications: React.FC = () => {
   };
 
   const formatTimeAgo = (timestamp: string) => {
+    console.log(timestamp);
     const now = new Date();
     const time = new Date(timestamp);
     const diffInSeconds = Math.floor((now.getTime() - time.getTime()) / 1000);
@@ -81,6 +82,7 @@ const Notifications: React.FC = () => {
       day: 'numeric',
       year: time.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
     });
+    
   };
 
   const formatTime = (timestamp: string) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { Order } from '../../order/types/orders';
 import type { SupportQuery } from '../types/support';
@@ -18,9 +18,7 @@ const HelpSupportPage: React.FC<HelpSupportPageProps> = ({ order: propOrder, onB
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Retrieve order from route state if not passed as prop
-  const state = location.state as { order?: Order };
-  const order = propOrder || state?.order;
+  const order = location.state?.order as Order;
 
   // Fallback onBack
   const onBack = propOnBack || (() => navigate(-1));
@@ -31,7 +29,9 @@ const HelpSupportPage: React.FC<HelpSupportPageProps> = ({ order: propOrder, onB
   if (!order) {
     return <div>No order data available.</div>;
   }
-
+useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
   const queries: SupportQuery[] = [
     {
       id: '1',

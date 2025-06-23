@@ -202,6 +202,7 @@ interface CategoryDropdownProps {
   activeCategory: string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  isMobileTriggered?: boolean;
 }
 
 const CategoriesButton: React.FC<CategoryDropdownProps> = ({ 
@@ -209,7 +210,8 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
     onClose, 
     activeCategory,
     onMouseEnter,
-    onMouseLeave 
+    onMouseLeave,
+    isMobileTriggered = false
   }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("men");
@@ -218,7 +220,7 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 1024);
     };
     
     checkMobile();
@@ -227,12 +229,34 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Handle mobile triggered dropdown from hamburger menu
+  useEffect(() => {
+    if (isMobileTriggered) {
+      setIsDropdownOpen(isOpen);
+    }
+  }, [isOpen, isMobileTriggered]);
+  
+  useEffect(() => {
+    // Prevent body scroll when mobile dropdown is open
+    if (isMobile && isDropdownOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobile, isDropdownOpen]);
+  
+
   const currentCategory = categoryData.find(
     (cat) => cat.id === selectedCategory
   );
 
   const handleMouseEnter = () => {
-    if (isMobile) return;
+    if (isMobile || isMobileTriggered) return;
     
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -242,16 +266,16 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
   };
 
   const handleMouseLeave = () => {
-    if (isMobile) return;
+    if (isMobile || isMobileTriggered) return;
     
     const timeout = setTimeout(() => {
       setIsDropdownOpen(false);
-    }, 100); // Reduced delay for better UX
+    }, 100);
     setHoverTimeout(timeout);
   };
 
   const handleDropdownMouseEnter = () => {
-    if (isMobile) return;
+    if (isMobile || isMobileTriggered) return;
     
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -260,7 +284,7 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
   };
 
   const handleDropdownMouseLeave = () => {
-    if (isMobile) return;
+    if (isMobile || isMobileTriggered) return;
     setIsDropdownOpen(false);
   };
 
@@ -270,10 +294,11 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
 
   const handleLinkClick = () => {
     setIsDropdownOpen(false);
+    if (onClose) onClose();
   };
 
   const handleButtonClick = () => {
-    if (isMobile) {
+    if (isMobile && !isMobileTriggered) {
       setIsDropdownOpen(!isDropdownOpen);
     }
   };
@@ -281,8 +306,98 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = ({
   const handleBackdropClick = () => {
     if (isMobile) {
       setIsDropdownOpen(false);
+      if (onClose) onClose();
     }
   };
+
+  const handleCloseClick = () => {
+    setIsDropdownOpen(false);
+    if (onClose) onClose();
+  };
+
+  // Don't render the Categories button when triggered from mobile hamburger
+  if (isMobileTriggered) {
+    return (
+      <>
+        {/* Mobile Backdrop */}
+        {isMobile && isDropdownOpen && (
+          <div 
+            className={styles.backdrop} 
+            onClick={handleBackdropClick}
+          />
+        )}
+
+        {/* Dropdown */}
+        <div
+          className={`${styles.dropdown} ${isDropdownOpen ? styles.active : ""} ${
+            isMobile ? styles.mobile : ""
+          }`}
+          onMouseEnter={handleDropdownMouseEnter}
+          onMouseLeave={handleDropdownMouseLeave}
+        >
+          <div className={styles.dropdownContent}>
+            {/* Mobile Close Button */}
+            {isMobile && (
+              <div className={styles.mobileHeader}>
+                <h2>Categories</h2>
+                <button 
+                  className={styles.closeButton}
+                  onClick={handleCloseClick}
+                >
+                  <X size={24} />
+                </button>
+              </div>
+            )}
+
+            {/* Categories Section */}
+            <div className={styles.categoriesSection}>
+              {categoryData.map((category) => (
+                <div
+                  key={category.id}
+                  className={`${styles.categoryItem} ${
+                    selectedCategory === category.id ? styles.active : ""
+                  }`}
+                  onClick={() => handleCategoryClick(category.id)}
+                >
+                  <Link
+                    to={category.path}
+                    onClick={handleLinkClick}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {category.name}
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            {/* Subcategories Section */}
+            <div className={styles.subcategoriesSection}>
+              <div className={styles.subcategoriesGrid}>
+                {currentCategory?.subcategories.map((group, index) => (
+                  <div key={index} className={styles.subcategoryGroup}>
+                    <h3 className={styles.subcategoryTitle}>{group.title}</h3>
+                    <ul className={styles.subcategoryList}>
+                      {group.items.map((item, itemIndex) => (
+                        <li key={itemIndex} className={styles.subcategoryItem}>
+                          <Link
+                            to={item.path}
+                            className={styles.subcategoryLink}
+                            onClick={handleLinkClick}
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className={styles.categoriesContainer}>

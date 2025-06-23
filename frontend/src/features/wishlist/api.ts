@@ -3,11 +3,10 @@ import type { AxiosResponse } from 'axios';
 import type { WishlistItem } from './types/wishlist';
 import shoes from '../../assets/shoes.jpeg';
 
-const USE_MOCK = false;
+const USE_MOCK = true;
 
 const API_BASE_URL = 'https://dd8f-14-194-22-202.ngrok-free.app';
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGZhZDc0YmRiNTc1MTQ1MmY5OGMxNSIsImVtYWlsIjoiMzAzMDFpdEBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImRldmljZUlkIjoiMTI3OGY4N2ItZjY4Ny00NzAzLWIxMTItYzYwOWVlY2Q0OGZiIiwiaWF0IjoxNzUwNDE5MTE0LCJleHAiOjE3NTA1MDU1MTR9.dH06S8EAW9VWgAV0-Usm3eU7XcdgwLikrIGw8Yi9MAw';
+const token = localStorage.getItem("token");
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -36,7 +35,7 @@ interface WishlistItemApiResponse {
   image: string;
   category?: string;
   description?: string;
-  variants?: { _id: string; size: string; color: string; stock: number; createdAt: string; updatedAt: string; __v: number }[];
+  variants: { _id: string; size: string; color: string; stock: number; createdAt: string; updatedAt: string; __v: number }[];
   totalStock?: number;
   reviews?: any[];
 }
@@ -45,17 +44,17 @@ const mapApiItemToWishlistItem = (apiItem: WishlistItemApiResponse): WishlistIte
   id: apiItem._id,
   productId: apiItem.productId,
   name: apiItem.name,
-  brand: 'Unknown', // JSON doesn't provide brand
+  brand: 'Unknown',
   price: apiItem.price,
-  originalPrice: undefined, // JSON doesn't provide originalPrice
-  discount: undefined, // JSON doesn't provide discount
+  originalPrice: undefined,
+  discount: undefined,
   image: apiItem.image || shoes,
-  rating: apiItem.reviews?.length ? 3 : 0, // Default rating if reviews exist
+  rating: apiItem.reviews?.length ? 3 : 0,
   reviewCount: apiItem.reviews?.length || 0,
-  size: apiItem.variants?.[0]?.size, // Use first variant's size
-  color: apiItem.variants?.[0]?.color, // Use first variant's color
+  size: apiItem.variants?.[0]?.size, 
+  color: apiItem.variants?.[0]?.color, 
   inStock: (apiItem.totalStock ?? 0) > 0,
-  dateAdded: new Date().toISOString(), // JSON doesn't provide dateAdded
+  dateAdded: new Date().toISOString(),
   category: apiItem.category || 'Unknown',
   description: apiItem.description || 'No description available',
   addedAt: new Date(),

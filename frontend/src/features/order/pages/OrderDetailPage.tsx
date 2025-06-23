@@ -28,7 +28,7 @@ const OrderDetailPage: React.FC = () => {
     }
   };
   fetchOrder();
-}, [orderId, order?.status]); // Add order.status to dependencies
+}, [orderId, order?.status]);
 
   if (loading) {
     return (
@@ -74,4 +74,4 @@ const OrderDetailPage: React.FC = () => {
   );
 };
 
-export default OrderDetailPage;
+export default React.memo(OrderDetailPage);;

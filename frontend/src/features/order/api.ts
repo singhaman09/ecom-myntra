@@ -2,9 +2,11 @@ import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
 
+const USE_MOCK = true;
+
 const API_BASE_URL = "http://172.50.0.244:3333/orders";
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGFiNzVlMzY5ZjM4Yzk1MTE3NWRiYiIsImVtYWlsIjoidmlzaGFseWR2NzQzQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiJlOTM5MjBiOC1iNWI4LTQyZGItOGM5Yi1iMjEyYzA0OWI3MTYiLCJpYXQiOjE3NTAzOTk4MTMsImV4cCI6MTc1MDQ4NjIxM30.Gsbrk_LAVIX5YXpV78o9AeJ-11euQPlEJR2Ys-NLJBM';
-// const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
+
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -47,20 +49,15 @@ interface OrderApiResponse {
   sessionId: string;
 }
 
-interface OrderApiUpdateResponse {
-  data: OrderApiResponse;
-  success: boolean;
-  message?: string;
-}
-
 const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
   const statusMap: Record<string, OrderStatus> = {
     PENDING: "Pending",
-    PROCESSING: "processing",
+    PLACED: "placed",
     SHIPPED: "shipped",
     DELIVERED: "delivered",
     CANCELLED: "cancelled",
     RETURNED: "returned",
+    PICKED:"picked"
   };
 
   return {
@@ -70,7 +67,7 @@ const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
     deliveryDate: apiOrder.status === "DELIVERED" ? apiOrder.updatedAt : "",
     total: apiOrder.totalPrice,
     totalAmount: apiOrder.totalPrice,
-status: statusMap[apiOrder.status.toUpperCase()] ?? apiOrder.status.toLowerCase(),
+    status: statusMap[apiOrder.status.toUpperCase()] ?? apiOrder.status.toLowerCase(),
     items: apiOrder.products.map(
       (product): OrderItem => ({
         id: product._id,
@@ -104,70 +101,213 @@ status: statusMap[apiOrder.status.toUpperCase()] ?? apiOrder.status.toLowerCase(
   };
 };
 
+const simulateDelay = (ms: number = 500) => new Promise((res) => setTimeout(res, ms));
+
+const mockOrders: Order[] = [
+  {
+    id: "mock1",
+    customerName: "Mock User",
+    orderDate: "2025-05-10",
+    deliveryDate: "2025-05-15",
+    status: "placed",
+    total: 1999,
+    totalAmount: 1999,
+    items: [
+      {
+        id: "item1",
+        name: "Mock T-shirt",
+        brand: "MockBrand",
+        image: "",
+        size: "M",
+        color: "Red",
+        price: 999,
+        quantity: 2,
+        isReturnable: true,
+        isExchangeable: true,
+      },
+    ],
+    deliveryAddress: {
+      id: "addr1",
+      name: "Mock User",
+      addressLine1: "123 Test St",
+      city: "Testville",
+      state: "TestState",
+      pincode: "123456",
+      country: "Mockland",
+      phoneNumber: "9999999999",
+    },
+    rating: 0,
+    canRate: true,
+    exchangeReturnWindow: "2025-05-22",
+  },
+  {
+    id: "mock1",
+    customerName: "Mock User",
+    orderDate: "2025-05-10",
+    deliveryDate: "2025-05-15",
+    status: "shipped",
+    total: 1999,
+    totalAmount: 1999,
+    items: [
+      {
+        id: "item1",
+        name: "Mock T-shirt",
+        brand: "MockBrand",
+        image: "",
+        size: "M",
+        color: "Red",
+        price: 999,
+        quantity: 2,
+        isReturnable: true,
+        isExchangeable: true,
+      },
+    ],
+    deliveryAddress: {
+      id: "addr1",
+      name: "Mock User",
+      addressLine1: "123 Test St",
+      city: "Testville",
+      state: "TestState",
+      pincode: "123456",
+      country: "Mockland",
+      phoneNumber: "9999999999",
+    },
+    rating: 0,
+    canRate: true,
+    exchangeReturnWindow: "2025-05-22",
+  },
+  {
+    id: "mock3",
+    customerName: "Mock User",
+    orderDate: "2025-05-10",
+    deliveryDate: "2025-05-15",
+    status: "delivered",
+    total: 1999,
+    totalAmount: 1999,
+    items: [
+      {
+        id: "item1",
+        name: "Mock T-shirt",
+        brand: "MockBrand",
+        image: "",
+        size: "M",
+        color: "Red",
+        price: 999,
+        quantity: 2,
+        isReturnable: true,
+        isExchangeable: true,
+      },
+    ],
+    deliveryAddress: {
+      id: "addr1",
+      name: "Mock User",
+      addressLine1: "123 Test St",
+      city: "Testville",
+      state: "TestState",
+      pincode: "123456",
+      country: "Mockland",
+      phoneNumber: "9999999999",
+    },
+    rating: 0,
+    canRate: true,
+    exchangeReturnWindow: "2025-05-22",
+  },
+];
+
 export const apiService = {
   getOrders: async (): Promise<Order[]> => {
+    if (USE_MOCK) {
+      await simulateDelay();
+      return mockOrders;
+    }
+
     try {
       const response: AxiosResponse<OrderApiResponse[]> = await axiosInstance.get("/user");
       return response.data.map(mapApiOrderToOrder);
-    } catch (error) {
+    } catch {
       throw new Error("Failed to fetch orders");
     }
   },
 
   getOrderById: async (orderId: string): Promise<Order> => {
+    if (USE_MOCK) {
+      await simulateDelay();
+      const order = mockOrders.find((o) => o.id === orderId);
+      if (order) return order;
+      throw new Error("Mock order not found");
+    }
+
     try {
       const response: AxiosResponse<OrderApiResponse> = await axiosInstance.get(`/${orderId}`);
       return mapApiOrderToOrder(response.data);
-    } catch (error) {
+    } catch {
       throw new Error("Failed to fetch order details");
     }
   },
 
   updateOrderStatus: async (orderId: string, status: OrderStatus): Promise<Order> => {
+    if (USE_MOCK) {
+      await simulateDelay();
+      const order = mockOrders.find((o) => o.id === orderId);
+      if (order) {
+        order.status = status;
+        return order;
+      }
+      throw new Error("Mock order not found");
+    }
+
     try {
       const statusMap: Record<OrderStatus, string> = {
         delivered: "DELIVERED",
         Pending: "PENDING",
         shipped: "SHIPPED",
         cancelled: "CANCELLED",
-        processing: "PROCESSING",
+        placed: "PLACED",
         returned: "RETURNED",
+        picked:"PICKED"
       };
 
-      const response: AxiosResponse<OrderApiUpdateResponse> = await axiosInstance.patch(`/orders/${orderId}`, {
+      const response: AxiosResponse<{ data: OrderApiResponse }> = await axiosInstance.patch(`/orders/${orderId}`, {
         status: statusMap[status],
       });
+
       return mapApiOrderToOrder(response.data.data);
-    } catch (error) {
+    } catch {
       throw new Error("Failed to update order status");
     }
   },
 
-  // FIXED: Now returns the updated order data instead of void
   cancelOrder: async (orderId: string): Promise<Order> => {
-    try {
-      const response: AxiosResponse<OrderApiUpdateResponse> = await axiosInstance.post(`/${orderId}/cancel`, {});
-      
-      // If the cancel endpoint doesn't return the updated order, fetch it separately
-      if (response.data && response.data.data) {
-        return mapApiOrderToOrder(response.data.data);
-      } else {
-        // Fallback: fetch the updated order data
-        return await apiService.getOrderById(orderId);
+    if (USE_MOCK) {
+      await simulateDelay();
+      const order = mockOrders.find((o) => o.id === orderId);
+      if (order) {
+        order.status = "cancelled";
+        return order;
       }
-    } catch (error) {
+      throw new Error("Mock order not found");
+    }
+
+    try {
+      const response: AxiosResponse<{ data: OrderApiResponse }> = await axiosInstance.post(`/${orderId}/cancel`, {});
+      return mapApiOrderToOrder(response.data.data || (await apiService.getOrderById(orderId)));
+    } catch {
       throw new Error("Failed to cancel order");
     }
   },
 
   submitRating: async (orderId: string, rating: number): Promise<{ success: boolean }> => {
+    if (USE_MOCK) {
+      await simulateDelay();
+      return { success: true };
+    }
+
     try {
-      const response: AxiosResponse<{ success: boolean; message?: string }> = await axiosInstance.post(
-        `/orders/${orderId}/review`,
-        { rating }
-      );
+      const response: AxiosResponse<{ success: boolean }> = await axiosInstance.post(`/orders/${orderId}/review`, {
+        rating,
+      });
       return { success: response.data.success };
-    } catch (error) {
+    } catch {
       throw new Error("Failed to submit rating");
     }
   },

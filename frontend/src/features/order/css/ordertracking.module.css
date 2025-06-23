@@ -87,6 +87,15 @@
   text-align: left;
   padding: 8px 0;
 }
+.timelineItem.cancelled .statusCircle {
+  background-color: #e53935;
+  border-color: #e53935;
+  color: white;
+}
+
+.timelineItem.cancelled .statusText {
+  color: #e53935;
+}
 
 .buttons {
   margin-top: 25px;

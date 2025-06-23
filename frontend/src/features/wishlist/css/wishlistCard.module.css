@@ -336,8 +336,6 @@
   font-family: 'Work Sans', sans-serif;
 }
 
- again add variantsSection and ensure that size and color are showing properly and also make sure that category and description are showing properly
-
 .modalActions {
   display: flex;
   gap: 12px;
