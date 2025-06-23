@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import styles from "./css/CategoryCarousel.module.css";
 
-// Types
+// ========== Types ==========
 interface Category {
   id: string;
   name: string;
@@ -27,11 +27,12 @@ interface CategoryItemProps {
   onClick?: (category: Category) => void;
 }
 
-// Constants
+// ========== Constants ==========
 const MOBILE_BREAKPOINT = 768;
 const MOBILE_ITEMS_PER_PAGE = 6;
 const DESKTOP_ITEMS_PER_PAGE = 5;
 
+// Background color based on type
 const TYPE_COLORS = {
   sale: "linear-gradient(135deg, #ff6b6b, #ff8e8e)",
   trending: "linear-gradient(135deg, #4ecdc4, #44b3ab)",
@@ -39,7 +40,6 @@ const TYPE_COLORS = {
   other: "linear-gradient(135deg, #a8a8a8, #888888)",
 } as const;
 
-// Default categories - memoized to prevent recreation
 const DEFAULT_CATEGORIES: Category[] = [
   {
     id: "1",
@@ -163,21 +163,20 @@ const DEFAULT_CATEGORIES: Category[] = [
   },
 ];
 
-// Utility functions
+// ========== Utils ==========
 const getTypeColor = (type: Category['type']): string => TYPE_COLORS[type];
 
+// Check if the screen is mobile
 const checkIsMobile = (): boolean => window.innerWidth <= MOBILE_BREAKPOINT;
 
-// Memoized CategoryItem component
-const CategoryItem = memo<CategoryItemProps>(({ 
-  category, 
-  onImageError, 
-  onClick 
-}) => {
+// ========== Category Item Component ==========
+const CategoryItem = memo<CategoryItemProps>(({ category, onImageError, onClick }) => {
+  // Handles image load error
   const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     onImageError(category.id, category.type);
   }, [category.id, category.type, onImageError]);
 
+  // Handles category click
   const handleClick = useCallback(() => {
     onClick?.(category);
   }, [category, onClick]);
@@ -211,19 +210,17 @@ const CategoryItem = memo<CategoryItemProps>(({
 
 CategoryItem.displayName = 'CategoryItem';
 
-// Custom hook for mobile detection
+// ========== Custom Hooks ==========
+
+// Detect mobile view on window resize
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(() => {
-    // Check if window is available (SSR safety)
     if (typeof window === 'undefined') return false;
     return checkIsMobile();
   });
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(checkIsMobile());
-    };
-
+    const handleResize = () => setIsMobile(checkIsMobile());
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -231,7 +228,7 @@ const useIsMobile = () => {
   return isMobile;
 };
 
-// Custom hook for scroll handling
+// Handle scroll to update current page
 const useScrollHandler = (
   containerRef: React.RefObject<HTMLDivElement>,
   onPageChange: (page: number) => void
@@ -247,7 +244,6 @@ const useScrollHandler = (
       onPageChange(newPage);
     };
 
-    // Throttle scroll events for better performance
     let ticking = false;
     const throttledScroll = () => {
       if (!ticking) {
@@ -264,23 +260,20 @@ const useScrollHandler = (
   }, [containerRef, onPageChange]);
 };
 
-// Main component
-const CategoryCarousel: React.FC<CategoryCarouselProps> = memo(({ 
-  categories, 
-  onCategoryClick 
-}) => {
+// ========== Main Carousel Component ==========
+const CategoryCarousel: React.FC<CategoryCarouselProps> = memo(({ categories, onCategoryClick }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   
   const isMobile = useIsMobile();
 
-  // Memoize category data
+  // Decide which category list to show
   const categoryData = useMemo(() => 
     categories || DEFAULT_CATEGORIES, 
     [categories]
   );
 
-  // Memoize pagination calculations
+  // Calculate how many items per page and total pages
   const paginationData = useMemo(() => {
     const itemsPerPage = isMobile ? MOBILE_ITEMS_PER_PAGE : DESKTOP_ITEMS_PER_PAGE;
     const totalPages = Math.ceil(categoryData.length / itemsPerPage);
@@ -288,7 +281,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = memo(({
     return { itemsPerPage, totalPages };
   }, [isMobile, categoryData.length]);
 
-  // Memoize paginated data
+  // Create paginated category groups
   const paginatedCategories = useMemo(() => {
     const { itemsPerPage, totalPages } = paginationData;
     
@@ -300,29 +293,24 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = memo(({
     );
   }, [categoryData, paginationData]);
 
-  // Callback for page changes
+  // When scroll happens, update current page
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
   }, []);
 
-  // Use scroll handler hook
   useScrollHandler(containerRef, handlePageChange);
 
-  // Memoized dot click handler
+  // Scroll to a page on dot click
   const handleDotClick = useCallback((pageIndex: number) => {
     const container = containerRef.current;
     if (!container) return;
 
     const targetScroll = pageIndex * container.clientWidth;
-    container.scrollTo({
-      left: targetScroll,
-      behavior: "smooth",
-    });
+    container.scrollTo({ left: targetScroll, behavior: "smooth" });
   }, []);
 
-  // Memoized image error handler
+  // Fallback for broken images
   const handleImageError = useCallback((categoryId: string, categoryType: string) => {
-    // Find the image element and apply fallback styling
     const imgElement = document.querySelector(`img[alt*="${categoryId}"]`) as HTMLImageElement;
     if (imgElement?.parentElement) {
       imgElement.style.display = "none";
@@ -330,7 +318,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = memo(({
     }
   }, []);
 
-  // Memoized category click handler
+  // Handle category card click
   const handleCategoryClick = useCallback((category: Category) => {
     onCategoryClick?.(category);
   }, [onCategoryClick]);
@@ -359,15 +347,13 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = memo(({
         </div>
       </div>
 
-      {/* Pagination dots - only show on mobile when there are multiple pages */}
+      {/* Show page dots only on mobile if there are multiple pages */}
       {isMobile && paginationData.totalPages > 1 && (
         <div className={styles.pagination}>
           {Array.from({ length: paginationData.totalPages }, (_, index) => (
             <button
               key={index}
-              className={`${styles.dot} ${
-                currentPage === index ? styles.activeDot : ""
-              }`}
+              className={`${styles.dot} ${currentPage === index ? styles.activeDot : ""}`}
               onClick={() => handleDotClick(index)}
               aria-label={`Go to page ${index + 1}`}
               type="button"

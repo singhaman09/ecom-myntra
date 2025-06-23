@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import SharedOtpVerification from '../components/SharedOtpVerification';
 
 const VerifyEmail: React.FC = () => {
+  // State variables for managing verification and OTP resend logic
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(true);
   const [countdown, setCountdown] = useState(60);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Getting auth context values
   const { 
     loading, 
     registrationData, 
@@ -24,10 +27,11 @@ const VerifyEmail: React.FC = () => {
     error: authError 
   } = useAuth();
 
-  // Get data from navigation state or from Redux store
+  // Extract email and userId from location state or fallback to auth context
   const email = location.state?.email || registrationData?.email;
   const userId = location.state?.userId || registrationData?.userId;
 
+  // Start countdown timer for "Resend OTP" button
   useEffect(() => {
     if (!email || !userId) {
       navigate('/signup');
@@ -48,16 +52,16 @@ const VerifyEmail: React.FC = () => {
     return () => clearInterval(timer);
   }, [email, userId, navigate]);
 
+  // Show auth errors from context
   useEffect(() => {
-    // Handle auth errors
     if (authError) {
       setError(authError);
       clearError();
     }
   }, [authError, clearError]);
 
+  // Show success message and navigate to login page when email is verified
   useEffect(() => {
-    // Handle successful email verification
     if (emailVerified) {
       setSuccessMessage('Email verified successfully! Redirecting to login...');
       setTimeout(() => {
@@ -70,7 +74,8 @@ const VerifyEmail: React.FC = () => {
     }
   }, [emailVerified, navigate]);
 
-  const handleVerifyOtp = async (otpString: string) => {
+  // Handles OTP verification logic
+  const handleVerifyOtp = useCallback(async (otpString: string) => {
     if (!userId) {
       setError('User ID not found. Please try signing up again.');
       return;
@@ -79,22 +84,19 @@ const VerifyEmail: React.FC = () => {
     setIsVerifying(true);
     setError('');
     setSuccessMessage('');
-    
+
     try {
-      await verifyEmail({
-        userId: userId,
-        token: otpString
-      });
-      
-      // Success is handled by useEffect hook
+      await verifyEmail({ userId, token: otpString });
+      // Successful verification handled by useEffect
     } catch (error: any) {
       setError(error || 'The OTP you entered is invalid or has expired');
     } finally {
       setIsVerifying(false);
     }
-  };
+  }, [userId, verifyEmail]);
 
-  const handleResendOtp = async () => {
+  // Handles resending OTP logic
+  const handleResendOtp = useCallback(async () => {
     if (!email) {
       setError('User ID not found. Please try signing up again.');
       return;
@@ -105,13 +107,13 @@ const VerifyEmail: React.FC = () => {
     setCountdown(60);
     setError('');
     setSuccessMessage('');
-    
+
     try {
-      await resendOtp({ email: email });
-      
+      await resendOtp({ email });
+
       setSuccessMessage('New verification code sent to your email');
-      
-      // Start countdown again
+
+      // Restart countdown for resend
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -122,33 +124,33 @@ const VerifyEmail: React.FC = () => {
           return prev - 1;
         });
       }, 1000);
-      
-      // Clear success message after 3 seconds
+
+      // Auto clear success message after 3 seconds
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
-      
+
     } catch (error: any) {
       setError(error || 'Failed to send OTP. Please try again later');
       setResendDisabled(false);
     } finally {
       setIsResending(false);
     }
-  };
+  }, [email, resendOtp]);
 
-  const handleChangeEmail = () => {
-    // Clear registration data to prevent automatic redirect back to verify-email
+  // Navigate to signup page to change email
+  const handleChangeEmail = useCallback(() => {
     if (clearRegistrationData) {
       clearRegistrationData();
     }
-    
-    // Navigate to signup page
+
     navigate('/signup', { 
       replace: true, 
       state: { from: 'change-email' } 
     });
-  };
+  }, [clearRegistrationData, navigate]);
 
+  // Render the OTP verification UI
   return (
     <SharedOtpVerification
       title="Verify Email Address,"
