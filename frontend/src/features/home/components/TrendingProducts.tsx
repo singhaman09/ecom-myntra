@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import ProductSection from './ProductSection';
 
+// Define types for props and product
 interface TrendingProductsProps {
   products?: Product[];
 }
@@ -21,7 +22,7 @@ interface Product {
 }
 
 const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) => {
-
+  // Fallback sample products if none are passed
   const sampleProducts: Product[] = [
     {
       _id: "trending_1",
@@ -96,16 +97,16 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) =>
     }
   ];
 
-  // Use passed products or fall back to sample data
+  // Decide what to display — use passed products or fallback
   const displayProducts = products.length > 0 ? products : sampleProducts;
 
   return (
     <ProductSection 
       title="Trending" 
       products={displayProducts} 
-      backgroundColor="white"
+      backgroundColor="white" // use gray if you want alternate styling
     />
   );
 };
 
-export default TrendingProducts;
+export default memo(TrendingProducts);

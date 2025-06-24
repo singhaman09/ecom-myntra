@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import ProductSection from './ProductSection';
 
 interface RecommendedProductsProps {
@@ -18,9 +18,10 @@ interface RecommendedProductsProps {
   }>;
 }
 
+// A section that displays recommended products, falls back to default sample if not provided
 const RecommendedProducts: React.FC<RecommendedProductsProps> = ({ products = [] }) => {
-  // Sample data structure matching your Product interface
-  const sampleProducts = [
+  // Sample products to use if no data is passed
+  const sampleProducts = useMemo(() => [
     {
       _id: "recommended_1",
       imageUrl: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop",
@@ -94,18 +95,18 @@ const RecommendedProducts: React.FC<RecommendedProductsProps> = ({ products = []
         { rating: 4, comment: "Lightweight formula" }
       ]
     }
-  ];
+  ], []);
 
-  // Use passed products or fall back to sample data
+  // Use passed products if available, otherwise fallback to sample data
   const displayProducts = products.length > 0 ? products : sampleProducts;
 
   return (
     <ProductSection 
-      title="Recommended" 
-      products={displayProducts} 
+      title="Recommended"
+      products={displayProducts}
       backgroundColor="gray"
     />
   );
 };
 
-export default RecommendedProducts;
+export default memo(RecommendedProducts);

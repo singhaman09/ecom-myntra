@@ -26,4 +26,4 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({ activeView, setActiveView
   );
 };
 
-export default ToggleButtons;
+export default React.memo(ToggleButtons);

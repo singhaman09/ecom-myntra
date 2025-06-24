@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,9 +9,14 @@ import ArrowIcon from "../../../assets/icons/right-arrow.svg";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+
+  // Access authentication logic
   const { login, loading, error, clearAuthState } = useAuth();
+
+  // Track whether user has agreed to terms
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
+  // React Hook Form setup with zod validation
   const {
     register,
     handleSubmit,
@@ -25,30 +30,53 @@ const Login: React.FC = () => {
     },
   });
 
-  // Clear auth state on component mount
+  // Clear error/success state on component mount
   useEffect(() => {
     clearAuthState();
   }, [clearAuthState]);
 
-  const onSubmit = async (data: LoginFormData) => {
-    if (!agreedToTerms) {
-      return;
-    }
+  // Handle form submission with useCallback to avoid re-creating on re-renders
+  const onSubmit = useCallback(
+    async (data: LoginFormData) => {
+      if (!agreedToTerms) return;
 
-    try {
-      await login(data);
-      navigate("/");
-      reset();
-    } catch {
-      // Handle login failure silently or show an error message
-    }
-  };
+      try {
+        await login(data); // Call login API
+        navigate("/");     // Redirect to homepage on success
+        reset();           // Clear form
+      } catch {
+        // Error handled inside useAuth context
+      }
+    },
+    [login, navigate, reset, agreedToTerms]
+  );
+
+  // Navigate to signup
+  const handleSignup = useCallback(() => {
+    navigate("/signup");
+  }, [navigate]);
+
+  // Navigate to forgot password
+  const handleForgotPassword = useCallback(() => {
+    navigate("/forgot-password");
+  }, [navigate]);
+
+  // Skip login and go to home
+  const handleSkip = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
+  // Toggle terms checkbox
+  const handleTermsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAgreedToTerms(e.target.checked);
+  }, []);
 
   return (
     <div className={styles.container}>
-      {/* Main Content */}
+      {/* Main Login Box */}
       <div className={styles.mainContent}>
         <div className={styles.loginCard}>
+          {/* Header Section */}
           <div className={styles.header}>
             <div className={styles.loginHeader}>
               <h1 className={styles.brand}>THE Wyntra SHOP</h1>
@@ -60,6 +88,7 @@ const Login: React.FC = () => {
             </div>
           </div>
 
+          {/* Login Form */}
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             {/* Email Field */}
             <div className={styles.field}>
@@ -71,10 +100,8 @@ const Login: React.FC = () => {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className={`${styles.input} ${
-                  errors.email ? styles.inputError : ""
-                }`}
                 placeholder="Enter your email"
+                className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
               />
               {errors.email && (
                 <p className={styles.errorMessage}>{errors.email.message}</p>
@@ -91,24 +118,22 @@ const Login: React.FC = () => {
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                className={`${styles.input} ${
-                  errors.password ? styles.inputError : ""
-                }`}
                 placeholder="Enter your password"
+                className={`${styles.input} ${errors.password ? styles.inputError : ""}`}
               />
               {errors.password && (
                 <p className={styles.errorMessage}>{errors.password.message}</p>
               )}
             </div>
 
-            {/* Terms and Conditions */}
+            {/* Terms Agreement */}
             <div className={styles.termsContainer}>
               <input
                 type="checkbox"
                 id="terms"
                 className={styles.checkbox}
                 checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                onChange={handleTermsChange}
               />
               <label htmlFor="terms" className={styles.termsText}>
                 I agree to the{" "}
@@ -130,12 +155,14 @@ const Login: React.FC = () => {
               {loading || isSubmitting ? "Signing in..." : "Continue"}
             </button>
 
+            {/* Divider */}
             <div className={styles.divider}>
               <span className={styles.dividerLine}></span>
               <span className={styles.dividerText}>OR</span>
               <span className={styles.dividerLine}></span>
             </div>
 
+            {/* Google Login Placeholder */}
             <div className={styles.oauthContainer}>
               <button type="button" className={styles.oauthButton}>
                 <img
@@ -146,12 +173,12 @@ const Login: React.FC = () => {
               </button>
             </div>
 
-            {/* Trouble logging in */}
+            {/* Forgot Password Link */}
             <div className={styles.troubleText}>
               Have trouble logging in?{" "}
               <button
                 type="button"
-                onClick={() => navigate("/forgot-password")}
+                onClick={handleForgotPassword}
                 className={styles.troubleLink}
               >
                 Forgot Password
@@ -159,25 +186,25 @@ const Login: React.FC = () => {
             </div>
           </form>
 
-          {/* Links */}
+          {/* Sign Up Link */}
           <div className={styles.linksContainer}>
             <button
               type="button"
-              onClick={() => navigate("/signup")}
+              onClick={handleSignup}
               className={styles.link}
             >
               Create new account
             </button>
           </div>
 
-          {/* Skip for now */}
+          {/* Skip Login Button */}
           <div className={styles.skip}>
             <button
               type="button"
-              onClick={() => navigate("/")}
+              onClick={handleSkip}
               className={styles.skipButton}
             >
-              SKIP FOR NOW 
+              SKIP FOR NOW
               <img src={ArrowIcon} alt="arrow" className={styles.arrowIcon} />
             </button>
           </div>
