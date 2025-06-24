@@ -15,7 +15,6 @@ const WishlistList: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchWishlistItems());
-    console.log("fetch item");
   }, [dispatch]);
 
   const handleRemoveFromWishlist = async (itemId: string) => {
