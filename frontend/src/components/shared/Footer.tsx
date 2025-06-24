@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Footer: React.FC = React.memo(() => {
   const { logoutRequest } = useAuth();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   // Logout the user and navigate to login page
   const handleLogoutClick = useCallback(() => {
@@ -91,9 +92,11 @@ const Footer: React.FC = React.memo(() => {
                 <Instagram className={`${styles.socialIcon} ${styles.instagram}`} />
 
                 {/* Logout Button (For Dev Purpose) */}
-                <button type="button" onClick={handleLogoutClick}>
-                  logout
-                </button>
+                {isAuthenticated && (
+                  <button type="button" onClick={handleLogoutClick}>
+                    logout
+                  </button>
+                )}
               </div>
             </div>
           </div>

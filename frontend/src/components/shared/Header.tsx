@@ -16,7 +16,8 @@ const dummySuggestions = [
 
 // Memoized Header component for performance
 const Header: React.FC = React.memo(() => {
-  const { totalItems } = useAppSelector((state) => state.wishlist);
+  const { items } = useAppSelector((state) => state.wishlist);
+  const totalItems = items.length;
   const totalItemsBag = 10;
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [activeCategoryHover, setActiveCategoryHover] = useState<string>("");
@@ -257,7 +258,7 @@ const Header: React.FC = React.memo(() => {
             >
               <Heart className={styles.userActionIcon} />
               <span className={styles.userActionText}>Wishlist</span>
-              {!(!totalItems && totalItems == 0) && (<span className={styles.bagBadge}>{totalItems}</span>)}
+              {!(!totalItems || totalItems == 0) && (<span className={styles.bagBadge}>{totalItems}</span>)}
             </div>
 
             {/* Shopping Bag */}
