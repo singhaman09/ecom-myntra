@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import styles from './css/HeroSection.module.css';
 
+// Slide type for the carousel
 type Slide = {
   id: string;
   backgroundImage: string;
@@ -16,24 +17,30 @@ const HeroSection = ({ slides }: { slides: Slide[] }) => {
   const [isPaused, setIsPaused] = useState(false);
   const slideInterval = useRef<number | null>(null);
 
+  // Go to next slide
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   }, [slides.length]);
 
-  const prevSlide = () => {
+  // Go to previous slide
+  const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  }, [slides.length]);
 
-  const goToSlide = (index: number) => {
+  // Jump to specific slide
+  const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
-  };
+  }, []);
 
+  // Start or stop auto sliding based on hover
   useEffect(() => {
     if (!isPaused) {
       slideInterval.current = setInterval(() => {
         nextSlide();
       }, 4000);
     }
+
+    // Clear the interval when unmounting or on pause
     return () => {
       if (slideInterval.current !== null) {
         clearInterval(slideInterval.current);
@@ -41,6 +48,7 @@ const HeroSection = ({ slides }: { slides: Slide[] }) => {
     };
   }, [isPaused, nextSlide]);
 
+  // Swipe support for mobile and desktop
   const swipeHandlers = useSwipeable({
     onSwipedLeft: nextSlide,
     onSwipedRight: prevSlide,
@@ -76,11 +84,7 @@ const HeroSection = ({ slides }: { slides: Slide[] }) => {
         </div>
       ))}
 
-      {/* Arrows */}
-      {/* <button onClick={prevSlide} className={styles.arrowLeft}>&lt;</button>
-      <button onClick={nextSlide} className={styles.arrowRight}>&gt;</button> */}
-
-      {/* Dots */}
+      {/* Pagination Dots */}
       <div className={styles.dots}>
         {slides.map((_, index) => (
           <span

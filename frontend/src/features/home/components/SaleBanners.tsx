@@ -9,28 +9,29 @@ interface SaleBannerProps {
   onCtaClick?: () => void;
 }
 
-const SaleBanners: React.FC<SaleBannerProps> = ({ 
-  title, 
-  subtitle, 
-  backgroundImage, 
-  ctaText, 
-  onCtaClick 
+const SaleBanners: React.FC<SaleBannerProps> = ({
+  title,
+  subtitle,
+  backgroundImage,
+  ctaText,
+  onCtaClick,
 }) => {
   return (
     <section className={styles.saleBanner}>
       <div className={styles.container}>
-        <div 
+        {/* Background image set inline via style */}
+        <div
           className={styles.bannerCard}
           style={{ backgroundImage: `url(${backgroundImage})` }}
         >
           <div className={styles.bannerOverlay}>
             <div className={styles.bannerContent}>
+              {/* Banner text */}
               <h2 className={styles.bannerTitle}>{title}</h2>
               <p className={styles.bannerSubtitle}>{subtitle}</p>
-              <button 
-                className={styles.bannerCta}
-                onClick={onCtaClick}
-              >
+
+              {/* CTA button */}
+              <button className={styles.bannerCta} onClick={onCtaClick}>
                 {ctaText}
               </button>
             </div>
@@ -41,4 +42,4 @@ const SaleBanners: React.FC<SaleBannerProps> = ({
   );
 };
 
-export default SaleBanners;
+export default React.memo(SaleBanners);

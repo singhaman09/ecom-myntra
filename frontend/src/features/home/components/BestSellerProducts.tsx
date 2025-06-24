@@ -1,8 +1,15 @@
+import React, { useMemo } from 'react';
 import ProductSection from './ProductSection';
+import type { Product } from '../../product/interfaces/ProductInterfaces';
 
-const BestSellerProducts = ({ products = [] }) => {
-  // Sample data structure matching your Product interface
-  const sampleProducts = [
+interface BestSellerProductsProps {
+  products?: Product[];
+}
+
+// This component shows the best-selling products section
+const BestSellerProducts: React.FC<BestSellerProductsProps> = React.memo(({ products = [] }) => {
+  // Fallback sample products if no products are passed
+  const sampleProducts = useMemo(() => [
     {
       _id: "bestseller_1",
       imageUrl: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop",
@@ -76,18 +83,18 @@ const BestSellerProducts = ({ products = [] }) => {
         { rating: 4, comment: "Great for dry skin" }
       ]
     }
-  ];
+  ], []); // Only create this list once
 
-  // Use passed products or fall back to sample data
+  // Use the actual products if passed, otherwise use the sample list
   const displayProducts = products.length > 0 ? products : sampleProducts;
 
   return (
     <ProductSection 
-      title="Best Seller" 
-      products={displayProducts} 
+      title="Best Seller"
+      products={displayProducts}
       backgroundColor="gray"
     />
   );
-};
+});
 
 export default BestSellerProducts;

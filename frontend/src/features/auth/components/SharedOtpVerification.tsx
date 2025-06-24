@@ -1,4 +1,3 @@
-// SharedOtpVerification.tsx
 import React, { useState, useEffect } from 'react';
 import styles from './SharedOtpVerification.module.css';
 
@@ -43,29 +42,28 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
 }) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
+  // Handle change in OTP input
   const handleOtpChange = (index: number, value: string) => {
-    // Only allow digits
     if (value && !/^\d$/.test(value)) return;
-    
     if (value.length > 1) return;
-    
+
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-    
-    // Auto-focus next input
+
+    // Focus next input if value is entered
     if (value && index < 5) {
       const nextInput = document.getElementById(`otp-${index + 1}`);
       nextInput?.focus();
     }
   };
 
+  // Handle backspace key behavior
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-${index - 1}`);
       prevInput?.focus();
-      
-      // Clear the previous input for forgot password flow
+
       if (showBackButton) {
         const newOtp = [...otp];
         newOtp[index - 1] = '';
@@ -74,15 +72,14 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
     }
   };
 
+  // Handle pasting of entire OTP
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text');
-    
-    // Check if pasted data is 6 digits
+
     if (/^\d{6}$/.test(pastedData)) {
       const newOtp = pastedData.split('');
       setOtp(newOtp);
-      // Focus the last input
       setTimeout(() => {
         const lastInput = document.getElementById('otp-5');
         lastInput?.focus();
@@ -90,17 +87,14 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
     }
   };
 
+  // Handle verification button click
   const handleVerifyClick = async () => {
     const otpString = otp.join('');
-    
-    if (otpString.length !== 6) {
-      return;
-    }
-
+    if (otpString.length !== 6) return;
     await onVerifyOtp(otpString);
   };
 
-  // Clear OTP when there's a success message (for resend)
+  // Reset OTP input when OTP is resent
   useEffect(() => {
     if (successMessage && successMessage.includes('sent')) {
       setOtp(['', '', '', '', '', '']);
@@ -113,7 +107,7 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        {/* Header */}
+        {/* Header Section */}
         <div className={styles.header}>
           <h1 className={styles.logo}>THE BODY SHOP</h1>
           <h2 className={styles.title}>{title}</h2>
@@ -126,7 +120,7 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
           </p>
         </div>
 
-        {/* OTP Input */}
+        {/* OTP Input Section */}
         <div className={styles.otpContainer}>
           <div className={styles.otpInputs} onPaste={handlePaste}>
             {otp.map((digit, index) => (
@@ -146,7 +140,7 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
           </div>
         </div>
 
-        {/* Timer */}
+        {/* Resend Timer */}
         {showResend && resendDisabled && countdown > 0 && (
           <div className={styles.timer}>
             <span className={styles.timerIcon}>⏱</span> {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')}
@@ -171,18 +165,10 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
         )}
 
         {/* Error Message */}
-        {error && (
-          <div className={styles.errorMessage}>
-            {error}
-          </div>
-        )}
+        {error && <div className={styles.errorMessage}>{error}</div>}
 
         {/* Success Message */}
-        {successMessage && (
-          <div className={styles.successMessage}>
-            {successMessage}
-          </div>
-        )}
+        {successMessage && <div className={styles.successMessage}>{successMessage}</div>}
 
         {/* Verify Button */}
         <button
@@ -193,7 +179,7 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
           {isVerifying ? "Verifying..." : "Verify"}
         </button>
 
-        {/* Change Email Button */}
+        {/* Change Email Link */}
         {showChangeEmail && (
           <button
             onClick={onChangeEmail}
@@ -204,7 +190,7 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
           </button>
         )}
 
-        {/* Back Button */}
+        {/* Back to Forgot Password */}
         {showBackButton && (
           <button
             onClick={onBack}
