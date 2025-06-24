@@ -73,7 +73,13 @@ const ProductDetails = () => {
   ];
     return images;
   }, [data?.selectedProduct?.product]);
-
+useEffect(()=>{
+if(uniqueSizes.length>0 && uniqueColors.length>0){
+  searchParams.set('size',uniqueSizes[0])
+  searchParams.set('color',uniqueColors[0])
+  setSearchParams(searchParams,{replace:true})
+}
+},[id])
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     dispatch(getProductDetails(id));

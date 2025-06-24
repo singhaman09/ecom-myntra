@@ -38,11 +38,11 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         </button>
         
         {/* Discount Badge */}
-        {discountPercentage > 0 && (
+        {/* {discountPercentage > 0 && (
           <div className={styles.discountBadge}>
             {discountPercentage}% OFF
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Product Info */}
@@ -75,9 +75,9 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
               <span className={styles.originalPrice}>
                 ₹{Math.round(product.price+((product.price * discountPercentage)/100))}
               </span>
-              <span className={styles.discountPercent}>
+              {/* <span className={styles.discountPercent}>
                 ({discountPercentage}% OFF)
-              </span>
+              </span> */}
             </>
           )}
         </div>
