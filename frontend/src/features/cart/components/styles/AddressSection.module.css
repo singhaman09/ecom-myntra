@@ -41,9 +41,9 @@
 
 
 .nameAndPincode {
-  font-size: 15px; /* Slightly larger for emphasis */
+  font-size: 14px; /* Slightly larger for emphasis */
   color: #222;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.2px;
 }
 

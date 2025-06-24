@@ -2,7 +2,6 @@
 import React from 'react';
 import EmptyBag from "../../../assets/EmptyBag.png"
 import styles from '../components/styles/EmptyCart.module.css';
-import RecommendedProduct from '../components/RecommendedProducts';
 import { useNavigate } from 'react-router-dom';
 
 const EmptyCart: React.FC = () => {
@@ -21,7 +20,6 @@ const EmptyCart: React.FC = () => {
           <button onClick={handleAddWishlist} className={styles.wishlistBtn}>SELECT FROM WISHLIST</button>
         </div>
       </section>
-      <RecommendedProduct />
     </>
   );
 };

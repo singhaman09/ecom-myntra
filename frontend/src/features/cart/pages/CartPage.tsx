@@ -7,8 +7,8 @@ import {
   DISCOUNT,
   STATIC_COUPONS,
   STATIC_OFFERS,
+  STATIC_CART_ITEMS,
 } from "../staticData/StaticData";
-// import { STATIC_CART_ITEMS } from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
 import AddressSection from "../components/AddressSection";
 import OffersSection from "../components/OffersSection";
@@ -27,6 +27,9 @@ import {
 } from "../api/cartApi";
 import RecommendedProduct from "../components/RecommendedProducts";
 import { toast } from 'react-toastify';
+import { useAppSelector, useAppDispatch } from '../../profile/redux/hooks';
+import { fetchAddresses } from '../../profile/redux/slices/addressSlice';
+import type { Address as ProfileAddress } from '../../profile/types/profile.types';
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,7 +38,6 @@ const CartPage: React.FC = () => {
   const modal = query.get("modal");
 
   // State management
-  const [items, setItems] = useState<CartItem[]>([]);
   const [offers, setOffers] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
@@ -50,7 +52,31 @@ const CartPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(false);
 
-  // const cartListRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+  const { items: profileAddresses = [], loading: addressLoading } = useAppSelector((state) => state.address);
+
+  // Map profile addresses to cart addresses
+  const mappedAddresses = profileAddresses.map((addr: ProfileAddress) => ({
+    id: addr._id,
+    name: addr.name,
+    street: addr.street,
+    city: addr.city,
+    state: addr.state,
+    zip: addr.postalCode,
+    phone: addr.phoneNumber,
+    isDefault: addr.isDefault,
+  }));
+
+  // Set default address as selected if not set
+  useEffect(() => {
+    if (profileAddresses.length === 0 && !addressLoading) {
+      dispatch(fetchAddresses());
+    }
+    if (!selectedAddress && mappedAddresses.length > 0) {
+      const defaultAddr = mappedAddresses.find(addr => addr.isDefault) || mappedAddresses[0];
+      setSelectedAddress(defaultAddr);
+    }
+  }, [dispatch, profileAddresses.length, addressLoading, mappedAddresses.length]);
 
   // Fetch cart data from API
   const fetchCartData = async () => {
@@ -60,7 +86,6 @@ const CartPage: React.FC = () => {
       setIsOffline(false);
       
       const cartItems = await getCartAPI();
-      setItems(cartItems);
       
       // Set offers and coupons
       setOffers(STATIC_OFFERS);
@@ -76,18 +101,18 @@ const CartPage: React.FC = () => {
       if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
         // setError("Unable to connect to server. Please check your internet connection.");
         setIsOffline(true);
-        setItems([]);
+        setOffers([]);
         toast.error("Unable to connect to server. Please check your internet connection.");
       } else if (err.response?.status === 401) {
         setError("Please login to view your cart.");
-        setItems([]);
+        setOffers([]);
         toast.error("Please login to view your cart.");
       } else if (err.response?.status === 404) {
         setError("Cart not found.");
-        setItems([]);
+        setOffers([]);
       } else {
         setError("Unable to fetch cart data. Please try again later.");
-        setItems([]);
+        setOffers([]);
         toast.error("Unable to fetch cart data. Please try again later.");
       }
     } finally {
@@ -119,7 +144,6 @@ const CartPage: React.FC = () => {
         updatedItems = await decrementCartItemQuantityAPI(productId);
       }
       
-      setItems(updatedItems);
       toast.success(`Quantity ${action === "increment" ? "increased" : "decreased"} successfully!`);
       
     } catch (err: any) {
@@ -138,7 +162,6 @@ const CartPage: React.FC = () => {
 
       // API call for online mode
       const updatedItems = await removeCartItemAPI(productId);
-      setItems(updatedItems);
       toast.success("Item removed from cart!");
       
     } catch (err: any) {
@@ -164,9 +187,8 @@ const CartPage: React.FC = () => {
       
       // Refresh cart data
       const updatedItems = await getCartAPI();
-      setItems(updatedItems);
-      setSelectedItems([]);
       navigate("/cart");
+      setSelectedItems([]);
       setModalAction(null);
       toast.success("Items moved to wishlist!");
       
@@ -181,21 +203,20 @@ const CartPage: React.FC = () => {
   };
 
   const handleSaveAddress = (address: Address, updatedAddresses: Address[]) => {
-    setAddresses(updatedAddresses);
     setSelectedAddress(address);
     navigate("/cart");
   };
 
   const toggleOffersDropdown = () => setShowMoreOffers((prev) => !prev);
 
-  // Calculate totals
-  const totalMRP = items.reduce((acc, item) => {
+  // Calculate totals using STATIC_CART_ITEMS
+  const totalMRP = STATIC_CART_ITEMS.reduce((acc, item) => {
     const price = typeof item.price === "number" ? item.price : 0;
     const quantity = typeof item.quantity === "number" ? item.quantity : 0;
     return acc + price * quantity;
   }, 0);
 
-  const totalPrice = items.reduce((acc, item) => {
+  const totalPrice = STATIC_CART_ITEMS.reduce((acc, item) => {
     const price = typeof item.price === "number" ? item.price : 0;
     const quantity = typeof item.quantity === "number" ? item.quantity : 0;
     return acc + (price - DISCOUNT) * quantity;
@@ -236,12 +257,12 @@ const CartPage: React.FC = () => {
       
       {loading ? (
         <LoadingSpinner />
-      ) : error && items.length === 0 ? (
+      ) : error && STATIC_CART_ITEMS.length === 0 ? (
         <ErrorMessage />
       ) : (
         <div className={styles.cartPage}>
           {/* Show error banner if there's an error but we have data */}
-          {error && items.length > 0 && (
+          {error && STATIC_CART_ITEMS.length > 0 && (
             <div className={styles.errorBanner}>
               <FaExclamationTriangle className={styles.errorBannerIcon} />
               <span className={styles.errorBannerText}>{error}</span>
@@ -268,16 +289,12 @@ const CartPage: React.FC = () => {
                 toggleOffersDropdown={toggleOffersDropdown}
               />
               <div className={styles.cartListSection}>
-                {items.length > 0 ? (
-                  <CartList
-                    items={items}
-                    onQuantityChange={handleQtyChange}
-                    onRemove={handleRemove}
-                    onMoveToWishlist={handleMoveToWishlist}
-                  />
-                ) : !error ? (
-                  <EmptyCart />
-                ) : null}
+                <CartList
+                  items={STATIC_CART_ITEMS}
+                  onQuantityChange={handleQtyChange}
+                  onRemove={handleRemove}
+                  onMoveToWishlist={handleMoveToWishlist}
+                />
               </div>
             </div>
 
@@ -297,9 +314,9 @@ const CartPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              {items.length > 0 && (
+              {STATIC_CART_ITEMS.length > 0 && (
                 <CartSummary
-                  totalItems={items.length}
+                  totalItems={STATIC_CART_ITEMS.length}
                   totalPrice={Number.isNaN(finalPrice) ? 0 : finalPrice}
                   totalMRP={Number.isNaN(totalMRP) ? 0 : totalMRP}
                 />
@@ -334,8 +351,8 @@ const CartPage: React.FC = () => {
               isOpen={true}
               onClose={() => navigate("/cart")}
               onSave={handleSaveAddress}
-              onUpdateAddresses={(addrs) => setAddresses(addrs)}
-              addresses={addresses}
+              onUpdateAddresses={() => {}}
+              addresses={mappedAddresses}
             />
           )}
         </div>
