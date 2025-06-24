@@ -116,6 +116,7 @@
     cursor: pointer;
     transition: border 0.2s, background 0.2s;
     font-family: 'Work Sans', sans-serif;
+    
   }
   
   .sizeSelected {
@@ -130,9 +131,7 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    opacity: 1;
-    margin-top: 24px;
-    width: 100%;
+    opacity: 1;   
     font-size: 1em;
     transition: opacity 0.2s;
     font-family: 'Work Sans', sans-serif;
@@ -147,8 +146,10 @@
     margin-top: 16px;
     color: #888;
     font-size: 18px;
-    text-align: center;
     font-family: 'Work Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .backContainer{
     display: flex;
@@ -179,4 +180,30 @@
     background: red;
     transform: rotate(-20deg);
     pointer-events: none;
+  }
+  .sizesListColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  .sizeRadioLabel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    cursor: pointer;
+    gap: 16px; /* Increase this value for more space */
+    padding: 6px 0;
+  }
+  
+  
+  .sizeRadioInput {
+    margin-right: 8px;
+  }
+  
+  .sizeSelected {
+    font-weight: bold;
+    color: #3d3d3d;
   }
