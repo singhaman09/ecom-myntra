@@ -96,16 +96,21 @@
   color: #3D857E;
   fill: #3D857E;
 }
-
+.rating{
+  font-size: 1.2rem;
+  color: #333333;
+  font-weight: 600;
+}
 .ratingText {
   font-size: 0.9rem;
-  color: #666;
+  color: #666666;
+  font-weight: 400;
 }
 
 .volume {
   font-size: 0.9rem;
-  color: #888;
-  margin-bottom: 8px;
+  color: #3D857E;
+  margin-bottom: 15px;
   font-family: 'Work Sans', sans-serif;
 }
 
@@ -148,13 +153,13 @@
 .bundlePrice {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #222;
+  color: #333333;
   font-family: 'Work Sans', sans-serif;
 }
 
 .bundleLabel {
   font-size: 0.95rem;
-  color: #666;
+  color: #666666;
 }
 
 .addToBagBtn {
