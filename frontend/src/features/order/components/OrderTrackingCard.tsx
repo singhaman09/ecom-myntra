@@ -33,7 +33,7 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
     delivered: order.status.toLowerCase() === 'delivered' ? formatDate(order.deliveryDate) : 'N/A',
   };
 
-  const isCancelled = order.status.toLowerCase() === 'cancelled';
+  const isCancelled = order.status.toLowerCase() === 'canceled';
 
   const steps = isCancelled
     ? [

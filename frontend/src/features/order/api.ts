@@ -2,11 +2,10 @@ import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 const API_BASE_URL = "http://172.50.0.244:3333/orders";
-const token = localStorage.getItem("token");
-
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnRpdHlJZCI6IjY4NGFiNzVlMzY5ZjM4Yzk1MTE3NWRiYiIsImVtYWlsIjoidmlzaGFseWR2NzQzQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZGV2aWNlSWQiOiI3MTM3ZjBmNi03OGZhLTQ4MGMtYjAwOS1kZjA3ZTI3NzU0NTkiLCJpYXQiOjE3NTA4MzMwMzcsImV4cCI6MTc1MDkxOTQzN30.yCKykHY4GuYE5JCSFOI5pjNAGxUNBzHpTKELV6BAHmc'
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -51,14 +50,17 @@ interface OrderApiResponse {
 
 const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
   const statusMap: Record<string, OrderStatus> = {
-    PENDING: "Pending",
-    PLACED: "placed",
-    SHIPPED: "shipped",
-    DELIVERED: "delivered",
-    CANCELLED: "cancelled",
-    RETURNED: "returned",
-    PICKED:"picked"
-  };
+  PENDING: "placed", 
+  PLACED: "placed",
+  SHIPPED: "shipped",
+  DELIVERED: "delivered",
+  CANCELLED: "cancelled",
+  RETURNED: "returned",
+  PICKED: "picked",
+  CONFIRMED: "placed", 
+  IN_TRANSIT: "shipped",
+};
+
 
   return {
     id: apiOrder._id,
@@ -109,7 +111,7 @@ const mockOrders: Order[] = [
     customerName: "Mock User",
     orderDate: "2025-05-10",
     deliveryDate: "2025-05-15",
-    status: "placed",
+    status: "cancelled",
     total: 1999,
     totalAmount: 1999,
     items: [

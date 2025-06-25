@@ -2,6 +2,11 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import type { WishlistItem } from './types/wishlist';
 import shoes from '../../assets/shoes.jpeg';
+import bag from '../../assets/bag.jpeg';
+import cam from '../../assets/cam.jpg';
+import watch from '../../assets/watch.jpeg';
+import watch1 from '../../assets/watch1.jpeg';
+import honey from '../../assets/honey.jpeg';
 
 const USE_MOCK = true;
 
@@ -66,7 +71,7 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
   {
     _id: '1',
     productId: 'mock1',
-    name: 'Mock Headphones',
+    name: 'Shoes',
     price: 999,
     image: shoes,
     category: 'Electronics',
@@ -80,9 +85,9 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
   {
     _id: '2',
     productId: 'mock2',
-    name: 'Mock Laptop',
+    name: 'Bag',
     price: 45999,
-    image: shoes,
+    image: bag,
     category: 'Electronics',
     description: 'Powerful laptop',
     variants: [
@@ -94,9 +99,9 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
   {
     _id: '3',
     productId: 'mock3',
-    name: 'Mock Laptop',
+    name: 'Camera',
     price: 45999,
-    image: shoes,
+    image: cam,
     category: 'Electronics',
     description: 'Powerful laptop',
     variants: [
@@ -108,9 +113,9 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
   {
     _id: '4',
     productId: 'mock4',
-    name: 'Mock Laptop',
+    name: 'Watch',
     price: 45999,
-    image: shoes,
+    image: watch,
     category: 'Electronics',
     description: 'Powerful laptop',
     variants: [
@@ -122,9 +127,9 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
   {
     _id: '5',
     productId: 'mock5',
-    name: 'Mock Laptop',
+    name: 'Watch',
     price: 45999,
-    image: shoes,
+    image: watch1,
     category: 'Electronics',
     description: 'Powerful laptop',
     variants: [
@@ -136,9 +141,9 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
   {
     _id: '6',
     productId: 'mock6',
-    name: 'Mock Laptop',
+    name: 'Honey',
     price: 45999,
-    image: shoes,
+    image: honey,
     category: 'Electronics',
     description: 'Powerful laptop',
     variants: [

@@ -7,13 +7,17 @@ import PaymentSummaryCard from '../components/PaymentSummaryCard';
 import styles from '../css/orderdetailPage.module.css';
 import type { Order } from '../types/orders';
 import { apiService } from '../api';
+import SomethingWentWrong from '../components/Somethingwentwrong';
+import { useOrders } from '../hooks/useOrders';
 
 const OrderDetailPage: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const {
+      refreshOrders,
+    } = useOrders();
   useEffect(() => {
   const fetchOrder = async () => {
     if (!orderId) return;
@@ -42,17 +46,7 @@ const OrderDetailPage: React.FC = () => {
   }
 
   if (error || !order) {
-    return (
-      <Layout>
-        <div className={styles.errorContainer}>
-          <div className={styles.errorIcon}>⚠️</div>
-          <h3>{error || 'Order not found'}</h3>
-          <Link to="/orders" className={styles.backButton}>
-            Back to Orders
-          </Link>
-        </div>
-      </Layout>
-    );
+    <SomethingWentWrong onRetry={refreshOrders} />
   }
 
   return (
@@ -65,9 +59,9 @@ const OrderDetailPage: React.FC = () => {
           <h1 className={styles.title}>Order Details</h1>
         </div>
         <div className={styles.content}>
-          <OrderDetailCard order={order} />
-          <OrderTrackingCard order={order} />
-          <PaymentSummaryCard order={order} />
+          {order && <OrderDetailCard order={order} />}
+          {order && <OrderTrackingCard order={order} />}
+          {order && <PaymentSummaryCard order={order} />}
         </div>
       </div>
     </Layout>
