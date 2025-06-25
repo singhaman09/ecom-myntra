@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import styles from './css/ProductSection.module.css';
 import ProductCard from '../../product/components/ProductListComponents/ProductCard/ProductCard';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductSectionProps {
   title: string;
@@ -9,6 +10,7 @@ interface ProductSectionProps {
 }
 
 const ProductSection: React.FC<ProductSectionProps> = ({ title, products, backgroundColor = 'white' }) => {
+  const navigate = useNavigate();
   return (
     <section className={`${styles.section} ${backgroundColor === 'gray' ? styles.grayBg : ''}`}>
       <div className={styles.container}>
@@ -16,7 +18,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ title, products, backgr
         {/* Section Header */}
         <div className={styles.header}>
           <h2 className={styles.title}>{title}</h2>
-          <button className={styles.viewAllButton}>View All</button>
+          <button className={styles.viewAllButton} onClick={() => {navigate('/products');}}>View All</button>
         </div>
         
         {/* Grid of products */}

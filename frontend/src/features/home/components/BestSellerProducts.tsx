@@ -6,13 +6,13 @@ interface BestSellerProductsProps {
   products?: Product[];
 }
 
-// This component shows the best-selling products section
 const BestSellerProducts: React.FC<BestSellerProductsProps> = React.memo(({ products = [] }) => {
-  // Fallback sample products if no products are passed
-  const sampleProducts = useMemo(() => [
+  const sampleProducts: Product[] = useMemo(() => [
     {
       _id: "bestseller_1",
-      imageUrl: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "Banana Nourishment Hair Mask",
       price: 799,
@@ -31,7 +31,9 @@ const BestSellerProducts: React.FC<BestSellerProductsProps> = React.memo(({ prod
     },
     {
       _id: "bestseller_2",
-      imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "Fuji Green Tea Eau De Toilette",
       price: 1299,
@@ -49,7 +51,9 @@ const BestSellerProducts: React.FC<BestSellerProductsProps> = React.memo(({ prod
     },
     {
       _id: "bestseller_3",
-      imageUrl: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "Vitamin E Face Cream",
       price: 549,
@@ -67,7 +71,9 @@ const BestSellerProducts: React.FC<BestSellerProductsProps> = React.memo(({ prod
     },
     {
       _id: "bestseller_4",
-      imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "Coconut Body Butter",
       price: 649,
@@ -83,9 +89,8 @@ const BestSellerProducts: React.FC<BestSellerProductsProps> = React.memo(({ prod
         { rating: 4, comment: "Great for dry skin" }
       ]
     }
-  ], []); // Only create this list once
+  ], []);
 
-  // Use the actual products if passed, otherwise use the sample list
   const displayProducts = products.length > 0 ? products : sampleProducts;
 
   return (

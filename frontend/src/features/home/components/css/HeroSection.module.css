@@ -75,17 +75,18 @@
 .button {
   font-family: 'Work Sans', sans-serif;
   padding: 10px 25px;
-  background-color: #ff3f6c;
+  background-color: #044236;
   border: none;
   color: white;
   font-weight: bold;
+  border-radius: 7px;
   cursor: pointer;
   transition: background 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for button */
 }
 
 .button:hover {
-  background-color: #e7335f;
+  background-color: #044236;
 }
 
 .arrowLeft, .arrowRight {
