@@ -13,14 +13,14 @@
   transition: all 0.2s;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #374151;
+  color: #f6f1e9;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   user-select: none;
 }
 
 .categoriesButton:hover {
-  color: #00a65a;
+  color: #f6f1e9ad;
 }
 
 .categoriesIcon {

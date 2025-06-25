@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { ChevronDown, Grid3X3, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import styles from "./css/CategoryDropDown.module.css";
-
 interface SubcategoryItem {
   name: string;
   path: string;
@@ -213,6 +212,7 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = React.memo(
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [isMobile, setIsMobile] = useState(false);
 
+
     // Detect mobile/tablet devices
     useEffect(() => {
       const checkMobile = () => {
@@ -362,7 +362,7 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = React.memo(
               </div>
 
               {/* Subcategories Section */}
-              <div className={styles.subcategoriesSection}>
+              <div className={`${styles.subcategoriesSection} scroll-ignore`}>
                 <div className={styles.subcategoriesGrid}>
                   {currentCategory?.subcategories.map((group, index) => (
                     <div key={index} className={styles.subcategoryGroup}>
@@ -457,7 +457,7 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = React.memo(
             </div>
 
             {/* Subcategories Section */}
-            <div className={styles.subcategoriesSection}>
+            <div className={`${styles.subcategoriesSection} scroll-ignore`}>
               <div className={styles.subcategoriesGrid}>
                 {currentCategory?.subcategories.map((group, index) => (
                   <div key={index} className={styles.subcategoryGroup}>

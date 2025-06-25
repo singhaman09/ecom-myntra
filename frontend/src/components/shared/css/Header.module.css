@@ -5,6 +5,11 @@
   top: 0;
   z-index: 50;
 }
+
+.mainContainer {
+  background-color: #044236;
+  color: white !important;
+}
 .topBanner {
   background-color: #f6f1e9;
   padding: 0.5rem 0;
@@ -14,6 +19,8 @@
 .bannerText {
   font-family: 'Work Sans', sans-serif;
   font-size: 0.875rem;
+  color: #044236;
+
 }
 
 @media (max-width: 768px) {
@@ -28,10 +35,11 @@
 
 .bannerTextPink {
   font-weight: 600;
-  color: #0c3d32;
+  color: #044236;
 }
 
 .container {
+  background-color: #044236;
   max-width: 70%;
   margin: 0 auto;
   padding: 0rem;
@@ -40,11 +48,13 @@
 @media (max-width: 1024px) {
   .container {
     max-width: 100%;
-    padding: 0 1rem;
+    /* margin: 0% 1.6rem; */
+    /* padding: 0 1rem; */
   }
 }
 
 .headerContent {
+    padding: 0 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,10 +64,14 @@
 
 @media (max-width: 768px) {
   .headerContent {
+    padding: 0% ;
     height: 3.5rem;
   }
+  .userActions {
+    margin-right: 1rem;
+  }
   .container {
-    padding: 0 1rem;
+    /* padding: 0 1rem; */
     max-width: 100%;
   }
 }
@@ -68,9 +82,9 @@
 }
 
 .logoText {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  color:  #0c3d32;
+  color:  #f6f1e9;
   text-decoration: none;
 }
 
@@ -110,7 +124,7 @@
 
 .navLink {
   font-family: 'Work Sans', sans-serif;
-  color: #374151;
+  color: #f6f1e9;
   font-weight: 600;
   font-size: 0.875rem;
   text-transform: uppercase;
@@ -121,7 +135,7 @@
 }
 
 .navLink:hover {
-  color:  #00a65a;
+  color:  #f6f1e9ad;
 }
 
 /* Search container - show on desktop and tablet, hide on mobile */
@@ -165,7 +179,7 @@
   left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #9ca3af;
+  /* color: #044236; */
   width: 1rem;
   height: 1rem;
 }
@@ -175,8 +189,9 @@
   width: 100%; /* Changed from 80% */
   max-width: 100%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background-color: #044236;
+  color: #f6f1e9;
+  border: 1px solid #e5e7ebb2;
   border-radius: 0.375rem;
   font-size: 0.875rem;
   outline: none;
@@ -185,11 +200,12 @@
 }
 
 .searchInput:focus {
-  kerning: 2px solid  #00a65a;
+  kerning: 2px solid  #044236;
   border-color: transparent;
 }
 
 .userActions {
+  max-width: 150px;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -211,13 +227,13 @@
 
 .userAction:hover .userActionIcon,
 .userAction:hover .userActionText {
-  color:  #00a65a;
+  color:  #f6f1e9ad;
 }
 
 .userActionIcon {
   width: 1.25rem;
   height: 1.25rem;
-  color: #374151;
+  color: #f6f1e9;
   transition: color 0.2s;
 }
 
@@ -231,7 +247,7 @@
 .userActionText {
   font-family: 'Work Sans', sans-serif;
   font-size: 0.75rem;
-  color: #374151;
+  color: #f6f1e9;
   font-weight: 600;
   transition: color 0.2s;
 }
@@ -248,26 +264,37 @@
 
 .bagBadge {
   position: absolute;
-  top: -0.5rem;
-  right: -0.5rem;
-  background-color:  #0c3d32;
-  color: white;
+  top: -0.35rem;
+  right: -0.35rem;
+  background-color: #f6f1e9cb;
+  color: black;
   font-size: 0.75rem;
   border-radius: 50%;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .bagBadge {
+    width: 0.95rem;
+    height: 0.95rem;
+    font-size: 0.625rem;
+  }
+}
+
+.iconWrapper {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-@media (max-width: 768px) {
-  .bagBadge {
-    width: 1rem;
-    height: 1rem;
-    font-size: 0.625rem;
-  }
-}
 
 .mobileMenuButton {
   display: none;
@@ -286,8 +313,8 @@
 /* Updated mobile search to always show on mobile */
 .mobileSearch {
   display: none;
-  background-color: #f9fafb;
-  border-top: 1px solid #e5e7eb;
+  background-color: #044236;
+  border-top: 1px solid #e5e7ebb2;
   padding: 1rem;
 }
 
@@ -338,8 +365,8 @@
 }
 
 .mobileNavLink:hover {
-  color:  #00a65a;
-  border-color:  #00a65a;
+  color:  #074b3d;
+  border-color:  #074b3d;
 }
 .suggestionsList {
   position: absolute;
@@ -347,8 +374,8 @@
   right: 0;
   top: 100%;
   z-index: 99;
-  background: #fff;
-  color: #222;
+  background: #07493c;
+  color: white;
   border-radius: 0 0 0.5rem 0.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   margin: 0;
@@ -356,6 +383,10 @@
   list-style: none;
   max-height: 260px;
   overflow-y: auto;
+  white-space: nowrap;
+
+  scrollbar-width: thin;
+  scrollbar-color: #6b7280 #374151; 
 }
 
 .suggestionItem {
@@ -365,11 +396,12 @@
 }
 
 .suggestionItem:hover {
-  background: #f3f4f6;
+  background: #044236;
 }
 
 /* Profile Dropdown Styles */
 .profileDropdown {
+  font-family: "Work Sans", sans-serif;
   position: absolute;
   top: 100%;
   right: 0;
@@ -384,7 +416,7 @@
 
 .dropdownItem {
   padding: 0.75rem 1rem;
-  color: #374151;
+  color: #044236;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -398,7 +430,7 @@
 
 .dropdownItem:hover {
   background-color: #f9fafb;
-  color: #00a65a;
+  color: #084e40;
 }
 
 .dropdownItem:first-child {

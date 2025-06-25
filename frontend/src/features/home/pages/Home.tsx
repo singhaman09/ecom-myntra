@@ -1,5 +1,7 @@
-import React, { Suspense, lazy, useMemo } from "react";
+import React, { lazy, useMemo } from "react";
 import styles from "./Home.module.css";
+import { useNavigate } from "react-router-dom";
+import { useLenisScroll } from "../hooks/useLenisScroll";
 
 // Lazy load components
 const HeroSection = lazy(() => import("../components/HeroSection"));
@@ -20,6 +22,9 @@ const BestSellerProducts = lazy(
 const SummerSaleBanner = lazy(() => import("../components/SummerSaleBanner"));
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+
+  useLenisScroll();
   // Memoize slide data so it's not recreated on every render
   const heroSlides = useMemo(
     () => [
@@ -30,7 +35,7 @@ const Home: React.FC = () => {
         buttonText: "SHOP NOW",
         backgroundImage:
           "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=800&fit=crop",
-        onButtonClick: () => {},
+        onButtonClick: () => {navigate('/products')},
       },
       {
         id: "2",
@@ -39,7 +44,7 @@ const Home: React.FC = () => {
         buttonText: "EXPLORE NOW",
         backgroundImage:
           "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&h=800&fit=crop",
-        onButtonClick: () => {},
+        onButtonClick: () => {navigate('/products')},
       },
       {
         id: "3",
@@ -48,10 +53,10 @@ const Home: React.FC = () => {
         buttonText: "SHOP SALE",
         backgroundImage:
           "https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=1200&h=800&fit=crop",
-        onButtonClick: () => {},
+        onButtonClick: () => {navigate('/products')},
       },
     ],
-    []
+    [navigate]
   );
 
   return (

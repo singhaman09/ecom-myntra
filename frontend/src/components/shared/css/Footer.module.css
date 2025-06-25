@@ -1,6 +1,6 @@
 
 .footer {
-  background-color: #f9fafb;
+  background-color: #f6f1e9;
   margin-top: 4rem;
 }
 
@@ -105,7 +105,8 @@
 
 @media (max-width: 640px) {
   .appStore {
-    height: 3rem;
+    margin: 0.5rem;
+    height: 2.2rem;
   }
 }
 
@@ -203,7 +204,7 @@
 .guaranteeIcon {
   width: 2.5rem;
   height: 2.5rem;
-  background-color: #fce7f3;
+  background-color: #044236;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -219,7 +220,7 @@
 }
 
 .guaranteeIcon span {
-  color: #ec4899;
+  color: #f6f1e9;
   font-weight: 700;
   font-size: 0.875rem;
 }
@@ -313,7 +314,7 @@
 }
 
 .bottomFooter {
-  background-color: #067040;
+  background-color: #044236;
   color: white;
   padding: 1.5rem 0;
 }

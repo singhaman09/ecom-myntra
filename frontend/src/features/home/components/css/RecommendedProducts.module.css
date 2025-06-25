@@ -1,9 +1,9 @@
 .section {
     padding: 3rem 0;
-    background-color: red;
   }
   
   .container {
+    
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
