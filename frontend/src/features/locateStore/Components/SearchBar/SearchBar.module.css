@@ -24,6 +24,8 @@
     outline: none;
     color:#044236;
     background-color: rgba(61, 133, 126, 0.1);
+    font-family: 'Work sans',sans-serif;
+    font-weight: 500;
 
   }
   .searchInput:focus {

@@ -133,7 +133,7 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
           </div>
         </div>
         <div>
-          <div className={styles.sizesLabel}>Sizes</div>
+          <div className={styles.sizesLabel}>Size</div>
           <div className={styles.sizesListColumn}>
             {productData.sizes.map((size) => {
               const isOutOfStock = !product.variants.find(
@@ -176,7 +176,7 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
               style={{
                 textDecoration: "line-through",
                 marginRight: 8,
-                color: "#b0b0b0",
+                color: "#666666",
               }}
             >
               ₹{product.price}
