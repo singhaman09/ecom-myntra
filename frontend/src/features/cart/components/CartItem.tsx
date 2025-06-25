@@ -13,13 +13,15 @@ interface Props {
   onRemove: (productId: string) => void;
   onQuantityChange: (productId: string, action: "increment" | "decrement") => void;
   onMoveToWishlist?: (productId: string) => void;
+  onSizeClick?: (item: CartItemType) => void;
 }
 
 const CartItem: React.FC<Props> = ({ 
   item, 
   onRemove, 
   onQuantityChange, 
-  onMoveToWishlist 
+  onMoveToWishlist,
+  onSizeClick
 }) => {
   const [hovered, setHovered] = useState(false);
   const [hoverDirection, setHoverDirection] = useState<'left' | 'right' | null>(null);
@@ -124,7 +126,20 @@ const CartItem: React.FC<Props> = ({
             <p className={styles.description}>{item.description}</p>
             
             <div className={styles.sizeRow}>
-              <span className={styles.size}>Size: {item.size}</span>
+              <span className={styles.size}>
+                Size: {item.size}
+                {onSizeClick && (
+                  <span
+                    className={styles.caretIcon}
+                    onClick={() => onSizeClick(item)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Change size"
+                  >
+                    {' '}▼
+                  </span>
+                )}
+              </span>
               <div className={styles.quantity}>
                 <button 
                   className={styles.qtyBtn} 
@@ -146,7 +161,7 @@ const CartItem: React.FC<Props> = ({
             <div className={styles.priceRow}>
               <span className={styles.currentPrice}>₹{discountedPrice.toFixed(2)}</span>
               <span className={styles.originalPrice}>₹{item.price}</span>
-              <span className={styles.discount}>{DISCOUNT}% OFF</span>
+              {/* <span className={styles.discount}>{DISCOUNT}% OFF</span> */}
             </div>
           </div>
         </div>

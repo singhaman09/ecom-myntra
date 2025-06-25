@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo,  useMemo, useState } from 'react';
 import styles from './ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -8,18 +8,15 @@ import { renderStars } from '../../../utils/RenderStars';
 import { averageRating } from '../../../utils/Reviews';
 import { useProductSelector } from '../../../hooks/storeHooks';
 import SelectShadeSizeModal from '../SelectSizeModal/SelectSizeModal';
-import defaultProductImage from '../../../../../assets/cart.png'
 import { toast } from 'react-toastify';
+import { handleImageError } from '../../../utils/HandleImageError';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
   const data=useProductSelector(state=>state.wishlist.items)
   const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
   const [modalOpen, setModalOpen] = useState(false);
-  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-    (e.currentTarget as HTMLImageElement).src = defaultProductImage;
-    (e.currentTarget as HTMLImageElement).onerror = null;
-  },[]);
+
   return (
     <>
     <div className={styles.card} onClick={()=>navigate(`/productDetails/${product._id}`)}>
@@ -90,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
     
     </div>
       { modalOpen &&  <SelectShadeSizeModal
-                  
+         product={product}         
         onClose={() => setModalOpen(false)}
         onConfirm={(selection) => {
           toast.success("Added successfully")

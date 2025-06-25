@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector } from '../../order/hooks/redux';
+// import { useAppSelector } from '../../order/hooks/redux';
 // import WishlistFilters from '../components/WishlistFilters';
 import WishlistList from '../components/WishlistList';
 // import Button from '../../../components/UI/Button';
@@ -8,21 +8,21 @@ import styles from '../css/wishlistPage.module.css';
 // import Sidebar from '../../order/components/Sidebar';
 
 const WishlistPage: React.FC = () => {
-  const { items, loading } = useAppSelector((state) => state.wishlist);
+  // const { items, loading } = useAppSelector((state) => state.wishlist);
 
-  const handleContinueShopping = () => {
-    window.location.href = '/products';
-  };
+  // const handleContinueShopping = () => {
+  //   window.location.href = '/products';
+  // };
 
-  const handleClearWishlist = () => {
-    if (
-      window.confirm(
-        'Are you sure you want to clear your entire wishlist? This action cannot be undone.'
-      )
-    ) {
-      //error handling if needed
-    }
-  };
+  // const handleClearWishlist = () => {
+  //   if (
+  //     window.confirm(
+  //       'Are you sure you want to clear your entire wishlist? This action cannot be undone.'
+  //     )
+  //   ) {
+  //     error handling if needed
+  //   }
+  // };
 
   return (
    
@@ -64,4 +64,4 @@ const WishlistPage: React.FC = () => {
   );
 };
 
-export default WishlistPage;
+export default React.memo(WishlistPage);

@@ -7,9 +7,10 @@ interface CartSummaryProps {
   totalItems: number;
   totalPrice: number;
   totalMRP: number;
+  appliedCoupon?: { code: string; discount: number } | null;
 }
 
-const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, totalMRP }) => {
+const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, totalMRP, appliedCoupon }) => {
   if (totalItems === 0) return null;
 
   const platformFee = 20; 
@@ -23,7 +24,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, total
 
   return (
     <div className={styles.cartSummary}>
-      <h3 className={styles.summaryTitle}>Price Details ({totalItems} {totalItems === 1 ? 'item' : 'items'})</h3>
+      <h3 className={styles.summaryTitle}>Payment Details ({totalItems} {totalItems === 1 ? 'item' : 'items'})</h3>
       <div className={styles.priceItem}>
         <span>Total MRP</span>
         <span>₹{totalMRP}</span>
@@ -38,7 +39,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, total
         <span>
           Coupon Discount <a href="#" className={styles.applyCoupon}>Apply Coupon</a>
         </span>
-        <span>₹0</span>
+        <span>₹{appliedCoupon ? appliedCoupon.discount : 0}</span>
       </div>
       <div className={styles.priceItem}>
         <span>

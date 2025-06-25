@@ -2,10 +2,14 @@
   max-width: 1060px;
   margin: 0 auto;
   padding: 9px 16px;
-  background-color: #ffffff;
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #F8F3E9;
+  display: flex;
+  flex-direction: column;
+}
+body{
+  background-color: #F8F3E9 ;
 }
 
 .mainContent {
@@ -14,6 +18,7 @@
   gap: 10px;
   max-width: 960px;
   margin: 0 auto;
+  flex: 1 0 auto;
 }
 
 .leftSection {
@@ -126,10 +131,14 @@
 /* Coupons */
 .couponsSection {
   background: #fff;
-  padding: 16px;
+  padding: 10px;
   border: 1px solid #e5e7eb78;
-  border-radius: 8px;
+  border-radius: 3px;
   margin-bottom: 16px;
+  width: clamp(80%, 90vw, 95%);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .couponsHeader {
@@ -216,7 +225,7 @@
   }
 
   .mainContent {
-    gap: 15px;
+    gap: 5px;
     max-width: 1100px;
   }
 
@@ -653,13 +662,13 @@
 }
 
 /* Error and Loading States */
-.errorContainer {
+.errorContainer, .loadingContainer {
+  flex: 1 0 auto;
+  min-height: 60vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 60vh;
-  padding: 20px;
-  background-color: #F8F3E9;
 }
 
 .errorContent {
@@ -733,15 +742,6 @@
 
 .retryIcon {
   font-size: 16px;
-}
-
-.loadingContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 60vh;
-  background-color: #F8F3E9;
 }
 
 .loadingSpinner {
@@ -821,4 +821,43 @@
 .errorBannerRetry:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 18px 0 0 0;
+}
+.paginationBtn {
+  background: #044236;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(4,66,54,0.08);
+}
+.paginationBtn:disabled {
+  background: #ccc;
+  color: #fff;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.paginationInfo {
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+body, .cartPage, .mainContent, .leftSection, .rightSection, .cartListSection, .priceDetails, .applyButton, .modalContent, .modalActions, .couponsSection, .applyCouponsText, .paginationBtn, .errorContainer, .loadingContainer, .errorBanner, .selectAllText, .productCard, .brand, .price, .original, .discount, .addButton {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .itemsHeader, .recommendedHeading {
+  font-family: 'Times New Roman', Times, serif;
 }

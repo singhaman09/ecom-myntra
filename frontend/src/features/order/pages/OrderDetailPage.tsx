@@ -15,20 +15,20 @@ const OrderDetailPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchOrder = async () => {
-      if (!orderId) return;
-      try {
-        setLoading(true);
-        const fetchedOrder = await apiService.getOrderById(orderId);
-        setOrder(fetchedOrder);
-      } catch (err) {
-        setError('Failed to load order details');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOrder();
-  }, [orderId]);
+  const fetchOrder = async () => {
+    if (!orderId) return;
+    try {
+      setLoading(true);
+      const fetchedOrder = await apiService.getOrderById(orderId);
+      setOrder(fetchedOrder);
+    } catch (err) {
+      setError('Failed to load order details');
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchOrder();
+}, [orderId, order?.status]);
 
   if (loading) {
     return (
@@ -74,4 +74,4 @@ const OrderDetailPage: React.FC = () => {
   );
 };
 
-export default OrderDetailPage;
+export default React.memo(OrderDetailPage);;

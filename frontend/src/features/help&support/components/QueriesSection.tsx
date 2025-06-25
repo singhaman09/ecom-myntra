@@ -16,7 +16,6 @@ const QueriesSection: React.FC<QueriesSectionProps> = ({ queries: initialQueries
   };
 
   const handleFeedback = (isHelpful: boolean) => {
-    // Handle feedback logic here
     console.log('Feedback:', isHelpful ? 'Helpful' : 'Not helpful');
   };
 

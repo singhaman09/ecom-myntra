@@ -145,9 +145,9 @@ const ordersSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
-        const index = state.orders.findIndex(order => order.id === action.payload.data.id);
+        const index = state.orders.findIndex(order => order.id === action.payload.id);
         if (index !== -1) {
-          state.orders[index] = action.payload.data;
+          state.orders[index] = action.payload;
           ordersSlice.caseReducers.applyFilters(state);
         }
       })
@@ -157,7 +157,7 @@ const ordersSlice = createSlice({
       .addCase(cancelOrder.fulfilled, (state, action) => {
         const index = state.orders.findIndex(order => order.id === action.payload);
         if (index !== -1) {
-          state.orders[index].status = 'Cancelled';
+          state.orders[index].status = 'cancelled';
           ordersSlice.caseReducers.applyFilters(state);
         }
       })

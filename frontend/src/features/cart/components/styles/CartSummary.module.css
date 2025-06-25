@@ -5,21 +5,21 @@
   gap: clamp(0.5rem, 2.5vw, 0.75rem); /* Responsive gap */
   padding: clamp(0.5rem, 2vw, 0.75rem); /* Responsive padding */
   background-color: #fff;
-  /* border-left: 1px solid #ddd; */
   border-top: none;
   border-right: none;
   margin-bottom: clamp(0.25rem, 1.5vw, 0.5rem); /* Responsive margin */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   width: clamp(80%, 90vw, 95%); /* Responsive width */
   max-width: 400px; /* Cap for mobile */
   margin-left: auto;
+  border-radius: 3px;
   margin-right: auto; /* Center the summary */
 }
 
 .summaryTitle {
   font-size: clamp(1rem, 4.5vw, 1.25rem); /* Responsive font size */
   font-weight: 700;
-  color: #065518;
+  font-family: 'Times New Roman';
+  color: #333333;
   margin-bottom: clamp(0.2rem, 1vw, 0.4rem); /* Responsive margin */
   text-align: center; /* Center for mobile */
 }
@@ -46,11 +46,12 @@
 
 .knowMore,
 .applyCoupon {
-  font-size: clamp(0.65rem, 2.5vw, 0.8rem); /* Responsive font size */
-  color: #044236;
+  font-size: 11px !important;
+  color: #0e0d0c;
   text-decoration: none;
-  margin-left: clamp(0.2rem, 1vw, 0.4rem); /* Responsive margin */
-  font-weight: 600;
+  margin-left: clamp(0.2rem, 1vw, 0.4rem);
+  font-family: sans-serif;
+  font-weight: 400;
 }
 
 .knowMore:hover,
@@ -79,8 +80,10 @@
 
 .totalLabel {
   font-size: clamp(0.8rem, 3vw, 0.9rem); /* Responsive font size */
-  font-weight: 600;
+  font-weight: 700;
   color: #333;
+  font-family: sans-serif;
+  /* font-size: 1.5rem !important; */
 }
 
 .totalPrice {
@@ -138,7 +141,7 @@
 
   .knowMore,
   .applyCoupon {
-    font-size: clamp(0.6rem, 2.8vw, 0.75rem);
+    font-size: 10px !important;
     margin-left: clamp(0.15rem, 0.8vw, 0.3rem);
   }
 
@@ -166,8 +169,10 @@
   }
 
   .summaryTitle {
-    font-size: 12px;
-    font-family: sans-serif !important;
+    font-size: 19px;
+    font-family: 'Times New Roman' !important;
+    letter-spacing: 0.3px;
+    font-weight: 700;
   }
 
   .priceItem {
@@ -177,7 +182,7 @@
 
   .knowMore,
   .applyCoupon {
-    font-size: 13px;
+    font-size: 11px !important;
   }
 
   .total {
@@ -204,6 +209,7 @@
   .summaryTitle {
     font-size: 20px;
     text-align: start;
+    font-family: 'Times New Roman';
   }
 
   .priceItem {

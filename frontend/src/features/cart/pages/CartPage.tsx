@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaTag, FaExclamationTriangle, FaRedo } from "react-icons/fa";
 import CartHeader from "../components/CartHeader";
@@ -7,29 +7,36 @@ import {
   DISCOUNT,
   STATIC_COUPONS,
   STATIC_OFFERS,
+  // for dummy data -> uncomment this 
   STATIC_CART_ITEMS,
 } from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
-import AddressSection from "../components/AddressSection";
 import OffersSection from "../components/OffersSection";
 import RemoveModal from "../components/modals/RemoveModal";
 import CouponModal from "../components/modals/CouponModal";
 import ChangeAddressModal from "../components/modals/ChangeAddressModal";
-import EmptyCart from "./EmptyCart";
+// import EmptyCart from "./EmptyCart";
 import styles from "../components/styles/CartPage.module.css";
-import type { Address, Coupon, CartItem } from "../types/cart";
-import { 
-  getCartAPI, 
-  removeCartItemAPI, 
-  incrementCartItemQuantityAPI, 
+import type { Address, CartItem } from "../types/cart";
+import {
+  getCartAPI,
+  removeCartItemAPI,
+  incrementCartItemQuantityAPI,
   decrementCartItemQuantityAPI,
-  moveItemToWishlistAPI 
+  moveItemToWishlistAPI,
 } from "../api/cartApi";
 import RecommendedProduct from "../components/RecommendedProducts";
-import { toast } from 'react-toastify';
-import { useAppSelector, useAppDispatch } from '../../profile/redux/hooks';
-import { fetchAddresses } from '../../profile/redux/slices/addressSlice';
-import type { Address as ProfileAddress } from '../../profile/types/profile.types';
+import { toast } from "react-toastify";
+import { useAppSelector, useAppDispatch } from "../../profile/redux/hooks";
+import { fetchAddresses } from "../../profile/redux/slices/addressSlice";
+import type { Address as ProfileAddress } from "../../profile/types/profile.types";
+import gsap from "gsap";
+
+const FooterCart = React.lazy(() => import("../components/FooterCart"));
+
+const AddressSection = React.lazy(() => import("../components/AddressSection"));
+
+const ITEMS_PER_PAGE = 5;
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
@@ -41,11 +48,17 @@ const CartPage: React.FC = () => {
   const [offers, setOffers] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
-  const [appliedCouponDiscount] = useState(10);
-  const [availableCoupons, setAvailableCoupons] = useState<Coupon[]>([]);
+  const [availableCoupons] = useState(STATIC_COUPONS);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(null);
+  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
+    null
+  );
   const [showMoreOffers, setShowMoreOffers] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  // const [cartItems, setCartItems] = useState<CartItem[]>([]); // for API CALLS
+  const [cartItems, setCartItems] = useState<CartItem[]>(STATIC_CART_ITEMS); // For STATIC data
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
 
   // API states
   const [loading, setLoading] = useState(true);
@@ -53,7 +66,8 @@ const CartPage: React.FC = () => {
   const [isOffline, setIsOffline] = useState(false);
 
   const dispatch = useAppDispatch();
-  const { items: profileAddresses = [], loading: addressLoading } = useAppSelector((state) => state.address);
+  const { items: profileAddresses = [], loading: addressLoading } =
+    useAppSelector((state) => state.address);
 
   // Map profile addresses to cart addresses
   const mappedAddresses = profileAddresses.map((addr: ProfileAddress) => ({
@@ -73,10 +87,16 @@ const CartPage: React.FC = () => {
       dispatch(fetchAddresses());
     }
     if (!selectedAddress && mappedAddresses.length > 0) {
-      const defaultAddr = mappedAddresses.find(addr => addr.isDefault) || mappedAddresses[0];
+      const defaultAddr =
+        mappedAddresses.find((addr) => addr.isDefault) || mappedAddresses[0];
       setSelectedAddress(defaultAddr);
     }
-  }, [dispatch, profileAddresses.length, addressLoading, mappedAddresses.length]);
+  }, [
+    dispatch,
+    profileAddresses.length,
+    addressLoading,
+    mappedAddresses.length,
+  ]);
 
   // Fetch cart data from API
   const fetchCartData = async () => {
@@ -84,32 +104,37 @@ const CartPage: React.FC = () => {
       setLoading(true);
       setError(null);
       setIsOffline(false);
-      
-      const cartItems = await getCartAPI();
-      
+
+      const apiCartItems = await getCartAPI();
+      if (Array.isArray(apiCartItems) && apiCartItems.length > 0) {
+        setCartItems(apiCartItems);
+      } else {
+        setCartItems(STATIC_CART_ITEMS);  //for STATIC DATA {remove this line for api calls}
+      }
+
       // Set offers and coupons
       setOffers(STATIC_OFFERS);
       const validCoupons = STATIC_COUPONS.filter(
         (coupon) => new Date(coupon.expires) > new Date()
       );
-      setAvailableCoupons(validCoupons);
-      
     } catch (err: any) {
       console.error("Error fetching cart data:", err);
-      
+
       // Check if it's a network error or server error
-      if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
+      if (
+        err.code === "NETWORK_ERROR" ||
+        err.message?.includes("Network Error")
+      ) {
         // setError("Unable to connect to server. Please check your internet connection.");
         setIsOffline(true);
         setOffers([]);
-        toast.error("Unable to connect to server. Please check your internet connection.");
-      } else if (err.response?.status === 401) {
+        toast.error(
+          "Unable to connect to server. Please check your internet connection."
+        );
+      } else if (err.response?.status === 401 || err.response?.status === 404) {
         setError("Please login to view your cart.");
         setOffers([]);
         toast.error("Please login to view your cart.");
-      } else if (err.response?.status === 404) {
-        setError("Cart not found.");
-        setOffers([]);
       } else {
         setError("Unable to fetch cart data. Please try again later.");
         setOffers([]);
@@ -132,7 +157,9 @@ const CartPage: React.FC = () => {
   ) => {
     try {
       if (isOffline) {
-        toast.error("Cannot update cart while offline. Please check your connection.");
+        toast.error(
+          "Cannot update cart while offline. Please check your connection."
+        );
         return;
       }
 
@@ -143,9 +170,12 @@ const CartPage: React.FC = () => {
       } else {
         updatedItems = await decrementCartItemQuantityAPI(productId);
       }
-      
-      toast.success(`Quantity ${action === "increment" ? "increased" : "decreased"} successfully!`);
-      
+
+      toast.success(
+        `Quantity ${
+          action === "increment" ? "increased" : "decreased"
+        } successfully!`
+      );
     } catch (err: any) {
       console.error(`Error ${action}ing quantity:`, err);
       toast.error(`Failed to ${action} quantity. Please try again.`);
@@ -156,14 +186,15 @@ const CartPage: React.FC = () => {
   const handleRemove = async (productId: string) => {
     try {
       if (isOffline) {
-        toast.error("Cannot remove items while offline. Please check your connection.");
+        toast.error(
+          "Cannot remove items while offline. Please check your connection."
+        );
         return;
       }
 
       // API call for online mode
-      const updatedItems = await removeCartItemAPI(productId);
+      await removeCartItemAPI(productId);
       toast.success("Item removed from cart!");
-      
     } catch (err: any) {
       console.error("Error removing item:", err);
       toast.error("Failed to remove item. Please try again.");
@@ -174,31 +205,33 @@ const CartPage: React.FC = () => {
   const handleMoveToWishlist = async () => {
     try {
       if (isOffline) {
-        toast.error("Cannot move items while offline. Please check your connection.");
+        toast.error(
+          "Cannot move items while offline. Please check your connection."
+        );
         return;
       }
 
       // API call for online mode
-      const promises = selectedItems.map((productId) => 
+      const promises = selectedItems.map((productId) =>
         moveItemToWishlistAPI(productId)
       );
-      
+
       await Promise.all(promises);
-      
+
       // Refresh cart data
       const updatedItems = await getCartAPI();
       navigate("/cart");
       setSelectedItems([]);
       setModalAction(null);
       toast.success("Items moved to wishlist!");
-      
     } catch (err: any) {
       console.error("Error moving items to wishlist:", err);
       toast.error("Failed to move items to wishlist. Please try again.");
     }
   };
 
-  const handleApplyCoupon = async (coupon: Coupon) => {
+  const handleApplyCoupon = (coupon: any) => {
+    setAppliedCoupon(coupon);
     toast.success(`Coupon ${coupon.code} applied successfully!`);
   };
 
@@ -209,20 +242,44 @@ const CartPage: React.FC = () => {
 
   const toggleOffersDropdown = () => setShowMoreOffers((prev) => !prev);
 
-  // Calculate totals using STATIC_CART_ITEMS
-  const totalMRP = STATIC_CART_ITEMS.reduce((acc, item) => {
+  // Calculate totals using cartItems
+  const totalMRP = cartItems.reduce((acc, item) => {
     const price = typeof item.price === "number" ? item.price : 0;
     const quantity = typeof item.quantity === "number" ? item.quantity : 0;
     return acc + price * quantity;
   }, 0);
 
-  const totalPrice = STATIC_CART_ITEMS.reduce((acc, item) => {
+  const totalPrice = cartItems.reduce((acc, item) => {
     const price = typeof item.price === "number" ? item.price : 0;
     const quantity = typeof item.quantity === "number" ? item.quantity : 0;
     return acc + (price - DISCOUNT) * quantity;
   }, 0);
 
-  const finalPrice = totalPrice - appliedCouponDiscount;
+  const finalPrice = totalPrice - (appliedCoupon ? DISCOUNT : 0);
+
+  // Sort items so latest added are first (assuming last in array is latest)
+  const sortedCartItems = [...cartItems].reverse();
+  const totalPages = Math.ceil(sortedCartItems.length / ITEMS_PER_PAGE);
+  const paginatedItems = sortedCartItems.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const headerRef = useRef(null);
+  const mainContentRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(
+      headerRef.current,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }
+    );
+    gsap.fromTo(
+      mainContentRef.current,
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.9, delay: 0.2, ease: "power3.out" }
+    );
+  }, []);
 
   // Error component
   const ErrorMessage = () => (
@@ -231,7 +288,7 @@ const CartPage: React.FC = () => {
         <FaExclamationTriangle className={styles.errorIcon} />
         <h3 className={styles.errorTitle}>Unable to Fetch Cart Data</h3>
         <p className={styles.errorMessage}>{error}</p>
-        <button 
+        <button
           className={styles.retryButton}
           onClick={fetchCartData}
           disabled={loading}
@@ -253,20 +310,22 @@ const CartPage: React.FC = () => {
 
   return (
     <>
-      <CartHeader activeStep="BAG" />
-      
+      <div ref={headerRef}>
+        <CartHeader activeStep="BAG" />
+      </div>
+
       {loading ? (
         <LoadingSpinner />
-      ) : error && STATIC_CART_ITEMS.length === 0 ? (
+      ) : error && cartItems.length === 0 ? (
         <ErrorMessage />
       ) : (
         <div className={styles.cartPage}>
           {/* Show error banner if there's an error but we have data */}
-          {error && STATIC_CART_ITEMS.length > 0 && (
+          {error && cartItems.length > 0 && (
             <div className={styles.errorBanner}>
               <FaExclamationTriangle className={styles.errorBannerIcon} />
               <span className={styles.errorBannerText}>{error}</span>
-              <button 
+              <button
                 className={styles.errorBannerRetry}
                 onClick={fetchCartData}
                 disabled={loading}
@@ -276,25 +335,50 @@ const CartPage: React.FC = () => {
             </div>
           )}
 
-          <div className={styles.mainContent}>
+          <div className={styles.mainContent} ref={mainContentRef}>
             <div className={styles.leftSection}>
-              <AddressSection
-                address={selectedAddress}
-                onChangeAddress={() => navigate("/cart?modal=address")}
-                onAddAddress={() => navigate("/cart?modal=address")}
-              />
+              <Suspense fallback={<div>Loading address...</div>}>
+                <AddressSection
+                  address={selectedAddress}
+                  onChangeAddress={() => navigate("/cart?modal=address")}
+                  onAddAddress={() => navigate("/cart?modal=address")}
+                />
+              </Suspense>
               <OffersSection
-                offers={offers}
+                offers={STATIC_OFFERS}
                 showMoreOffers={showMoreOffers}
                 toggleOffersDropdown={toggleOffersDropdown}
               />
               <div className={styles.cartListSection}>
                 <CartList
-                  items={STATIC_CART_ITEMS}
+                  items={paginatedItems}
                   onQuantityChange={handleQtyChange}
                   onRemove={handleRemove}
                   onMoveToWishlist={handleMoveToWishlist}
                 />
+                {totalPages > 1 && (
+                  <div className={styles.paginationControls}>
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className={styles.paginationBtn}
+                    >
+                      Prev
+                    </button>
+                    <span className={styles.paginationInfo}>
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setCurrentPage((p) => Math.min(totalPages, p + 1))
+                      }
+                      disabled={currentPage === totalPages}
+                      className={styles.paginationBtn}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -314,11 +398,12 @@ const CartPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              {STATIC_CART_ITEMS.length > 0 && (
+              {cartItems.length > 0 && (
                 <CartSummary
-                  totalItems={STATIC_CART_ITEMS.length}
+                  totalItems={cartItems.length}
                   totalPrice={Number.isNaN(finalPrice) ? 0 : finalPrice}
                   totalMRP={Number.isNaN(totalMRP) ? 0 : totalMRP}
+                  appliedCoupon={appliedCoupon}
                 />
               )}
             </div>
@@ -357,6 +442,15 @@ const CartPage: React.FC = () => {
           )}
         </div>
       )}
+      <FooterCart
+        totalPrice={Number.isNaN(finalPrice) ? 0 : finalPrice}
+        savings={
+          Number.isNaN(totalMRP - finalPrice) ? 0 : totalMRP - finalPrice
+        }
+        onPlaceOrder={() => {
+          /* TODO: handle place order */
+        }}
+      />
     </>
   );
 };

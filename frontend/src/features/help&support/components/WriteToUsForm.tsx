@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styles from '../css/Helpsupport.module.css'; // Adjust the path as necessary
+import React, { useState } from "react";
+import styles from "../css/Helpsupport.module.css";
 
 interface WriteToUsFormProps {
   orderNumber: string;
@@ -7,12 +7,16 @@ interface WriteToUsFormProps {
   onSubmit: (formData: any) => void;
 }
 
-const WriteToUsForm: React.FC<WriteToUsFormProps> = ({ orderNumber, onBack, onSubmit }) => {
+const WriteToUsForm: React.FC<WriteToUsFormProps> = ({
+  orderNumber,
+  onBack,
+  onSubmit,
+}) => {
   const [formData, setFormData] = useState({
-    subject: '',
+    subject: "",
     orderNumber: orderNumber,
-    description: '',
-    image: null as File | null
+    description: "",
+    images: [] as File[],
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -21,10 +25,11 @@ const WriteToUsForm: React.FC<WriteToUsFormProps> = ({ orderNumber, onBack, onSu
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData({ ...formData, image: file });
-    }
+    const files = Array.from(e.target.files || []);
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
   };
 
   return (
@@ -35,7 +40,7 @@ const WriteToUsForm: React.FC<WriteToUsFormProps> = ({ orderNumber, onBack, onSu
         </button>
         <h1 className={styles.headerTitle}>Write To Us</h1>
       </div>
-      
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label className={styles.label}>Subject</label>
@@ -44,10 +49,12 @@ const WriteToUsForm: React.FC<WriteToUsFormProps> = ({ orderNumber, onBack, onSu
             className={styles.input}
             placeholder="Need urgent action"
             value={formData.subject}
-            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, subject: e.target.value })
+            }
           />
         </div>
-        
+
         <div className={styles.formGroup}>
           <label className={styles.label}>Order Number</label>
           <input
@@ -57,39 +64,45 @@ const WriteToUsForm: React.FC<WriteToUsFormProps> = ({ orderNumber, onBack, onSu
             readOnly
           />
         </div>
-        
+
         <div className={styles.formGroup}>
           <label className={styles.label}>Description</label>
           <textarea
             className={styles.textarea}
             placeholder="Received defected product.. Need replacement..."
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             rows={4}
           />
         </div>
-        
+
         <div className={styles.formGroup}>
           <label className={styles.label}>Add Image</label>
           <div className={styles.imageUpload}>
-            {formData.image ? (
-              <div className={styles.uploadedImage}>
-                <img src={URL.createObjectURL(formData.image)} alt="Uploaded" />
-              </div>
-            ) : (
-              <label className={styles.uploadButton}>
-                <span className={styles.uploadIcon}>+</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            )}
+            {formData.images.length > 0 &&
+              formData.images.map((file, index) => (
+                <div key={index} className={styles.uploadedImage}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Uploaded ${index + 1}`}
+                  />
+                </div>
+              ))}
+            <label className={styles.uploadButton}>
+              <span className={styles.uploadIcon}>+</span>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                style={{ display: "none" }}
+              />
+            </label>
           </div>
         </div>
-        
+
         <button type="submit" className={styles.submitBtn}>
           Submit
         </button>

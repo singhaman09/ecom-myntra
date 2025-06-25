@@ -27,7 +27,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({ searchTerm, onSearchChange,
     endDate: filters.dateRange?.endDate || '',
   });
 
-  const toggleFilters = () => setShowFilters(prev => !prev);
+  // const toggleFilters = () => setShowFilters(prev => !prev);
 
   const handleFilterChange = (key: string, value: string) => {
     setLocalFilters(prev => ({
@@ -83,7 +83,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({ searchTerm, onSearchChange,
     onClose();
   };
 
-  const orderStatuses: OrderStatus[] = ['Pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'];
+  const orderStatuses: OrderStatus[] = ['Pending', 'placed','picked', 'shipped', 'delivered', 'cancelled', 'returned'];
 
   return (
     <div className={styles.orderFiltersWrapper}>
@@ -173,4 +173,4 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({ searchTerm, onSearchChange,
   );
 };
 
-export default OrderFilters;
+export default React.memo(OrderFilters);

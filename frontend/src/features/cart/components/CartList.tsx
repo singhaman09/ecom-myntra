@@ -9,6 +9,8 @@ import type { CartItem as CartItemType } from "../types/cart";
 import CartItem from "./CartItem";
 import styles from "./styles/CartList.module.css";
 import { toast } from 'react-toastify';
+import DiscountCarousel from '../../../assets/discound_carrousel.png';
+import { DISCOUNT } from '../staticData/StaticData';
 
 interface CartListProps {
   items: CartItemType[];
@@ -55,6 +57,7 @@ const CartList: React.FC<CartListProps> = ({
             onRemove={onRemove}
             onQuantityChange={handleQuantityChange}
             onMoveToWishlist={onMoveToWishlist}
+            onSizeClick={openSizeModal}
           />
         ))
       )}
@@ -65,37 +68,40 @@ const CartList: React.FC<CartListProps> = ({
             <button className={styles.closeModal} onClick={closeSizeModal}>
               ✕
             </button>
-            <div className={styles.modalTop}>
+            <div className={styles.modalContentCentered}>
+              <div className={styles.nameDiscountRowCentered}>
+                <span className={styles.modalName}>{sizeModalItem.name}</span>
+                <span className={styles.discountCarouselWrapper}>
+                  <img src={DiscountCarousel} alt="Discount" className={styles.discountCarouselImgTop} />
+                  <span className={styles.discountPercentOnCarousel}>{DISCOUNT}% OFF</span>
+                </span>
+              </div>
               <img
                 src={sizeModalItem.image}
                 alt={sizeModalItem.name}
-                className={styles.modalImage}
+                className={styles.modalImageCentered}
               />
-              <div className={styles.modalInfo}>
-                <div className={styles.nameDiscountRow}>
-                  <p className={styles.modalName}>{sizeModalItem.name}</p>
-                </div>
-                <div className={styles.priceBlock}>
-                  <span className={styles.modalCurrentPrice}>
-                    ₹{(sizeModalItem.price - Math.floor((sizeModalItem.price * 20) / 100)).toFixed(2)}
-                  </span>
-                  <span className={styles.modalOriginalPrice}>
-                    ₹{sizeModalItem.price}
-                  </span>
-                </div>
-                <div className={styles.sizeSelectBlock}>
-                  <p className={styles.sizeLabel}>Select Size</p>
-                  <div className={styles.sizeOptions}>
-                    {(sizeModalItem.availableSizes || ["S", "M", "L", "XL", "XXL"]).map((size) => (
-                      <button
-                        key={size}
-                        className={`${styles.sizeCircle} ${size === sizeModalItem.size ? styles.activeSize : ""}`}
-                        onClick={() => handleSizeChange(sizeModalItem.productId, size)}
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
+              <div className={styles.priceDiscountBlock}>
+                <span className={styles.modalCurrentPrice}>
+                  ₹{(sizeModalItem.price - Math.floor((sizeModalItem.price * DISCOUNT) / 100)).toFixed(2)}
+                </span>
+                <span className={styles.modalOriginalPrice}>
+                  ₹{sizeModalItem.price}
+                </span>
+                {/* <span className={styles.discountPercent}>{DISCOUNT}% OFF</span> */}
+              </div>
+              <div className={styles.sizeSelectBlockCentered}>
+                <p className={styles.sizeLabel}>Select Size</p>
+                <div className={styles.sizeOptionsCentered}>
+                  {(sizeModalItem.availableSizes || ["S", "M", "L", "XL", "XXL"]).map((size) => (
+                    <button
+                      key={size}
+                      className={`${styles.sizeCircle} ${size === sizeModalItem.size ? styles.activeSize : ""}`}
+                      onClick={() => handleSizeChange(sizeModalItem.productId, size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

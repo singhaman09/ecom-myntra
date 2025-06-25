@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./styles/OfferSection.module.css";
+import { STATIC_OFFERS } from "../staticData/StaticData";
+import offertag from "../../../assets/offertag.png";
 
 interface OffersSectionProps {
   offers: string[];
@@ -8,7 +10,7 @@ interface OffersSectionProps {
 }
 
 const OffersSection: React.FC<OffersSectionProps> = ({
-  offers,
+  offers = STATIC_OFFERS,
   showMoreOffers,
   toggleOffersDropdown,
 }) => {
@@ -24,30 +26,24 @@ const OffersSection: React.FC<OffersSectionProps> = ({
       {!hasOffers ? (
         <p className={styles.noOffers}>No offers available at the moment.</p>
       ) : (
-        <>
-          <ul className={styles.offersList}>
-            {offers
-              .slice(0, showMoreOffers ? offers.length : 1)
-              .map((offer, index) => (
-                <li key={index} className={styles.offer}>
-                  {offer}
-                </li>
-              ))}
-          </ul>
-
-          {offers.length > 1 && (
-            <button
-              onClick={toggleOffersDropdown}
-              className={`${styles.showMore} ${
-                showMoreOffers ? styles.showMoreOpen : ""
-              }`}
-            >
-              <span className={styles.showMoreIcon}>
-                {showMoreOffers ? "Show less ▲" : "Show more ▼"}
-              </span>
-            </button>
-          )}
-        </>
+        <div className={styles.offersScrollRow}>
+          {offers.map((offer, idx) => {
+            // Simple parsing: title is first 1-2 words, rest is description
+            const [title, ...descArr] = offer.split(/[:.-]/);
+            let desc = descArr.join("").trim() || offer;
+            desc = desc.replace(/TCA|T&C/gi, 'Terms & Conditions apply.');
+            return (
+              <div className={styles.offerCard} key={idx}>
+                <div className={styles.offerCardHeader}>
+                  <img src={offertag} alt="Offer" className={styles.offerCardIconImg} />
+                  <span className={styles.offerCardTitle}>{title.trim()}</span>
+                </div>
+                <div className={styles.offerCardDesc}>{desc}</div>
+                <div className={styles.offerCardValidity}>Valid till 31st Dec, 2025</div>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
