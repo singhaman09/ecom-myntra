@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface SupportQuery {
   id: string;
   title: string;
@@ -9,5 +11,5 @@ export interface ContactOption {
   type: 'call' | 'chat' | 'write';
   title: string;
   subtitle: string;
-  icon: string;
+  icon: ReactNode;
 }

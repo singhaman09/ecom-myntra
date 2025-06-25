@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ContactOption } from '../types/support';
 import styles from '../css/Helpsupport.module.css';
+import { FiPhone, FiMessageSquare, FiMail } from 'react-icons/fi';
 
 interface ContactUsModalProps {
   isOpen: boolean;
@@ -12,31 +13,29 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose, onWrit
   if (!isOpen) return null;
 
   const contactOptions: ContactOption[] = [
-    {
-      type: 'call',
-      title: 'Call now',
-      subtitle: 'Call Now & Call be back',
-      icon: '📞'
-    },
-    {
-      type: 'chat',
-      title: 'Chat',
-      subtitle: 'Call Now & Call be back',
-      icon: '💬'
-    },
-    {
-      type: 'write',
-      title: 'Write to us',
-      subtitle: 'Call Now & Call be back',
-      icon: '✉️'
-    }
-  ];
+  {
+    type: 'call',
+    title: 'Call now',
+    subtitle: 'Call Now & Call be back',
+    icon: <FiPhone size={24} />
+  },
+  {
+    type: 'chat',
+    title: 'Chat',
+    subtitle: 'Call Now & Call be back',
+    icon: <FiMessageSquare size={24} />
+  },
+  {
+    type: 'write',
+    title: 'Write to us',
+    subtitle: 'Call Now & Call be back',
+    icon: <FiMail size={24} />
+  }
+];
 
   const handleOptionClick = (option: ContactOption) => {
     if (option.type === 'write') {
       onWriteToUs();
-    } else {
-      console.log(`Selected: ${option.type}`);
     }
   };
 

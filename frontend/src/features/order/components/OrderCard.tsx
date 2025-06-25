@@ -264,8 +264,6 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const handleViewDetails = () => {
     navigate(`/orders/${order.id}`);
   };
-  console.log(order);
-
   // Use first item for product details; adjust if multiple items need display
   const primaryItem = order.items[0] || {
     name: 'Unknown Product',

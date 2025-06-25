@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,8 @@ import styles from "./css/ForgotPassword.module.css";
 
 const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
+
+  // Destructure auth context
   const {
     forgotPassword,
     loading,
@@ -19,6 +21,7 @@ const ForgotPassword: React.FC = () => {
     clearAuthState,
   } = useAuth();
 
+  // Setup form with validation
   const {
     register,
     handleSubmit,
@@ -32,12 +35,12 @@ const ForgotPassword: React.FC = () => {
     },
   });
 
-  // Clear auth state on component mount
+  // Clear previous state (like error/success) on mount
   useEffect(() => {
     clearAuthState();
   }, [clearAuthState]);
 
-  // Redirect to login after successful password reset request
+  // Navigate to OTP screen on successful request
   useEffect(() => {
     if (forgotPasswordSuccess) {
       const email = getValues("email");
@@ -48,31 +51,41 @@ const ForgotPassword: React.FC = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [forgotPasswordSuccess, navigate, getValues]);
+  }, [forgotPasswordSuccess, getValues, navigate]);
 
-  const onSubmit = async (data: ForgotPasswordFormData) => {
-    try {
-      await forgotPassword(data.email);
-      reset();
-    } catch {
-      // Error is handled by useAuth hook
-    }
-  };
+  // Handle form submit with useCallback for memoization
+  const onSubmit = useCallback(
+    async (data: ForgotPasswordFormData) => {
+      try {
+        await forgotPassword(data.email);
+        reset(); // Clear input
+      } catch {
+        // Errors handled via context
+      }
+    },
+    [forgotPassword, reset]
+  );
+
+  // Handle back to login button
+  const handleBackToLogin = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
 
   return (
     <div className={styles.container}>
-      {/* Main Content */}
+      {/* Wrapper */}
       <div className={styles.mainContent}>
         <div className={styles.forgotCard}>
+          {/* Header Branding */}
           <div className={styles.header}>
             <h1 className={styles.brand}>THE Wyntra SHOP</h1>
             <h2 className={styles.title}>Forgot your password?</h2>
             <p className={styles.subtitle}>
-              Enter your email address and we'll send you a link to reset your
-              password.
+              Enter your email address and we'll send you a link to reset your password.
             </p>
           </div>
 
+          {/* Email Form */}
           <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             {/* Email Field */}
             <div className={styles.field}>
@@ -84,20 +97,18 @@ const ForgotPassword: React.FC = () => {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className={`${styles.input} ${
-                  errors.email ? styles.inputError : ""
-                }`}
                 placeholder="Enter your email address"
+                className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
               />
               {errors.email && (
                 <p className={styles.errorMessage}>{errors.email.message}</p>
               )}
             </div>
 
-            {/* Server Error */}
+            {/* Error from API */}
             {error && <div className={styles.serverError}>{error}</div>}
 
-            {/* Success Message */}
+            {/* Success message */}
             {forgotPasswordSuccess && (
               <div className={styles.successMessage}>
                 <div className={styles.successContent}>
@@ -129,11 +140,11 @@ const ForgotPassword: React.FC = () => {
               {loading || isSubmitting ? "Sending..." : "Send OTP"}
             </button>
 
-            {/* Back to Login Link */}
+            {/* Back to Login */}
             <div className={styles.linkContainer}>
               <button
                 type="button"
-                onClick={() => navigate("/login")}
+                onClick={handleBackToLogin}
                 className={styles.link}
               >
                 Back to sign in

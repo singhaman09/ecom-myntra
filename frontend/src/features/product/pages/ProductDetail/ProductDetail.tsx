@@ -52,8 +52,8 @@ const ProductDetails = () => {
   const uniqueColors = useMemo(() => [...new Set(variants.map((v) => v.color))], [variants]);
   const uniqueSizes = useMemo(() => [...new Set(variants.map((v) => v.size))], [variants]);
   const [notCompatible, setNotCompatible] = useState({ color: "", size: "" });
-  const selectedSize = searchParams.get("size") || uniqueSizes[0] || "";
-  const selectedColor = searchParams.get("color") || uniqueColors[0] || "";
+  const selectedSize = searchParams.get("size") 
+  const selectedColor = searchParams.get("color") 
  
   // New state for image handling
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -73,7 +73,13 @@ const ProductDetails = () => {
   ];
     return images;
   }, [data?.selectedProduct?.product]);
-
+useEffect(()=>{
+if(uniqueSizes.length>0 && uniqueColors.length>0){
+  searchParams.set('size',uniqueSizes[0])
+  searchParams.set('color',uniqueColors[0])
+  setSearchParams(searchParams,{replace:true})
+}
+},[variants])
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     dispatch(getProductDetails(id));
@@ -108,7 +114,7 @@ const ProductDetails = () => {
 
   const addToBag = useCallback(() => {
     const productId = id || '';
-    dispatch(addCartItem(productId));
+    dispatch(addCartItem({productId,size:selectedSize || '',color:selectedColor || ''}));
   },[id]);
 
   const removeFromBag = useCallback(() => {
@@ -123,7 +129,7 @@ const ProductDetails = () => {
 
   const addWishlist = useCallback(() => {
     const productId = id || '';
-    dispatch(addToWishlist(productId));
+    dispatch(addToWishlist({productId,size:selectedSize || '',color:selectedColor || ''}));
   },[id]);
 
   if (data.loading) return <Loader isInitial={true} />;
@@ -198,8 +204,8 @@ const ProductDetails = () => {
         <div className={styles.productDetails}>
           {/* Brand and Title */}
           <div className={styles.brandTitle}>
-            <h2 className={styles.brand}>{data?.selectedProduct?.product?.brand}</h2>
-            <h1 className={styles.title}>{data?.selectedProduct?.product?.name}</h1>
+            <h2 className={styles.title}>{data?.selectedProduct?.product?.name}</h2>
+            <h1 className={styles.description}>{data?.selectedProduct?.product?.description}</h1>
           </div>
 
           {/* Rating */}
@@ -208,6 +214,7 @@ const ProductDetails = () => {
               {data.selectedProduct?.product &&
                 renderStars(averageRating(data.selectedProduct?.product?.reviews))}
             </div>
+            <span className={styles.rating}>{data.selectedProduct?.product.reviews && averageRating(data.selectedProduct?.product.reviews)+'/5'}</span>
             <span className={styles.ratingText}>
               ({data.selectedProduct?.product?.reviews.length} reviews)
             </span>
@@ -312,7 +319,7 @@ const ProductDetails = () => {
               <button className={styles.notifyButton}>Notify Me</button>
             ) : (
               <>
-              {cartData.cart.length<=0 || cartData.cart.find(val=>val.productId!=id)?<button className={styles.addToBagBtn} onClick={addToBag}>ADD TO BAG</button>:<button className={styles.addToBagBtn} onClick={removeFromBag}>REMOVE FROM BAG</button>}
+              {cartData.cart.length<=0 || cartData.cart.find(val=>val.productId!=id)?<button className={styles.addToBagBtn} onClick={addToBag}>ADD TO BAG</button>:<button className={styles.addToBagBtn} onClick={()=>removeFromBag()}>REMOVE FROM BAG</button>}
               </>
             )}
 
