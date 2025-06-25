@@ -31,16 +31,18 @@
 
 .storeName {
   font-weight: 600;
-  color: #111827;
+  color: #333333;
   margin-bottom: 0.25rem;
-  font-family: 'Work sans' sans-serif;
+  font-family: 'Work Sans', sans-serif;
+
 }
 
 .storeAddress {
   font-size: 0.875rem;
-  color: #4b5563;
+  color: #666666;
   margin-bottom: 0.5rem;
-  font-family: 'Work sans' sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
 }
 
 .storeContactInfo {
@@ -48,10 +50,11 @@
   align-items: center;
   gap: 1rem;
   font-size: 0.875rem;
-  color: #4b5563;
+  color: #000000;
   margin-bottom: 0.5rem;
   flex-wrap: wrap;
-  font-family: 'Work sans' sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
 }
 
 .infoItem {
@@ -68,7 +71,7 @@
 .storeHoursToday {
   display: flex;
   align-items: center;
-  font-family: 'Work sans' sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-size: 0.875rem;
 }
 
@@ -89,13 +92,13 @@
   color: #16a34a;
   font-weight: 500;
   margin-left: 0.25rem;
-  font-family: 'Work sans' sans-serif;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .openHoursTime {
   color: #111827;
   margin-left: 0.25rem;
-  font-family: 'Work sans' sans-serif;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .listItemArrow {

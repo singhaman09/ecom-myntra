@@ -72,8 +72,11 @@ const BoughtTogether: React.FC = () => {
             styles.filledStar 
               }`}
      />}
+                <span className={styles.rating}>
+                {product.rating}
+                </span>
                 <span className={styles.ratingText}>
-                  {product.rating} ({product.reviewCount})
+                  ({product.reviewCount})
                 </span>
               </div>
               <p className={styles.volume}>{product.volume}</p>
