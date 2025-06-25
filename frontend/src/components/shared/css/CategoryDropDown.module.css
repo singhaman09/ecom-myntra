@@ -20,7 +20,7 @@
 }
 
 .categoriesButton:hover {
-  color: #f6f1e9ad;
+  color: #f6f1e9;
 }
 
 .categoriesIcon {
@@ -81,7 +81,7 @@
   font-family: 'Work Sans', sans-serif;
   display: block;
   padding: 0.75rem 1.5rem;
-  color: #374151;
+  color: #333333;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.875rem;
@@ -93,8 +93,8 @@
 .categoryItem:hover,
 .categoryItem.active {
   background-color: white;
-  color: #00a65a;
-  border-left-color: #00a65a;
+  color: #044236;
+  border-left-color: #044236;
 }
 
 .subcategoriesSection {
@@ -119,10 +119,10 @@
   font-family: 'Work Sans', sans-serif;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #111827;
+  color: #333333;
   margin-bottom: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  /* letter-spacing: 0.05em; */
 }
 
 .subcategoryList {
@@ -132,12 +132,13 @@
 }
 
 .subcategoryItem {
-  /* margin-bottom: 0.5rem; */
+  margin-bottom: 0.5rem;
 }
 
 .subcategoryLink {
   font-family: 'Work Sans', sans-serif;
-  color: #6b7280;
+  color: #333333;
+  font-weight: 400;
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.2s;
@@ -146,7 +147,7 @@
 }
 
 .subcategoryLink:hover {
-  color: #00a65a;
+  color: #3f9786;
 }
 
 /* Mobile backdrop */
@@ -174,7 +175,7 @@
 }
 
 .closeButton:hover {
-  color: #00a65a;
+  color: #044236;
 }
 
 /* Tablet styles */
@@ -224,7 +225,7 @@
   .dropdown.mobile {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    width: 85%;
+    width: 50%;
     /* Add proper layering */
     z-index: 1001;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
@@ -249,7 +250,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background-color: white;
+    background-color: #044236;
     border-bottom: 1px solid #e5e7eb;
     /* Prevent header from shrinking */
     flex-shrink: 0;
@@ -257,9 +258,10 @@
 
   .mobileHeader h2 {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #111827;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Work Sans', sans-serif;
+    color: white;
   }
 
   .categoriesSection {
@@ -270,7 +272,6 @@
     padding: 0;
     /* Prevent categories section from shrinking */
     flex-shrink: 0;
-    /* Add max height and scroll if needed */
     max-height: 200px;
     overflow-y: auto;
   }
@@ -287,14 +288,14 @@
 
   .categoryItem:hover,
   .categoryItem.active {
-    background-color: #f8fafc;
+    background-color: #eff2f5;
     border-left: none;
   }
 
   .subcategoriesSection {
     flex: 1;
     overflow-y: auto;
-    padding: 1rem;
+    padding: 0rem;
     /* Enable smooth scrolling */
     -webkit-overflow-scrolling: touch;
     /* Ensure it takes remaining space */
@@ -304,20 +305,22 @@
   .subcategoriesGrid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    padding: 0rem 1.2rem;
     /* Remove any height constraints */
     height: auto;
   }
 
-  .subcategoryGroup {
-    margin-bottom: 2rem;
-  }
+  /* .subcategoryGroup {
+    margin-bottom: 0rem;
+  } */
 
   .subcategoryTitle {
     font-family: 'Work Sans', sans-serif;
     font-size: 1rem;
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #00a65a;
+    padding: 0.5rem;
+    /* margin: 0.5rem; */
+    border-bottom: 2px solid #044236;
     /* Make titles sticky for better UX */
     position: sticky;
     top: 0;
@@ -327,7 +330,8 @@
 
   .subcategoryLink {
     font-family: 'Work Sans', sans-serif;
-    padding: 0.75rem 0;
+    /* padding: 0.75rem 0; */
+    padding: 0.5rem;
     font-size: 0.9rem;
     /* Improve touch targets */
     min-height: 44px;
@@ -348,11 +352,12 @@
   }
   
   .subcategoriesSection {
-    padding: 0.75rem;
+    padding: 0rem;
   }
   
   .subcategoryGroup {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0rem;
+    /* margin: 0.5rem;  */
   }
 
   .mobileHeader {
@@ -360,11 +365,12 @@
   }
 
   .mobileHeader h2 {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
+    letter-spacing: 0.02rem;
   }
 
   .categoryItem {
-    padding: 0.875rem 1rem;
+    padding: 0.875rem 1.5rem;
   }
 }
 
@@ -390,14 +396,15 @@
 /* Small mobile devices */
 @media (max-width: 480px) {
   .dropdown.mobile {
-    width: 100%;
+    width: 70%;
   }
   
   .subcategoriesSection {
-    padding: 0.75rem;
+    padding: 0rem;
   }
   
   .subcategoryGroup {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0rem;
+    /* margin: 0rem 1rem; */
   }
 }
