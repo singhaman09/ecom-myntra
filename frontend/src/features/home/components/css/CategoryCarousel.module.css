@@ -5,7 +5,6 @@
   padding: 20px 10px; /* Reduced padding */
   position: relative;
   box-sizing: border-box;
-  margin-bottom: 2rem;
 }
 
 @media (max-width: 1024px) {

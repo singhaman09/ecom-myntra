@@ -1,6 +1,6 @@
 .section {
   padding: 3rem 0;
-  background-color: #0a4d4d;
+  background-color: #044236;
   /* background-image: url('../../../../assets/images/saleBanner.png');
   background-size: cover;
   background-position: center;
@@ -12,14 +12,13 @@
   
   /* Mobile: Full width */
   max-width: 100%;
-  margin: 0;
   border-radius: 0;
 }
 
 @media (min-width: 1024px) {
   .section {
     max-width: 70%;
-    margin: 0 auto;
+    margin: 3rem auto;
     border-radius: 20px;
   }
 }
@@ -27,7 +26,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 2rem 4rem;
 }
 
 .banner {
@@ -50,16 +49,17 @@
 }
 
 .title {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Druk', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: white;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 @media (min-width: 768px) {
   .title {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    margin-top: 0.1rem;
   }
 }
 
@@ -67,30 +67,36 @@
   font-family: 'Work Sans', sans-serif;
   font-size: 1rem;
   color: white;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   opacity: 0.9;
   line-height: 1.6;
 }
 
 @media (min-width: 768px) {
   .subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 2rem;
   }
 }
 
 .ctaButton {
   font-family: 'Work Sans', sans-serif;
-  background-color: white;
-  color: #4ade80;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 6px;
+  background-color: #044236;
+  color: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  padding: 0.8rem 1.6rem;
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+@media (min-width: 768px) {
+  .ctaButton {
+    font-size: 0.9rem;
+  }
 }
 
 .ctaButton:hover {

@@ -162,13 +162,13 @@ const Header: React.FC = React.memo(() => {
           <span className={styles.bannerTextPink}>FIRST200</span>
         </p>
       </div>
-
+      <div className={styles.mainContainer}>
       <div className={styles.container}>
         <div className={styles.headerContent}>
           {/* Hamburger icon and logo */}
           <div className={styles.hamLogo}>
             <button className={styles.mobileMenuButton} onClick={toggleMobileCategory}>
-              {isMobileCategoryOpen ? <X size={20} /> : <Menu size={20} />}
+              {isMobileCategoryOpen ? <X size={20} /> : <Menu size={20} color="white" />}
             </button>
 
             <div className={styles.logo} onClick={() => navigate("/")}>
@@ -234,44 +234,43 @@ const Header: React.FC = React.memo(() => {
 
           {/* Right side user actions */}
           <div className={styles.userActions}>
-            {/* Profile */}
-            <div
-              className={`${styles.userAction} profile-container`}
-              onClick={handleProfileClick}
-              style={{ position: "relative" }}
-            >
+          {/* Profile */}
+          <div className={`${styles.userAction}`} onClick={handleProfileClick}>
+            <div className={styles.iconWrapper}>
               <User className={styles.userActionIcon} />
-              <span className={styles.userActionText}>Profile</span>
+            </div>
+            <span className={styles.userActionText}>Profile</span>
+            {!isAuthenticated && isProfileDropdownOpen && (
+              <div className={styles.profileDropdown}>
+                <div className={styles.dropdownItem} onClick={handleSignIn}>Sign In</div>
+                <div className={styles.dropdownItem} onClick={handleSignUp}>Sign Up</div>
+              </div>
+            )}
+          </div>
 
-              {!isAuthenticated && isProfileDropdownOpen && (
-                <div className={styles.profileDropdown}>
-                  <div className={styles.dropdownItem} onClick={handleSignIn}>Sign In</div>
-                  <div className={styles.dropdownItem} onClick={handleSignUp}>Sign Up</div>
-                </div>
+          {/* Wishlist */}
+          <div className={`${styles.userAction}`} onClick={() => navigate("/wishlist")}>
+            <div className={styles.iconWrapper}>
+              <Heart className={styles.userActionIcon} />
+              {totalItems > 0 && (
+                <span className={styles.bagBadge}>{totalItems}</span>
               )}
             </div>
-
-            {/* Wishlist */}
-            <div
-              className={`${styles.userAction} ${styles.bagAction}`}
-              onClick={() => navigate("/wishlist")}
-            >
-              <Heart className={styles.userActionIcon} />
-              <span className={styles.userActionText}>Wishlist</span>
-              {!(!totalItems || totalItems == 0) && (<span className={styles.bagBadge}>{totalItems}</span>)}
-            </div>
-
-            {/* Shopping Bag */}
-            <div
-              className={`${styles.userAction} ${styles.bagAction}`}
-              onClick={handleBagClick}
-            >
-              <ShoppingBag className={styles.userActionIcon} />
-              <span className={styles.userActionText}>Bag</span>
-              
-              {!(!totalItemsBag && totalItemsBag == 0) && (<span className={styles.bagBadge}>{totalItemsBag}</span>)}
-            </div>
+            <span className={styles.userActionText}>Wishlist</span>
           </div>
+
+          {/* Shopping Bag */}
+          <div className={`${styles.userAction}`} onClick={handleBagClick}>
+            <div className={styles.iconWrapper}>
+              <ShoppingBag className={styles.userActionIcon} />
+              {totalItemsBag > 0 && (
+                <span className={styles.bagBadge}>{totalItemsBag}</span>
+              )}
+            </div>
+            <span className={styles.userActionText}>Bag</span>
+          </div>
+        </div>
+
         </div>
 
         {/* Mobile search input */}
@@ -314,6 +313,7 @@ const Header: React.FC = React.memo(() => {
             isMobileTriggered={true}
           />
         </Suspense>
+      </div>
       </div>
     </header>
   );

@@ -162,7 +162,7 @@ const Footer: React.FC = React.memo(() => {
               </span>
             </div>
             <div className={styles.copyright}>
-              © 2024 www.wyntra.com. All rights reserved.
+              © 2025 www.wyntra.com. All rights reserved.
             </div>
           </div>
 

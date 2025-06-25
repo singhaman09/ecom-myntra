@@ -53,19 +53,24 @@
     margin: 0;
     font-size: 1.2em;
     font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+    color:#333333
   }
   
   .productDesc {
     color: #888;
     margin: 4px 0 0 0;
     font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+    color: #666666;
   }
   
   .shadesLabel,
   .sizesLabel {
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 8px;
     font-family: 'Times New Roman', Times, serif;
+    color: #333333;
   }
   
   .shadesList {
@@ -105,7 +110,7 @@
   .sizesList {
     display: flex;
     gap: 16px;
-    margin-top: 10px;
+    margin-top: 20px;
   }
   
   .sizeButton {
@@ -116,7 +121,8 @@
     cursor: pointer;
     transition: border 0.2s, background 0.2s;
     font-family: 'Work Sans', sans-serif;
-    
+    font-weight: 600;
+   
   }
   
   .sizeSelected {
@@ -144,7 +150,7 @@
   
   .priceTag {
     margin-top: 16px;
-    color: #888;
+    color: #333333;
     font-size: 18px;
     font-family: 'Work Sans', sans-serif;
     display: flex;
@@ -185,7 +191,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 8px;
+    margin-top: 15px;
   }
   
   .sizeRadioLabel {
@@ -196,6 +202,8 @@
     cursor: pointer;
     gap: 16px; /* Increase this value for more space */
     padding: 6px 0;
+    font-weight: 600;
+    color:#333333;
   }
   
   
@@ -203,7 +211,3 @@
     margin-right: 8px;
   }
   
-  .sizeSelected {
-    font-weight: bold;
-    color: #3d3d3d;
-  }
