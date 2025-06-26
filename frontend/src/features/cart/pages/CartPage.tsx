@@ -46,7 +46,6 @@ const CartPage: React.FC = () => {
 
   // State management
   const [offers, setOffers] = useState<string[]>([]);
-  const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [availableCoupons] = useState(STATIC_COUPONS);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -109,23 +108,17 @@ const CartPage: React.FC = () => {
       if (Array.isArray(apiCartItems) && apiCartItems.length > 0) {
         setCartItems(apiCartItems);
       } else {
-        setCartItems(STATIC_CART_ITEMS);  //for STATIC DATA {remove this line for api calls}
+        setCartItems(STATIC_CART_ITEMS); // fallback to static data
       }
 
       // Set offers and coupons
       setOffers(STATIC_OFFERS);
-      const validCoupons = STATIC_COUPONS.filter(
-        (coupon) => new Date(coupon.expires) > new Date()
-      );
     } catch (err: any) {
       console.error("Error fetching cart data:", err);
-
-      // Check if it's a network error or server error
       if (
         err.code === "NETWORK_ERROR" ||
         err.message?.includes("Network Error")
       ) {
-        // setError("Unable to connect to server. Please check your internet connection.");
         setIsOffline(true);
         setOffers([]);
         toast.error(
@@ -145,7 +138,6 @@ const CartPage: React.FC = () => {
     }
   };
 
-  // Initial data fetch
   useEffect(() => {
     fetchCartData();
   }, []);
@@ -162,15 +154,11 @@ const CartPage: React.FC = () => {
         );
         return;
       }
-
-      // API call for online mode
-      let updatedItems: CartItem[];
       if (action === "increment") {
-        updatedItems = await incrementCartItemQuantityAPI(productId);
+        await incrementCartItemQuantityAPI(productId);
       } else {
-        updatedItems = await decrementCartItemQuantityAPI(productId);
+        await decrementCartItemQuantityAPI(productId);
       }
-
       toast.success(
         `Quantity ${
           action === "increment" ? "increased" : "decreased"
@@ -191,8 +179,6 @@ const CartPage: React.FC = () => {
         );
         return;
       }
-
-      // API call for online mode
       await removeCartItemAPI(productId);
       toast.success("Item removed from cart!");
     } catch (err: any) {
@@ -210,16 +196,11 @@ const CartPage: React.FC = () => {
         );
         return;
       }
-
-      // API call for online mode
       const promises = selectedItems.map((productId) =>
         moveItemToWishlistAPI(productId)
       );
-
       await Promise.all(promises);
-
-      // Refresh cart data
-      const updatedItems = await getCartAPI();
+      await getCartAPI();
       navigate("/cart");
       setSelectedItems([]);
       setModalAction(null);
@@ -235,7 +216,7 @@ const CartPage: React.FC = () => {
     toast.success(`Coupon ${coupon.code} applied successfully!`);
   };
 
-  const handleSaveAddress = (address: Address, updatedAddresses: Address[]) => {
+  const handleSaveAddress = (address: Address) => {
     setSelectedAddress(address);
     navigate("/cart");
   };
@@ -356,27 +337,58 @@ const CartPage: React.FC = () => {
                   onRemove={handleRemove}
                   onMoveToWishlist={handleMoveToWishlist}
                 />
-                {totalPages > 1 && (
+                {totalPages > 1 && cartItems.length > ITEMS_PER_PAGE && (
                   <div className={styles.paginationControls}>
+                    <button
+                      onClick={() => setCurrentPage(1)}
+                      disabled={currentPage === 1}
+                      className={styles.paginationBtn}
+                      aria-label="First page"
+                    >
+                      First
+                    </button>
                     <button
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}
                       className={styles.paginationBtn}
+                      aria-label="Previous page"
                     >
                       Prev
+                    </button>
+                    {/* Page numbers */}
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <button
+                        key={i + 1}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={
+                          currentPage === i + 1
+                            ? `${styles.paginationBtn} ${styles.activePage}`
+                            : styles.paginationBtn
+                        }
+                        aria-label={`Page ${i + 1}`}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className={styles.paginationBtn}
+                      aria-label="Next page"
+                    >
+                      Next
+                    </button>
+                    <button
+                      onClick={() => setCurrentPage(totalPages)}
+                      disabled={currentPage === totalPages}
+                      className={styles.paginationBtn}
+                      aria-label="Last page"
+                    >
+                      Last
                     </button>
                     <span className={styles.paginationInfo}>
                       Page {currentPage} of {totalPages}
                     </span>
-                    <button
-                      onClick={() =>
-                        setCurrentPage((p) => Math.min(totalPages, p + 1))
-                      }
-                      disabled={currentPage === totalPages}
-                      className={styles.paginationBtn}
-                    >
-                      Next
-                    </button>
                   </div>
                 )}
               </div>
