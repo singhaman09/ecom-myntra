@@ -9,7 +9,7 @@ declare module 'axios' {
 }
 
 const apiClient = axios.create({
-  baseURL: 'http://172.50.3.140:3001/', // Replace with your actual API
+  baseURL: 'http://172.50.3.140:3001/', 
   headers: {
     'Content-Type': 'application/json',
   },
@@ -32,7 +32,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle common errors and token refresh
+
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {

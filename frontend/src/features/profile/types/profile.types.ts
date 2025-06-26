@@ -11,9 +11,6 @@ export interface User {
   updatedAt?: string;
   __v?: number;
   addresses?: Address[];
-  // gender?: 'male' | 'female' | 'other';
-  // dateOfBirth?: string;
-  // avatar?: string;
 }
 
 export interface Address {
