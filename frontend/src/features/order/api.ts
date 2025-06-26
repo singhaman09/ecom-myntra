@@ -2,8 +2,8 @@ import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
 
-const API_BASE_URL = "http://172.50.0.244:3333/orders";
-const token = localStorage.getItem('token')
+const API_BASE_URL = "http://172.50.3.140:3333/orders";
+const token = localStorage.getItem('auth_token')
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {

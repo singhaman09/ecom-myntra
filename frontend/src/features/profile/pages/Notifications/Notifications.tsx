@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import {
-  AlertCircle,
-  Loader2,
-  BellOff,
-  Clock,
-  CheckCheck
-} from 'lucide-react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  lazy,
+  Suspense,
+  useCallback,
+  memo,
+} from 'react';
 import styles from './Notifications.module.css';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, type RootState } from '../../redux/hooks';
@@ -14,9 +15,20 @@ import {
   markNotificationsAsRead,
   deleteNotifications,
   markAllAsRead,
-  clearError
+  clearError,
 } from '../../redux/slices/notificationSlice';
-import type { Notification, MarkAsReadRequest, DeleteNotificationRequest } from '../../types/profile.types';
+import type {
+  Notification,
+  MarkAsReadRequest,
+  DeleteNotificationRequest,
+} from '../../types/profile.types';
+
+const AlertCircle = lazy(() => import('lucide-react').then(m => ({ default: m.AlertCircle })));
+const Loader2 = lazy(() => import('lucide-react').then(m => ({ default: m.Loader2 })));
+const BellOff = lazy(() => import('lucide-react').then(m => ({ default: m.BellOff })));
+const Clock = lazy(() => import('lucide-react').then(m => ({ default: m.Clock })));
+const CheckCheck = lazy(() => import('lucide-react').then(m => ({ default: m.CheckCheck })));
+const Trash2 = lazy(() => import('lucide-react').then(m => ({ default: m.Trash2 })));
 
 const Notifications: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -28,77 +40,81 @@ const Notifications: React.FC = () => {
     pagination
   } = useSelector((state: RootState) => state.notifications);
 
-  const dragStartX = useRef<number>(0);
-  const dragEndX = useRef<number>(0);
+  const dragStartX = useRef(0);
+  const isDragging = useRef(false);
+  const [dragStates, setDragStates] = useState<Record<string, { offset: number; isDragging: boolean }>>({});
 
   useEffect(() => {
     dispatch(fetchNotifications({ page: 1, limit: 10 }));
   }, [dispatch]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    dragStartX.current = e.clientX;
-  };
-
-  const handleMouseUp = (e: React.MouseEvent, notificationId: string) => {
-    dragEndX.current = e.clientX;
-    const deltaX = dragStartX.current - dragEndX.current;
-    if (deltaX > 80) {
-      dispatch(deleteNotifications({ notificationIds: [notificationId] } as DeleteNotificationRequest));
-    }
-  };
-
-  const handleNotificationClick = (notification: Notification) => {
-    if (!notification.isRead) {
-      dispatch(markNotificationsAsRead({ notificationIds: [notification.id] } as MarkAsReadRequest));
-    }
-  };
-
-  const handleMarkAllAsRead = () => {
-    dispatch(markAllAsRead());
-  };
-
-  const handleLoadMore = () => {
-    if (pagination.hasMore && !loading) {
-      dispatch(fetchNotifications({
-        page: pagination.page + 1,
-        limit: pagination.limit
-      }));
-    }
-  };
-
-  const formatTimeAgo = (timestamp: string) => {
-    console.log(timestamp);
+  const formatTimeAgo = useCallback((timestamp: string) => {
     const now = new Date();
     const time = new Date(timestamp);
-    const diffInSeconds = Math.floor((now.getTime() - time.getTime()) / 1000);
+    const diff = Math.floor((now.getTime() - time.getTime()) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+    return time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }, []);
 
-    if (diffInSeconds < 60) return 'Just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-
-    return time.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: time.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
-    });
-    
-  };
-
-  const formatTime = (timestamp: string) => {
+  const formatTime = useCallback((timestamp: string) => {
     const time = new Date(timestamp);
-    return time.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
+    return time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  }, []);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent, id: string) => {
+    dragStartX.current = e.clientX;
+    isDragging.current = true;
+    setDragStates(prev => ({ ...prev, [id]: { offset: 0, isDragging: true } }));
+
+    const handleMouseMove = (move: MouseEvent) => {
+      if (!isDragging.current) return;
+      const deltaX = dragStartX.current - move.clientX;
+      const offset = Math.max(0, Math.min(deltaX, 120));
+      setDragStates(prev => ({ ...prev, [id]: { offset, isDragging: true } }));
+    };
+
+    const handleMouseUp = (up: MouseEvent) => {
+      const deltaX = dragStartX.current - up.clientX;
+      if (deltaX > 80) dispatch(deleteNotifications({ notificationIds: [id] } as DeleteNotificationRequest));
+      setDragStates(prev => {
+        const newState = { ...prev };
+        delete newState[id];
+        return newState;
+      });
+      isDragging.current = false;
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [dispatch]);
+
+  const handleNotificationClick = useCallback((n: Notification) => {
+    if (isDragging.current) return;
+    if (!n.isRead) {
+      dispatch(markNotificationsAsRead({ notificationIds: [n.id] } as MarkAsReadRequest));
+    }
+  }, [dispatch]);
+
+  const handleMarkAllAsRead = useCallback(() => {
+    dispatch(markAllAsRead());
+  }, [dispatch]);
+
+  const handleLoadMore = useCallback(() => {
+    if (pagination.hasMore && !loading) {
+      dispatch(fetchNotifications({ page: pagination.page + 1, limit: pagination.limit }));
+    }
+  }, [dispatch, pagination, loading]);
 
   if (error) {
     return (
       <div className={styles.notificationsContainer}>
         <div className={styles.errorState}>
-          <AlertCircle size={20} />
+          <Suspense fallback={null}><AlertCircle size={20} /></Suspense>
           <span>{error}</span>
           <button onClick={() => dispatch(clearError())}>Dismiss</button>
         </div>
@@ -114,12 +130,8 @@ const Notifications: React.FC = () => {
           {unreadCount > 0 && <span className={styles.unreadBadge}>{unreadCount}</span>}
         </div>
         {unreadCount > 0 && (
-          <button
-            className={styles.markAllButton}
-            onClick={handleMarkAllAsRead}
-            disabled={loading}
-          >
-            <CheckCheck size={16} />
+          <button className={styles.markAllButton} onClick={handleMarkAllAsRead} disabled={loading}>
+            <Suspense fallback={null}><CheckCheck size={16} /></Suspense>
             Mark All Read
           </button>
         )}
@@ -127,53 +139,61 @@ const Notifications: React.FC = () => {
 
       {loading && notifications.length === 0 ? (
         <div className={styles.loadingState}>
-          <Loader2 size={24} className={styles.loadingSpinner} />
+          <Suspense fallback={null}><Loader2 size={24} className={styles.loadingSpinner} /></Suspense>
           <span>Loading notifications...</span>
         </div>
       ) : notifications.length === 0 ? (
         <div className={styles.emptyState}>
-          <BellOff />
+          <Suspense fallback={null}><BellOff /></Suspense>
           <h3>No notifications</h3>
-          <p>You're all caught up! Check back later for new updates.</p>
+          <p>You're all caught up!</p>
         </div>
       ) : (
         <>
           <div className={styles.notificationsList}>
-            {notifications.map((notification: Notification) => (
-              <div
-                key={notification.id}
-                className={`${styles.notificationItem} ${!notification.isRead ? styles.unread : ''}`}
-                onClick={() => handleNotificationClick(notification)}
-                onMouseDown={handleMouseDown}
-                onMouseUp={(e) => handleMouseUp(e, notification.id)}
-              >
-                <div className={styles.notificationContent}>
-                  <h3 className={styles.notificationTitle}>
-                    {notification.title}
-                  </h3>
-                  <p className={styles.notificationMessage}>
-                    {notification.message}
-                  </p>
-                  <div className={styles.notificationTime}>
-                    <Clock size={12} />
-                    <span>{formatTimeAgo(notification.timestamp)}</span>
-                    <span>•</span>
-                    <span>{formatTime(notification.timestamp)}</span>
+            {notifications.map(notification => {
+              const drag = dragStates[notification.id];
+              const offset = drag?.offset || 0;
+              const isDrag = drag?.isDragging || false;
+
+              return (
+                <div key={notification.id} className={styles.swipeWrapper}>
+                  <div className={styles.deleteBackground} style={{ width: `${offset}px`, opacity: offset > 0 ? 1 : 0 }}>
+                    <div className={styles.deleteIcon}>
+                      <Suspense fallback={null}><Trash2 size={20} /></Suspense>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`${styles.notificationItem} ${!notification.isRead ? styles.unread : ''} ${isDrag ? styles.dragging : ''}`}
+                    style={{
+                      transform: `translateX(-${offset}px)`,
+                      transition: isDrag ? 'none' : 'transform 0.3s ease',
+                    }}
+                    onClick={() => handleNotificationClick(notification)}
+                    onMouseDown={(e) => handleMouseDown(e, notification.id)}
+                  >
+                    <div className={styles.notificationContent}>
+                      <h3 className={styles.notificationTitle}>{notification.title}</h3>
+                      <p className={styles.notificationMessage}>{notification.message}</p>
+                      <div className={styles.notificationTime}>
+                        <Suspense fallback={null}><Clock size={12} /></Suspense>
+                        <span>{formatTimeAgo(notification.timestamp)}</span>
+                        <span>•</span>
+                        <span>{formatTime(notification.timestamp)}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {pagination.hasMore && (
-            <button
-              className={styles.loadMoreButton}
-              onClick={handleLoadMore}
-              disabled={loading}
-            >
+            <button className={styles.loadMoreButton} onClick={handleLoadMore} disabled={loading}>
               {loading ? (
                 <>
-                  <Loader2 size={16} className={styles.loadingSpinner} />
+                  <Suspense fallback={null}><Loader2 size={16} className={styles.loadingSpinner} /></Suspense>
                   Loading more...
                 </>
               ) : (
@@ -187,4 +207,4 @@ const Notifications: React.FC = () => {
   );
 };
 
-export default Notifications;
+export default memo(Notifications);

@@ -2,6 +2,12 @@
   display: flex;
   min-height: 100vh;
   background-color: var(--bg-secondary);
+  font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+               Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 
+               sans-serif;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .mainContent {
@@ -29,24 +35,6 @@
 .pageSubtitle {
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
-}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-md);
-  font-size: var(--font-size-sm);
-  color: var(--text-muted);
-}
-
-.breadcrumbSeparator {
-  color: var(--text-muted);
-}
-
-.breadcrumbActive {
-  color: var(--text-primary);
-  font-weight: 500;
 }
 
 @media (max-width: 768px) {
