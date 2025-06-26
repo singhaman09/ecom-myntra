@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo,  useMemo, useState } from 'react';
 import styles from './ProductCard.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -8,28 +8,25 @@ import { renderStars } from '../../../utils/RenderStars';
 import { averageRating } from '../../../utils/Reviews';
 import { useProductSelector } from '../../../hooks/storeHooks';
 import SelectShadeSizeModal from '../SelectSizeModal/SelectSizeModal';
-import defaultProductImage from '../../../../../assets/cart.png'
 import { toast } from 'react-toastify';
+import { handleImageError } from '../../../utils/HandleImageError';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
   const data=useProductSelector(state=>state.wishlist.items)
   const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
   const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <>
     <div className={styles.card} onClick={()=>navigate(`/productDetails/${product._id}`)}>
       {/* Image Container */}
       <div className={styles.imageContainer}>
         <img 
-          src={product.imageUrl} 
+          src={product.images?.find(val=>val.isPrimary)?.url} 
           alt={product.name}
           className={styles.productImage}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = defaultProductImage;
-           
-            (e.currentTarget as HTMLImageElement).onerror = null;
-          }}
+          onError={handleImageError}
         />
         
         {/* Wishlist Button */}
@@ -41,11 +38,11 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         </button>
         
         {/* Discount Badge */}
-        {discountPercentage > 0 && (
+        {/* {discountPercentage > 0 && (
           <div className={styles.discountBadge}>
             {discountPercentage}% OFF
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Product Info */}
@@ -78,9 +75,9 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
               <span className={styles.originalPrice}>
                 ₹{Math.round(product.price+((product.price * discountPercentage)/100))}
               </span>
-              <span className={styles.discountPercent}>
+              {/* <span className={styles.discountPercent}>
                 ({discountPercentage}% OFF)
-              </span>
+              </span> */}
             </>
           )}
         </div>
@@ -90,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
     
     </div>
       { modalOpen &&  <SelectShadeSizeModal
-                  
+         product={product}         
         onClose={() => setModalOpen(false)}
         onConfirm={(selection) => {
           toast.success("Added successfully")

@@ -43,4 +43,4 @@ const OrderDetailCard: React.FC<OrderDetailCardProps> = ({ order }) => {
   );
 };
 
-export default OrderDetailCard;
+export default React.memo(OrderDetailCard);

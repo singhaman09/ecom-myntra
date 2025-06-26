@@ -1,7 +1,7 @@
 /* Container */
 .container {
   min-height: 100vh;
-  background-color: #f6f1e9;
+  background-color: #f9f6ee;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +40,7 @@
 .brand {
   font-size: 2.4rem;
   font-weight: 800;
-  color: #104b3f;
+  color: #044236;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Times New Roman', Times, serif;
@@ -48,8 +48,8 @@
 
 /* Subtitle */
 .instruction {
-  font-size: 1.3rem;
-  color: #1c1c1c;
+  font-size: 1.6rem;
+  color: #000000;
   margin-top: 0.5rem;
   line-height: 1.4;
   font-family:'Times New Roman', Times, serif;
@@ -78,7 +78,7 @@
   font-family: 'Work Sans', sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 
 .input {
@@ -86,9 +86,9 @@
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  border-radius: 6px;
+  color: #000000;
   border: 1px solid #bfbfbf;
-  background-color: white;
+  background-color: #ffffff;
   transition: border-color 0.3s ease;
 }
 
@@ -99,13 +99,13 @@
 }
 
 .inputError {
-  border-color: #d9534f;
+  border-color: #007f5f20;
 }
 
 /* Error Message */
 .errorMessage {
   font-family: 'Work Sans', sans-serif;
-  color: #d9534f;
+  color: #044236;
   font-size: 0.85rem;
   margin-top: 0.25rem;
 }
@@ -140,10 +140,9 @@
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 600;
-  background-color: #104b3f;
+  background-color: #044236;
   border: none;
-  color: #fff;
-  border-radius: 6px;
+  color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -153,8 +152,8 @@
 }
 
 .submitButton:disabled {
-  background-color: #e0e0e0;
-  color: #888;
+  background-color: #04423656;
+  color: #ffffff;
   cursor: not-allowed;
 }
 
@@ -170,7 +169,7 @@
   font-family: 'Work Sans', sans-serif;
   background: none;
   border: none;
-  color: #007f5f;
+  color: #044236;
   cursor: pointer;
   font-weight: 500;
   text-decoration: underline;
@@ -188,7 +187,7 @@
 .link {
   font-family: 'Work Sans', sans-serif;
   font-size: 0.9rem;
-  color: #007f5f;
+  color: #044236;
   text-decoration: underline;
   cursor: pointer;
   background: none;
@@ -197,7 +196,7 @@
 
 /* Server Error */
 .serverError {
-  color: #d9534f;
+  color: #0c3d32;
   font-size: 0.9rem;
   text-align: center;
   margin-top: -0.5rem;
@@ -214,7 +213,7 @@
   }
 
   .instruction {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 }
 
@@ -236,7 +235,7 @@
 .dividerText {
   font-family: 'Work Sans', sans-serif;
   font-size: 0.85rem;
-  color: #555;
+  color: #044236;
   font-weight: 500;
 }
 
@@ -257,7 +256,6 @@
   font-size: 1rem;
   border: 1px solid #ccc;
   background-color: #fff;
-  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -282,8 +280,8 @@
   background: none;
   border: none;
   font-size: 1rem;
-  font-weight:500;
-  color: #000;
+  font-weight:600;
+  color: #044236;
   text-transform: uppercase;
   cursor: pointer;
   display: flex;

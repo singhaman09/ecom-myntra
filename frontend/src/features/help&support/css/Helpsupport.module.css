@@ -3,24 +3,26 @@
 .helpSupportPage {
   min-height: 100vh;
   background-color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    max-width: 1200px;
-    margin-left: auto;
+  font-family: sans-serif;
+  max-width: 1200px;
+  margin-left: auto;
   margin-right: auto;
-   margin-top: 22px;
+  margin-top: 22px;
 }
 
 /* Header Styles */
 .header {
-  position: relative;
+  position: sticky;
   padding: 16px 20px;
   border-bottom: 1px solid #e5e5e7;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
-  font-family: 'Work Sans';
-  z-index: 100;
+  font-family: "Work Sans";
+  z-index: 2;
+  top:56px;
+
 }
 
 .backButton {
@@ -32,17 +34,17 @@
   align-items: center;
   cursor: pointer;
   background-color: #fff;
+  border:none
 }
 
 .backButton:hover {
-  border-bottom: 1px solid #044236;
+  border-bottom: 2px solid #05741d;
 }
 .headerTitle {
   font-size: 20px;
   font-weight: 600;
   color: #000000;
 }
-
 
 /* Content */
 .content {
@@ -59,7 +61,7 @@
   font-weight: 500;
   color: #000000;
   margin: 20px 0 16px 0;
-  font-family: 'Times New Roman';
+  font-family: "Times New Roman";
 }
 
 .orderItem {
@@ -95,7 +97,7 @@
   font-weight: 500;
   color: #000000;
   margin: 0 0 8px 0;
-  font-family: 'Work Sans';
+  font-family: "Work Sans";
 }
 
 .orderMeta {
@@ -155,7 +157,7 @@
 .queryTitle {
   font-size: 16px;
   color: #000000;
-  font-family: 'sans-serif-medium';
+  font-family: "sans-serif-medium";
   font-weight: 400;
 }
 
@@ -248,7 +250,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-
 .modalHeader {
   display: flex;
   justify-content: space-between;
@@ -317,7 +318,7 @@
   font-weight: 500;
   color: #000000;
   margin-bottom: 4px;
-    font-family: 'Work Sans';
+  font-family: "Work Sans";
 }
 
 .contactSubtitle {
@@ -442,11 +443,11 @@
 }
 
 .submitBtn:hover {
-  background-color: #0056b3;
+  background-color: #02410c;
 }
 
 .submitBtn:active {
-  background-color: #004a9f;
+  background-color: #02410c;
 }
 
 /* Responsive adjustments */
@@ -454,17 +455,17 @@
   .orderItem {
     padding: 12px;
   }
-  
+
   .productImage {
     width: 50px;
     height: 50px;
     margin-right: 12px;
   }
-  
+
   .productName {
     font-size: 15px;
   }
-  
+
   .price {
     font-size: 15px;
   }

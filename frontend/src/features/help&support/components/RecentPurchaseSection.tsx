@@ -24,21 +24,26 @@ const RecentPurchaseSection: React.FC<RecentPurchaseSectionProps> = ({ order }) 
     );
   };
 
+  const item = order.items?.[0]; // first item
+
   return (
     <div className={styles.recentPurchaseSection}>
-      <h3 className={styles.sectionTitle}>Need help with recent purchase ?</h3>
+      <h3 className={styles.sectionTitle}>Need help with recent purchase?</h3>
       <div className={styles.orderItem}>
         <div className={styles.productImage}>
-          <img src="" alt="Product" />
+          <img
+            src={item?.image || 'https://via.placeholder.com/60'}
+            alt={item?.name || 'Product Image'}
+          />
         </div>
         <div className={styles.orderDetails}>
-          <h4 className={styles.productName}>Anti-Dandruff Shampoo</h4>
+          <h4 className={styles.productName}>{item?.name || 'Product Name'}</h4>
           <div className={styles.orderMeta}>
             <span className={styles.price}>₹{order.total}</span>
             {getStatusBadge(order.status)}
           </div>
           <div className={styles.orderDate}>
-            Order Date : {formatDate(order.orderDate)}
+            Order Date: {formatDate(order.orderDate)}
           </div>
         </div>
       </div>

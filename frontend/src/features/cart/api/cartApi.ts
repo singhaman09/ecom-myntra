@@ -33,9 +33,9 @@ export const getCartAPI = async () => {
 };
 
 
-export const addCartItemsAPI = async (productId: string) => {
+export const addCartItemsAPI = async (productId: string,size:string,color:string ) => {
   try {
-    const response = await apiClient.post<Cart>(`/cart/${productId}`);
+    const response = await apiClient.post<Cart>(`/cart/${productId}?size=${size}&color=${color}`);
     return response.data.items;
   } catch (error) {
     throw error;

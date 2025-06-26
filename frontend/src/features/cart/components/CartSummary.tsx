@@ -18,7 +18,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, total
   const navigate = useNavigate();
 
   const handlePlaceOrder = () => {
-    navigate("/checkout/address");  
+    navigate("/checkout/payment");  
   }
 
   return (

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styles from './StoreLocator.module.css';
-import SearchBar from '../../Components/SearchBar/SearchBar';
-import StoreOfferCard from '../../Components/StoreOffer/StoreOfferCard';
-import ToggleButtons from '../../Components/ToggleButtons/ToggleButtons';
-import StoreListItem from '../../Components/StoreListItem/StoreListItem';
-import MapDisplay from '../../Components/MapDisplay/MapDisplay';
-import MapStoreDetailsCard from '../../Components/MapStoreDetailsCard/MapStoreDetailsCard';
+const SearchBar=React.lazy(()=>import('../../Components/SearchBar/SearchBar'));
+const StoreOfferCard =React.lazy(()=>import('../../Components/StoreOffer/StoreOfferCard'));
+const ToggleButtons = React.lazy(()=>import('../../Components/ToggleButtons/ToggleButtons'));
+const StoreListItem =React.lazy(()=>import ('../../Components/StoreListItem/StoreListItem')) ;
+const MapDisplay=React.lazy(()=>import('../../Components/MapDisplay/MapDisplay'));
+const MapStoreDetailsCard =React.lazy(()=>import( '../../Components/MapStoreDetailsCard/MapStoreDetailsCard'));
 import type { Store } from '../../interfaces/Store';
 import defaultImage from '../../../../assets/cam.jpg'
 const StoreLocator: React.FC = () => {
@@ -37,13 +37,18 @@ const StoreLocator: React.FC = () => {
 
   return (
     <div className={styles.container}>
+     
       <div className={styles.headerSearchWrapper}>
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
-
+    
       <div className={styles.storeOffersSection}>
-        <h2 className={styles.sectionTitle}>Store Offers</h2>
+      <h2 className={styles.sectionTitle}>Store Offers</h2>
+       <div className={styles.offerCardContainer}>
+       <StoreOfferCard />
         <StoreOfferCard />
+        <StoreOfferCard />
+       </div>
       </div>
 
       <div className={styles.nearestStoresHeader}>
@@ -57,7 +62,7 @@ const StoreLocator: React.FC = () => {
       {activeView === 'list' ? (
         <div className={styles.storeList}>
           {stores.map((store) => (
-            <StoreListItem key={store.id} store={store} />
+            <StoreListItem key={store.id} store={store} setActiveView={setActiveView} />
           ))}
         </div>
       ) : (

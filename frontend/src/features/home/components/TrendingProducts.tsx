@@ -1,31 +1,18 @@
-import React from 'react';
+import React, { memo } from 'react';
 import ProductSection from './ProductSection';
+import type { Product } from '../../product/interfaces/ProductInterfaces';
 
 interface TrendingProductsProps {
   products?: Product[];
 }
 
-interface Product {
-  _id: string;
-  imageUrl: string;
-  brand: string;
-  name: string;
-  price: number;
-  category: string;
-  subCategory: string;
-  totalStock: number;
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  reviews: { rating: number; comment: string }[];
-}
-
 const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) => {
-
   const sampleProducts: Product[] = [
     {
       _id: "trending_1",
-      imageUrl: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "Fuji Green Tea Shower Gel",
       price: 599,
@@ -43,7 +30,9 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) =>
     },
     {
       _id: "trending_2",
-      imageUrl: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "Satsuma Shower Gel",
       price: 549,
@@ -61,7 +50,9 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) =>
     },
     {
       _id: "trending_3",
-      imageUrl: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "Hemp Hand Protector",
       price: 299,
@@ -78,7 +69,9 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) =>
     },
     {
       _id: "trending_4",
-      imageUrl: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=300&fit=crop",
+      images: [
+        { url: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=300&h=300&fit=crop", isPrimary: true }
+      ],
       brand: "The Body Shop",
       name: "British Rose Body Lotion",
       price: 799,
@@ -96,7 +89,6 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) =>
     }
   ];
 
-  // Use passed products or fall back to sample data
   const displayProducts = products.length > 0 ? products : sampleProducts;
 
   return (
@@ -108,4 +100,4 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ products = [] }) =>
   );
 };
 
-export default TrendingProducts;
+export default memo(TrendingProducts);

@@ -12,10 +12,13 @@
     transition-property: color, border-color;
     transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    color: #6b7280;
+    color: #044236;
     background: none;
     border: none;
     cursor: pointer;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
   }
   
   .toggleButton.active {

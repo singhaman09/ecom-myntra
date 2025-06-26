@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import type { SupportQuery } from '../types/support';
 import styles from '../css/Helpsupport.module.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface QueriesSectionProps {
   queries: SupportQuery[];
@@ -16,8 +18,7 @@ const QueriesSection: React.FC<QueriesSectionProps> = ({ queries: initialQueries
   };
 
   const handleFeedback = (isHelpful: boolean) => {
-    // Handle feedback logic here
-    console.log('Feedback:', isHelpful ? 'Helpful' : 'Not helpful');
+   toast.success(isHelpful ? 'Glad it helped!' : 'Thanks for the feedback!',{ toastId: 'success-id-1' });
   };
 
   return (
