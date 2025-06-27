@@ -119,7 +119,7 @@ if(uniqueSizes.length>0 && uniqueColors.length>0){
 
   const removeFromBag = useCallback(() => {
     const productId = id || '';
-    const cartId= cartData.cart.find(val=>val.productId==productId)?.id
+    const cartId= cartData.cart.find(val=>val.productId==productId)?.cartId
     dispatch(deleteCartItem(cartId || ''));
   },[id]);
 
