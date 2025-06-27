@@ -1,4 +1,3 @@
-import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import type { WishlistItem } from './types/wishlist';
 import shoes from '../../assets/shoes.jpeg';
@@ -7,21 +6,9 @@ import cam from '../../assets/cam.jpg';
 import watch from '../../assets/watch.jpeg';
 import watch1 from '../../assets/watch1.jpeg';
 import honey from '../../assets/honey.jpeg';
-
+import apiClient from '../../services/apiClient'; 
+const WISHLIST_URL = import.meta.env.VITE_WISHLIST_URL;
 const USE_MOCK = true;
-
-const API_BASE_URL = 'https://dd8f-14-194-22-202.ngrok-free.app';
-const token = localStorage.getItem("token");
-
-const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',
-    Authorization: `Bearer ${token}`,
-    
-  },
-});
 
 interface WishlistApiResponse {
   _id: string;
@@ -56,8 +43,8 @@ const mapApiItemToWishlistItem = (apiItem: WishlistItemApiResponse): WishlistIte
   image: apiItem.image || shoes,
   rating: apiItem.reviews?.length ? 3 : 0,
   reviewCount: apiItem.reviews?.length || 0,
-  size: apiItem.variants?.[0]?.size, 
-  color: apiItem.variants?.[0]?.color, 
+  size: apiItem.variants?.[0]?.size,
+  color: apiItem.variants?.[0]?.color,
   inStock: (apiItem.totalStock ?? 0) > 0,
   dateAdded: new Date().toISOString(),
   category: apiItem.category || 'Unknown',
@@ -76,13 +63,11 @@ const mockWishlistItems: WishlistItemApiResponse[] = [
     image: shoes,
     category: 'Electronics',
     description: 'High-quality headphones',
-    variants: [
-      { _id: 'v1', size: 'One Size', color: 'Black', stock: 5, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 },
-    ],
+    variants: [{ _id: 'v1', size: 'One Size', color: 'Black', stock: 5, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 }],
     totalStock: 5,
     reviews: [],
   },
-  {
+   {
     _id: '2',
     productId: 'mock2',
     name: 'Bag',
@@ -164,7 +149,7 @@ export const apiService = {
     }
 
     try {
-      const response: AxiosResponse<WishlistApiResponse> = await axiosInstance.get('/wishlist');
+      const response: AxiosResponse<WishlistApiResponse> = await apiClient.get(`${WISHLIST_URL}/wishlist`);
       return response.data.items.map(mapApiItemToWishlistItem);
     } catch {
       throw new Error('Failed to fetch wishlist items');
@@ -182,7 +167,13 @@ export const apiService = {
         image: shoes,
         category: 'Unknown',
         description: 'Mock product description',
-        variants: [{ _id: `v${mockWishlistItems.length + 1}`, size, color, stock: 10, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), __v: 0 }],
+        variants: [{
+          _id: `v${mockWishlistItems.length + 1}`,
+          size, color, stock: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          __v: 0
+        }],
         totalStock: 10,
         reviews: [],
       };
@@ -191,7 +182,7 @@ export const apiService = {
     }
 
     try {
-      const response: AxiosResponse<WishlistItemApiResponse> = await axiosInstance.post(`/wishlist/add/${productId}`, { size, color });
+      const response: AxiosResponse<WishlistItemApiResponse> = await apiClient.post(`${WISHLIST_URL}/wishlist/add/${productId}`, { size, color });
       return mapApiItemToWishlistItem(response.data);
     } catch {
       throw new Error('Failed to add item to wishlist');
@@ -210,7 +201,7 @@ export const apiService = {
     }
 
     try {
-      await axiosInstance.delete(`/wishlist/items/${itemId}`);
+      await apiClient.delete(`${WISHLIST_URL}/wishlist/items/${itemId}`);
     } catch {
       throw new Error('Failed to remove item from wishlist');
     }
@@ -228,7 +219,7 @@ export const apiService = {
     }
 
     try {
-      await axiosInstance.post(`/addToCart/${itemId}`);
+      await apiClient.post(`${WISHLIST_URL}/addToCart/${itemId}`);
     } catch {
       throw new Error('Failed to move item to cart');
     }
@@ -247,9 +238,14 @@ export const apiService = {
           image: item.image,
           category: item.category,
           description: item.description,
-          variants: item.variants,
+          variants: item.variants?.map(variant => ({
+            ...variant,
+            createdAt: (variant as any).createdAt || new Date().toISOString(),
+            updatedAt: (variant as any).updatedAt || new Date().toISOString(),
+            __v: (variant as any).__v ?? 0,
+          })) || [],
           totalStock: item.totalStock,
-          reviews: item.reviews || [],
+          reviews: [],
         };
         mockWishlistItems[index] = updated;
         return mapApiItemToWishlistItem(updated);
@@ -268,7 +264,7 @@ export const apiService = {
         variants: item.variants,
         totalStock: item.totalStock,
       };
-      const response: AxiosResponse<WishlistItemApiResponse> = await axiosInstance.put(`/wishlist/item/${item.id}`, payload);
+      const response: AxiosResponse<WishlistItemApiResponse> = await apiClient.put(`${WISHLIST_URL}/wishlist/item/${item.id}`, payload);
       return mapApiItemToWishlistItem(response.data);
     } catch {
       throw new Error('Failed to update wishlist item');

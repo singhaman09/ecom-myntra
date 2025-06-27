@@ -9,7 +9,7 @@ declare module 'axios' {
 }
 
 const apiClient = axios.create({
-  baseURL: 'http://172.50.3.140:3001/', // Replace with your actual API
+  baseURL: '', // Replace with your actual API
   headers: {
     'Content-Type': 'application/json',
   },

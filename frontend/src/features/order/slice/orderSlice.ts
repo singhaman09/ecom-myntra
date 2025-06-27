@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Order, OrderStatus } from '../types/orders';
-import { apiService } from '../api';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { Order, OrderStatus } from "../types/orders";
+import { apiService } from "../api";
 
 export interface OrderFilters {
   status?: OrderStatus;
@@ -37,43 +37,46 @@ const initialState: OrdersState = {
 };
 
 export const fetchOrders = createAsyncThunk(
-  'orders/fetchOrders',
+  "orders/fetchOrders",
   async (_, { rejectWithValue }) => {
     try {
       const orders = await apiService.getOrders();
       return orders;
     } catch (error) {
-      return rejectWithValue('Failed to fetch orders');
+      return rejectWithValue("Failed to fetch orders");
     }
   }
 );
 
 export const updateOrderStatus = createAsyncThunk(
-  'orders/updateStatus',
-  async ({ orderId, status }: { orderId: string; status: OrderStatus }, { rejectWithValue }) => {
+  "orders/updateStatus",
+  async (
+    { orderId, status }: { orderId: string; status: OrderStatus },
+    { rejectWithValue }
+  ) => {
     try {
       const updatedOrder = await apiService.updateOrderStatus(orderId, status);
       return updatedOrder;
     } catch (error) {
-      return rejectWithValue('Failed to update order status');
+      return rejectWithValue("Failed to update order status");
     }
   }
 );
 
 export const cancelOrder = createAsyncThunk(
-  'orders/cancelOrder',
-  async (orderId: string, { rejectWithValue }) => {
+  "orders/cancelOrder",
+  async (orderId: string, thunkAPI) => {
     try {
-      const order =await apiService.cancelOrder(orderId);
-      return order;
-    } catch (error) {
-      return rejectWithValue('Failed to cancel order');
+      const cancelledOrder = await apiService.cancelOrder(orderId);
+      return cancelledOrder;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message || "Cancel failed");
     }
   }
 );
 
 const ordersSlice = createSlice({
-  name: 'orders',
+  name: "orders",
   initialState,
   reducers: {
     setFilters: (state, action: PayloadAction<OrderFilters>) => {
@@ -97,28 +100,36 @@ const ordersSlice = createSlice({
       let filtered = [...state.orders];
 
       if (state.filters.status) {
-        filtered = filtered.filter(order => order.status.toLowerCase() === state.filters.status!.toLowerCase());
+        filtered = filtered.filter(
+          (order) =>
+            order.status.toLowerCase() === state.filters.status!.toLowerCase()
+        );
       }
 
       if (state.filters.searchQuery) {
         const query = state.filters.searchQuery.toLowerCase();
-        filtered = filtered.filter(order =>
-          order.id.toLowerCase().includes(query) ||
-          order.items.some(item => item.name.toLowerCase().includes(query))
+        filtered = filtered.filter(
+          (order) =>
+            order.id.toLowerCase().includes(query) ||
+            order.items.some((item) => item.name.toLowerCase().includes(query))
         );
       }
 
       if (state.filters.minAmount !== undefined) {
-        filtered = filtered.filter(order => order.total >= state.filters.minAmount!);
+        filtered = filtered.filter(
+          (order) => order.total >= state.filters.minAmount!
+        );
       }
       if (state.filters.maxAmount !== undefined) {
-        filtered = filtered.filter(order => order.total <= state.filters.maxAmount!);
+        filtered = filtered.filter(
+          (order) => order.total <= state.filters.maxAmount!
+        );
       }
 
       if (state.filters.dateRange) {
         const startDate = new Date(state.filters.dateRange.startDate);
         const endDate = new Date(state.filters.dateRange.endDate);
-        filtered = filtered.filter(order => {
+        filtered = filtered.filter((order) => {
           const orderDate = new Date(order.orderDate);
           return orderDate >= startDate && orderDate <= endDate;
         });
@@ -145,7 +156,9 @@ const ordersSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
-        const index = state.orders.findIndex(order => order.id === action.payload.id);
+        const index = state.orders.findIndex(
+          (order) => order.id === action.payload.id
+        );
         if (index !== -1) {
           state.orders[index] = action.payload;
           ordersSlice.caseReducers.applyFilters(state);
@@ -155,10 +168,10 @@ const ordersSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(cancelOrder.fulfilled, (state, action) => {
-        const index = state.orders.findIndex((o) => o.id === updateOrderStatus.id);
+        const updatedOrder = action.payload;
+        const index = state.orders.findIndex((o) => o.id === updatedOrder.id);
         if (index !== -1) {
-          state.orders[index].status = 'cancelled';
-          ordersSlice.caseReducers.applyFilters(state);
+          state.orders[index] = updatedOrder;
         }
       })
       .addCase(cancelOrder.rejected, (state, action) => {

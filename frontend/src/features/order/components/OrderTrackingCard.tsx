@@ -6,6 +6,7 @@ import styles from '../css/ordertracking.module.css';
 import { useNavigate } from 'react-router-dom';
 import ConfirmModal from '../components/Confirmmodal';
 import { toast } from 'react-toastify';
+import { ORDER } from '../types/order.enum';
 
 interface OrderTrackingCardProps {
   order: Order;
@@ -30,15 +31,15 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
     placed: formatDate(order.orderDate),
     picked: formatDate(new Date(orderDate.getTime() + 1 * 86400000).toISOString()),
     shipped: formatDate(new Date(orderDate.getTime() + 2 * 86400000).toISOString()),
-    delivered: order.status.toLowerCase() === 'delivered' ? formatDate(order.deliveryDate) : 'N/A',
+    delivered: order.status.toLowerCase() === ORDER.DELIVERED ? formatDate(order.deliveryDate) :ORDER.NA ,
   };
 
-  const isCancelled = order.status.toLowerCase() === 'canceled';
+  const isCancelled = order.status.toLowerCase() === ORDER.CANCELLED;
 
   const steps = isCancelled
     ? [
         { key: 'placed', label: 'Order Placed', date: timelineDates.placed },
-        { key: 'cancelled', label: 'Cancelled', date: formatDate(new Date().toISOString()) },
+        { key: 'canceled', label: 'Cancelled', date: formatDate(new Date().toISOString()) },
       ]
     : [
         { key: 'placed', label: 'Order Placed', date: timelineDates.placed },
@@ -78,18 +79,18 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
           {steps.map((step, index) => {
             const isActive =
               isCancelled
-                ? step.key === 'placed' || step.key === 'cancelled'
+                ? step.key === ORDER.PLACED || step.key === ORDER.CANCELLED
                 : index <= currentStatusIndex;
 
             return (
               <div
                 key={step.key}
                 className={`${styles.timelineItem} ${isActive ? styles.active : ''} ${
-                  step.key === 'cancelled' ? styles.cancelled : ''
+                  step.key === ORDER.CANCELLED ? styles.cancelled : ''
                 }`}
               >
                 <div className={styles.statusCircle}>
-                  {step.key === 'cancelled' ? '✕' : isActive ? '✓' : ''}
+                  {step.key === ORDER.CANCELLED ? '✕' : isActive ? '✓' : ''}
                 </div>
                 <div className={styles.statusText}>{step.label}</div>
                 <div className={styles.date}>{step.date}</div>
@@ -105,7 +106,7 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
         )}
 
         <div className={styles.buttons}>
-          {!isCancelled && order.status !== 'delivered' && (
+          {!isCancelled && order.status !== ORDER.DELIVERED && (
             <>
               <button className={styles.returnExchangeBtn} onClick={handleCancel}>
                 Cancel
@@ -115,7 +116,7 @@ const OrderTrackingCard: React.FC<OrderTrackingCardProps> = ({ order }) => {
               </button>
             </>
           )}
-          {order.status === 'delivered' && (
+          {order.status === ORDER.DELIVERED && (
             <>
               <button className={styles.returnExchangeBtn}>Return / Exchange</button>
               <button className={styles.helpBtn} onClick={handleNeedHelp}>
