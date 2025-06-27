@@ -7,7 +7,7 @@
   background-color: #fff;
   border: 1px solid #ffe6d9; /* Warm, subtle border */
   border-radius: 6px; /* Softer corners */
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle elevation */
   transition: box-shadow 0.3s ease; /* Smooth shadow transition */
 }
@@ -41,9 +41,9 @@
 
 
 .nameAndPincode {
-  font-size: 15px; /* Slightly larger for emphasis */
+  font-size: 14px; /* Slightly larger for emphasis */
   color: #222;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.2px;
 }
 
@@ -113,6 +113,7 @@
   font-family: "Inter", sans-serif; /* Modern font */
   font-size: 13px;
   font-weight: 500;
+  letter-spacing: 1px;
   border-radius: 3px;
   cursor: pointer;
   align-self: center;

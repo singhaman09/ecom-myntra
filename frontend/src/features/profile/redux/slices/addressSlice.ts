@@ -20,7 +20,6 @@ const initialState: AddressState = {
   error: null,
 };
 
-
 export const fetchAddresses = createAsyncThunk(
   'addresses/fetchAddresses',
   async (_, { rejectWithValue }) => {
@@ -35,7 +34,7 @@ export const fetchAddresses = createAsyncThunk(
 
 export const createAddress = createAsyncThunk(
   'addresses/createAddress',
-  async (address: Omit<Address, 'id'>, { rejectWithValue }) => {
+  async (address: Omit<Address, '_id'>, { rejectWithValue }) => {
     try {
       const newAddr = await addAddress(address);
       if (address.isDefault) {
@@ -52,7 +51,7 @@ export const modifyAddress = createAsyncThunk(
   'addresses/modifyAddress',
   async (address: Address, { rejectWithValue }) => {
     try {
-      const updated = await updateAddress(address._id, address);
+      const updated = await updateAddress(address);
       if (address.isDefault) {
         await setDefaultAddress(updated._id);
       }

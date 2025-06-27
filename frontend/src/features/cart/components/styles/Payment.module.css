@@ -209,4 +209,319 @@
     border-radius: 7px;
     margin-top: 0.3rem;
   }
+  .upiOptions {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .upiOption {
+    flex-direction: row;
+    align-items: center;
+    font-size: 0.92rem;
+    padding: 7px 0;
+    width: 100%;
+    gap: 8px;
+  }
+  .upiIcon {
+    min-width: 18px;
+    font-size: 1rem;
+  }
+}
+
+.paymentPageContainer {
+  display: flex;
+  gap: 13px;
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #f8f3e9 60%, #fff 100%);
+  min-height: 100vh;
+  padding: 40px 0;
+  font-family: 'Work Sans', 'Inter', Arial, sans-serif;
+}
+
+.paymentLeftCol {
+  min-width: 270px;
+  max-width: 320px;
+  width: 100%;
+  background: linear-gradient(120deg, #fff 80%, #f8f9fa 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(6, 101, 78, 0.08);
+  padding: 28px 0 28px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border: 1.5px solid #f3e6e6;
+}
+
+.paymentModeList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.paymentModeOption {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 28px;
+  cursor: pointer;
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: #282c3f;
+  border-left: 4px solid transparent;
+  background: #fff;
+  transition: background 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+  position: relative;
+  border-bottom: 1px solid #f3e6e6;
+}
+.paymentModeOption:last-child {
+  border-bottom: none;
+}
+.paymentModeOption:hover {
+  background: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(255,63,108,0.06);
+  transform: translateX(2px) scale(1.01);
+}
+.paymentModeOption.selected {
+  border-left: 4px solid #ff3f6c;
+  background: #fff0f6;
+  color: #ff3f6c;
+  box-shadow: 0 4px 16px rgba(255,63,108,0.08);
+  transform: scale(1.02);
+}
+.paymentModeOption.highlight {
+  color: #ff3f6c;
+}
+.paymentModeIcon {
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.paymentModeLabel {
+  flex: 1;
+}
+.paymentModeBadge {
+  background: #eaf9f4;
+  color: #088c6a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 2px 10px;
+  margin-left: 10px;
+}
+.newBadge {
+  background: #ff3f6c;
+  color: #fff;
+}
+
+.paymentRightCol {
+  flex: 1;
+  min-width: 340px;
+  max-width: 520px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(6, 101, 78, 0.10);
+  padding: 20px 21px 31px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  border: 1.5px solid #f3e6e6;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+.upiSection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 18px 18px 10px 18px;
+  box-shadow: 0 2px 8px rgba(6, 101, 78, 0.04);
+}
+.upiOptions {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 8px;
+}
+.upiOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: background 0.18s;
+}
+.upiOption:hover {
+  background: #fff0f6;
+}
+.upiIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+}
+
+.giftCardSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  border-radius: 24px;
+  padding: 14px 22px;
+  margin: 22px 0 0 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(255,63,108,0.04);
+}
+.giftCardSection:before {
+  content: '\1F381'; /* 🎁 */
+  font-size: 1.3rem;
+  margin-right: 10px;
+}
+.applyGiftCardBtn {
+  background-color: #044236;
+  border: 1px solid #044236;
+  color: #fff;
+  padding: 8px 16px;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  letter-spacing: 1px;
+  margin-left: 30px;
+}
+.applyGiftCardBtn:hover {
+  background-color: #026b4b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(4, 66, 54, 0.15);
+}
+
+.walletSection, .emiSection, .netbankingSection, .paylaterSection, .payin3Section {
+  font-size: 1.05rem;
+  color: #044236;
+  background: #eaf9f4;
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(6, 101, 78, 0.04);
+}
+
+.inputField {
+  padding: 0.9rem 1.1rem;
+  border: 1.5px solid #eaf9f4;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background: #fff;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(6, 101, 78, 0.03);
+}
+.inputField:focus {
+  border: 1.5px solid #ff3f6c;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(255,63,108,0.08);
+}
+.cardForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 18px 18px 10px 18px;
+  box-shadow: 0 2px 8px rgba(6, 101, 78, 0.04);
+}
+.codNote {
+  font-size: 1.05rem;
+  color: #044236;
+  background: #eaf9f4;
+  padding: 1.1rem 1.2rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(6, 101, 78, 0.04);
+}
+.payBtn {
+  width: 100%;
+  padding: 1.1rem 0;
+  background: linear-gradient(135deg, #06654e 0%, #088c6a 100%);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  font-size: 1.18rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.18s;
+  margin-top: 0.7rem;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(6, 101, 78, 0.10);
+}
+.payBtn:hover {
+  background: #044236;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px rgba(6, 101, 78, 0.14);
+}
+
+@media (max-width: 900px) {
+  .paymentPageContainer {
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px 0;
+  }
+  .paymentLeftCol, .paymentRightCol {
+    max-width: 100vw;
+    min-width: 0;
+    border-radius: 12px;
+    padding: 18px 8px;
+  }
+  .paymentRightCol {
+    padding: 18px 8px 18px 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .paymentPageContainer {
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px 0;
+  }
+  .paymentLeftCol, .paymentRightCol {
+    max-width: 100vw;
+    min-width: 0;
+    border-radius: 8px;
+    padding: 10px 2px;
+  }
+  .paymentRightCol {
+    padding: 10px 2px 10px 2px;
+  }
+  .giftCardSection {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 8px;
+    font-size: 0.98rem;
+  }
+  .applyGiftCardBtn {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 0.98rem;
+  }
+}
+
+.paymentOptionsHeading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #282c3f;
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  padding-left: 28px;
 }

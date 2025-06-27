@@ -1,9 +1,12 @@
 import React from 'react';
 import styles from './AvailableOffers.module.css';
 import { FaTag, FaCreditCard, FaGift } from 'react-icons/fa';
+import { OFFER_TYPE, type OfferType } from '../../../Product.enum';
+
+// Enum-like offer types
 
 export interface Offer {
-  type: 'bank' | 'coupon' | 'deal' | 'other';
+  type: OfferType;
   title: string;
   description: string;
 }
@@ -12,13 +15,13 @@ interface AvailableOffersProps {
   offers: Offer[];
 }
 
-const getIcon = (type: Offer['type']) => {
+const getIcon = (type: OfferType) => {
   switch (type) {
-    case 'bank':
+    case OFFER_TYPE.BANK:
       return <FaCreditCard color="#3D857E" />;
-    case 'coupon':
+    case OFFER_TYPE.COUPON:
       return <FaTag color="#eab308" />;
-    case 'deal':
+    case OFFER_TYPE.DEAL:
       return <FaGift color="#059669" />;
     default:
       return <FaTag color="#3B82F6" />;

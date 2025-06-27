@@ -8,8 +8,9 @@ const MapDisplay=React.lazy(()=>import('../../Components/MapDisplay/MapDisplay')
 const MapStoreDetailsCard =React.lazy(()=>import( '../../Components/MapStoreDetailsCard/MapStoreDetailsCard'));
 import type { Store } from '../../interfaces/Store';
 import defaultImage from '../../../../assets/cam.jpg'
+import { TOGGLE_BUTTONS, type TOGGLE_BUTTONS_TYPE } from '../../Store.enum';
 const StoreLocator: React.FC = () => {
-  const [activeView, setActiveView] = useState<'list' | 'map'>('list');
+  const [activeView, setActiveView] = useState<TOGGLE_BUTTONS_TYPE>(TOGGLE_BUTTONS.LIST);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const stores: Store[] = [
@@ -59,7 +60,7 @@ const StoreLocator: React.FC = () => {
         <ToggleButtons activeView={activeView} setActiveView={setActiveView} />
       </div>
 
-      {activeView === 'list' ? (
+      {activeView === TOGGLE_BUTTONS.LIST? (
         <div className={styles.storeList}>
           {stores.map((store) => (
             <StoreListItem key={store.id} store={store} setActiveView={setActiveView} />

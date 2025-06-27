@@ -33,9 +33,9 @@
 }
 
 .brand {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 800;
-  color: #104b3f;
+  color: #044236;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Times New Roman', Times, serif;
@@ -43,16 +43,16 @@
 
 /* Subtitle */
 .instruction {
-  font-size: 1.3rem;
-  color: #1c1c1c;
+  font-size: 1.6rem;
+  color: #000000;
   margin-top: 0.5rem;
   line-height: 1.4;
-  font-family: 'Times New Roman', Times, serif;
+  font-family:'Times New Roman', Times, serif;
 }
 
 .instruction strong {
   font-weight: bold;
-  font-family: 'Times New Roman', Times, serif;
+  font-family:'Times New Roman', Times, serif;
 }
 
 .title {
@@ -98,7 +98,6 @@
   font-family: 'Work Sans', sans-serif;
   padding: 0.75rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
   font-size: 0.875rem;
   color: #003d29;
   background-color: white;
@@ -115,14 +114,14 @@
 }
 
 .inputError {
-  border-color: #ff6b6b;
+  border-color: #000000;
 }
 
 .errorMessage {
   font-family: 'Work Sans', sans-serif;
   margin-top: 0.25rem;
   font-size: 0.75rem;
-  color: #ff6b6b;
+  color: #044236;
 }
 
 .passwordRequirements {
@@ -148,30 +147,28 @@
 }
 
 .requirementValid {
-  color: #03a685;
+  color: #044236;
 }
 
 .requirementInvalid {
-  color: #ff6b6b;
+  color: #044236;
 }
 
 .serverError {
   font-family: 'Work Sans', sans-serif;
   background-color: #ffeaea;
-  border: 1px solid #ff6b6b;
-  color: #c62828;
+  border: 1px solid #044236;
+  color: #044236;
   padding: 0.75rem;
-  border-radius: 4px;
   font-size: 0.875rem;
 }
 
 .submitButton {
   font-family: 'Work Sans', sans-serif;
   padding: 0.875rem;
-  background-color: #003d29;
+  background-color: #044236;
   color: white;
   border: none;
-  border-radius: 4px;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -185,7 +182,7 @@
 }
 
 .submitButton:disabled {
-  background-color: #ccc;
+  background-color: #04423659;
   cursor: not-allowed;
 }
 
@@ -196,7 +193,7 @@
 
 .link {
   font-family: 'Work Sans', sans-serif;
-  color: #003d29;
+  color: #000000;
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
@@ -209,13 +206,6 @@
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-  .mainContent {
-    padding: 1.5rem;
-    box-shadow: none;
-    border-radius: 0;
-  }
-}
 
 
 /* Divider between normal login and OAuth */
@@ -234,7 +224,7 @@
 
 .dividerText {
   font-size: 0.85rem;
-  color: #555;
+  color: #044236;
   font-weight: 500;
 }
 
@@ -255,7 +245,6 @@
   font-size: 1rem;
   border: 1px solid #ccc;
   background-color: #fff;
-  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -281,7 +270,7 @@
   border: none;
   font-size: 1rem;
   font-weight:500;
-  color: #000;
+  color: #044236;
   text-transform: uppercase;
   cursor: pointer;
   display: flex;
@@ -299,4 +288,18 @@
 
 .skipButton:hover .arrowIcon {
   transform: translateX(2px);
+}
+
+@media (max-width: 480px) {
+  .loginCard {
+    padding: 1.5rem 1rem;
+  }
+
+  .brand {
+    font-size: 1.8rem;
+  }
+
+  .instruction {
+    font-size: 1.4rem;
+  }
 }

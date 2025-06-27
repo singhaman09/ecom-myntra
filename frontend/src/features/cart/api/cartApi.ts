@@ -2,7 +2,7 @@ import axios from "axios";
 import type { Cart } from "../types/cart";
 import { getToken } from "../../auth/utils/tokenUtils";
 
-const baseURL = "http://172.50.0.217:3002/api/v1/";
+const baseURL = "http://172.50.3.140:3003/api/v1/";
 
 const apiClient = axios.create({
   baseURL,
@@ -20,21 +20,17 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// API METHODS
 
-// 1.) get whole cart from backend
 
 export const getCartAPI = async () => {
   try {
     const response = await apiClient.get<Cart>("/cart");
-    console.log(response.data);
     return response.data.items;
   } catch (error) {
     throw error;
   }
 };
 
-// 2.) add item to cart by product id
 
 export const addCartItemsAPI = async (productId: string,size:string,color:string ) => {
   try {
@@ -45,18 +41,18 @@ export const addCartItemsAPI = async (productId: string,size:string,color:string
   }
 };
 
-// 3.) remove particular item from cart by product id
 
-export const removeCartItemAPI = async (productId: string) => {
+
+export const removeCartItemAPI = async (cartId: string) => {
   try {
-    const response = await apiClient.delete<Cart>(`/cart/${productId}`);
+    const response = await apiClient.delete<Cart>(`/cart/${cartId}`);
     return response.data.items;
   } catch (error) {
     throw error;
   }
 };
 
-//4.)  Update size of selected item by (id and newsize)
+
 
 export const updateCartItemSizeAPI = async (
   productId: string,
@@ -64,7 +60,6 @@ export const updateCartItemSizeAPI = async (
 ) => {
   try {
     const res = await apiClient.put<Cart>(`/cart/${productId}/${newSize}`);
-    console.log(res.data);
     return res.data;
   } catch (error) {
     throw error;

@@ -336,7 +336,7 @@ const CategoriesButton: React.FC<CategoryDropdownProps> = React.memo(
                     className={styles.closeButton}
                     onClick={handleCloseClick}
                   >
-                    <X size={24} />
+                  <X size={24} style={{color: 'white'}}/>
                   </button>
                 </div>
               )}

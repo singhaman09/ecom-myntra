@@ -1,14 +1,6 @@
 import api from './api';
 import type { Address } from '../types/profile.types';
 
-// export const getAddresses = async (): Promise<Address[]> => {
-//   const response = await api.get('/addresses');
-//   console.log("notning" + response.data);
-//   console.log("something" +  Object.values(response.data))
-//   return Object.values(response.data);
-//   // return response.data;
-// };
-
 
 export const getAddresses = async (): Promise<Address[]> => {
   const response = await api.get('/addresses');
@@ -16,13 +8,14 @@ export const getAddresses = async (): Promise<Address[]> => {
 };
 
 
-export const addAddress = async (address: Omit<Address, 'id'>): Promise<Address> => {
+export const addAddress = async (address: Omit<Address, '_id'>): Promise<Address> => {
   const response = await api.post('/address', address);
   return response.data;
 };
 
-export const updateAddress = async (id: string, address: Partial<Address>): Promise<Address> => {
-  const response = await api.put(`/address/${id}`, address);
+export const updateAddress = async (address: Partial<Address>): Promise<Address> => {
+  const { _id, ...addressData } = address;
+  const response = await api.patch(`/address/${_id}`, addressData);
   return response.data;
 };
 
