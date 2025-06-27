@@ -119,12 +119,13 @@ if(uniqueSizes.length>0 && uniqueColors.length>0){
 
   const removeFromBag = useCallback(() => {
     const productId = id || '';
-    dispatch(deleteCartItem(productId));
+    const cartId= cartData.cart.find(val=>val.productId==productId)?.cartId
+    dispatch(deleteCartItem(cartId || ''));
   },[id]);
 
   const removeWishlist = useCallback(() => {
-    const productId = id || '';
-    dispatch(removeFromWishlist(productId));
+  const whislistId=wishlistData.items.find(val=>val.productId==id)?.id
+    dispatch(removeFromWishlist(whislistId || ''));
   },[id]);
 
   const addWishlist = useCallback(() => {
@@ -319,11 +320,11 @@ if(uniqueSizes.length>0 && uniqueColors.length>0){
               <button className={styles.notifyButton}>Notify Me</button>
             ) : (
               <>
-              {cartData.cart.length<=0 || cartData.cart.find(val=>val.productId!=id)?<button className={styles.addToBagBtn} onClick={addToBag}>ADD TO BAG</button>:<button className={styles.addToBagBtn} onClick={()=>removeFromBag()}>REMOVE FROM BAG</button>}
+              {cartData.cart.length<=0 || cartData.cart.find(val=>val.productId!=id && selectedSize!=val.size && selectedColor!=val.color)?<button className={styles.addToBagBtn} onClick={addToBag}>ADD TO BAG</button>:<button className={styles.addToBagBtn} onClick={()=>removeFromBag()}>REMOVE FROM BAG</button>}
               </>
             )}
 
-            { wishlistData.items.find(val=>val.productId==id)?  <button
+            { wishlistData.items.find(val=>val.productId==id && val.size==selectedSize && val.color==selectedColor)?  <button
               className={`${styles.wishlistBtn} ${styles.wishlistBtnSelected}`}
               onClick={removeWishlist}
             >
