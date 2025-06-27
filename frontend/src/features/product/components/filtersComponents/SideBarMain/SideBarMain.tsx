@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Slider } from "@mui/material";
 import type { SideBarMainProps } from "../../../interfaces/ProductInterfaces";
 import styles from "./SideBar.module.css";
@@ -38,21 +38,23 @@ const SidebarMain: React.FC<SideBarMainProps> = ({
   const maxPrice = sideBarData?.highestPrice || 1000;
 
   useEffect(() => {
-    setPriceValue(filters.price.length ? filters.price : [minPrice, maxPrice]);
+    if(filters.price) {
+      setPriceValue(filters.price.length ? filters.price : [minPrice, maxPrice]);
+    }
   }, [filters.price, minPrice, maxPrice]);
 
   // Show clear filter if any filter is active
   const hasAnyFilter =
-    filters.brand?.length > 0 ||
-    filters.category?.length > 0 ||
-    filters.price?.length > 0 ||
-    filters.subCategory?.length > 0 ||
+    filters.brand  ||
+    filters.category  ||
+    filters.price  ||
+    filters.subCategory ||
     !!filters.gender ||
-    filters.color?.length > 0;
+    filters.color
 
-  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
+  const handleSliderChange = useCallback((_event: Event, newValue: number | number[]) => {
     setPriceValue(newValue as number[]);
-  };
+  },[priceValue]);
 
   // Tab state
   const [activeTab, setActiveTab] = useState<string>("category");

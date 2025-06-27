@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,19 +9,25 @@ import SharedOtpVerification from '../components/SharedOtpVerification';
 const VerifyOtpForgotPass: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email; // Get email from navigation state
+
+  // Get email from navigation state
+  const email = location.state?.email;
+
+  // Auth context values
   const { verifyOtp, loading, error, otpVerified, resetToken, clearAuthState } = useAuth();
-  
+
+  // Local state for UI feedback
   const [localError, setLocalError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
-  
+
+  // React Hook Form setup with validation
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-  } = useForm<VerifyOtpFormData>({  
+  } = useForm<VerifyOtpFormData>({
     resolver: zodResolver(verifyOtpSchema),
     defaultValues: {
       email: email || '',
@@ -29,51 +35,53 @@ const VerifyOtpForgotPass: React.FC = () => {
     },
   });
 
-  // Redirect if no email
+  // Redirect if no email is found in state
   useEffect(() => {
     if (!email) {
       navigate('/forgot-password');
     }
   }, [email, navigate]);
 
-  // Clear auth state on component mount
+  // Clear any previous auth state on mount
   useEffect(() => {
     clearAuthState();
   }, [clearAuthState]);
 
-  // Navigate to reset password after successful OTP verification
+  // Handle navigation after successful OTP verification
   useEffect(() => {
     if (otpVerified && resetToken) {
       setSuccessMessage('OTP verified successfully! Redirecting...');
       setTimeout(() => {
-        navigate('/forgot-password/reset-password', { 
-          state: { email, resetToken } 
+        navigate('/forgot-password/reset-password', {
+          state: { email, resetToken },
         });
       }, 2000);
     }
   }, [otpVerified, resetToken, navigate, email]);
 
-  // Handle server errors
+  // Set server error (from auth context) into local error state
   useEffect(() => {
     if (error) {
       setLocalError(error);
     }
   }, [error]);
 
-  const onSubmit = async (data: VerifyOtpFormData) => {
+  // Handle form submission
+  const onSubmit = useCallback(async (data: VerifyOtpFormData) => {
     try {
       setLocalError('');
       setSuccessMessage('');
       setIsVerifying(true);
       await verifyOtp(data);
     } catch {
-      // Error is handled by useAuth hook and useEffect
+      // Error handled by useAuth and shown via localError
     } finally {
       setIsVerifying(false);
     }
-  };
+  }, [verifyOtp]);
 
-  const handleVerifyOtp = async (otpString: string) => {
+  // Called when OTP is submitted from SharedOtpVerification component
+  const handleVerifyOtp = useCallback(async (otpString: string) => {
     if (otpString.length !== 6) {
       setLocalError('Please enter a complete 6-digit OTP');
       return;
@@ -84,15 +92,16 @@ const VerifyOtpForgotPass: React.FC = () => {
       otp: otpString
     };
 
-    // Update form value
+    // Sync OTP value with form state (good for RHF validation/debug)
     setValue('otp', otpString);
 
     await onSubmit(formData);
-  };
+  }, [email, setValue, onSubmit]);
 
-  const handleBackToForgotPassword = () => {
+  // Navigate back to forgot password page
+  const handleBackToForgotPassword = useCallback(() => {
     navigate('/forgot-password');
-  };
+  }, [navigate]);
 
   return (
     <SharedOtpVerification

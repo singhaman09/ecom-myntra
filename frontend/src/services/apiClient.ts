@@ -21,7 +21,6 @@ apiClient.interceptors.request.use(
     
     if (!config.skipAuth) {
       const token = getToken();
-      console.log(token);
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

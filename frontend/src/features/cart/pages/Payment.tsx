@@ -1,66 +1,80 @@
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CartHeader from "../components/CartHeader";
 import styles from "../components/styles/Payment.module.css";
 import { useState } from "react";
+import { MdCreditCard, MdAccountBalanceWallet, MdOutlineLocalShipping } from "react-icons/md";
 
 const Payment = () => {
   const [selectedMethod, setSelectedMethod] = useState("UPI");
+  const [upiId, setUpiId] = useState("");
+  const [upiError, setUpiError] = useState("");
   const navigate = useNavigate();
 
-  const handleSelect = (method: string) => {
-    setSelectedMethod(method);
+  // Example values, replace with real cart data as needed
+  const totalAmount = 2785;
+
+  const validateUpi = () => {
+    return /^[\w.-]+@[\w.-]+$/.test(upiId);
   };
 
   const handlePay = () => {
+    if (selectedMethod === "UPI") {
+      if (!upiId.trim() || !validateUpi()) {
+        setUpiError("Please enter a valid UPI ID (e.g., name@bank)");
+        return;
+      }
+      setUpiError("");
+    }
     navigate("/orderSuccess");
-  }
+  };
 
   return (
     <>
       <CartHeader activeStep="PAYMENT" />
       <div className={styles.pageWrapper}>
-        {/* LEFT SIDE - Payment Options */}
-        <div className={styles.leftSection}>
-          <h2 className={styles.title}>Choose Payment Method</h2>
-
-          <div
-            className={`${styles.methodCard} ${
-              selectedMethod === "UPI" ? styles.active : ""
-            }`}
-            onClick={() => handleSelect("UPI")}
-          >
-            <input type="radio" checked={selectedMethod === "UPI"} readOnly />
-            <span>UPI</span>
+        <div className={styles.paymentCard}>
+          <div className={styles.amountBox}>
+            <span className={styles.amountLabel}>Total Amount</span>
+            <span className={styles.amountValue}>₹{totalAmount}</span>
           </div>
 
-          <div
-            className={`${styles.methodCard} ${
-              selectedMethod === "CARD" ? styles.active : ""
-            }`}
-            onClick={() => handleSelect("CARD")}
-          >
-            <input type="radio" checked={selectedMethod === "CARD"} readOnly />
-            <span>Credit/Debit Card</span>
+          <div className={styles.optionsTitle}>Select Payment Method</div>
+          <div className={styles.paymentOptions}>
+            <div
+              className={`${styles.optionCard} ${selectedMethod === "CARD" ? styles.active : ""}`}
+              onClick={() => setSelectedMethod("CARD")}
+            >
+              <MdCreditCard size={28} className={styles.optionIcon} />
+              <span>Credit/Debit Card</span>
+            </div>
+            <div
+              className={`${styles.optionCard} ${selectedMethod === "UPI" ? styles.active : ""}`}
+              onClick={() => setSelectedMethod("UPI")}
+            >
+              <MdAccountBalanceWallet size={28} className={styles.optionIcon} />
+              <span>UPI</span>
+            </div>
+            <div
+              className={`${styles.optionCard} ${selectedMethod === "COD" ? styles.active : ""}`}
+              onClick={() => setSelectedMethod("COD")}
+            >
+              <MdOutlineLocalShipping size={28} className={styles.optionIcon} />
+              <span>Cash on Delivery</span>
+            </div>
           </div>
 
-          <div
-            className={`${styles.methodCard} ${
-              selectedMethod === "COD" ? styles.active : ""
-            }`}
-            onClick={() => handleSelect("COD")}
-          >
-            <input type="radio" checked={selectedMethod === "COD"} readOnly />
-            <span>Cash on Delivery</span>
-          </div>
-
-          {/* Dummy form just for UI feel */}
           <div className={styles.formSection}>
             {selectedMethod === "UPI" && (
-              <input
-                type="text"
-                placeholder="Enter your UPI ID"
-                className={styles.inputField}
-              />
+              <>
+                <input
+                  type="text"
+                  placeholder="Enter your UPI ID"
+                  className={styles.inputField}
+                  value={upiId}
+                  onChange={e => setUpiId(e.target.value)}
+                />
+                {upiError && <div style={{ color: 'red', fontSize: 13, marginTop: 4 }}>{upiError}</div>}
+              </>
             )}
             {selectedMethod === "CARD" && (
               <div className={styles.cardForm}>
@@ -86,30 +100,11 @@ const Payment = () => {
                 You can pay when the order is delivered.
               </p>
             )}
-            <button className={styles.payBtn} onClick={handlePay}>PAY NOW</button>
           </div>
-        </div>
 
-        {/* RIGHT SIDE - Order Summary */}
-        <div className={styles.rightSection}>
-          <div className={styles.priceBox}>
-            <p>
-              Total MRP <span>₹3,073</span>
-            </p>
-            <p>
-              Discount on MRP <span className={styles.green}>- ₹308</span>
-            </p>
-            <p>
-              Platform Fee <span>₹20</span>
-            </p>
-            <p>
-              Shipping Fee <span className={styles.green}>FREE</span>
-            </p>
-            <hr />
-            <p className={styles.total}>
-              Total Amount <span>₹2,785</span>
-            </p>
-          </div>
+          <button className={styles.payBtn} onClick={handlePay}>
+            PAY NOW
+          </button>
         </div>
       </div>
     </>

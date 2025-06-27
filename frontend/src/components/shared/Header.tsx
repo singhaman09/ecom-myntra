@@ -1,25 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import { Search, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
 import styles from "./css/Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import CategoryDropdown from "./CategoryDropDown";
 import { useAuth } from "../../features/auth/hooks/useAuth";
 import { PRODUCT_ROUTES } from "../../features/product/Constants/Routes";
+import { useAppSelector } from "../../features/order/hooks/redux";
 
+// Lazy load the CategoryDropdown to improve initial load time
+const CategoryDropdown = lazy(() => import("./CategoryDropDown"));
+// Sample suggestions for search bar
 const dummySuggestions = [
-  "Shoes",
-  "T-Shirts",
-  "Jackets",
-  "Jeans",
-  "Watches",
-  "Bags",
-  "Sunglasses",
-  "Hats",
-  "Belts",
-  "Shorts"
+  "Shoes", "T-Shirts", "Jackets", "Jeans", "Watches",
+  "Bags", "Sunglasses", "Hats", "Belts", "Shorts"
 ];
 
-const Header: React.FC = () => {
+// Memoized Header component for performance
+const Header: React.FC = React.memo(() => {
+  const { items } = useAppSelector((state) => state.wishlist);
+  const totalItems = items.length;
+  const totalItemsBag = 10;
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [activeCategoryHover, setActiveCategoryHover] = useState<string>("");
   const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
@@ -27,30 +26,33 @@ const Header: React.FC = () => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+  // Toggle mobile category dropdown
+  const toggleMobileCategory = useCallback(() => {
+    setIsMobileCategoryOpen(prev => !prev);
+  }, []);
 
-  const toggleMobileCategory = () => {
-    setIsMobileCategoryOpen(!isMobileCategoryOpen);
-  };
-
-  const handleBagClick = () => {
+  // Navigate to cart page
+  const handleBagClick = useCallback(() => {
     navigate("/cart");
-  };
+  }, [navigate]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Search submit handler
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (value.trim()) {
       navigate(`${PRODUCT_ROUTES.list}/${value}`);
       setValue("");
       setIsSuggestionsOpen(false);
     }
-  };
+  }, [value, navigate]);
 
-  // --- Search Suggestion Logic ---
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle typing in the search input
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setValue(val);
     if (val.trim().length > 0) {
@@ -63,145 +65,132 @@ const Header: React.FC = () => {
       setSuggestions([]);
       setIsSuggestionsOpen(false);
     }
-  };
+  }, []);
 
-  const handleSuggestionClick = (suggestion: string) => {
+  // Handle suggestion click
+  const handleSuggestionClick = useCallback((suggestion: string) => {
     setValue(suggestion);
     setIsSuggestionsOpen(false);
     navigate(`${PRODUCT_ROUTES.list}/${suggestion}`);
-  };
+  }, [navigate]);
 
-  // --- Category Dropdown Logic ---
-  const handleCategoryHover = (category: string) => {
+  // Hover event for category links (desktop)
+  const handleCategoryHover = useCallback((category: string) => {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       setHoverTimeout(null);
     }
     setActiveCategoryHover(category);
     setIsCategoryDropdownOpen(true);
-  };
+  }, [hoverTimeout]);
 
-  const handleCategoryLeave = () => {
+  // Hide dropdown after delay
+  const handleCategoryLeave = useCallback(() => {
     const timeout = setTimeout(() => {
       setIsCategoryDropdownOpen(false);
       setActiveCategoryHover("");
     }, 250);
     setHoverTimeout(timeout);
-  };
+  }, []);
 
-  const handleDropdownEnter = () => {
+  // Cancel dropdown close on mouse enter
+  const handleDropdownEnter = useCallback(() => {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       setHoverTimeout(null);
     }
-  };
+  }, [hoverTimeout]);
 
-  const handleDropdownLeave = () => {
+  // Immediately close dropdown on leave
+  const handleDropdownLeave = useCallback(() => {
     setIsCategoryDropdownOpen(false);
     setActiveCategoryHover("");
-  };
+  }, []);
 
-  const handleDropdownClose = () => {
+  // Close both dropdowns
+  const handleDropdownClose = useCallback(() => {
     setIsCategoryDropdownOpen(false);
     setActiveCategoryHover("");
     setIsMobileCategoryOpen(false);
-  };
+  }, []);
 
-  const handleProfileClick = () => {
+  // Handle profile click: if logged in go to profile else toggle dropdown
+  const handleProfileClick = useCallback(() => {
     if (isAuthenticated) {
       navigate("/profile");
     } else {
-      setIsProfileDropdownOpen(!isProfileDropdownOpen);
+      setIsProfileDropdownOpen(prev => !prev);
     }
-  };
+  }, [isAuthenticated, navigate]);
 
-  const handleSignIn = () => {
+  // Navigate to Sign In
+  const handleSignIn = useCallback(() => {
     setIsProfileDropdownOpen(false);
     navigate("/login");
-  };
+  }, [navigate]);
 
-  const handleSignUp = () => {
+  // Navigate to Sign Up
+  const handleSignUp = useCallback(() => {
     setIsProfileDropdownOpen(false);
     navigate("/signup");
-  };
+  }, [navigate]);
 
   // Close profile dropdown when clicking outside
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
-      if (!target.closest('.profile-container')) {
+      if (!target.closest(".profile-container")) {
         setIsProfileDropdownOpen(false);
       }
     };
 
     if (isProfileDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isProfileDropdownOpen]);
 
   return (
     <header className={styles.header}>
-      {/* Top banner */}
+      {/* Top banner with discount message */}
       <div className={styles.topBanner}>
         <p className={styles.bannerText}>
-          <span className={styles.bannerTextBold}>FLAT ₹200 OFF</span> on first
-          order! Use code:{" "}
+          <span className={styles.bannerTextBold}>FLAT ₹200 OFF</span> on first order! Use code:{" "}
           <span className={styles.bannerTextPink}>FIRST200</span>
         </p>
       </div>
-
+      <div className={styles.mainContainer}>
       <div className={styles.container}>
         <div className={styles.headerContent}>
+          {/* Hamburger icon and logo */}
           <div className={styles.hamLogo}>
-            {/* Mobile Menu Button */}
-            <button
-              className={styles.mobileMenuButton}
-              onClick={toggleMobileCategory}
-            >
-              {isMobileCategoryOpen ? <X size={20} /> : <Menu size={20} />}
+            <button className={styles.mobileMenuButton} onClick={toggleMobileCategory}>
+              {isMobileCategoryOpen ? <X size={20} /> : <Menu size={20} color="white" />}
             </button>
 
-            {/* Logo */}
             <div className={styles.logo} onClick={() => navigate("/")}>
               <div className={styles.logoText}>Wyntra</div>
             </div>
           </div>
 
-          {/* Desktop Navigation Menu */}
+          {/* Desktop Navigation */}
           <nav className={styles.nav}>
-            <div
-              className={styles.navGroup}
-              onMouseEnter={() => handleCategoryHover("men")}
-              onMouseLeave={handleCategoryLeave}
-            >
-              <Link to={`${PRODUCT_ROUTES.list}/men`} className={styles.navLink}>
-                Men
-              </Link>
-            </div>
-            <div
-              className={styles.navGroup}
-              onMouseEnter={() => handleCategoryHover("women")}
-              onMouseLeave={handleCategoryLeave}
-            >
-              <Link to={`${PRODUCT_ROUTES.list}/women`} className={styles.navLink}>
-                Women
-              </Link>
-            </div>
-            <div
-              className={styles.navGroup}
-              onMouseEnter={() => handleCategoryHover("kids")}
-              onMouseLeave={handleCategoryLeave}
-            >
-              <Link to={`${PRODUCT_ROUTES.list}/kids`} className={styles.navLink}>
-                Kids
-              </Link>
-            </div>
-
-            <div>
+            {["men", "women", "kids"].map(category => (
+              <div
+                key={category}
+                className={styles.navGroup}
+                onMouseEnter={() => handleCategoryHover(category)}
+                onMouseLeave={handleCategoryLeave}
+              >
+                <Link to={`${PRODUCT_ROUTES.list}/${category}`} className={styles.navLink}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </Link>
+              </div>
+            ))}
+            <Suspense fallback={null}>
               <CategoryDropdown
                 isOpen={isCategoryDropdownOpen}
                 onClose={handleDropdownClose}
@@ -209,10 +198,10 @@ const Header: React.FC = () => {
                 onMouseEnter={handleDropdownEnter}
                 onMouseLeave={handleDropdownLeave}
               />
-            </div>
+            </Suspense>
           </nav>
 
-          {/* Desktop & Tablet Search Bar */}
+          {/* Search bar (desktop/tablet) */}
           <div className={styles.searchContainer} style={{ position: "relative" }}>
             <div className={styles.searchWrapper}>
               <Search className={styles.searchIcon} />
@@ -243,48 +232,48 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          {/* User Actions */}
+          {/* Right side user actions */}
           <div className={styles.userActions}>
-            <div
-              className={`${styles.userAction} profile-container`}
-              onClick={handleProfileClick}
-              style={{ position: 'relative' }}
-            >
+          {/* Profile */}
+          <div className={`${styles.userAction}`} onClick={handleProfileClick}>
+            <div className={styles.iconWrapper}>
               <User className={styles.userActionIcon} />
-              <span className={styles.userActionText}>Profile</span>
-              
-              {/* Profile Dropdown for Unauthenticated Users */}
-              {!isAuthenticated && isProfileDropdownOpen && (
-                <div className={styles.profileDropdown}>
-                  <div className={styles.dropdownItem} onClick={handleSignIn}>
-                    Sign In
-                  </div>
-                  <div className={styles.dropdownItem} onClick={handleSignUp}>
-                    Sign Up
-                  </div>
-                </div>
+            </div>
+            <span className={styles.userActionText}>Profile</span>
+            {!isAuthenticated && isProfileDropdownOpen && (
+              <div className={styles.profileDropdown}>
+                <div className={styles.dropdownItem} onMouseDown={handleSignIn}>Sign In</div>
+                <div className={styles.dropdownItem} onMouseDown={handleSignUp}>Sign Up</div>
+              </div>
+            )}
+          </div>
+
+          {/* Wishlist */}
+          <div className={`${styles.userAction}`} onClick={() => navigate("/wishlist")}>
+            <div className={styles.iconWrapper}>
+              <Heart className={styles.userActionIcon} />
+              {totalItems > 0 && (
+                <span className={styles.bagBadge}>{totalItems}</span>
               )}
             </div>
-            <div
-              className={`${styles.userAction} ${styles.bagAction}`}
-              onClick={() => navigate("/wishlist")}
-            >
-              <Heart className={styles.userActionIcon} />
-              <span className={styles.userActionText}>Wishlist</span>
-              <span className={styles.bagBadge}>3</span>
-            </div>
-            <div
-              className={`${styles.userAction} ${styles.bagAction}`}
-              onClick={handleBagClick}
-            >
+            <span className={styles.userActionText}>Wishlist</span>
+          </div>
+
+          {/* Shopping Bag */}
+          <div className={`${styles.userAction}`} onClick={handleBagClick}>
+            <div className={styles.iconWrapper}>
               <ShoppingBag className={styles.userActionIcon} />
-              <span className={styles.userActionText}>Bag</span>
-              <span className={styles.bagBadge}>0</span>
+              {totalItemsBag > 0 && (
+                <span className={styles.bagBadge}>{totalItemsBag}</span>
+              )}
             </div>
+            <span className={styles.userActionText}>Bag</span>
           </div>
         </div>
 
-        {/* Mobile Search - Always visible */}
+        </div>
+
+        {/* Mobile search input */}
         <div className={styles.mobileSearch} style={{ position: "relative" }}>
           <div className={styles.mobileSearchWrapper}>
             <Search className={styles.searchIcon} />
@@ -315,18 +304,19 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Category Dropdown */}
-        <div>
+        {/* Mobile Category Menu */}
+        <Suspense fallback={null}>
           <CategoryDropdown
             isOpen={isMobileCategoryOpen}
             onClose={handleDropdownClose}
             activeCategory=""
             isMobileTriggered={true}
           />
-        </div>
+        </Suspense>
+      </div>
       </div>
     </header>
   );
-};
+});
 
 export default Header;

@@ -1,4 +1,3 @@
-
 .mapStoreDetailsCard {
    
     background-color: #fff;
@@ -17,13 +16,16 @@
   .mapStoreName {
     font-weight: 600;
     font-size: 1.125rem;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .mapStoreDistance {
     font-size: 0.875rem;
-    color: #4b5563;
+    color: #000000;
+    font-weight: 500;
     display: flex;
     align-items: center;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .mapStoreDistanceIcon {
@@ -33,16 +35,20 @@
   }
   
   .mapStoreAddress {
-    color: #4b5563;
+    color: #666666;
     margin-bottom: 0.75rem;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
   }
   
   .mapStorePhone {
     display: flex;
     align-items: center;
     font-size: 0.875rem;
-    color: #4b5563;
+    color: #666666;
+    font-weight: 400;
     margin-bottom: 1rem;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .mapStorePhoneIcon {
@@ -54,6 +60,8 @@
   .openingHoursTitle {
     font-weight: 600;
     margin-bottom: 0.5rem;
+    font-family: 'Work Sans', sans-serif;
+    color: #333333;
   }
   
   .openingHoursList {
@@ -61,6 +69,7 @@
     flex-direction: column;
     gap: 0.25rem;
     font-size: 0.875rem;
+    font-family: 'Work Sans', sans-serif;
   }
   
   .openingHourItem {
@@ -69,9 +78,18 @@
   }
   
   .openingHourDay {
-    color: #4b5563;
+    color: #000000; 
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
   }
   
   .openingHourTime {
-    color: #111827;
+    color: #666666;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+  }
+  @media (max-width:1025px){
+    .mapStoreDetailsCard{
+      margin-top: 20px;
+    }
   }

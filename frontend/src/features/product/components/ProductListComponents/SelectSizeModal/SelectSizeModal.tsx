@@ -1,33 +1,21 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./ShadeSize.module.css";
-import type {  Shade, Size } from "../../../interfaces/ProductInterfaces";
+import type { Product, Shade, Size } from "../../../interfaces/ProductInterfaces";
 import { MoveLeft } from "lucide-react";
+import { getColorCodeFromString } from "../../../utils/colorsMapping";
+import { handleImageError } from "../../../utils/HandleImageError";
 
 interface SelectShadeSizeModalProps {
+  product: Product;
   onClose: () => void;
   onConfirm: (selection: { shade: Shade; size: Size }) => void;
 }
-const product= {
-    name: "Satsuma Shower Gel",
-    image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
-    description: "For all skin type • Vegan",
-    price: 999,
-    shades: [
-      { id: 1, color: "#b83a4b", name: "Rose Red" },
-      { id: 2, color: "#e97ca3", name: "Pink" },
-      { id: 3, color: "#e97a6a", name: "Peach" }
-    ],
-    sizes: [
-      { id: 1, label: "100ml" },
-      { id: 2, label: "200ml" },
-      { id: 3, label: "500ml" }
-    ]
-  };
+
 const getDiscountedPrice = (price: number, discountPercent: number) =>
   Math.round(price * (1 - discountPercent / 100));
 
 const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
- 
+  product,
   onClose,
   onConfirm,
 }) => {
@@ -35,18 +23,46 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
   const [shadeConfirmed, setShadeConfirmed] = useState(false);
   const [selectedSize, setSelectedSize] = useState<Size | null>(null);
 
+  const uniqueColors = useMemo(
+    () => [...new Set(product.variants.map((v) => v.color))],
+    [product.variants]
+  );
+  const uniqueSizes = useMemo(
+    () => [...new Set(product.variants.map((v) => v.size))],
+    [product.variants]
+  );
+
+  const productData = {
+    name: product.name,
+    image: product.images.find((val) => val.isPrimary)?.url || "",
+    description: product.description,
+    price: product.price,
+    shades: uniqueColors.map((val, index) => ({
+      id: index + 1,
+      name: val,
+      color: getColorCodeFromString(val) ?? "white",
+    })),
+    sizes: uniqueSizes.map((val, index) => ({
+      id: index + 1,
+      label: val,
+    })),
+  };
+
   // Step 1: Select shade and confirm
   if (!shadeConfirmed) {
     return (
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">&times;</button>
+          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+            &times;
+          </button>
           <h2>Select Shade</h2>
           <div className={styles.productInfo}>
             <img
-              src={product.image}
+              src={productData.image}
               alt={product.name}
               className={styles.productImage}
+              onError={handleImageError}
             />
             <div>
               <h3 className={styles.productName}>{product.name}</h3>
@@ -56,14 +72,14 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
           <div>
             <div className={styles.shadesLabel}>Shades</div>
             <div className={styles.shadesList}>
-              {product.shades.map((shade) => (
+              {productData.shades.map((shade) => (
                 <div
                   key={shade.id}
                   className={
                     styles.shadeCircle +
                     (selectedShade?.id === shade.id ? " " + styles.shadeSelected : "")
                   }
-                  style={{ background: shade.color }}
+                  style={{ background: `${shade.color}` }}
                   onClick={() => setSelectedShade(shade)}
                   title={shade.name}
                 >
@@ -93,20 +109,23 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-     <div className={styles.backContainer} onClick={()=>setShadeConfirmed(false)}>
-     <MoveLeft size={'16px'}/>
-     <button className={styles.backButton}  aria-label="Back">Back</button>
-     </div>
-  
-    
-    
-        <button className={styles.closeButton} onClick={onClose} aria-label="Close">&times;</button>
+        <div className={styles.backContainer} onClick={() => setShadeConfirmed(false)}>
+          <MoveLeft size={"16px"} />
+          <button className={styles.backButton} aria-label="Back">
+            Back
+          </button>
+        </div>
+
+        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+          &times;
+        </button>
         <h2>Select Size</h2>
         <div className={styles.productInfo}>
           <img
-            src={product.image}
+            src={productData.image}
             alt={product.name}
             className={styles.productImage}
+            onError={handleImageError}
           />
           <div>
             <h3 className={styles.productName}>{product.name}</h3>
@@ -114,44 +133,68 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
           </div>
         </div>
         <div>
-          <div className={styles.sizesLabel}>Sizes</div>
-          <div className={styles.sizesList}>
-            {product.sizes.map((size) => (
-              <button
-                key={size.id}
-                className={
-                  styles.sizeButton +
-                  (selectedSize?.id === size.id ? " " + styles.sizeSelected : "")
-                }
-                onClick={() => setSelectedSize(size)}
-              >
-                {size.label}
-              </button>
-            ))}
+          <div className={styles.sizesLabel}>Size</div>
+          <div className={styles.sizesListColumn}>
+            {productData.sizes.map((size) => {
+              const isOutOfStock = !product.variants.find(
+                (val) =>
+                  val.size === size.label && val.color === selectedShade?.name && val.stock
+              );
+              return (
+                <label
+                  key={size.id}
+                  className={
+                    styles.sizeRadioLabel 
+                  }
+                >
+                    <div> {size.label}
+                  {isOutOfStock && (
+                    <span className={styles.outOfStockText}> (Out of stock)</span>
+                  )}</div>
+                  <input
+                    type="radio"
+                    name="size"
+                    value={size.label}
+                    checked={selectedSize?.id === size.id}
+                    onChange={() => setSelectedSize(size)}
+                    disabled={isOutOfStock}
+                    className={styles.sizeRadioInput}
+                  />
+               
+                </label>
+              );
+            })}
           </div>
         </div>
         <div className={styles.priceTag}>
-          <span style={{ textDecoration: "line-through", marginRight: 8, color: "#b0b0b0" }}>
-            ₹{product.price}
-          </span>
-          <span style={{ color: "#d32f2f", fontWeight: 600 }}>
-            ₹{discountedPrice}
-          </span>
-          <span style={{ marginLeft: 8, color: "#388e3c", fontWeight: 500, fontSize: "0.95em" }}>
-            (40% OFF)
-          </span>
+          <div>
+            <span style={{ color: "#333333", fontWeight: 600 }}>
+              ₹{discountedPrice}
+            </span>
+            &nbsp;&nbsp;
+            <span
+              style={{
+                textDecoration: "line-through",
+                marginRight: 8,
+                color: "#666666",
+              }}
+            >
+              ₹{product.price}
+            </span>
+          </div>
+
+          <button
+            className={styles.confirmButton}
+            onClick={() => {
+              if (selectedShade && selectedSize) {
+                onConfirm({ shade: selectedShade, size: selectedSize });
+              }
+            }}
+            disabled={!selectedSize}
+          >
+            Add to Bag
+          </button>
         </div>
-        <button
-          className={styles.confirmButton}
-          onClick={() => {
-            if (selectedShade && selectedSize) {
-              onConfirm({ shade: selectedShade, size: selectedSize });
-            }
-          }}
-          disabled={!selectedSize}
-        >
-          Add to Bag
-        </button>
       </div>
     </div>
   );

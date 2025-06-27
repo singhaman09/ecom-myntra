@@ -1,6 +1,7 @@
 import axios from 'axios';
+import qs from 'qs';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import  type {  filters, getProductsInterface, SelectedProduct } from './interfaces/ProductInterfaces';
+import  type {   getProductsInterface, SelectedProduct } from './interfaces/ProductInterfaces';
 // Custom Axios instance
 const customAxios = axios.create({
   baseURL: 'http://0.0.0.0:3000/products',
@@ -19,15 +20,27 @@ export const getProducts = createAsyncThunk<
   async ({  slug='all',searchParams,page}, thunkAPI) => {
     try {
     const selectedSort=searchParams.get('sort') || 'new'
-   const category=searchParams.getAll('category')
-   const subCategory=searchParams.getAll('subCategory')
-   const color=searchParams.getAll('color')
-   const  brand=searchParams.getAll('brand')
+   const category=searchParams.get('category')?.split(',')
+   const subCategory=searchParams.get('subCategory')?.split(',')
+   const color=searchParams.get('color')?.split(',')
+   const  brand=searchParams.get('brand')?.split(',')
    const price=searchParams.get('price')?.split(',').map(Number) || []
    const gender=searchParams.get('gender') || undefined
-      const response = await customAxios.get(`/${slug}`, {
-        params: { category:category.toString(),subCategory:subCategory.toString(),brand:brand.toString(),color:color.toString(),gender:gender,price:price.toString(),sort:selectedSort,page:page}
-      });
+   const params = {
+    category,
+    subCategory,
+    brand,
+    color,
+    gender,
+    price: price ? price.toString() : undefined,
+    sort: selectedSort,
+    page
+  };
+  
+  const response = await customAxios.get(`/${slug}`, {
+    params,
+    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })
+  });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);

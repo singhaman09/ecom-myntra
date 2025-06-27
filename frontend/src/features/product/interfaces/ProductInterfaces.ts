@@ -1,9 +1,15 @@
 import type React from "react";
+import type { Review } from "./ReviewInterfaces";
+import type { filters, sideBarInterface } from "./FilterInterfaces";
 
 // 1. Product and Related Interfaces
+interface image{
+  url:string,
+  isPrimary:boolean
+}
 export interface Product {
   _id: string;
-  imageUrl: string;
+  images: image[];
   brand: string;
   name: string;
   price: number;
@@ -14,16 +20,10 @@ export interface Product {
   updatedAt: string;
   description:string;
   reviews:Review []
+  variants:variant[]
 }
 
-export interface Review {
-  _id: string;
-  reviewerName: string;
-  rating: number;
-  title: string;
-  comment: string;
-  createdAt: string;
-}
+
 interface variant{
   size:string,
   color:string,
@@ -31,31 +31,10 @@ interface variant{
   stock:number,
   productId:string,
 }
-interface productDetails extends Product{
-  variants:variant[]
-}
+
 export interface SelectedProduct {
-  product: productDetails;
+  product:Product;
   similarProducts: Product[];
-}
-
-// 2. Sidebar & Filtering Interfaces
-interface sideBarInterface {
-  brands: string[];
-  subCategories: string[];
-  highestPrice: number;
-  lowestPrice: number;
-  colors: string[];
-  genders:string[]
-  categories:string[]
-}
-
-interface filtersSelectedData {
-  selectedCategories: string[];
-  selectedBrands: string[];
-  selectedColors: string[];
-  selectedGender: string;
-  selectedSubCategories:string[]
 }
 
 // 3. Product List & Card Props
@@ -67,18 +46,9 @@ export interface ProductListProps {
  data:Product[];
  isSimilar:boolean
 }
-export interface filters{
-  category: string[];
-  subCategory: string[];
-  brand: string[];
-  color: string[];
-  gender?: string;
-  price: number[];
-}
+
 // 4. Pagination & Drawer Props
-export interface PaginationProps {
-  pageCount: number;
-}
+
 
 export interface DrawerProps {
   isDrawerOpen: boolean;
@@ -98,17 +68,7 @@ export interface SideBarMainProps extends DrawerProps {
   apply:()=>void
 }
 
-export interface UpperFilterProps  {
- 
-  setIsDrawerOpen:(value:boolean)=>void
-}
 
-export interface SideFilterProps {
-  data: string[] | undefined;
-  type: string;
-  selectedData: string[];
-  handleChange: (name: string, checked: boolean) => void;
-}
 
 // 6. Review Section & Card Props
 export interface ProductState {
@@ -129,12 +89,7 @@ export interface getProductsInterface {
   limit:number,
   skip:number
 }
- export interface ImageZoomOnHoverProps {
-  src: string;
-  alt?: string;
-  zoomScale?: number;
-  gridSize?: number;
-}
+
 
 export interface Shade {
   id: number;

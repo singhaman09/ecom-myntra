@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,8 +12,10 @@ import styles from "./css/ResetPassword.module.css";
 const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const email = location.state?.email;
   const resetToken = location.state?.resetToken;
+
   const {
     resetPassword,
     loading,
@@ -36,19 +38,19 @@ const ResetPassword: React.FC = () => {
     },
   });
 
-  // Redirect if missing required data
+  // Redirect to forgot-password if email or token is missing
   useEffect(() => {
     if (!email || !resetToken) {
       navigate("/forgot-password");
     }
   }, [email, resetToken, navigate]);
 
-  // Clear auth state on component mount
+  // Clear auth state on mount
   useEffect(() => {
     clearAuthState();
   }, [clearAuthState]);
 
-  // Redirect to login after successful password reset
+  // Redirect to login after successful reset
   useEffect(() => {
     if (passwordResetSuccess) {
       const timer = setTimeout(() => {
@@ -58,18 +60,26 @@ const ResetPassword: React.FC = () => {
     }
   }, [passwordResetSuccess, navigate]);
 
-  const onSubmit = async (data: ResetPasswordFormData) => {
-    try {
-      await resetPassword({
-        email: data.email,
-        newPassword: data.newPassword,
-        resetToken,
-      });
-      reset();
-    } catch {
-      // Error is handled by useAuth hook
-    }
-  };
+  // Submit handler
+  const onSubmit = useCallback(
+    async (data: ResetPasswordFormData) => {
+      try {
+        await resetPassword({
+          email: data.email,
+          newPassword: data.newPassword,
+          resetToken,
+        });
+        reset();
+      } catch {
+        // Error handled in useAuth
+      }
+    },
+    [resetPassword, reset, resetToken]
+  );
+
+  const handleNavigateToLogin = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
 
   return (
     <div className={styles.container}>
@@ -90,7 +100,7 @@ const ResetPassword: React.FC = () => {
             {/* Hidden Email Field */}
             <input type="hidden" {...register("email")} />
 
-            {/* New Password Field */}
+            {/* New Password */}
             <div className={styles.field}>
               <label htmlFor="newPassword" className={styles.label}>
                 New Password*
@@ -99,10 +109,10 @@ const ResetPassword: React.FC = () => {
                 {...register("newPassword")}
                 id="newPassword"
                 type="password"
+                placeholder="Enter new password"
                 className={`${styles.input} ${
                   errors.newPassword ? styles.inputError : ""
                 }`}
-                placeholder="Enter new password"
               />
               {errors.newPassword && (
                 <p className={styles.errorMessage}>
@@ -111,7 +121,7 @@ const ResetPassword: React.FC = () => {
               )}
             </div>
 
-            {/* Confirm Password Field */}
+            {/* Confirm Password */}
             <div className={styles.field}>
               <label htmlFor="confirmPassword" className={styles.label}>
                 Confirm Password*
@@ -120,10 +130,10 @@ const ResetPassword: React.FC = () => {
                 {...register("confirmPassword")}
                 id="confirmPassword"
                 type="password"
+                placeholder="Confirm new password"
                 className={`${styles.input} ${
                   errors.confirmPassword ? styles.inputError : ""
                 }`}
-                placeholder="Confirm new password"
               />
               {errors.confirmPassword && (
                 <p className={styles.errorMessage}>
@@ -167,11 +177,11 @@ const ResetPassword: React.FC = () => {
               {loading || isSubmitting ? "Resetting..." : "Reset Password"}
             </button>
 
-            {/* Back Link */}
+            {/* Back to Login */}
             <div className={styles.linkContainer}>
               <button
                 type="button"
-                onClick={() => navigate("/login")}
+                onClick={handleNavigateToLogin}
                 className={styles.link}
               >
                 Back to sign in

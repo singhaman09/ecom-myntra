@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import type { WishlistItem } from "../types/wishlist";
-import Button from "../../../components/UI/Button";
-import StarRating from "../../../components/UI/StarRating";
-import styles from "../css/wishlistCard.module.css";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import type { WishlistItem } from '../types/wishlist';
+import Button from '../../../components/UI/Button';
+import StarRating from '../../../components/UI/StarRating';
+import styles from '../css/wishlistCard.module.css';
+import { useNavigate } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
-
+import { removeFromWishlist } from '../slice/wishlistSlice';
+import { useAppDispatch } from '../../order/hooks/redux';
 interface WishlistCardProps {
   item: WishlistItem;
   onRemove: () => Promise<void>;
@@ -24,12 +25,14 @@ const Modal: React.FC<{
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h3>Remove Item</h3>
-        <p>Are you sure you want to remove <strong>"{itemName}"</strong> from your wishlist?</p>
+        <p>Are you sure you want to remove <strong>{itemName}</strong> from your wishlist?</p>
         <div className={styles.modalActions}>
-          <Button onClick={onConfirm} variant="danger">
+          <Button onClick={onConfirm}
+          variant="danger">
             Remove
           </Button>
-          <Button onClick={onClose} variant="secondary">
+          <Button onClick={onClose}
+          variant="secondary">
             Cancel
           </Button>
         </div>
@@ -43,8 +46,9 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
   onRemove,
   onMoveToCart,
 }) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [imageError, setImageError] = useState(false);
+  const [imageError, setImageError] = useState(!item.image);
   const [rating, setRating] = useState(item.rating || 3);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,7 +57,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
     setIsLoading(true);
     try {
       await onMoveToCart();
-      navigate("/cart");
+      navigate('/cart');
     } finally {
       setIsLoading(false);
     }
@@ -64,20 +68,26 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
   };
 
   const handleConfirmRemove = async () => {
-    await onRemove();
-    setIsModalOpen(false);
+    setIsLoading(true);
+    try {
+      await onRemove();
+      setIsModalOpen(false);
+      await dispatch(removeFromWishlist(item.id));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleNotifyMe = () => {
-    alert(`Well notify you when "${item.name}" is back in stock.`);
+    alert(`We'll notify you when "${item.name}" is back in stock.`);
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   };
 
@@ -97,7 +107,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
     <>
       <div
         className={`${styles.wishlistCard} ${
-          !item.inStock ? styles.outOfStock : ""
+          !item.inStock ? styles.outOfStock : ''
         }`}
       >
         <div className={styles.imageContainer}>
@@ -128,6 +138,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
             onClick={handleRemoveClick}
             title="Remove from wishlist"
             aria-label="Remove from wishlist"
+            disabled={isLoading}
           >
             <FaHeart color="rgb(7, 119, 4)" size={20} />
           </button>
@@ -143,7 +154,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
 
           <div className={styles.itemRating}>
             <StarRating rating={rating} onRatingChange={setRating} />
-            <span className={styles.ratingText}>({item.rating})</span>
+            <span className={styles.ratingText}>({item.reviewCount})</span>
           </div>
 
           <p className={styles.itemDescription}>
@@ -177,9 +188,23 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
                 item.inStock ? styles.inStock : styles.outOfStock
               }`}
             >
-              {item.inStock ? "In Stock" : "Out of Stock"}
+              {item.inStock ? 'In Stock' : 'Out of Stock'}
             </span>
           </div>
+
+          {item.variants && item.variants.length > 0 && (
+            <div className={styles.variantsSection}>
+              <h4>Available Variants</h4>
+              <ul>
+                {item.variants.map((variant) => (
+                  <li key={variant._id}>
+                    Size: {variant.size}, Color: {variant.color}, Stock: {variant.stock}
+                  </li>
+                ))}
+              </ul>
+              <p>Total Stock: {item.totalStock}</p>
+            </div>
+          )}
 
           <div className={styles.cardActions}>
             {item.inStock ? (
@@ -189,7 +214,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
                 disabled={isLoading}
                 className={styles.addToCartButton}
               >
-                {isLoading ? "Adding..." : "Add to Cart"}
+                {isLoading ? 'Adding...' : 'Add to Cart'}
               </Button>
             ) : (
               <Button
@@ -215,4 +240,4 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
   );
 };
 
-export default WishlistCard;
+export default  React.memo(WishlistCard);
