@@ -3,11 +3,12 @@ import styles from './UpperFilterBar.module.css';
 import { useSearchParams } from 'react-router-dom';
 import { ArrowUpDown, FilterIcon } from 'lucide-react';
 import type { UpperFilterProps } from '../../../interfaces/FilterInterfaces';
+import { UPPER_FILTER } from '../../../Product.enum';
 
 const sortOptions = [
-  { value: 'price_asc', label: 'Price: Low to High' },
-  { value: 'price_desc', label: 'Price: High to Low' },
-  { value: 'new', label: "What's new ?" },
+  { value:UPPER_FILTER.PRICE_ASC, label: 'Price: Low to High' },
+  { value:UPPER_FILTER.PRICE_DSC, label: 'Price: High to Low' },
+  { value:UPPER_FILTER.NEW, label: "What's new ?" },
 ];
 
 const UpperFilterBar: React.FC<UpperFilterProps> = ({
@@ -15,11 +16,11 @@ const UpperFilterBar: React.FC<UpperFilterProps> = ({
   setPage
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedSort = searchParams.get('sort') ?? 'new';
+  const selectedSort = searchParams.get(UPPER_FILTER.SORT) ?? UPPER_FILTER.NEW;
    const [open, setOpen] = useState(false);
   const handleSortChange = useCallback(
     (val:string) => {
-      searchParams.set('sort', val); 
+      searchParams.set(UPPER_FILTER.SORT, val); 
       setSearchParams(searchParams, { replace: true });
       setPage(1)
     },
