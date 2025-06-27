@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import styles from './css/ReviewSection.module.css';
+import styles from './ReviewSection.module.css';
 
 const ReviewSection: React.FC = () => {
   return (

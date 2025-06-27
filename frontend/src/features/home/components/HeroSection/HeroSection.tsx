@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import styles from './css/HeroSection.module.css';
+import styles from './HeroSection.module.css';
 
 // Slide type for the carousel
 type Slide = {

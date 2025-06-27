@@ -2,10 +2,10 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../hooks/useAuth";
-import { loginSchema, type LoginFormData } from "../schemas/authSchemas";
-import styles from "./css/Login.module.css";
-import ArrowIcon from "../../../assets/icons/right-arrow.svg";
+import { useAuth } from "../../hooks/useAuth";
+import { loginSchema, type LoginFormData } from "../../schemas/authSchemas";
+import styles from "./Login.module.css";
+import ArrowIcon from "../../../../assets/icons/right-arrow.svg";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();

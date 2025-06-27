@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import ProductSection from './ProductSection';
-import type { Product } from '../../product/interfaces/ProductInterfaces';
+import ProductSection from '../ProductSection/ProductSection';
+import type { Product } from '../../../product/interfaces/ProductInterfaces';
 
 interface BestSellerProductsProps {
   products?: Product[];

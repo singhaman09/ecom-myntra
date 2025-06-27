@@ -3,16 +3,11 @@ import { useRoutes } from "react-router-dom";
 import Layout from "../components/shared/Layout";
 import { ProtectedRoute, AuthRoute } from "./ProtectedRoute";
 import Home from "../features/home/pages/Home";
-import Login from "../features/auth/pages/Login";
-import Register from "../features/auth/pages/Register";
-import ForgotPassword from "../features/auth/pages/ForgotPassword";
+import ForgotPassword from "../features/auth/pages/ForgotPassword/ForgotPassword";
 import ProductPage from "../features/product/pages/ProductPage/ProductPage";
 import ProductDetails from "../features/product/pages/ProductDetail/ProductDetail";
 import WishlistPage from "../features/wishlist/pages/WishlistPage";
 import OrdersPage from "../features/order/pages/Orderpage";
-import VerifyEmail from "../features/auth/pages/VerifyEmail";
-import VerifyOtpForgotPass from "../features/auth/pages/VerifyOtpForgotPass";
-import ResetPassword from "../features/auth/pages/ResetPassword";
 import CartPage from "../features/cart/pages/CartPage";
 // import CheckoutAddress from "../features/cart/pages/CheckoutAddress";
 import Payment from "../features/cart/pages/Payment";
@@ -26,10 +21,15 @@ import TermsOfUse from "../features/profile/pages/Legal/TermsOfUse";
 import PrivacyPolicy from "../features/profile/pages/Legal/PrivacyPolicy";
 import Profile from "../features/profile/pages/Profile/Profile";
 import Notifications from "../features/profile/pages/Notifications/Notifications";
-import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
+import CongratulationsPage from "../features/auth/pages/RegistrationComplete/RegistrationComplete";
 import HelpSupport from "../features/help&support/pages/HelpSupport";
 import { PRODUCT_ROUTES } from "../features/product/Constants/Routes";
 import StoreLocator from "../features/locateStore/pages/StoreLocator/StoreLocator";
+import Login from "../features/auth/pages/Login/Login";
+import Register from "../features/auth/pages/Register/Register";
+import VerifyEmail from "../features/auth/pages/VerifyEmail/VerifyEmail";
+import VerifyOtpForgotPass from "../features/auth/pages/VerifyOtpForgotPass/VerifyOtpForgotPass";
+import ResetPassword from "../features/auth/pages/ResetPassword/ResetPassword";
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([

@@ -126,7 +126,7 @@ const Header: React.FC = React.memo(() => {
   // Navigate to Sign In
   const handleSignIn = useCallback(() => {
     setIsProfileDropdownOpen(false);
-    navigate("/login");
+    navigate('/login');
   }, [navigate]);
 
   // Navigate to Sign Up
@@ -242,8 +242,8 @@ const Header: React.FC = React.memo(() => {
             <span className={styles.userActionText}>Profile</span>
             {!isAuthenticated && isProfileDropdownOpen && (
               <div className={styles.profileDropdown}>
-                <div className={styles.dropdownItem} onClick={handleSignIn}>Sign In</div>
-                <div className={styles.dropdownItem} onClick={handleSignUp}>Sign Up</div>
+                <div className={styles.dropdownItem} onMouseDown={handleSignIn}>Sign In</div>
+                <div className={styles.dropdownItem} onMouseDown={handleSignUp}>Sign Up</div>
               </div>
             )}
           </div>

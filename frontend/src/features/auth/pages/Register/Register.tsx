@@ -2,20 +2,21 @@ import React, { useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import {
   registerSchema,
   type RegisterFormData,
-} from "../schemas/authSchemas";
-import styles from "./css/Signup.module.css";
-import ArrowIcon from "../../../assets/icons/right-arrow.svg";
+} from "../../schemas/authSchemas";
+import styles from "./Signup.module.css";
+import ArrowIcon from "../../../../assets/icons/right-arrow.svg";
+import { LOCATION_STATE_CHANGE_EMAIL } from "../../types/auth.enum";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   // Flag to track whether user came from "change email" flow
-  const isFromChangeEmail = useRef(location.state?.from === "change-email");
+  const isFromChangeEmail = useRef(location.state?.from === LOCATION_STATE_CHANGE_EMAIL.STATUS);
 
   const {
     register: registerUser,
@@ -60,7 +61,7 @@ const Register: React.FC = () => {
 
   // Reset change-email flag if page is reloaded from change-email
   useEffect(() => {
-    if (location.state?.from === "change-email") {
+    if (location.state?.from === LOCATION_STATE_CHANGE_EMAIL.STATUS) {
       isFromChangeEmail.current = true;
       window.history.replaceState({}, document.title);
     }
@@ -104,7 +105,7 @@ const Register: React.FC = () => {
                 <strong>Email and Mobile Number</strong>
               </p>
             </div>
-            {location.state?.from === "change-email" && (
+            {location.state?.from === LOCATION_STATE_CHANGE_EMAIL.STATUS && (
               <p className={styles.subtitle}>Enter your new email address</p>
             )}
           </div>
