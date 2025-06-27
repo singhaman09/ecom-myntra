@@ -19,6 +19,7 @@ import ProductInfo from "../../components/ProductDetailsComponents/ProductInfo/P
 import BoughtTogether from "../../components/ProductDetailsComponents/BoughtTogether/BoughtTogether";
 import { getColorCodeFromString } from "../../utils/colorsMapping";
 import { handleImageError } from "../../utils/HandleImageError";
+import { PRODUCT_DETAILS_VARIANT} from "../../Product.enum";
 const Breadcrumbs = React.lazy(() => import("../../utils/BreadCrumbs/BreadCrumbs"));
 const ErrorPage = React.lazy(() => import("../Error/ErrorPage"));
 
@@ -51,9 +52,9 @@ const ProductDetails = () => {
   const variants = data?.selectedProduct?.product?.variants || [];
   const uniqueColors = useMemo(() => [...new Set(variants.map((v) => v.color))], [variants]);
   const uniqueSizes = useMemo(() => [...new Set(variants.map((v) => v.size))], [variants]);
-  const [notCompatible, setNotCompatible] = useState({ color: "", size: "" });
-  const selectedSize = searchParams.get("size") 
-  const selectedColor = searchParams.get("color") 
+  const [notCompatible, setNotCompatible] = useState({ [PRODUCT_DETAILS_VARIANT.COLOR]: "", [PRODUCT_DETAILS_VARIANT.SIZE]: "" });
+  const selectedSize = searchParams.get(PRODUCT_DETAILS_VARIANT.SIZE) 
+  const selectedColor = searchParams.get(PRODUCT_DETAILS_VARIANT.COLOR) 
  
   // New state for image handling
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -75,8 +76,8 @@ const ProductDetails = () => {
   }, [data?.selectedProduct?.product]);
 useEffect(()=>{
 if(uniqueSizes.length>0 && uniqueColors.length>0){
-  searchParams.set('size',uniqueSizes[0])
-  searchParams.set('color',uniqueColors[0])
+  searchParams.set(PRODUCT_DETAILS_VARIANT.SIZE,uniqueSizes[0])
+  searchParams.set(PRODUCT_DETAILS_VARIANT.COLOR,uniqueColors[0])
   setSearchParams(searchParams,{replace:true})
 }
 },[variants])
@@ -90,7 +91,7 @@ if(uniqueSizes.length>0 && uniqueColors.length>0){
   }, [id]);
 
   const handleSize = useCallback((size: string) => {
-    setNotCompatible({ color: "", size: "" });
+    setNotCompatible({ [PRODUCT_DETAILS_VARIANT.COLOR]: "", [PRODUCT_DETAILS_VARIANT.SIZE]: "" });
     if (!variants.find((v) => v.size === size && v.color === selectedColor ) && selectedColor) {
       setNotCompatible({ color: selectedColor, size: size });
     }
@@ -100,11 +101,11 @@ if(uniqueSizes.length>0 && uniqueColors.length>0){
   },[notCompatible,searchParams]);
 
   const handleColor = useCallback((color: string) => {
-    setNotCompatible({ color: "", size: "" });
+    setNotCompatible({ [PRODUCT_DETAILS_VARIANT.COLOR]: "", [PRODUCT_DETAILS_VARIANT.SIZE]: "" });
     if (!variants.find((v) => v.color === color && v.size === selectedSize) && selectedSize) {
       setNotCompatible({ color: color, size: selectedSize });
     }
-    searchParams.set("color", color);
+    searchParams.set(PRODUCT_DETAILS_VARIANT.COLOR, color);
     setSearchParams(searchParams, { replace: true });
   },[notCompatible,searchParams]);
 
