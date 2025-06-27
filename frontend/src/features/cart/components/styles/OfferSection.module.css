@@ -15,6 +15,7 @@
 .offersHeader {
   display: flex;
   align-items: center;
+  
   gap: 6px;
   margin-bottom: 6px;
 }
@@ -24,7 +25,9 @@
 }
 
 .offersTitle {
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-size: 19px;
+  font-family: 'Times New Roman';
   font-weight: 600;
   color: #333;
 }
@@ -77,6 +80,7 @@
 @media (min-width: 481px) {
   .offersHeader {
     gap: 8px;
+    
   }
 
   .offersIcon {
@@ -84,7 +88,8 @@
   }
 
   .offersTitle {
-    font-size: 13px;
+    font-size: 20px;
+    letter-spacing: 0.4px;
   }
 
   .noOffers {
@@ -140,5 +145,94 @@
 
   .showMoreIcon {
     gap: 2px;
+  }
+}
+
+.offersScrollRow {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+.offersScrollRow::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+}
+
+.offerCard {
+  min-width: 260px;
+  max-width: 300px;
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.offerCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.offerCardIcon {
+  font-size: 18px;
+  color: #24796b;
+}
+
+.offerCardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #24796b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.offerCardDesc {
+  font-size: 0.95rem;
+  color: #222;
+  margin-bottom: 2px;
+}
+
+.offerCardValidity {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+.offerCardIconImg {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .offerCard {
+    min-width: 200px;
+    max-width: 220px;
+    padding: 10px 8px;
+  }
+  .offerCardTitle {
+    font-size: 0.95rem;
+  }
+  .offerCardDesc {
+    font-size: 0.85rem;
+  }
+  .offerCardValidity {
+    font-size: 0.75rem;
+  }
+  .offersScrollRow {
+    gap: 10px;
+    padding-bottom: 4px;
   }
 }

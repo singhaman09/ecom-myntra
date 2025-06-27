@@ -197,16 +197,8 @@ const cartSlice = createSlice({
       })
       .addCase(incrementItemQuantity.fulfilled, (state, action) => {
         state.loading = false;
-        const { id, updatedItems } = action.payload;
-        const updatedItem = updatedItems.find((item) => item.productId === id);
-        if (updatedItem) {
-          const existingItem = state.cart.find((item) => item.productId === id);
-          if (existingItem) {
-            existingItem.quantity = updatedItem.quantity;
-          } else {
-            state.cart = [...state.cart, updatedItem];
-          }
-        }
+        const { updatedItems } = action.payload;
+        state.cart = updatedItems;
       })
       .addCase(incrementItemQuantity.rejected, (state, action) => {
         state.loading = false;
@@ -220,16 +212,8 @@ const cartSlice = createSlice({
       })
       .addCase(decrementItemQuantity.fulfilled, (state, action) => {
         state.loading = false;
-        const { id, updatedItems } = action.payload;
-        const updatedItem = updatedItems.find((item) => item.productId === id);
-        if (updatedItem) {
-          const existingItem = state.cart.find((item) => item.productId === id);
-          if (existingItem) {
-            existingItem.quantity = updatedItem.quantity;
-          } else {
-            state.cart = [...state.cart, updatedItem];
-          }
-        }
+        const { updatedItems } = action.payload;
+        state.cart = updatedItems;
       })
       .addCase(decrementItemQuantity.rejected, (state, action) => {
         state.loading = false;
