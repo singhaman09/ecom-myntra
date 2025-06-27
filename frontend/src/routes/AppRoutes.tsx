@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import Layout from "../components/shared/Layout";
 import { ProtectedRoute, AuthRoute } from "./ProtectedRoute";
@@ -13,9 +13,6 @@ import OrdersPage from "../features/order/pages/Orderpage";
 import VerifyEmail from "../features/auth/pages/VerifyEmail";
 import VerifyOtpForgotPass from "../features/auth/pages/VerifyOtpForgotPass";
 import ResetPassword from "../features/auth/pages/ResetPassword";
-import CartPage from "../features/cart/pages/CartPage";
-// import CheckoutAddress from "../features/cart/pages/CheckoutAddress";
-import Payment from "../features/cart/pages/Payment";
 import OrderPlaced from "../features/cart/pages/OrderPlaced";
 import MainProfile from "../features/profile/pages/Profile/MainProfile";
 import OrderDetailPage from "../features/order/pages/OrderDetailPage";
@@ -30,6 +27,10 @@ import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 import HelpSupport from "../features/help&support/pages/HelpSupport";
 import { PRODUCT_ROUTES } from "../features/product/Constants/Routes";
 import StoreLocator from "../features/locateStore/pages/StoreLocator/StoreLocator";
+import NotFound from "../components/shared/Notfound";
+
+const CartPage = React.lazy(() => import("../features/cart/pages/CartPage"));
+const Payment = React.lazy(() => import("../features/cart/pages/Payment"));
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -127,7 +128,7 @@ const AppRoutes: React.FC = () => {
         },
         {
           path: "*",
-          element: <div>404 - Page Not Found</div>,
+          element: <NotFound/>,
         },
       ],
     },
@@ -175,14 +176,18 @@ const AppRoutes: React.FC = () => {
         {
           path: "/cart",
           element: (
-              <CartPage />
+              <Suspense fallback={<div>Loading...</div>}>
+                <CartPage />
+              </Suspense>
           ),
         },
 
         {
           path: "/checkout/payment",
           element: (
-              <Payment />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Payment />
+              </Suspense>
           ),
         },
 

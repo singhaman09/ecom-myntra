@@ -2,7 +2,7 @@ import React from 'react';
 import type { ContactOption } from '../types/support';
 import styles from '../css/Helpsupport.module.css';
 import { FiPhone, FiMessageSquare, FiMail } from 'react-icons/fi';
-
+import { ORDER } from '../../order/types/order.enum';
 interface ContactUsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -34,7 +34,7 @@ const ContactUsModal: React.FC<ContactUsModalProps> = ({ isOpen, onClose, onWrit
 ];
 
   const handleOptionClick = (option: ContactOption) => {
-    if (option.type === 'write') {
+    if (option.type === ORDER.WRITE) {
       onWriteToUs();
     }
   };
