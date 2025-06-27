@@ -82,9 +82,6 @@ const CouponModal: React.FC<CouponModalProps> = ({
                       <span className={styles.couponDiscount}>
                         Save ₹{coupon.discount}
                       </span>
-                      <span className={styles.couponExpires}>
-                        Valid till {coupon.expires}
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -97,7 +94,7 @@ const CouponModal: React.FC<CouponModalProps> = ({
             Cancel
           </button>
         </div>
-      </div> 
+      </div>
     </div>
   );
 };
