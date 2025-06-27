@@ -1,20 +1,9 @@
-import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
-
+import { ORDER } from "./types/order.enum";
+import apiClient from "../../services/apiClient";
+const ORDER_URL = import.meta.env.VITE_ORDER_URL;
 const USE_MOCK = true;
-
-const API_BASE_URL = "http://172.50.0.244:3333/orders";
-const token = localStorage.getItem("token");
-
-const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "true",
-    Authorization: `Bearer ${token}`,
-  },
-});
 
 interface OrderApiResponse {
   _id: string;
@@ -51,20 +40,22 @@ interface OrderApiResponse {
 
 const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
   const statusMap: Record<string, OrderStatus> = {
-    PENDING: "Pending",
+    PENDING: "placed",
     PLACED: "placed",
     SHIPPED: "shipped",
     DELIVERED: "delivered",
-    CANCELLED: "cancelled",
+    CANCELLED: "canceled",
     RETURNED: "returned",
-    PICKED:"picked"
+    PICKED: "picked",
+    CONFIRMED: "placed",
+    IN_TRANSIT: "shipped",
   };
 
   return {
     id: apiOrder._id,
     customerName: apiOrder.address.name || "Unknown",
     orderDate: apiOrder.createdAt,
-    deliveryDate: apiOrder.status === "DELIVERED" ? apiOrder.updatedAt : "",
+    deliveryDate: apiOrder.status === ORDER.CDELIVERED ? apiOrder.updatedAt : "",
     total: apiOrder.totalPrice,
     totalAmount: apiOrder.totalPrice,
     status: statusMap[apiOrder.status.toUpperCase()] ?? apiOrder.status.toLowerCase(),
@@ -78,8 +69,8 @@ const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
         color: product.color,
         price: product.price,
         quantity: product.quantity,
-        isReturnable: apiOrder.status !== "CANCELLED" && apiOrder.status !== "RETURNED",
-        isExchangeable: apiOrder.status !== "CANCELLED" && apiOrder.status !== "RETURNED",
+        isReturnable: apiOrder.status !== ORDER.CCANCELLED && apiOrder.status !== ORDER.RETURNED,
+        isExchangeable: apiOrder.status !== ORDER.CCANCELLED && apiOrder.status !== ORDER.RETURNED,
       })
     ),
     deliveryAddress: {
@@ -92,10 +83,10 @@ const mapApiOrderToOrder = (apiOrder: OrderApiResponse): Order => {
       country: apiOrder.address.country,
       phoneNumber: apiOrder.address.phoneNumber,
     } as Address,
-    canRate: apiOrder.reviews.length === 0 && apiOrder.status === "DELIVERED",
+    canRate: apiOrder.reviews.length === 0 && apiOrder.status === ORDER.CDELIVERED,
     rating: 0,
     exchangeReturnWindow:
-      apiOrder.status === "DELIVERED"
+      apiOrder.status === ORDER.CDELIVERED
         ? new Date(new Date(apiOrder.updatedAt).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString()
         : "",
   };
@@ -109,7 +100,7 @@ const mockOrders: Order[] = [
     customerName: "Mock User",
     orderDate: "2025-05-10",
     deliveryDate: "2025-05-15",
-    status: "placed",
+    status: "canceled",
     total: 1999,
     totalAmount: 1999,
     items: [
@@ -141,7 +132,7 @@ const mockOrders: Order[] = [
     exchangeReturnWindow: "2025-05-22",
   },
   {
-    id: "mock1",
+    id: "mock2",
     customerName: "Mock User",
     orderDate: "2025-05-10",
     deliveryDate: "2025-05-15",
@@ -222,7 +213,7 @@ export const apiService = {
     }
 
     try {
-      const response: AxiosResponse<OrderApiResponse[]> = await axiosInstance.get("/user");
+      const response: AxiosResponse<OrderApiResponse[]> = await apiClient.get(`${ORDER_URL}/user`);
       return response.data.map(mapApiOrderToOrder);
     } catch {
       throw new Error("Failed to fetch orders");
@@ -238,7 +229,7 @@ export const apiService = {
     }
 
     try {
-      const response: AxiosResponse<OrderApiResponse> = await axiosInstance.get(`/${orderId}`);
+      const response: AxiosResponse<OrderApiResponse> = await apiClient.get(`${ORDER_URL}/${orderId}`);
       return mapApiOrderToOrder(response.data);
     } catch {
       throw new Error("Failed to fetch order details");
@@ -261,13 +252,13 @@ export const apiService = {
         delivered: "DELIVERED",
         Pending: "PENDING",
         shipped: "SHIPPED",
-        cancelled: "CANCELLED",
+        canceled: "CANCELLED",
         placed: "PLACED",
         returned: "RETURNED",
-        picked:"PICKED"
+        picked: "PICKED",
       };
 
-      const response: AxiosResponse<{ data: OrderApiResponse }> = await axiosInstance.patch(`/orders/${orderId}`, {
+      const response: AxiosResponse<{ data: OrderApiResponse }> = await apiClient.patch(`${ORDER_URL}/orders/${orderId}`, {
         status: statusMap[status],
       });
 
@@ -278,23 +269,25 @@ export const apiService = {
   },
 
   cancelOrder: async (orderId: string): Promise<Order> => {
-    if (USE_MOCK) {
-      await simulateDelay();
-      const order = mockOrders.find((o) => o.id === orderId);
-      if (order) {
-        order.status = "cancelled";
-        return order;
-      }
-      throw new Error("Mock order not found");
+  if (USE_MOCK) {
+    await simulateDelay();
+    const order = mockOrders.find((o) => o.id === orderId);
+    if (order) {
+      order.status = "canceled";
+      return order;
     }
+    throw new Error("Mock order not found");
+  }
 
-    try {
-      const response: AxiosResponse<{ data: OrderApiResponse }> = await axiosInstance.post(`/${orderId}/cancel`, {});
-      return mapApiOrderToOrder(response.data.data || (await apiService.getOrderById(orderId)));
-    } catch {
-      throw new Error("Failed to cancel order");
-    }
-  },
+  try {
+    await apiClient.post(`${ORDER_URL}/${orderId}/cancel`, {});
+    const updatedOrder = await apiService.getOrderById(orderId);
+    return updatedOrder;
+  } catch (error) {
+    throw new Error("Failed to cancel order");
+  }
+},
+
 
   submitRating: async (orderId: string, rating: number): Promise<{ success: boolean }> => {
     if (USE_MOCK) {
@@ -303,7 +296,7 @@ export const apiService = {
     }
 
     try {
-      const response: AxiosResponse<{ success: boolean }> = await axiosInstance.post(`/orders/${orderId}/review`, {
+      const response: AxiosResponse<{ success: boolean }> = await apiClient.post(`${ORDER_URL}/orders/${orderId}/review`, {
         rating,
       });
       return { success: response.data.success };

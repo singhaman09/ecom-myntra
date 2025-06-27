@@ -447,6 +447,7 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 16px;
+  cursor: pointer;
   width: 100%;
   margin-bottom: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -488,7 +489,7 @@
 }
 
 .statusBadge {
-  background: #d4a574;
+  background: #e6dbd0;
   color: white;
   padding: 4px 12px;
   border-radius: 4px;
