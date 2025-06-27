@@ -7,6 +7,7 @@
   background-color: #F8F3E9;
   display: flex;
   flex-direction: column;
+  padding-bottom: 90px;
 }
 body{
   background-color: #F8F3E9 ;
@@ -32,6 +33,11 @@ body{
 }
 
 /* Cart List Section */
+
+.cartListSection {
+  margin-bottom: 0;
+  width: 100%;
+}
 
 /* Modal */
 .modalOverlay {
@@ -860,4 +866,10 @@ body, .cartPage, .mainContent, .leftSection, .rightSection, .cartListSection, .p
 
 h1, h2, h3, h4, h5, h6, .itemsHeader, .recommendedHeading {
   font-family: 'Times New Roman', Times, serif;
+}
+
+@media (max-width: 700px) {
+  .cartPage {
+    padding-bottom: 70px;
+  }
 }

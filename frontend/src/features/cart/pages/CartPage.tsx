@@ -1,42 +1,42 @@
 import React, { useEffect, useState, Suspense, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaTag, FaExclamationTriangle, FaRedo } from "react-icons/fa";
+import { FaTag, FaExclamationTriangle } from "react-icons/fa";
 import CartHeader from "../components/CartHeader";
 import CartList from "../components/CartList";
 import {
   DISCOUNT,
   STATIC_COUPONS,
   STATIC_OFFERS,
-  // for dummy data -> uncomment this 
   STATIC_CART_ITEMS,
+  STATIC_ADDRESSES,
 } from "../staticData/StaticData";
 import CartSummary from "../components/CartSummary";
 import OffersSection from "../components/OffersSection";
 import RemoveModal from "../components/modals/RemoveModal";
 import CouponModal from "../components/modals/CouponModal";
 import ChangeAddressModal from "../components/modals/ChangeAddressModal";
-// import EmptyCart from "./EmptyCart";
 import styles from "../components/styles/CartPage.module.css";
-import type { Address, CartItem } from "../types/cart";
-import {
-  getCartAPI,
-  removeCartItemAPI,
-  incrementCartItemQuantityAPI,
-  decrementCartItemQuantityAPI,
-  moveItemToWishlistAPI,
-} from "../api/cartApi";
+import { removeCartItemAPI, moveItemToWishlistAPI } from "../api/cartApi";
 import RecommendedProduct from "../components/RecommendedProducts";
 import { toast } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "../../profile/redux/hooks";
 import { fetchAddresses } from "../../profile/redux/slices/addressSlice";
 import type { Address as ProfileAddress } from "../../profile/types/profile.types";
+import type { Address } from "../types/cart";
 import gsap from "gsap";
+import {
+  incrementItemQuantity,
+  decrementItemQuantity,
+  fetchCart,
+} from "../redux/cartSlice";
+import EmptyCart from "./EmptyCart";
+import type { CartItem, Coupon } from "../types/cart"; // Import CartItem and Coupon types
 
 const FooterCart = React.lazy(() => import("../components/FooterCart"));
-
 const AddressSection = React.lazy(() => import("../components/AddressSection"));
 
 const ITEMS_PER_PAGE = 5;
+
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
@@ -45,42 +45,41 @@ const CartPage: React.FC = () => {
   const modal = query.get("modal");
 
   // State management
-  const [offers, setOffers] = useState<string[]>([]);
+  const [offers, setOffers] = useState<string[]>(STATIC_OFFERS);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
-  const [availableCoupons] = useState(STATIC_COUPONS);
+  const [availableCoupons] = useState<Coupon[]>(STATIC_COUPONS);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
     null
   );
   const [showMoreOffers, setShowMoreOffers] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  
-  // const [cartItems, setCartItems] = useState<CartItem[]>([]); // for API CALLS
-  const [cartItems, setCartItems] = useState<CartItem[]>(STATIC_CART_ITEMS); // For STATIC data
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
-
-  // API states
+  const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(false);
+  const [loadingItemId, setLoadingItemId] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
   const { items: profileAddresses = [], loading: addressLoading } =
     useAppSelector((state) => state.address);
+  const cartItems = useAppSelector((state) => state.cart.cart) as CartItem[];
 
   // Map profile addresses to cart addresses
-  const mappedAddresses = profileAddresses.map((addr: ProfileAddress) => ({
-    id: addr._id,
-    name: addr.name,
-    street: addr.street,
-    city: addr.city,
-    state: addr.state,
-    zip: addr.postalCode,
-    phone: addr.phoneNumber,
-    isDefault: addr.isDefault,
-  }));
+  const mappedAddresses: Address[] = profileAddresses.map(
+    (addr: ProfileAddress) => ({
+      id: addr._id,
+      name: addr.name,
+      street: addr.street,
+      city: addr.city,
+      state: addr.state,
+      zip: addr.postalCode,
+      phone: addr.phoneNumber,
+      isDefault: addr.isDefault,
+    })
+  );
 
-  // Set default address as selected if not set
+  // Set default address
   useEffect(() => {
     if (profileAddresses.length === 0 && !addressLoading) {
       dispatch(fetchAddresses());
@@ -94,24 +93,18 @@ const CartPage: React.FC = () => {
     dispatch,
     profileAddresses.length,
     addressLoading,
-    mappedAddresses.length,
+    mappedAddresses,
+    selectedAddress,
   ]);
 
-  // Fetch cart data from API
+  // Fetch cart data with retry mechanism
   const fetchCartData = async () => {
     try {
       setLoading(true);
       setError(null);
       setIsOffline(false);
 
-      const apiCartItems = await getCartAPI();
-      if (Array.isArray(apiCartItems) && apiCartItems.length > 0) {
-        setCartItems(apiCartItems);
-      } else {
-        setCartItems(STATIC_CART_ITEMS); // fallback to static data
-      }
-
-      // Set offers and coupons
+      await dispatch(fetchCart()).unwrap();
       setOffers(STATIC_OFFERS);
     } catch (err: any) {
       console.error("Error fetching cart data:", err);
@@ -120,17 +113,14 @@ const CartPage: React.FC = () => {
         err.message?.includes("Network Error")
       ) {
         setIsOffline(true);
-        setOffers([]);
         toast.error(
           "Unable to connect to server. Please check your internet connection."
         );
       } else if (err.response?.status === 401 || err.response?.status === 404) {
         setError("Please login to view your cart.");
-        setOffers([]);
         toast.error("Please login to view your cart.");
       } else {
         setError("Unable to fetch cart data. Please try again later.");
-        setOffers([]);
         toast.error("Unable to fetch cart data. Please try again later.");
       }
     } finally {
@@ -140,9 +130,9 @@ const CartPage: React.FC = () => {
 
   useEffect(() => {
     fetchCartData();
-  }, []);
+  }, [dispatch]);
 
-  // Handle quantity change
+  // Debounced quantity change handler
   const handleQtyChange = async (
     productId: string,
     action: "increment" | "decrement"
@@ -154,11 +144,13 @@ const CartPage: React.FC = () => {
         );
         return;
       }
+      setLoadingItemId(productId);
       if (action === "increment") {
-        await incrementCartItemQuantityAPI(productId);
+        await dispatch(incrementItemQuantity(productId)).unwrap();
       } else {
-        await decrementCartItemQuantityAPI(productId);
+        await dispatch(decrementItemQuantity(productId)).unwrap();
       }
+      await dispatch(fetchCart());
       toast.success(
         `Quantity ${
           action === "increment" ? "increased" : "decreased"
@@ -167,6 +159,8 @@ const CartPage: React.FC = () => {
     } catch (err: any) {
       console.error(`Error ${action}ing quantity:`, err);
       toast.error(`Failed to ${action} quantity. Please try again.`);
+    } finally {
+      setLoadingItemId(null);
     }
   };
 
@@ -179,11 +173,15 @@ const CartPage: React.FC = () => {
         );
         return;
       }
+      setLoadingItemId(productId);
       await removeCartItemAPI(productId);
+      await dispatch(fetchCart());
       toast.success("Item removed from cart!");
     } catch (err: any) {
       console.error("Error removing item:", err);
       toast.error("Failed to remove item. Please try again.");
+    } finally {
+      setLoadingItemId(null);
     }
   };
 
@@ -200,7 +198,7 @@ const CartPage: React.FC = () => {
         moveItemToWishlistAPI(productId)
       );
       await Promise.all(promises);
-      await getCartAPI();
+      await dispatch(fetchCart());
       navigate("/cart");
       setSelectedItems([]);
       setModalAction(null);
@@ -211,7 +209,7 @@ const CartPage: React.FC = () => {
     }
   };
 
-  const handleApplyCoupon = (coupon: any) => {
+  const handleApplyCoupon = (coupon: Coupon) => {
     setAppliedCoupon(coupon);
     toast.success(`Coupon ${coupon.code} applied successfully!`);
   };
@@ -223,31 +221,55 @@ const CartPage: React.FC = () => {
 
   const toggleOffersDropdown = () => setShowMoreOffers((prev) => !prev);
 
-  // Calculate totals using cartItems
-  const totalMRP = cartItems.reduce((acc, item) => {
-    const price = typeof item.price === "number" ? item.price : 0;
-    const quantity = typeof item.quantity === "number" ? item.quantity : 0;
-    return acc + price * quantity;
-  }, 0);
+  // Use static data if cart is empty or error/server error
+  const shouldShowStatic = !loading && (isOffline || !!error);
+  const fallbackCartItems = shouldShowStatic ? STATIC_CART_ITEMS : cartItems;
+  const fallbackOffers = shouldShowStatic ? STATIC_OFFERS : offers;
+  const fallbackCoupons = shouldShowStatic ? STATIC_COUPONS : availableCoupons;
+  const fallbackAddresses =
+    shouldShowStatic && STATIC_ADDRESSES.length > 0
+      ? STATIC_ADDRESSES
+      : mappedAddresses;
 
-  const totalPrice = cartItems.reduce((acc, item) => {
-    const price = typeof item.price === "number" ? item.price : 0;
-    const quantity = typeof item.quantity === "number" ? item.quantity : 0;
-    return acc + (price - DISCOUNT) * quantity;
-  }, 0);
+  // Calculate totals with validation
+  const calculateTotals = () => {
+    const totalMRP = fallbackCartItems.reduce((acc, item) => {
+      const price =
+        typeof item.price === "number" && !isNaN(item.price) ? item.price : 0;
+      const quantity =
+        typeof item.quantity === "number" && !isNaN(item.quantity)
+          ? item.quantity
+          : 0;
+      return acc + price * quantity;
+    }, 0);
 
-  const finalPrice = totalPrice - (appliedCoupon ? DISCOUNT : 0);
+    const totalPrice = fallbackCartItems.reduce((acc, item) => {
+      const price =
+        typeof item.price === "number" && !isNaN(item.price) ? item.price : 0;
+      const quantity =
+        typeof item.quantity === "number" && !isNaN(item.quantity)
+          ? item.quantity
+          : 0;
+      return acc + (price - DISCOUNT) * quantity;
+    }, 0);
 
-  // Sort items so latest added are first (assuming last in array is latest)
-  const sortedCartItems = [...cartItems].reverse();
+    const finalPrice =
+      totalPrice - (appliedCoupon ? appliedCoupon.discount : 0);
+
+    return { totalMRP, totalPrice, finalPrice };
+  };
+  const { totalMRP, finalPrice } = calculateTotals();
+
+  // Pagination for fallbackCartItems
+  const sortedCartItems = [...(fallbackCartItems || [])].reverse();
   const totalPages = Math.ceil(sortedCartItems.length / ITEMS_PER_PAGE);
   const paginatedItems = sortedCartItems.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  const headerRef = useRef(null);
-  const mainContentRef = useRef(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.fromTo(
@@ -261,25 +283,6 @@ const CartPage: React.FC = () => {
       { opacity: 1, y: 0, duration: 0.9, delay: 0.2, ease: "power3.out" }
     );
   }, []);
-
-  // Error component
-  const ErrorMessage = () => (
-    <div className={styles.errorContainer}>
-      <div className={styles.errorContent}>
-        <FaExclamationTriangle className={styles.errorIcon} />
-        <h3 className={styles.errorTitle}>Unable to Fetch Cart Data</h3>
-        <p className={styles.errorMessage}>{error}</p>
-        <button
-          className={styles.retryButton}
-          onClick={fetchCartData}
-          disabled={loading}
-        >
-          <FaRedo className={styles.retryIcon} />
-          {loading ? "Retrying..." : "Retry"}
-        </button>
-      </div>
-    </div>
-  );
 
   // Loading component
   const LoadingSpinner = () => (
@@ -297,18 +300,17 @@ const CartPage: React.FC = () => {
 
       {loading ? (
         <LoadingSpinner />
-      ) : error && cartItems.length === 0 ? (
-        <ErrorMessage />
+      ) : fallbackCartItems.length === 0 ? (
+        <EmptyCart />
       ) : (
         <div className={styles.cartPage}>
-          {/* Show error banner if there's an error but we have data */}
-          {error && cartItems.length > 0 && (
+          {error && (
             <div className={styles.errorBanner}>
               <FaExclamationTriangle className={styles.errorBannerIcon} />
               <span className={styles.errorBannerText}>{error}</span>
               <button
                 className={styles.errorBannerRetry}
-                onClick={fetchCartData}
+                onClick={() => fetchCartData()}
                 disabled={loading}
               >
                 Retry
@@ -320,13 +322,13 @@ const CartPage: React.FC = () => {
             <div className={styles.leftSection}>
               <Suspense fallback={<div>Loading address...</div>}>
                 <AddressSection
-                  address={selectedAddress}
+                  address={selectedAddress || fallbackAddresses[0]}
                   onChangeAddress={() => navigate("/cart?modal=address")}
                   onAddAddress={() => navigate("/cart?modal=address")}
                 />
               </Suspense>
               <OffersSection
-                offers={STATIC_OFFERS}
+                offers={fallbackOffers}
                 showMoreOffers={showMoreOffers}
                 toggleOffersDropdown={toggleOffersDropdown}
               />
@@ -336,8 +338,9 @@ const CartPage: React.FC = () => {
                   onQuantityChange={handleQtyChange}
                   onRemove={handleRemove}
                   onMoveToWishlist={handleMoveToWishlist}
+                  loadingItemId={loadingItemId}
                 />
-                {totalPages > 1 && cartItems.length > ITEMS_PER_PAGE && (
+                {totalPages > 1 && (
                   <div className={styles.paginationControls}>
                     <button
                       onClick={() => setCurrentPage(1)}
@@ -355,7 +358,6 @@ const CartPage: React.FC = () => {
                     >
                       Prev
                     </button>
-                    {/* Page numbers */}
                     {Array.from({ length: totalPages }, (_, i) => (
                       <button
                         key={i + 1}
@@ -371,7 +373,9 @@ const CartPage: React.FC = () => {
                       </button>
                     ))}
                     <button
-                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      onClick={() =>
+                        setCurrentPage((p) => Math.min(totalPages, p + 1))
+                      }
                       disabled={currentPage === totalPages}
                       className={styles.paginationBtn}
                       aria-label="Next page"
@@ -410,14 +414,12 @@ const CartPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              {cartItems.length > 0 && (
-                <CartSummary
-                  totalItems={cartItems.length}
-                  totalPrice={Number.isNaN(finalPrice) ? 0 : finalPrice}
-                  totalMRP={Number.isNaN(totalMRP) ? 0 : totalMRP}
-                  appliedCoupon={appliedCoupon}
-                />
-              )}
+              <CartSummary
+                totalItems={fallbackCartItems.length}
+                totalPrice={finalPrice}
+                totalMRP={totalMRP}
+                appliedCoupon={appliedCoupon}
+              />
             </div>
           </div>
 
@@ -439,7 +441,7 @@ const CartPage: React.FC = () => {
               isOpen={true}
               onClose={() => navigate("/cart")}
               onApplyCoupon={handleApplyCoupon}
-              availableCoupons={availableCoupons}
+              availableCoupons={fallbackCoupons}
             />
           )}
 
@@ -448,21 +450,21 @@ const CartPage: React.FC = () => {
               isOpen={true}
               onClose={() => navigate("/cart")}
               onSave={handleSaveAddress}
-              onUpdateAddresses={() => {}}
-              addresses={mappedAddresses}
+              onUpdateAddresses={() => dispatch(fetchAddresses())}
+              addresses={fallbackAddresses}
             />
           )}
         </div>
       )}
-      <FooterCart
-        totalPrice={Number.isNaN(finalPrice) ? 0 : finalPrice}
-        savings={
-          Number.isNaN(totalMRP - finalPrice) ? 0 : totalMRP - finalPrice
-        }
-        onPlaceOrder={() => {
-          /* TODO: handle place order */
-        }}
-      />
+      <Suspense fallback={<div>Loading footer...</div>}>
+        <FooterCart
+          totalPrice={finalPrice}
+          savings={totalMRP - finalPrice}
+          onPlaceOrder={() => {
+            toast.info("Place order functionality not implemented yet.");
+          }}
+        />
+      </Suspense>
     </>
   );
 };

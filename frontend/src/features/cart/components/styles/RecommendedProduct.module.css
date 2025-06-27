@@ -1,6 +1,7 @@
 .recommendedContainer {
   width: 1060px;
   margin-top: 30px;
+  margin-bottom: 132px;
   padding: 9px 16px;
   background-color: #fff;
   min-height: 100vh;
@@ -146,6 +147,7 @@
     min-width: 0;
     padding: 4px 1vw;
     margin-top: 10px;
+    margin-bottom: 16px;
   }
   .recommendedHeading {
     font-size: 18px;

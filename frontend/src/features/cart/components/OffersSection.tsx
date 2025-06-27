@@ -11,8 +11,6 @@ interface OffersSectionProps {
 
 const OffersSection: React.FC<OffersSectionProps> = ({
   offers = STATIC_OFFERS,
-  showMoreOffers,
-  toggleOffersDropdown,
 }) => {
   const hasOffers = offers.length > 0;
 

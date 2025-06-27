@@ -27,7 +27,6 @@ apiClient.interceptors.request.use((config) => {
 export const getCartAPI = async () => {
   try {
     const response = await apiClient.get<Cart>("/cart");
-    console.log(response.data);
     return response.data.items;
   } catch (error) {
     throw error;
@@ -47,9 +46,9 @@ export const addCartItemsAPI = async (productId: string,size:string,color:string
 
 // 3.) remove particular item from cart by product id
 
-export const removeCartItemAPI = async (productId: string) => {
+export const removeCartItemAPI = async (cartId: string) => {
   try {
-    const response = await apiClient.delete<Cart>(`/cart/${productId}`);
+    const response = await apiClient.delete<Cart>(`/cart/${cartId}`);
     return response.data.items;
   } catch (error) {
     throw error;
@@ -64,7 +63,6 @@ export const updateCartItemSizeAPI = async (
 ) => {
   try {
     const res = await apiClient.put<Cart>(`/cart/${productId}/${newSize}`);
-    console.log(res.data);
     return res.data;
   } catch (error) {
     throw error;

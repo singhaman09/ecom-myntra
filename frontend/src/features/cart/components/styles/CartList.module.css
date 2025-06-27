@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 8px;
   max-width: 100%;
+  min-height: 600px; /* Increased height for cart list */
 }
 
 /* Empty Cart Message */
@@ -447,6 +448,7 @@
 @media (max-width: 600px) {
   .cartList {
     gap: 6px;
+    min-height: 400px; /* Increased height for mobile as well */
   }
 
   .emptyCart {

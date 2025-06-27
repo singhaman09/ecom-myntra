@@ -27,25 +27,25 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, total
       <h3 className={styles.summaryTitle}>Payment Details ({totalItems} {totalItems === 1 ? 'item' : 'items'})</h3>
       <div className={styles.priceItem}>
         <span>Total MRP</span>
-        <span>₹{totalMRP}</span>
+        <span>₹{totalMRP.toFixed(0)}</span>
       </div>
       <div className={styles.priceItem}>
         <span>
           Discount on MRP <a href="#" className={styles.knowMore}>Know More</a>
         </span>
-        <span className={styles.discount}>-₹{discount}</span>
+        <span className={styles.discount}>-₹{discount.toFixed(0)}</span>
       </div>
       <div className={styles.priceItem}>
         <span>
           Coupon Discount <a href="#" className={styles.applyCoupon}>Apply Coupon</a>
         </span>
-        <span>₹{appliedCoupon ? appliedCoupon.discount : 0}</span>
+        <span>₹{appliedCoupon ? appliedCoupon.discount.toFixed(0) : '0.0'}</span>
       </div>
       <div className={styles.priceItem}>
         <span>
           Platform Fee <a href="#" className={styles.knowMore}>Know More</a>
         </span>
-        <span>₹{platformFee}</span>
+        <span>₹{platformFee.toFixed(0)}</span>
       </div>
       <div className={styles.priceItem}>
         <span>
@@ -55,7 +55,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalItems, totalPrice, total
       </div>
       <div className={styles.total}>
         <span className={styles.totalLabel}>Total Amount</span>
-        <span className={styles.totalPrice}>₹{finalTotal.toFixed(2)}</span>
+        <span className={styles.totalPrice}>₹{finalTotal.toFixed(0)}</span>
       </div>
       <button
         className={styles.checkoutButton}

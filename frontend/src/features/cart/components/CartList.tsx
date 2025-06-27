@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import { useAppDispatch } from "../hooks/useAppDispatch";
-import {
-  updateItemSize,
-  incrementItemQuantity,
-  decrementItemQuantity,
-} from "../redux/cartSlice";
 import type { CartItem as CartItemType } from "../types/cart";
 import CartItem from "./CartItem";
 import styles from "./styles/CartList.module.css";
-import { toast } from 'react-toastify';
 import DiscountCarousel from '../../../assets/discound_carrousel.png';
 import { DISCOUNT } from '../staticData/StaticData';
 
@@ -17,6 +10,8 @@ interface CartListProps {
   onQuantityChange?: (id: string, action: "increment" | "decrement") => void;
   onRemove: (id: string) => void;
   onMoveToWishlist?: (id: string) => void;
+  loadingItemId?: string | null;
+  onSizeChange?: (id: string, newSize: string) => void;
 }
 
 const CartList: React.FC<CartListProps> = ({
@@ -24,8 +19,9 @@ const CartList: React.FC<CartListProps> = ({
   onQuantityChange,
   onRemove,
   onMoveToWishlist,
+  loadingItemId,
+  onSizeChange,
 }) => {
-  const dispatch = useAppDispatch();
 
   const [sizeModalItem, setSizeModalItem] = useState<CartItemType | null>(null);
 
@@ -33,10 +29,8 @@ const CartList: React.FC<CartListProps> = ({
   const closeSizeModal = () => setSizeModalItem(null);
 
   const handleSizeChange = async (itemId: string, newSize: string) => {
-    try {
-      await dispatch(updateItemSize({ id: itemId, newSize })).unwrap();
-    } catch {
-      toast.error("Error updating size. Please try again.");
+    if (onSizeChange) {
+       onSizeChange(itemId, newSize);
     }
     closeSizeModal();
   };
@@ -58,6 +52,8 @@ const CartList: React.FC<CartListProps> = ({
             onQuantityChange={handleQuantityChange}
             onMoveToWishlist={onMoveToWishlist}
             onSizeClick={openSizeModal}
+            loading={loadingItemId === item.productId}
+            onSizeChange={handleSizeChange}
           />
         ))
       )}
@@ -88,7 +84,6 @@ const CartList: React.FC<CartListProps> = ({
                 <span className={styles.modalOriginalPrice}>
                   ₹{sizeModalItem.price}
                 </span>
-                {/* <span className={styles.discountPercent}>{DISCOUNT}% OFF</span> */}
               </div>
               <div className={styles.sizeSelectBlockCentered}>
                 <p className={styles.sizeLabel}>Select Size</p>
