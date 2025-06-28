@@ -30,6 +30,10 @@ import Register from "../features/auth/pages/Register/Register";
 import VerifyEmail from "../features/auth/pages/VerifyEmail/VerifyEmail";
 import VerifyOtpForgotPass from "../features/auth/pages/VerifyOtpForgotPass/VerifyOtpForgotPass";
 import ResetPassword from "../features/auth/pages/ResetPassword/ResetPassword";
+import NotFound from "../components/shared/Notfound";
+
+const CartPage = React.lazy(() => import("../features/cart/pages/CartPage"));
+const Payment = React.lazy(() => import("../features/cart/pages/Payment"));
 
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
@@ -127,7 +131,7 @@ const AppRoutes: React.FC = () => {
         },
         {
           path: "*",
-          element: <div>404 - Page Not Found</div>,
+          element: <NotFound/>,
         },
       ],
     },

@@ -13,6 +13,7 @@
   align-items: center;
   margin-bottom: 24px;
   padding: 16px 20px;
+   justify-content: center;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -25,14 +26,17 @@
   gap: 4px;
   font-family: 'Work Sans';
 }
-.titlelistInfo{
+.titlelistInfo {
   display: flex;
   flex-direction: column;
-  font-family: 'Work Sans';
+  flex-grow: 1;
+  font-family: 'Druk';
   gap: 4px;
-  font-size: 16px;
-  color: #075207;
+  font-size: 20px;
+  color: #333333;
+  text-align: center;
 }
+
 
 .listInfo h2 {
   font-size: 20px;

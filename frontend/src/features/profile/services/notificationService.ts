@@ -61,7 +61,7 @@ const mockNotifications: Notification[] = [
 ];
 
 class NotificationService {
-  private baseUrl = '/api/notifications';
+  //private baseUrl = '/api/notifications';
 
   // Simulate API delay
   private delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

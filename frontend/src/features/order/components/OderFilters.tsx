@@ -5,6 +5,7 @@ import type { OrderStatus } from '../types/orders';
 import Button from '../../../components/UI/Button';
 import SearchInput from '../../../components/UI/SearchInput';
 import styles from '../css/orderFilter.module.css';
+import { ORDER } from '../types/order.enum';
 
 interface OrderFiltersProps {
   searchTerm: string;
@@ -34,7 +35,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({ searchTerm, onSearchChange,
       ...prev,
       [key]: value
     }));
-    if (key === 'searchQuery') {
+    if (key === ORDER.SEARCH) {
       onSearchChange(value);
     }
   };
@@ -83,7 +84,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({ searchTerm, onSearchChange,
     onClose();
   };
 
-  const orderStatuses: OrderStatus[] = ['Pending', 'placed','picked', 'shipped', 'delivered', 'cancelled', 'returned'];
+  const orderStatuses: OrderStatus[] = ['Pending', 'placed','picked', 'shipped', 'delivered', 'canceled', 'returned'];
 
   return (
     <div className={styles.orderFiltersWrapper}>

@@ -16,6 +16,7 @@ import {
   fetchAddresses,
 } from '../../redux/slices/addressSlice';
 import type { Address } from '../../types/profile.types';
+import { LOCATION_STATE_CHANGE_CHECKBOX } from '../../types/profile_enum';
 
 const Plus = lazy(() => import('lucide-react').then(m => ({ default: m.Plus })));
 const Home = lazy(() => import('lucide-react').then(m => ({ default: m.Home })));
@@ -63,7 +64,7 @@ const Addresses: React.FC = () => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox'
+      [name]: type === LOCATION_STATE_CHANGE_CHECKBOX.STATUS
         ? (e.target as HTMLInputElement).checked
         : value,
     }));
