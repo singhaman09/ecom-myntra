@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 8px;
   max-width: 100%;
+  min-height: 600px; /* Increased height for cart list */
 }
 
 /* Empty Cart Message */
@@ -320,15 +321,19 @@
 
 /* Size Modal */
 .customModal {
-  background-color: #fff;
-  border-radius: 12px;
-  width: 440px;
-  max-width: 95%;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  padding: 24px;
-  animation: scaleIn 0.3s ease-out forwards;
+  background: #F8F3E9;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 8px rgba(61,133,126,0.07);
+  border: 1.5px solid #f0e6d2;
+  padding: 36px 32px 28px 32px;
+  max-width: 430px;
+  width: 95%;
+  margin: 60px auto 0 auto;
+  position: relative;
+  animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @keyframes scaleIn {
@@ -344,154 +349,106 @@
 
 .closeModal {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
+  top: 18px;
+  right: 18px;
+  background: #f5f5f5;
   border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
   font-size: 20px;
-  font-weight: 500;
+  color: #888;
   cursor: pointer;
-  color: #4a4a4a;
+  transition: background 0.2s, color 0.2s;
+  z-index: 2;
 }
 
-.modalTop {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-
-.modalImage {
-  width: 140px;
-  height: 210px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #f0f0f0;
-}
-
-.modalInfo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.modalBrand {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a1a;
-}
-
-.modalName {
-  font-size: 19px;
-  font-weight: 700;
-  color: #333333;
-  font-family: 'Times New Roman';
-}
-
-.priceBlock {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.modalCurrentPrice {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a1a;
-}
-
-.modalOriginalPrice {
-  font-size: 14px;
-  color: #8c8c8c;
-  text-decoration: line-through;
-}
-
-.modalDiscount {
-  font-size: 14px;
-  font-weight: 600;
-  color: #2ecc71;
-}
-
-.seller {
-  font-size: 13px;
-  color: #6b6b6b;
-}
-
-.modalBottom {
-  margin-bottom: 24px;
+.closeModal:hover {
+  background: #eee;
+  color: #222;
 }
 
 .sizeSelectBlock {
   margin-top: 18px;
-  padding: 12px 0 0 0;
-  border-top: 1px solid #eaf9f4;
+  width: 100%;
+  text-align: left;
 }
 
 .sizeLabel {
-  font-size: 16px;
-  font-weight: 700;
-  color: #101010;
-  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 8px;
 }
 
 .sizeOptions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  margin-top: 6px;
 }
 
 .sizeCircle {
-  width: 44px;
-  height: 44px;
-  border: 2px solid #044236;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0 10px;
   border-radius: 50%;
-  background-color: #fff;
+  border: 1.5px solid #bbb;
+  background: #fafbfc;
+  color: #222;
   font-size: 15px;
-  font-weight: 600;
-  color: #044236;
+  font-weight: 500;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
-.sizeCircle:hover {
-  border-color: #088c6a;
-  background-color: #196f52;
-  color: #fff;
+.sizeCircle:hover, .sizeCircle:focus {
+  border: 1.5px solid #3D857E;
+  background: #e6f4f1;
+  color: #044236;
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(61,133,126,0.10);
 }
 
 .activeSize {
-  border-color: #088c6a;
-  background-color: #044236;
-  color: #fff;
+  border: 2px solid #3D857E;
+  background: #d0f0e7;
+  color: #044236;
+  font-weight: 700;
+  transform: scale(1.12);
+  box-shadow: 0 2px 12px rgba(61,133,126,0.13);
 }
 
 .doneBtn {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #06654e 0%, #088c6a 100%);
+  margin-top: 28px;
+  background: linear-gradient(90deg, #3D857E 0%, #088c6a 100%);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 10px;
+  padding: 13px 38px;
+  font-size: 17px;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 18px;
-  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(61,133,126,0.10);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.13s;
+  letter-spacing: 0.5px;
 }
 
 .doneBtn:hover {
-  background: #044236;
-  transform: translateY(-1px);
+  background: linear-gradient(90deg, #088c6a 0%, #3D857E 100%);
+  box-shadow: 0 4px 16px rgba(61,133,126,0.13);
+  transform: translateY(-2px) scale(1.03);
 }
 
 /* Mobile Responsive Styles */
 @media (max-width: 600px) {
   .cartList {
     gap: 6px;
+    min-height: 400px; /* Increased height for mobile as well */
   }
 
   .emptyCart {
@@ -1029,4 +986,307 @@
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+.modalContentCentered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 18px;
+  padding-bottom: 8px;
+}
+
+.modalImageCentered {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.priceDiscountBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  /* margin-bottom: 18px; */
+}
+
+.modalCurrentPrice {
+  color: #222;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.modalOriginalPrice {
+  color: #aaa;
+  text-decoration: line-through;
+  font-size: 15px;
+  margin-left: 8px;
+}
+
+.discountCarouselImg {
+  width: 80px;
+  height: 28px;
+  object-fit: contain;
+  margin: 4px 0 0 0;
+}
+
+.discountPercent {
+  color: #044236;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.sizeSelectBlockCentered {
+  width: 100%;
+  margin-top: 0px;
+  text-align: center;
+}
+
+.sizeOptionsCentered {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+@media (max-width: 600px) {
+  .customModal {
+    padding: 18px 6vw 18px 6vw;
+    max-width: 98vw;
+  }
+  .modalImageCentered {
+    width: 90px;
+    height: 90px;
+  }
+  .modalCurrentPrice {
+    font-size: 16px;
+  }
+  .modalOriginalPrice {
+    font-size: 12px;
+  }
+  .discountCarouselImg {
+    width: 60px;
+    height: 20px;
+  }
+  .discountPercent {
+    font-size: 12px;
+  }
+}
+
+.nameDiscountRowCentered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.modalName {
+  font-size: 20px;
+  font-weight: 800;
+  color: #222;
+  text-align: center;
+  max-width: 70vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+.divider {
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, #f0e6d2 0%, #e2d3b8 100%);
+  margin: 18px 0 14px 0;
+  border-radius: 1px;
+}
+
+
+.modalImageCentered {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(61,133,126,0.10);
+  background: #fff;
+  border: 1.5px solid #f0e6d2;
+}
+
+
+.priceDiscountBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.modalCurrentPrice {
+  color: #222;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.1px;
+}
+
+.modalOriginalPrice {
+  color: #aaa;
+  text-decoration: line-through;
+  font-size: 15px;
+  margin-left: 8px;
+}
+
+.discountCarouselImgTop {
+  width: 70px;
+  height: 24px;
+  object-fit: contain;
+  margin-left: 2px;
+}
+
+.discountPercent {
+  color: #044236;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.sizeSelectBlockCentered {
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.sizeLabel {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+  letter-spacing: 0.1px;
+}
+
+.sizeOptionsCentered {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.sizeCircle {
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0 10px;
+  border-radius: 50%;
+  border: 1.5px solid #bbb;
+  background: #fafbfc;
+  color: #222;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.sizeCircle:hover, .sizeCircle:focus {
+  border: 1.5px solid #3D857E;
+  background: #e6f4f1;
+  color: #044236;
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(61,133,126,0.10);
+}
+.activeSize {
+  border: 2px solid #3D857E;
+  background: #d0f0e7;
+  color: #044236;
+  font-weight: 700;
+  transform: scale(1.12);
+  box-shadow: 0 2px 12px rgba(61,133,126,0.13);
+}
+
+.doneBtn {
+  margin-top: 28px;
+  background: linear-gradient(90deg, #3D857E 0%, #088c6a 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 38px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(61,133,126,0.10);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.13s;
+  letter-spacing: 0.5px;
+}
+.doneBtn:hover {
+  background: linear-gradient(90deg, #088c6a 0%, #3D857E 100%);
+  box-shadow: 0 4px 16px rgba(61,133,126,0.13);
+  transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 600px) {
+  .customModal {
+    padding: 14px 2vw 14px 2vw;
+    max-width: 99vw;
+  }
+  .modalName {
+    font-size: 15px;
+    max-width: 55vw;
+  }
+  .discountCarouselImgTop {
+    width: 44px;
+    height: 16px;
+  }
+  .nameDiscountRowCentered {
+    gap: 7px;
+    margin-bottom: 7px;
+  }
+  .modalImageCentered {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+  }
+  .modalCurrentPrice {
+    font-size: 15px;
+  }
+  .modalOriginalPrice {
+    font-size: 11px;
+  }
+  .doneBtn {
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 7px;
+  }
+}
+
+.discountCarouselWrapper {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.discountPercentOnCarousel {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: #044236;
+  text-align: center;
+  line-height: 1;
+  /* text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); */
+  white-space: nowrap;
+  display: flex
+;
+  align-items: center;
+  gap: 1px;
+  text-shadow: 0 1px 4px #fff, 0 0px 2px #fff;
 }

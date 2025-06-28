@@ -18,7 +18,7 @@ const RecommendedProduct: React.FC = () => {
 
   return (
     <div className={styles.recommendedContainer}>
-      <h2 className={styles.recommendedHeading}>Recommended</h2>
+      <h2 className={styles.recommendedHeading}>Recommended Products</h2>
       <div className={styles.recommendedGrid}>
         {Recommended_items.map((item) => (
           <div className={styles.productCard} key={item.id}>

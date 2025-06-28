@@ -1,3 +1,5 @@
+import type { TAB_KEYS } from "../Product.enum";
+
 export interface sideBarInterface {
     brands: string[];
     subCategories: string[];
@@ -8,12 +10,12 @@ export interface sideBarInterface {
     categories:string[]
   }
   export interface filters{
-    category: string[] |undefined;
-    subCategory: string[]|undefined;
-    brand: string[]|undefined;
-    color: string[]|undefined;
-    gender: string;
-    price: number[]|undefined;
+  [TAB_KEYS.CATEGORY]: string[] ;
+  [TAB_KEYS.SUBCATEGORY]: string[] ;
+  [TAB_KEYS.BRAND]: string[];
+  [TAB_KEYS.COLOR]: string[] ;
+  [TAB_KEYS.GENDER]: string ;
+  [TAB_KEYS.PRICE]: number[] ;
   }
   export interface UpperFilterProps  {
     setIsDrawerOpen:(value:boolean)=>void

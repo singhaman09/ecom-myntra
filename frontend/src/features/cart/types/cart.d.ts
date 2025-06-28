@@ -1,3 +1,5 @@
+  import type { number } from "zod";
+
 export interface CartItem {
   productId: string;
   name: string;
@@ -7,6 +9,8 @@ export interface CartItem {
   quantity: number;
   size: string;
   availableSizes?: string[]; 
+  color:string;
+  cartId:string;
 }
 
 
@@ -26,10 +30,11 @@ export interface Address {
   zip: string;
   phone: string;
   isDefault: boolean;
-} 
+}
 
 
-interface Product {
+
+export interface Product {
   id: string;
   name: string;
   brand: string;

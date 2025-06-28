@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import Layout from "../components/shared/Layout";
 import { ProtectedRoute, AuthRoute } from "./ProtectedRoute";
@@ -175,14 +175,18 @@ const AppRoutes: React.FC = () => {
         {
           path: "/cart",
           element: (
-              <CartPage />
+              <Suspense fallback={<div>Loading...</div>}>
+                <CartPage />
+              </Suspense>
           ),
         },
 
         {
           path: "/checkout/payment",
           element: (
-              <Payment />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Payment />
+              </Suspense>
           ),
         },
 

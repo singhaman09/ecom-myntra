@@ -31,9 +31,9 @@ const CategoryItem: React.FC<CategoryItemProps> = React.memo(({ category, onImag
     navigate(category.link);
   }, [navigate, category.link]);
 
-  const EVENT_KEY = {
-    ENTER: "Enter",
-    BLANK: " "
+  enum EVENT_KEY  {
+    ENTER = "Enter",
+    BLANK = " "
   }
 
   return (

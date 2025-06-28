@@ -1,15 +1,9 @@
-import axios from 'axios';
 import qs from 'qs';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import  type {   getProductsInterface, SelectedProduct } from './interfaces/ProductInterfaces';
-// Custom Axios instance
-const customAxios = axios.create({
-  baseURL: 'http://0.0.0.0:3000/products',
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+import apiClient from '../../services/apiClient';
+import { TAB_KEYS } from './Product.enum';
+
 // Thunk for fetching products
 export const getProducts = createAsyncThunk< 
   getProductsInterface,                          // Return type
@@ -19,28 +13,27 @@ export const getProducts = createAsyncThunk<
   'products/getProducts',
   async ({  slug='all',searchParams,page}, thunkAPI) => {
     try {
-    const selectedSort=searchParams.get('sort') || 'new'
-   const category=searchParams.get('category')?.split(',')
-   const subCategory=searchParams.get('subCategory')?.split(',')
-   const color=searchParams.get('color')?.split(',')
-   const  brand=searchParams.get('brand')?.split(',')
-   const price=searchParams.get('price')?.split(',').map(Number) || []
-   const gender=searchParams.get('gender') || undefined
-   const params = {
-    category,
-    subCategory,
-    brand,
-    color,
-    gender,
-    price: price ? price.toString() : undefined,
-    sort: selectedSort,
-    page
-  };
-  
-  const response = await customAxios.get(`/${slug}`, {
-    params,
-    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })
-  });
+   const selectedSort=searchParams.get('sort') || 'new'
+   const category=searchParams.get(TAB_KEYS.CATEGORY)?.split(',')
+   const subCategory=searchParams.get(TAB_KEYS.SUBCATEGORY)?.split(',')
+   const color=searchParams.get(TAB_KEYS.COLOR)?.split(',')
+   const  brand=searchParams.get(TAB_KEYS.BRAND)?.split(',')
+   const price=searchParams.get(TAB_KEYS.PRICE)?.split(',').map(Number) || []
+   const gender=searchParams.get(TAB_KEYS.GENDER) || undefined
+  const params = {
+  category,
+  subCategory,
+  brand,
+  color,
+  gender,
+  price: price ? price.toString() : undefined,
+  sort: selectedSort,
+  page
+};
+
+const queryString = qs.stringify(params, { arrayFormat: 'repeat' });
+const url = `${import.meta.env.VITE_PRODUCT_API_URL}/${slug}?${queryString}`;
+const response = await apiClient.get(url, { skipAuth: false });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -57,7 +50,7 @@ SelectedProduct,
   'products/getProductDetails',
   async (id, thunkAPI) => {
     try {
-      const response = await customAxios.get<SelectedProduct>(`/details/${id}`);
+      const response = await apiClient.get<SelectedProduct>(`http://0.0.0.0:3000/products/details/${id}`,{skipAuth:true});
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);

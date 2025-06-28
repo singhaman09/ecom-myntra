@@ -1,5 +1,7 @@
 import type { CartItem, Coupon, Address, Product } from "../types/cart";
 import recom from "../../../assets/recom.jpg";
+import img1 from "../../../assets/img1.png";
+import img2 from "../../../assets/img2.png";
 
 export const STATIC_CART_ITEMS: CartItem[] = [
   {
@@ -89,7 +91,7 @@ export const Recommended_items: Product[] = [
     brand: "Nike",
     price: 14999,
     discount: 20,
-    image: recom,
+    image: img1,
     category: "Shoes",
   },
   {
@@ -98,7 +100,7 @@ export const Recommended_items: Product[] = [
     brand: "Adidas",
     price: 17999,
     discount: 25,
-    image: recom,
+    image: img2,
     category: "Shoes",
   },
   {
@@ -107,7 +109,7 @@ export const Recommended_items: Product[] = [
     brand: "Samsung",
     price: 24999,
     discount: 15,
-    image: recom,
+    image: img1,
     category: "Wearables",
   },
   {
@@ -116,7 +118,7 @@ export const Recommended_items: Product[] = [
     brand: "Apple",
     price: 79999,
     discount: 10,
-    image: recom,
+    image: img2,
     category: "Smartphones",
   },
   {
@@ -125,7 +127,7 @@ export const Recommended_items: Product[] = [
     brand: "OnePlus",
     price: 24999,
     discount: 18,
-    image: recom,
+    image: img1,
     category: "Smartphones",
   },
   {
@@ -134,7 +136,7 @@ export const Recommended_items: Product[] = [
     brand: "Noise",
     price: 3999,
     discount: 30,
-    image: recom,
+    image: img2,
     category: "Wearables",
   },
   {
@@ -143,7 +145,7 @@ export const Recommended_items: Product[] = [
     brand: "Apple",
     price: 114999,
     discount: 12,
-    image: recom,
+    image: img1,
     category: "Laptops",
   },
   {
@@ -152,7 +154,7 @@ export const Recommended_items: Product[] = [
     brand: "Lenovo",
     price: 84999,
     discount: 22,
-    image: recom,
+    image: img2,
     category: "Laptops",
   },
 ];

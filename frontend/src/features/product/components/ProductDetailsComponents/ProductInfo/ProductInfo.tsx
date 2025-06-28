@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { MapPin, Plus, Minus, Truck, FastForward } from 'lucide-react';
+import { MapPin, Plus, Minus, Truck } from 'lucide-react';
 import styles from './ProductInfo.module.css';
+import { PRODUCT_INFO, type PRODUCT_INFO_TYPE } from '../../../Product.enum';
 
 interface IngredientItem {
   name: string;
   description: string;
 }
 
-type SectionKey = 'whatItDoes' | 'ingredients' | 'additionalInfo';
 
 const CONTENT_THRESHOLD = 180;
 
@@ -32,17 +32,17 @@ const additionalInfoContent = 'Apply to lips straight from the bullet or with a 
 
 const ProductInfo: React.FC = () => {
   const [pinCode, setPinCode] = useState('');
-  const [expanded, setExpanded] = useState<Record<SectionKey, boolean>>({
-    whatItDoes: false,
-    ingredients: false,
-    additionalInfo: false,
+  const [expanded, setExpanded] = useState<Record<PRODUCT_INFO_TYPE, boolean>>({
+    [PRODUCT_INFO.WHAT_IT_DOES]: false,
+    [PRODUCT_INFO.INGREDIENTS]: false,
+     [PRODUCT_INFO.ADDITIONAL_INFO]: false,
   });
 
   // Show toggle if content is long
-  const needsToggle = (key: SectionKey) => {
-    if (key === 'ingredients') return ingredientsData.length > 2;
-    if (key === 'whatItDoes') return whatItDoesContent.length > CONTENT_THRESHOLD;
-    if (key === 'additionalInfo') return additionalInfoContent.length > CONTENT_THRESHOLD;
+  const needsToggle = (key: PRODUCT_INFO_TYPE) => {
+    if (key === PRODUCT_INFO.INGREDIENTS) return ingredientsData.length > 2;
+    if (key === PRODUCT_INFO.WHAT_IT_DOES) return whatItDoesContent.length > CONTENT_THRESHOLD;
+    if (key === PRODUCT_INFO.ADDITIONAL_INFO) return additionalInfoContent.length > CONTENT_THRESHOLD;
     return false;
   };
 
@@ -51,7 +51,7 @@ const ProductInfo: React.FC = () => {
     text.length > CONTENT_THRESHOLD ? text.slice(0, CONTENT_THRESHOLD) + '...' : text;
 
   // Toggle handler
-  const handleToggle = (key: SectionKey) => {
+  const handleToggle = (key: PRODUCT_INFO_TYPE) => {
     setExpanded(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
@@ -92,10 +92,10 @@ const ProductInfo: React.FC = () => {
       <div className={styles.section}>
         <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <h3 className={styles.sectionTitle} style={{ flex: 1 }}>What does it do for you</h3>
-          {needsToggle('whatItDoes') && (
+          {needsToggle(PRODUCT_INFO.WHAT_IT_DOES) && (
             <button
               className={styles.sectionHeader}
-              onClick={() => handleToggle('whatItDoes')}
+              onClick={() => handleToggle(PRODUCT_INFO.WHAT_IT_DOES)}
               aria-label={expanded.whatItDoes ? 'Collapse section' : 'Expand section'}
               style={{ width: 'auto', padding: 0, background: 'none', border: 'none' }}
             >
@@ -110,13 +110,13 @@ const ProductInfo: React.FC = () => {
         <div
           className={styles.toggleContent}
           style={{
-            maxHeight: expanded.whatItDoes || !needsToggle('whatItDoes') ? 800 : 80,
-            opacity: expanded.whatItDoes || !needsToggle('whatItDoes') ? 1 : 0.85,
+            maxHeight: expanded.whatItDoes || !needsToggle(PRODUCT_INFO.WHAT_IT_DOES) ? 800 : 80,
+            opacity: expanded.whatItDoes || !needsToggle(PRODUCT_INFO.WHAT_IT_DOES) ? 1 : 0.85,
           }}
         >
           <div className={styles.toggleContentInner}>
             <p className={styles.text}>
-              {expanded.whatItDoes || !needsToggle('whatItDoes')
+              {expanded.whatItDoes || !needsToggle(PRODUCT_INFO.WHAT_IT_DOES)
                 ? whatItDoesContent
                 : getPreview(whatItDoesContent)}
               
@@ -130,10 +130,10 @@ const ProductInfo: React.FC = () => {
       <div className={styles.section}>
         <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <h3 className={styles.sectionTitle} style={{ flex: 1 }}>Ingredients</h3>
-          {needsToggle('ingredients') && (
+          {needsToggle(PRODUCT_INFO.INGREDIENTS) && (
             <button
               className={styles.sectionHeader}
-              onClick={() => handleToggle('ingredients')}
+              onClick={() => handleToggle(PRODUCT_INFO.INGREDIENTS)}
               aria-label={expanded.ingredients ? 'Collapse section' : 'Expand section'}
               style={{ width: 'auto', padding: 0, background: 'none', border: 'none' }}
             >
@@ -148,12 +148,12 @@ const ProductInfo: React.FC = () => {
         <div
           className={styles.toggleContent}
           style={{
-            maxHeight: expanded.ingredients || !needsToggle('ingredients') ? 800 : 100,
-            opacity: expanded.ingredients || !needsToggle('ingredients') ? 1 : 0.85,
+            maxHeight: expanded.ingredients || !needsToggle(PRODUCT_INFO.INGREDIENTS) ? 800 : 100,
+            opacity: expanded.ingredients || !needsToggle(PRODUCT_INFO.INGREDIENTS) ? 1 : 0.85,
           }}
         >
           <div className={styles.toggleContentInner}>
-            {(expanded.ingredients || !needsToggle('ingredients')
+            {(expanded.ingredients || !needsToggle(PRODUCT_INFO.INGREDIENTS)
               ? ingredientsData
               : ingredientsData.slice(0, 2)
             ).map((ingredient, idx) => (
@@ -171,10 +171,10 @@ const ProductInfo: React.FC = () => {
       <div className={styles.section}>
         <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <h3 className={styles.sectionTitle} style={{ flex: 1 }}>Additional Information</h3>
-          {needsToggle('additionalInfo') && (
+          {needsToggle(PRODUCT_INFO.ADDITIONAL_INFO) && (
             <button
               className={styles.sectionHeader}
-              onClick={() => handleToggle('additionalInfo')}
+              onClick={() => handleToggle(PRODUCT_INFO.ADDITIONAL_INFO)}
               aria-label={expanded.additionalInfo ? 'Collapse section' : 'Expand section'}
               style={{ width: 'auto', padding: 0, background: 'none', border: 'none' }}
             >
@@ -189,13 +189,13 @@ const ProductInfo: React.FC = () => {
         <div
           className={styles.toggleContent}
           style={{
-            maxHeight: expanded.additionalInfo || !needsToggle('additionalInfo') ? 800 : 80,
-            opacity: expanded.additionalInfo || !needsToggle('additionalInfo') ? 1 : 0.85,
+            maxHeight: expanded.additionalInfo || !needsToggle(PRODUCT_INFO.ADDITIONAL_INFO) ? 800 : 80,
+            opacity: expanded.additionalInfo || !needsToggle(PRODUCT_INFO.ADDITIONAL_INFO) ? 1 : 0.85,
           }}
         >
           <div className={styles.toggleContentInner}>
             <p className={styles.text}>
-              {expanded.additionalInfo || !needsToggle('additionalInfo')
+              {expanded.additionalInfo || !needsToggle(PRODUCT_INFO.ADDITIONAL_INFO)
                 ? additionalInfoContent
                 : getPreview(additionalInfoContent)}
              

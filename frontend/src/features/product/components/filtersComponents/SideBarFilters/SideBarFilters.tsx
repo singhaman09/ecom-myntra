@@ -2,6 +2,8 @@ import React from "react";
 import styles from "../SideBarMain/SideBar.module.css";
 import { getColorCodeFromString } from "../../../utils/colorsMapping";
 import type { SideFilterProps } from "../../../interfaces/FilterInterfaces";
+import { TAB_KEYS } from "../../../Product.enum";
+
 const SideBarFilters: React.FC<SideFilterProps> = ({
   data,
   type,
@@ -12,7 +14,7 @@ const SideBarFilters: React.FC<SideFilterProps> = ({
     <div>
       {data.map(item => (
         <label key={item} className={styles.checkboxRow}>
-          {type === "colors" ? (
+          {type === TAB_KEYS.COLOR ? (
             <span className={styles.colorSwatchWrapper}>
               <span
                 className={styles.colorSwatch}
