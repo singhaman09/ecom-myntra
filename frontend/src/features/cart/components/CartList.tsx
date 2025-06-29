@@ -4,10 +4,11 @@ import CartItem from "./CartItem";
 import styles from "./styles/CartList.module.css";
 import DiscountCarousel from '../../../assets/discound_carrousel.png';
 import { DISCOUNT } from '../staticData/StaticData';
+import { CartActionType } from "../types/cartEnums";
 
 interface CartListProps {
   items: CartItemType[];
-  onQuantityChange?: (id: string, action: "increment" | "decrement") => void;
+  onQuantityChange?: (id: string, action: CartActionType) => void;
   onRemove: (id: string) => void;
   onMoveToWishlist?: (id: string) => void;
   loadingItemId?: string | null;
@@ -35,7 +36,7 @@ const CartList: React.FC<CartListProps> = ({
     closeSizeModal();
   };
 
-  const handleQuantityChange = (productId: string, action: "increment" | "decrement") => {
+  const handleQuantityChange = (productId: string, action: CartActionType) => {
     onQuantityChange?.(productId, action);
   };
 

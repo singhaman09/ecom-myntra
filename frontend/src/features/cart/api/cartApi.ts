@@ -62,7 +62,7 @@ export const updateCartItemSizeAPI = async (
   newSize: string
 ) => {
   try {
-    const res = await apiClient.put<Cart>(`/cart/${productId}/${newSize}`);
+    const res = await apiClient.put<Cart>(`/cart/${productId}/size = ${newSize}`);
     return res.data;
   } catch (error) {
     throw error;

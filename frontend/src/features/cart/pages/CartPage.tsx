@@ -10,19 +10,13 @@ import {
   STATIC_CART_ITEMS,
   STATIC_ADDRESSES,
 } from "../staticData/StaticData";
-import CartSummary from "../components/CartSummary";
-import OffersSection from "../components/OffersSection";
-import RemoveModal from "../components/modals/RemoveModal";
-import CouponModal from "../components/modals/CouponModal";
-import ChangeAddressModal from "../components/modals/ChangeAddressModal";
-import styles from "../components/styles/CartPage.module.css";
+import { CartModalAction, CartActionType, CartModalType } from "../types/cartEnums";
 import { removeCartItemAPI, moveItemToWishlistAPI } from "../api/cartApi";
-import RecommendedProduct from "../components/RecommendedProducts";
 import { toast } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "../../profile/redux/hooks";
 import { fetchAddresses } from "../../profile/redux/slices/addressSlice";
 import type { Address as ProfileAddress } from "../../profile/types/profile.types";
-import type { Address } from "../types/cart";
+import type { Address, CartItem, Coupon } from "../types/cart";
 import gsap from "gsap";
 import {
   incrementItemQuantity,
@@ -30,28 +24,32 @@ import {
   fetchCart,
 } from "../redux/cartSlice";
 import EmptyCart from "./EmptyCart";
-import type { CartItem, Coupon } from "../types/cart"; // Import CartItem and Coupon types
+import axios, { AxiosError } from "axios";
+import styles from "../components/styles/CartPage.module.css";
 
 const FooterCart = React.lazy(() => import("../components/FooterCart"));
 const AddressSection = React.lazy(() => import("../components/AddressSection"));
+const RemoveModal = React.lazy(() => import("../components/modals/RemoveModal"));
+const CouponModal = React.lazy(() => import("../components/modals/CouponModal"));
+const ChangeAddressModal = React.lazy(() => import("../components/modals/ChangeAddressModal"));
+const OffersSection = React.lazy(() => import("../components/OffersSection"));
+const CartSummary = React.lazy(() => import("../components/CartSummary"));
+const RecommendedProduct = React.lazy(() => import("../components/RecommendedProducts"));
 
 const ITEMS_PER_PAGE = 5;
-
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
-  const modal = query.get("modal");
+  const modal = query.get("modal") as CartModalType | null;
 
   // State management
   const [offers, setOffers] = useState<string[]>(STATIC_OFFERS);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [availableCoupons] = useState<Coupon[]>(STATIC_COUPONS);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(
-    null
-  );
+  const [modalAction, setModalAction] = useState<CartModalAction | null>(null);
   const [showMoreOffers, setShowMoreOffers] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
@@ -106,22 +104,26 @@ const CartPage: React.FC = () => {
 
       await dispatch(fetchCart()).unwrap();
       setOffers(STATIC_OFFERS);
-    } catch (err: any) {
-      console.error("Error fetching cart data:", err);
-      if (
-        err.code === "NETWORK_ERROR" ||
-        err.message?.includes("Network Error")
-      ) {
-        setIsOffline(true);
-        toast.error(
-          "Unable to connect to server. Please check your internet connection."
-        );
-      } else if (err.response?.status === 401 || err.response?.status === 404) {
-        setError("Please login to view your cart.");
-        toast.error("Please login to view your cart.");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (
+          err.code === "NETWORK_ERROR" ||
+          err.message?.includes("Network Error")
+        ) {
+          setIsOffline(true);
+          toast.error(
+            "Unable to connect to server. Please check your connection."
+          );
+        } else if (err.response?.status === 401 || err.response?.status === 404) {
+          setError("Please login to view your cart.");
+          toast.error("Please login to view your cart.");
+        } else {
+          setError("Unable to fetch cart data. Please try again later.");
+          toast.error("Unable to fetch cart data. Please try again later.");
+        }
       } else {
-        setError("Unable to fetch cart data. Please try again later.");
-        toast.error("Unable to fetch cart data. Please try again later.");
+        setError("An unexpected error occurred.");
+        toast.error("An unexpected error occurred.");
       }
     } finally {
       setLoading(false);
@@ -135,7 +137,7 @@ const CartPage: React.FC = () => {
   // Debounced quantity change handler
   const handleQtyChange = async (
     productId: string,
-    action: "increment" | "decrement"
+    action: CartActionType
   ) => {
     try {
       if (isOffline) {
@@ -145,7 +147,7 @@ const CartPage: React.FC = () => {
         return;
       }
       setLoadingItemId(productId);
-      if (action === "increment") {
+      if (action === CartActionType.INCREMENT) {
         await dispatch(incrementItemQuantity(productId)).unwrap();
       } else {
         await dispatch(decrementItemQuantity(productId)).unwrap();
@@ -153,12 +155,17 @@ const CartPage: React.FC = () => {
       await dispatch(fetchCart());
       toast.success(
         `Quantity ${
-          action === "increment" ? "increased" : "decreased"
+          action === CartActionType.INCREMENT ? "increased" : "decreased"
         } successfully!`
       );
-    } catch (err: any) {
-      console.error(`Error ${action}ing quantity:`, err);
-      toast.error(`Failed to ${action} quantity. Please try again.`);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(`Error ${action}ing quantity:`, err);
+        toast.error(`Failed to ${action} quantity. Please try again.`);
+      } else {
+        console.error(`Unexpected error ${action}ing quantity:`, err);
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
       setLoadingItemId(null);
     }
@@ -177,9 +184,14 @@ const CartPage: React.FC = () => {
       await removeCartItemAPI(productId);
       await dispatch(fetchCart());
       toast.success("Item removed from cart!");
-    } catch (err: any) {
-      console.error("Error removing item:", err);
-      toast.error("Failed to remove item. Please try again.");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Error removing item:", err);
+        toast.error("Failed to remove item. Please try again.");
+      } else {
+        console.error("Unexpected error removing item:", err);
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
       setLoadingItemId(null);
     }
@@ -203,9 +215,14 @@ const CartPage: React.FC = () => {
       setSelectedItems([]);
       setModalAction(null);
       toast.success("Items moved to wishlist!");
-    } catch (err: any) {
-      console.error("Error moving items to wishlist:", err);
-      toast.error("Failed to move items to wishlist. Please try again.");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Error moving items to wishlist:", err);
+        toast.error("Failed to move items to wishlist. Please try again.");
+      } else {
+        console.error("Unexpected error moving items to wishlist:", err);
+        toast.error("An unexpected error occurred.");
+      }
     }
   };
 
@@ -256,9 +273,18 @@ const CartPage: React.FC = () => {
     const finalPrice =
       totalPrice - (appliedCoupon ? appliedCoupon.discount : 0);
 
+    // Debug logging to verify totals
+    console.log("CartSummary Props:", {
+      totalItems: fallbackCartItems.length,
+      totalMRP,
+      totalPrice,
+      finalPrice,
+      appliedCoupon,
+    });
+
     return { totalMRP, totalPrice, finalPrice };
   };
-  const { totalMRP, finalPrice } = calculateTotals();
+  const { totalMRP, totalPrice, finalPrice } = calculateTotals();
 
   // Pagination for fallbackCartItems
   const sortedCartItems = [...(fallbackCartItems || [])].reverse();
@@ -327,11 +353,13 @@ const CartPage: React.FC = () => {
                   onAddAddress={() => navigate("/cart?modal=address")}
                 />
               </Suspense>
-              <OffersSection
-                offers={fallbackOffers}
-                showMoreOffers={showMoreOffers}
-                toggleOffersDropdown={toggleOffersDropdown}
-              />
+              <Suspense fallback={<div>Loading offers...</div>}>
+                <OffersSection
+                  offers={fallbackOffers}
+                  showMoreOffers={showMoreOffers}
+                  toggleOffersDropdown={toggleOffersDropdown}
+                />
+              </Suspense>
               <div className={styles.cartListSection}>
                 <CartList
                   items={paginatedItems}
@@ -414,45 +442,62 @@ const CartPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <CartSummary
-                totalItems={fallbackCartItems.length}
-                totalPrice={finalPrice}
-                totalMRP={totalMRP}
-                appliedCoupon={appliedCoupon}
-              />
+              <Suspense fallback={<div>Loading summary...</div>}>
+                {/* Ensure CartSummary is rendered with valid props */}
+                {totalMRP !== 0 || totalPrice !== 0 || finalPrice !== 0 ? (
+                  <CartSummary
+                    totalItems={fallbackCartItems.length}
+                    totalPrice={finalPrice}
+                    totalMRP={totalMRP}
+                    appliedCoupon={appliedCoupon}
+                  />
+                ) : (
+                  <div className={styles.summaryFallback}>
+                    Unable to display cart summary due to invalid data.
+                  </div>
+                )}
+              </Suspense>
             </div>
           </div>
 
-          <RecommendedProduct />
+          <Suspense fallback={<div>Loading recommendations...</div>}>
+            <RecommendedProduct />
+          </Suspense>
 
-          {modal === "remove" && (
-            <RemoveModal
-              showRemoveModal={true}
-              modalAction={modalAction}
-              selectedItems={selectedItems}
-              handleMoveToWishlist={handleMoveToWishlist}
-              setShowRemoveModal={() => navigate("/cart")}
-              setModalAction={setModalAction}
-            />
+          {modal === CartModalType.REMOVE && (
+            <Suspense fallback={<div>Loading modal...</div>}>
+              <RemoveModal
+                showRemoveModal={true}
+                modalAction={modalAction}
+                selectedItems={selectedItems}
+                handleMoveToWishlist={handleMoveToWishlist}
+                setShowRemoveModal={() => navigate("/cart")}
+                setModalAction={setModalAction}
+              />
+            </Suspense>
           )}
 
-          {modal === "coupon" && (
-            <CouponModal
-              isOpen={true}
-              onClose={() => navigate("/cart")}
-              onApplyCoupon={handleApplyCoupon}
-              availableCoupons={fallbackCoupons}
-            />
+          {modal === CartModalType.COUPON && (
+            <Suspense fallback={<div>Loading modal...</div>}>
+              <CouponModal
+                isOpen={true}
+                onClose={() => navigate("/cart")}
+                onApplyCoupon={handleApplyCoupon}
+                availableCoupons={fallbackCoupons}
+              />
+            </Suspense>
           )}
 
-          {modal === "address" && (
-            <ChangeAddressModal
-              isOpen={true}
-              onClose={() => navigate("/cart")}
-              onSave={handleSaveAddress}
-              onUpdateAddresses={() => dispatch(fetchAddresses())}
-              addresses={fallbackAddresses}
-            />
+          {modal === CartModalType.ADDRESS && (
+            <Suspense fallback={<div>Loading modal...</div>}>
+              <ChangeAddressModal
+                isOpen={true}
+                onClose={() => navigate("/cart")}
+                onSave={handleSaveAddress}
+                onUpdateAddresses={() => dispatch(fetchAddresses())}
+                addresses={fallbackAddresses}
+              />
+            </Suspense>
           )}
         </div>
       )}
@@ -461,7 +506,15 @@ const CartPage: React.FC = () => {
           totalPrice={finalPrice}
           savings={totalMRP - finalPrice}
           onPlaceOrder={() => {
-            toast.info("Place order functionality not implemented yet.");
+            navigate("/payment", {
+              state: {
+                totalMRP,
+                totalPrice,
+                finalPrice,
+                appliedCoupon,
+                totalItems: fallbackCartItems.length,
+              },
+            });
           }}
         />
       </Suspense>
