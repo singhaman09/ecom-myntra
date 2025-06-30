@@ -4,6 +4,7 @@ import type { Product, Shade, Size } from "../../../interfaces/ProductInterfaces
 import { MoveLeft } from "lucide-react";
 import { getColorCodeFromString } from "../../../utils/colorsMapping";
 import { handleImageError } from "../../../utils/HandleImageError";
+import { useProductSelector } from "../../../hooks/storeHooks";
 
 interface SelectShadeSizeModalProps {
   product: Product;
@@ -22,7 +23,7 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
   const [selectedShade, setSelectedShade] = useState<Shade | null>(null);
   const [shadeConfirmed, setShadeConfirmed] = useState(false);
   const [selectedSize, setSelectedSize] = useState<Size | null>(null);
-
+    const addToBagdata=useProductSelector(state=>state.cart.cart)
   const uniqueColors = useMemo(
     () => [...new Set(product.variants.map((v) => v.color))],
     [product.variants]
@@ -140,6 +141,7 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
                 (val) =>
                   val.size === size.label && val.color === selectedShade?.name && val.stock
               );
+              const alreadyAdded=!!addToBagdata.find(val=>val.productId==product._id && val.color==selectedShade?.name && val.size==size.label)
               return (
                 <label
                   key={size.id}
@@ -148,8 +150,8 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
                   }
                 >
                     <div> {size.label}
-                  {isOutOfStock && (
-                    <span className={styles.outOfStockText}> (Out of stock)</span>
+                  {isOutOfStock || alreadyAdded && (
+                    <span className={styles.outOfStockText}> {isOutOfStock ?"(Out of stock)":"(Already Added)"}</span>
                   )}</div>
                   <input
                     type="radio"
@@ -157,7 +159,7 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
                     value={size.label}
                     checked={selectedSize?.id === size.id}
                     onChange={() => setSelectedSize(size)}
-                    disabled={isOutOfStock}
+                    disabled={isOutOfStock || alreadyAdded}
                     className={styles.sizeRadioInput}
                   />
                
@@ -191,6 +193,7 @@ const SelectShadeSizeModal: React.FC<SelectShadeSizeModalProps> = ({
               }
             }}
             disabled={!selectedSize}
+            
           >
             Add to Bag
           </button>

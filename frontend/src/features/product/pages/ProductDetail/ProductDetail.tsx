@@ -8,8 +8,6 @@ import { useProductDispatch, useProductSelector } from "../../hooks/storeHooks";
 import { getProductDetails } from "../../productAPI";
 import Loader from "../../utils/Loader";
 import { averageRating } from "../../utils/Reviews";
-import { addCartItem, deleteCartItem } from "../../../cart/redux/cartSlice";
-import { addToWishlist, removeFromWishlist } from "../../../wishlist/slice/wishlistSlice";
 // Lazy load components (no Suspense here)
 const SimilarProduct = React.lazy(() => import("../../components/ProductDetailsComponents/similarProducts/SimilarProduct"));
 const ReviewSection = React.lazy(() => import("../../components/ProductDetailsComponents/Reviews/ReviewSection"));
@@ -20,6 +18,7 @@ import BoughtTogether from "../../components/ProductDetailsComponents/BoughtToge
 import { getColorCodeFromString } from "../../utils/colorsMapping";
 import { handleImageError } from "../../utils/HandleImageError";
 import { PRODUCT_DETAILS_VARIANT} from "../../Product.enum";
+import { addToBag, addWishlist, removeFromBag, removeWishlist } from "../../handlers/BagAndWhislist";
 const Breadcrumbs = React.lazy(() => import("../../utils/BreadCrumbs/BreadCrumbs"));
 const ErrorPage = React.lazy(() => import("../Error/ErrorPage"));
 
@@ -113,26 +112,7 @@ if(uniqueSizes.length>0 && uniqueColors.length>0){
     setSelectedImageIndex(index);
   },[selectedImageIndex]);
 
-  const addToBag = useCallback(() => {
-    const productId = id || '';
-    dispatch(addCartItem({productId,size:selectedSize || '',color:selectedColor || ''}));
-  },[id]);
 
-  const removeFromBag = useCallback(() => {
-    const productId = id || '';
-    const cartId= cartData.cart.find(val=>val.productId==productId)?.cartId
-    dispatch(deleteCartItem(cartId || ''));
-  },[id]);
-
-  const removeWishlist = useCallback(() => {
-  const whislistId=wishlistData.items.find(val=>val.productId==id)?.id
-    dispatch(removeFromWishlist(whislistId || ''));
-  },[id]);
-
-  const addWishlist = useCallback(() => {
-    const productId = id || '';
-    dispatch(addToWishlist({productId,size:selectedSize || '',color:selectedColor || ''}));
-  },[id]);
 
   if (data.loading) return <Loader isInitial={true} />;
   if (data.error) return <ErrorPage />;
@@ -321,20 +301,20 @@ if(uniqueSizes.length>0 && uniqueColors.length>0){
               <button className={styles.notifyButton}>Notify Me</button>
             ) : (
               <>
-              {cartData.cart.length<=0 || cartData.cart.find(val=>val.productId!=id && selectedSize!=val.size && selectedColor!=val.color)?<button className={styles.addToBagBtn} onClick={addToBag}>ADD TO BAG</button>:<button className={styles.addToBagBtn} onClick={()=>removeFromBag()}>REMOVE FROM BAG</button>}
+              {cartData.cart.length<=0 || cartData.cart.find(val=>val.productId!=id && selectedSize!=val.size && selectedColor!=val.color)?<button className={styles.addToBagBtn} onClick={()=>addToBag(dispatch,id,selectedColor,selectedSize)}>ADD TO BAG</button>:<button className={styles.addToBagBtn} onClick={()=>removeFromBag(dispatch,id,cartData.cart)}>REMOVE FROM BAG</button>}
               </>
             )}
 
             { wishlistData.items.find(val=>val.productId==id && val.size==selectedSize && val.color==selectedColor)?  <button
               className={`${styles.wishlistBtn} ${styles.wishlistBtnSelected}`}
-              onClick={removeWishlist}
+              onClick={()=>removeWishlist(dispatch,id,wishlistData.items)}
             >
                 <FavoriteIcon
                   className={styles.heartIcon}
                   sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
                 />
                  <span>WISHLIST</span>
-              </button>: <button className={`${styles.wishlistBtn}`} onClick={addWishlist}>
+              </button>: <button className={`${styles.wishlistBtn}`} onClick={()=>addWishlist(dispatch,id,selectedColor,selectedSize)}>
                 <FavoriteBorderIcon
                   className={styles.heartIcon}
                   sx={{ color: "#3D857E", fontSize: 20, verticalAlign: "middle" }}
