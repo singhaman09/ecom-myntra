@@ -32,7 +32,7 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  padding: 6px;
+  padding: 3px;
   background: #fff;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -42,7 +42,10 @@
   cursor: pointer;
   font-family: 'Work Sans', sans-serif;
 }
-
+.wishlistBtn button{
+  border: none;
+  background-color: transparent;
+}
 .card:hover .wishlistBtn {
   opacity: 1;
 }

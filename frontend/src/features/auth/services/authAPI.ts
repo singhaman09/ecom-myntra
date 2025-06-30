@@ -1,5 +1,4 @@
 import apiClient from '../../../services/apiClient';
-
 // Extend AxiosRequestConfig to include skipAuth
 declare module 'axios' {
   export interface AxiosRequestConfig {
