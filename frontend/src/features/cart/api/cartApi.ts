@@ -5,8 +5,7 @@ import { getToken } from "../../auth/utils/tokenUtils";
 const CART_API_BASE_URL = import.meta.env.VITE_CART_API_URL;
 
 const apiClient = axios.create({
-  baseURL: CART_API_BASE_URL,
-  headers: {
+  baseURL: CART_API_BASE_URL,  headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
