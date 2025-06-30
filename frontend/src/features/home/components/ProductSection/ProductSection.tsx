@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import styles from './css/ProductSection.module.css';
-import ProductCard from '../../product/components/ProductListComponents/ProductCard/ProductCard';
+import styles from './ProductSection.module.css';
+import ProductCard from '../../../product/components/ProductListComponents/ProductCard/ProductCard';
 import { useNavigate } from 'react-router-dom';
 
 interface ProductSectionProps {

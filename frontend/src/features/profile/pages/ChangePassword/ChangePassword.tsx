@@ -383,6 +383,7 @@ import React, {
 import styles from './ChangePassword.module.css';
 import { useAppDispatch } from '../../redux/hooks';
 import { changePasswordThunk } from '../../redux/slices/changePasswordSlice';
+import { CHANGE_PASSWORD_FORM_FIELDS } from '../../types/profile_enum';
 
 const Lock = lazy(() => import('lucide-react').then(m => ({ default: m.Lock })));
 const Eye = lazy(() => import('lucide-react').then(m => ({ default: m.Eye })));
@@ -542,8 +543,8 @@ const ChangePassword: React.FC = () => {
         {['current', 'new', 'confirm'].map((field, i) => (
           <div key={i} className={styles.formGroup}>
             <label className="form-label">
-              {field === 'current' ? 'Current Password' :
-               field === 'new' ? 'New Password' :
+              {field === CHANGE_PASSWORD_FORM_FIELDS.CURRENT ? CHANGE_PASSWORD_FORM_FIELDS.CURRENT_PASSWORD :
+               field === CHANGE_PASSWORD_FORM_FIELDS.NEW ? CHANGE_PASSWORD_FORM_FIELDS.NEW_PASSWORD :
                'Confirm New Password'}
             </label>
             <div className={styles.passwordInput}>

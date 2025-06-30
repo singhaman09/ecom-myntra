@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
-import styles from "./css/CategoryCarousel.module.css";
+import styles from "./CategoryCarousel.module.css";
 import CategoryItem from "./CattegoryItem";
-import { useHorizontalSmoothScroll } from "../hooks/useHorizontalSmoothScroll";
+import { useHorizontalSmoothScroll } from "../../hooks/useHorizontalSmoothScroll";
 
 type CategoryType = "sale" | "trending" | "other";
 
@@ -33,63 +33,63 @@ const DEFAULT_CATEGORIES: Category[] = [
     name: "Shirts",
     image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/shirts"
+    link: "/products/men-shirts"
   },
   {
     id: "2",
     name: "T-Shirts",
     image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop&crop=center",
     type: "trending",
-    link: "/products/t-shirts"
+    link: "/products/men-t-shirts"
   },
   {
     id: "3",
     name: "Jeans",
     image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/jeans"
+    link: "/products/men-jeans"
   },
   {
     id: "4",
     name: "Dresses",
     image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=100&h=100&fit=crop&crop=center",
     type: "trending",
-    link: "/products/dresses"
+    link: "/products/women-dresses"
   },
   {
     id: "5",
     name: "Sneakers",
     image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/sneakers"
+    link: "/products/men-sneakers"
   },
   {
     id: "6",
     name: "Jackets",
     image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/jackets"
+    link: "/products/men-jackets"
   },
   {
     id: "9",
     name: "Watches",
     image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/watches"
+    link: "/products/men-watches"
   },
   {
     id: "10",
     name: "Bags",
     image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/bags"
+    link: "/products/women-bags"
   },
   {
     id: "11",
     name: "Shorts",
     image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/shorts"
+    link: "/products/men-shorts"
   },
   {
     id: "12",
@@ -103,21 +103,21 @@ const DEFAULT_CATEGORIES: Category[] = [
     name: "Hoodies",
     image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/hoodies"
+    link: "/products/men-hoodies"
   },
   {
     id: "14",
     name: "Skirts",
     image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/skirts"
+    link: "/products/women-skirts"
   },
   {
     id: "15",
     name: "Suits",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/suits"
+    link: "/products/men-suits"
   },
   {
     id: "16",
@@ -138,21 +138,21 @@ const DEFAULT_CATEGORIES: Category[] = [
     name: "Sweatshirts",
     image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/sweatshirts"
+    link: "/products/men-sweatshirts"
   },
   {
     id: "19",
     name: "Mini Skirts",
     image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/mini-skirts"
+    link: "/products/women-mini-skirts"
   },
   {
     id: "20",
     name: "Formal Wear",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=center",
     type: "other",
-    link: "/products/formal-wear"
+    link: "/products/men-formal-wear"
   }
 ];
 
@@ -161,9 +161,12 @@ const checkIsMobile = (): boolean => window.innerWidth <= MOBILE_BREAKPOINT;
 
 const getTypeColor = (type: CategoryType): string => TYPE_COLORS[type];
 
+const WINDOW = {
+  UNDEFINED: "undefined"
+}
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === WINDOW.UNDEFINED) return false;
     return checkIsMobile();
   });
 

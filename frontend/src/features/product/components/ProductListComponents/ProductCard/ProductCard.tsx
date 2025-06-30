@@ -6,17 +6,19 @@ import type { ProductCardProps } from '../../../interfaces/ProductInterfaces';
 import { useNavigate } from 'react-router-dom';
 import { renderStars } from '../../../utils/RenderStars';
 import { averageRating } from '../../../utils/Reviews';
-import { useProductSelector } from '../../../hooks/storeHooks';
+import { useProductDispatch, useProductSelector } from '../../../hooks/storeHooks';
 import SelectShadeSizeModal from '../SelectSizeModal/SelectSizeModal';
 import { toast } from 'react-toastify';
 import { handleImageError } from '../../../utils/HandleImageError';
+import { addWishlist, removeFromBag, removeWishlist } from '../../../handlers/BagAndWhislist';
 const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const navigate=useNavigate()
-  const data=useProductSelector(state=>state.wishlist.items)
+  const whislistData=useProductSelector(state=>state.wishlist.items)
+  const dispatch=useProductDispatch()
+  const addToBagdata=useProductSelector(state=>state.cart.cart)
   const avgRating = useMemo(() => averageRating(product.reviews), [product.reviews]);
   const discountPercentage = 40
   const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <>
     <div className={styles.card} onClick={()=>navigate(`/productDetails/${product._id}`)}>
@@ -30,13 +32,18 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
         />
         
         {/* Wishlist Button */}
-        <button className={styles.wishlistBtn}   onClick={(event) => {event.stopPropagation()}}>
-          {data.find(val=>val.productId==product._id)
-            ? <FavoriteIcon style={{ color: '#3D857E' }} />
-            : <FavoriteBorderIcon style={{ color: '#3D857E' }} />
+         <div  className={styles.wishlistBtn} onClick={(event)=>event.stopPropagation()}>
+          {whislistData.find(val=>val.productId==product._id)
+            ? <button   onClick={(event) => {event.stopPropagation()
+              addWishlist(dispatch,product._id,product.variants[0].color,product.variants[0].size)
+            }
+          }><FavoriteIcon style={{ color: '#3D857E' }} /> </button>
+            :<button  onClick={(event) => {event.stopPropagation()
+              removeWishlist(dispatch,product._id,whislistData)
+            }}> <FavoriteBorderIcon style={{ color: '#3D857E' }} /></button>
           }
-        </button>
-        
+       
+        </div>
         {/* Discount Badge */}
         {/* {discountPercentage > 0 && (
           <div className={styles.discountBadge}>
@@ -81,10 +88,8 @@ const ProductCard: React.FC<ProductCardProps> = ({product}) => {
             </>
           )}
         </div>
-        <button className={styles.addToBag} onClick={(event)=>{event.stopPropagation(),setModalOpen(true)}}>Select Shade</button>
-         
+      {product.variants.length==1 && addToBagdata.find(val=>val.productId==product._id)?<button className={styles.addToBag} onClick={()=>removeFromBag(dispatch,product._id,addToBagdata)}>Remove From Bag</button>:<button className={styles.addToBag} onClick={(event)=>{event.stopPropagation(),setModalOpen(true)}}>Select Shade</button>}  
       </div>
-    
     </div>
       { modalOpen &&  <SelectShadeSizeModal
          product={product}         

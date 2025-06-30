@@ -4,22 +4,22 @@ import { useNavigate } from "react-router-dom";
 import { useLenisScroll } from "../hooks/useLenisScroll";
 
 // Lazy load components
-const HeroSection = lazy(() => import("../components/HeroSection"));
+const HeroSection = lazy(() => import("../components/HeroSection/HeroSection"));
 const ProductCategoryGrid = lazy(
-  () => import("../components/CategoryCarousel")
+  () => import("../components/CategoryCarousel/CategoryCarousel")
 );
-const ReviewSection = lazy(() => import("../components/ReviewSection"));
+const ReviewSection = lazy(() => import("../components/ReviewSection/ReviewSection"));
 const RecommendedProducts = lazy(
-  () => import("../components/RecommendedProducts")
+  () => import("../components/RecommendedProducts/RecommendedProducts")
 );
-const TrendingProducts = lazy(() => import("../components/TrendingProducts"));
+const TrendingProducts = lazy(() => import("../components/TrendingProducts/TrendingProducts"));
 const PerfectGiftSection = lazy(
-  () => import("../components/PerfectGiftSection")
+  () => import("../components/GiftSection/PerfectGiftSection")
 );
 const BestSellerProducts = lazy(
-  () => import("../components/BestSellerProducts")
+  () => import("../components/BestSellerProducts/BestSellerProducts")
 );
-const SummerSaleBanner = lazy(() => import("../components/SummerSaleBanner"));
+const SummerSaleBanner = lazy(() => import("../components/SaleBanners/SummerSaleBanner"));
 
 const Home: React.FC = () => {
   const navigate = useNavigate();

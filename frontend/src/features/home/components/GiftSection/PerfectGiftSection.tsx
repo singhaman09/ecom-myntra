@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import styles from './css/PerfectGiftSection.module.css';
+import styles from './PerfectGiftSection.module.css';
 
 // A small promotional section with a title, short description, button, and image
 const PerfectGiftSection: React.FC = () => {

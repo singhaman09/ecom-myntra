@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./css/CategoryCarousel.module.css";
+import styles from "./CategoryCarousel.module.css";
 
 type CategoryType = "sale" | "trending" | "other";
 
@@ -31,6 +31,11 @@ const CategoryItem: React.FC<CategoryItemProps> = React.memo(({ category, onImag
     navigate(category.link);
   }, [navigate, category.link]);
 
+  enum EVENT_KEY  {
+    ENTER = "Enter",
+    BLANK = " "
+  }
+
   return (
     <div
       className={styles.categoryItem}
@@ -38,7 +43,7 @@ const CategoryItem: React.FC<CategoryItemProps> = React.memo(({ category, onImag
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        if (e.key === EVENT_KEY.ENTER || e.key === EVENT_KEY.BLANK) {
           e.preventDefault();
           handleClick();
         }

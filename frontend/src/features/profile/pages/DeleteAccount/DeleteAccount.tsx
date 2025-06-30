@@ -6,6 +6,7 @@ import React, {
   memo,
 } from 'react';
 import styles from './DeleteAccount.module.css';
+import { DELETE_ACCOUNT_FORM_FIELDS } from '../../types/profile_enum';
 
 const AlertTriangle = lazy(() => import('lucide-react').then(m => ({ default: m.AlertTriangle })));
 const Trash2 = lazy(() => import('lucide-react').then(m => ({ default: m.Trash2 })));
@@ -47,7 +48,7 @@ const DeleteAccount: React.FC<DeleteAccountProps> = ({ onGoBack }) => {
   }, []);
 
   const handleFinalDelete = useCallback(() => {
-    if (deleteConfirmation === 'DELETE') {
+    if (deleteConfirmation === DELETE_ACCOUNT_FORM_FIELDS.DELETE) {
       setIsDeleting(true);
       setTimeout(() => {
         alert('Account deletion request submitted. You will receive a confirmation email shortly.');
@@ -57,8 +58,8 @@ const DeleteAccount: React.FC<DeleteAccountProps> = ({ onGoBack }) => {
   }, [deleteConfirmation]);
 
   const handleBack = useCallback(() => {
-    if (step === 'confirm') setStep('reasons');
-    else if (step === 'final') setStep('confirm');
+    if (step === DELETE_ACCOUNT_FORM_FIELDS.CONFIRM) setStep('reasons');
+    else if (step === DELETE_ACCOUNT_FORM_FIELDS.FINAL) setStep('confirm');
     else onGoBack?.();
   }, [step, onGoBack]);
 
@@ -71,7 +72,7 @@ const DeleteAccount: React.FC<DeleteAccountProps> = ({ onGoBack }) => {
         </button>
       </div>
 
-      {step === 'reasons' && (
+      {step === DELETE_ACCOUNT_FORM_FIELDS.REASONS && (
         <div className={styles.step}>
           <div className={styles.sadIcon}>
             <Suspense fallback={null}><AlertTriangle size={64} /></Suspense>
@@ -115,7 +116,7 @@ const DeleteAccount: React.FC<DeleteAccountProps> = ({ onGoBack }) => {
         </div>
       )}
 
-      {step === 'confirm' && (
+      {step === DELETE_ACCOUNT_FORM_FIELDS.CONFIRM && (
         <div className={styles.step}>
           <div className={styles.warningIcon}>
             <Suspense fallback={null}><AlertTriangle size={64} /></Suspense>
@@ -151,7 +152,7 @@ const DeleteAccount: React.FC<DeleteAccountProps> = ({ onGoBack }) => {
         </div>
       )}
 
-      {step === 'final' && (
+      {step === DELETE_ACCOUNT_FORM_FIELDS.FINAL && (
         <div className={styles.step}>
           <div className={styles.finalWarning}>
             <Suspense fallback={null}><AlertTriangle size={48} /></Suspense>
@@ -176,7 +177,7 @@ const DeleteAccount: React.FC<DeleteAccountProps> = ({ onGoBack }) => {
             <button
               className={`btn ${styles.finalDeleteButton}`}
               onClick={handleFinalDelete}
-              disabled={deleteConfirmation !== 'DELETE' || isDeleting}
+              disabled={deleteConfirmation !== DELETE_ACCOUNT_FORM_FIELDS.DELETE || isDeleting}
             >
               {isDeleting ? 'Processing...' : 'Delete My Account Forever'}
             </button>

@@ -1,9 +1,23 @@
 import type { AxiosResponse } from "axios";
 import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
+
 import { ORDER } from "./types/order.enum";
 import apiClient from "../../services/apiClient";
+import axios from "axios";
 const ORDER_URL = import.meta.env.VITE_ORDER_URL;
 const USE_MOCK = true;
+
+const API_BASE_URL = "http://172.50.0.244:3333/orders";
+const token = localStorage.getItem("token");
+
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+    Authorization: `Bearer ${token}`,
+  },
+});
 
 interface OrderApiResponse {
   _id: string;

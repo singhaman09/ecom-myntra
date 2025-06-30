@@ -2,12 +2,12 @@ import React, { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import {
   forgotPasswordSchema,
   type ForgotPasswordFormData,
-} from "../schemas/authSchemas";
-import styles from "./css/ForgotPassword.module.css";
+} from "../../schemas/authSchemas";
+import styles from "./ForgotPassword.module.css";
 
 const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
