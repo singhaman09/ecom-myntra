@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  Package, 
-  RefreshCw, 
-  User, 
-  MapPin, 
-  Key,
-  Trash2, 
-  FileText, 
-  Shield,
-  ChevronRight,
-  Bell,
-  LogOut,
-  X
+import {
+  Package, RefreshCw, User, MapPin, Key, Trash2,
+  FileText, Shield, ChevronRight, Bell, LogOut, X
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 import type { SidebarItem } from '../../types/profile.types';
@@ -24,146 +14,76 @@ interface SidebarProps {
   user: {
     name: string;
     email: string;
-    createdAt: string;
+    createdAt?: string;
   };
   onLogout?: () => Promise<void>;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ 
-  activeItem, 
-  onItemClick, 
-  user,
-  onLogout 
-}) => {
-  const { logoutRequest , signOut } = useAuth();
+const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, user, onLogout }) => {
+  const { logoutRequest } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
 
+  const ICONS = {
+    Package, RefreshCw, User, Bell, MapPin, Key, Trash2,
+    FileText, Shield, LogOut
+  };
+
   const accountItems: SidebarItem[] = [
-    {
-      id: 'profile',
-      label: 'Profile',
-      icon: 'User'
-    },
-    {
-      id: 'notifications',
-      label: 'Notifications',
-      icon: 'Bell'
-    },
-    {
-      id: 'orders',
-      label: 'Orders',
-      icon: 'Package'
-    },
-    {
-      id: 'addresses',
-      label: 'Addresses',
-      icon: 'MapPin'
-    },
-    {
-      id: 'change-password',
-      label: 'Change Password',
-      icon: 'Key'
-    },
-    {
-      id: 'delete-account',
-      label: 'Delete Account',
-      icon: 'Trash2'
-    },
-    {
-      id: 'logout',
-      label: 'Logout',
-      icon: 'LogOut'
-    }
+    { id: 'profile', label: 'Profile', icon: 'User' },
+    { id: 'notifications', label: 'Notifications', icon: 'Bell' },
+    { id: 'orders', label: 'Orders', icon: 'Package' },
+    { id: 'addresses', label: 'Addresses', icon: 'MapPin' },
+    { id: 'change-password', label: 'Change Password', icon: 'Key' },
+    { id: 'delete-account', label: 'Delete Account', icon: 'Trash2' },
+    { id: 'logout', label: 'Logout', icon: 'LogOut' }
   ];
 
   const legalItems: SidebarItem[] = [
-    {
-      id: 'terms',
-      label: 'Terms of Use',
-      icon: 'FileText'
-    },
-    {
-      id: 'privacy',
-      label: 'Privacy Policy',
-      icon: 'Shield'
-    }
+    { id: 'terms', label: 'Terms of Use', icon: 'FileText' },
+    { id: 'privacy', label: 'Privacy Policy', icon: 'Shield' }
   ];
 
-  const getIcon = (iconName: string) => {
-    const icons = {
-      Package,
-      RefreshCw,
-      User,
-      Bell,
-      MapPin,
-      Key,
-      Trash2,
-      FileText,
-      Shield,
-      LogOut
-    };
-    const IconComponent = icons[iconName as keyof typeof icons];
+  const getIcon = (icon: string) => {
+    const IconComponent = ICONS[icon as keyof typeof ICONS];
     return IconComponent ? <IconComponent /> : null;
   };
 
-  const handleItemClick = (itemId: string) => {
-    if (itemId === 'logout') {
-      setShowLogoutModal(true);
-    } else {
-      onItemClick(itemId);
-    }
+  const handleItemClick = (id: string) => {
+    id === 'logout' ? setShowLogoutModal(true) : onItemClick(id);
   };
 
   const handleLogoutConfirm = async () => {
-    if (!onLogout) {
-      logoutRequest();
-      navigate('/login');
-      
-      console.warn('No logout handler provided');
-      setShowLogoutModal(false);
-      return;
-    }
-    
     setIsLoggingOut(true);
     try {
-      await onLogout();
-      setShowLogoutModal(false);
-    } catch (error) {
-      console.error('Logout failed:', error);
+      if (onLogout) await onLogout();
+      else {
+        logoutRequest();
+        navigate('/login');
+      }
+    } catch (err) {
+      console.error('Logout failed:', err);
     } finally {
       setIsLoggingOut(false);
-    }
-  };
-
-  const handleLogoutCancel = () => {
-    if (!isLoggingOut) {
       setShowLogoutModal(false);
     }
   };
 
-  const handleModalBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && !isLoggingOut) {
-      handleLogoutCancel();
-    }
+  const cancelLogout = () => !isLoggingOut && setShowLogoutModal(false);
+
+  const isActive = (id: string) =>
+    activeItem.includes(`/profile/${id}`) || (id === 'profile' && activeItem === '/profile');
+
+  const getInitials = (name: string) => {
+    const [first = '', last = ''] = name.trim().split(/\s+/);
+    return (first[0] ?? '').toUpperCase() + (last[0] ?? '').toUpperCase();
   };
 
-  const handleModalKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && !isLoggingOut) {
-      handleLogoutCancel();
-    }
-  };
-
-  const renderMenuItem = (item: SidebarItem) => (
+  const renderItem = (item: SidebarItem) => (
     <div
       key={item.id}
-      className={`${styles.menuItem} ${
-        activeItem.includes(`/profile/${item.id}`) || 
-        (item.id === 'profile' && activeItem === '/profile') 
-          ? styles.active 
-          : ''
-      }`}
+      className={`${styles.menuItem} ${isActive(item.id) ? styles.active : ''}`}
       onClick={() => handleItemClick(item.id)}
     >
       {item.icon && getIcon(item.icon)}
@@ -172,69 +92,46 @@ const Sidebar: React.FC<SidebarProps> = ({
     </div>
   );
 
-  const parseNameAndGetInitials = (fullName: string) => {
-    if (!fullName) return '';
-    
-    const nameParts = fullName.trim().split(/\s+/);
-    const firstInitial = nameParts[0]?.charAt(0).toUpperCase() || '';
-    const lastInitial = nameParts[nameParts.length - 1]?.charAt(0).toUpperCase() || '';
-    if (nameParts.length === 1) {
-      return firstInitial;
-    }
-    
-    return firstInitial + lastInitial;
-  };
-
-  const getMemberSinceYear = (createdAt: string) => {
-    if (!createdAt) return '';
-    const year = new Date(createdAt).getFullYear();
-    return `Member Since: ${year}`;
-  };
-
   return (
     <>
-      <div className={styles.sidebar}>
+      <aside className={styles.sidebar}>
         <div className={styles.sidebarContent}>
           <div className={styles.userInfo}>
-            <div className={styles.avatar}>
-              {user?.name ? parseNameAndGetInitials(user.name) : ''}
-            </div>
+            <div className={styles.avatar}>{getInitials(user.name)}</div>
             <div className={styles.userDetails}>
               <h3>{user.name}</h3>
-              <p>{getMemberSinceYear(user.createdAt)}</p>
+              <p>{user.createdAt && `Member Since: ${new Date(user.createdAt).getFullYear()}`}</p>
             </div>
-          </div>       
+          </div>
 
           <div className={styles.menuSection}>
             <div className={styles.sectionTitle}>Account</div>
-            {accountItems.map(renderMenuItem)}
+            {accountItems.map(renderItem)}
           </div>
 
           <div className={styles.menuSection}>
             <div className={styles.sectionTitle}>Legal</div>
-            {legalItems.map(renderMenuItem)}
+            {legalItems.map(renderItem)}
           </div>
         </div>
-      </div>
+      </aside>
 
-      {/* Logout Confirmation Modal */}
       {showLogoutModal && (
-        <div 
+        <div
           className={styles.modalOverlay}
-          onClick={handleModalBackdropClick}
-          onKeyDown={handleModalKeyDown}
+          onClick={(e) => e.target === e.currentTarget && cancelLogout()}
+          onKeyDown={(e) => e.key === 'Escape' && cancelLogout()}
           tabIndex={-1}
         >
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
               <div className={styles.iconContainer}>
-                <LogOut className={styles.logoutIcon} size={24} />
+                <LogOut size={24} className={styles.logoutIcon} />
               </div>
               <button
                 className={styles.closeButton}
-                onClick={handleLogoutCancel}
+                onClick={cancelLogout}
                 disabled={isLoggingOut}
-                aria-label="Close modal"
               >
                 <X size={20} />
               </button>
@@ -250,7 +147,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className={styles.modalFooter}>
               <button
                 className={styles.cancelButton}
-                onClick={handleLogoutCancel}
+                onClick={cancelLogout}
                 disabled={isLoggingOut}
               >
                 Cancel
@@ -260,14 +157,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onClick={handleLogoutConfirm}
                 disabled={isLoggingOut}
               >
-                {isLoggingOut ? (
-                  <>
-                    <div className={styles.spinner}></div>
-                    Logging out...
-                  </>
-                ) : (
-                  'Yes, Log out'
-                )}
+                {isLoggingOut ? <><div className={styles.spinner}></div> Logging out...</> : 'Yes, Log out'}
               </button>
             </div>
           </div>

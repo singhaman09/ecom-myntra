@@ -1,6 +1,6 @@
 export interface Order {
   id: string;
-  status: 'delivered' | 'Pending' | 'shipped' | 'cancelled' | 'placed' | 'returned' | 'picked';
+  status: 'delivered' | 'Pending' | 'shipped' | 'canceled' | 'placed' | 'returned' | 'picked';
   deliveryDate: string;
   orderDate: string;
   exchangeReturnWindow?: string;
@@ -35,7 +35,7 @@ export interface OrderItem {
   isReturnable?: boolean;
   isExchangeable?: boolean;
   returnReason?: string;
-  itemStatus?: 'active' | 'returned' | 'exchanged' | 'cancelled';
+  itemStatus?: 'active' | 'returned' | 'exchanged' | 'canceled';
 }
 
 export interface TrackingInfo {

@@ -123,9 +123,9 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
             <div className={styles.imagePlaceholder}>No Image</div>
           )}
 
-          {discountPercentage > 0 && (
+          {/* {discountPercentage > 0 && (
             <div className={styles.discountBadge}>{discountPercentage}% OFF</div>
-          )}
+          )} */}
 
           {!item.inStock && (
             <div className={styles.outOfStockOverlay}>
@@ -154,7 +154,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
 
           <div className={styles.itemRating}>
             <StarRating rating={rating} onRatingChange={setRating} />
-            <span className={styles.ratingText}>({item.reviewCount})</span>
+            {/* <span className={styles.ratingText}>({item.reviewCount})</span> */}
           </div>
 
           <p className={styles.itemDescription}>

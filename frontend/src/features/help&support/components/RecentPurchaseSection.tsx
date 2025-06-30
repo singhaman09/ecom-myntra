@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Order } from '../../order/types/orders';
 import styles from '../css/Helpsupport.module.css';
+import { ORDER } from '../../order/types/order.enum';
 
 interface RecentPurchaseSectionProps {
   order: Order;
@@ -16,7 +17,7 @@ const RecentPurchaseSection: React.FC<RecentPurchaseSectionProps> = ({ order }) 
   };
 
   const getStatusBadge = (status: string) => {
-    const statusClass = status === 'delivered' ? styles.deliveredBadge : styles.statusBadge;
+    const statusClass = status === ORDER.DELIVERED ? styles.deliveredBadge : styles.statusBadge;
     return (
       <span className={statusClass}>
         {status.charAt(0).toUpperCase() + status.slice(1)}

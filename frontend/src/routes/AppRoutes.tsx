@@ -27,6 +27,7 @@ import CongratulationsPage from "../features/auth/pages/RegistrationComplete";
 import HelpSupport from "../features/help&support/pages/HelpSupport";
 import { PRODUCT_ROUTES } from "../features/product/Constants/Routes";
 import StoreLocator from "../features/locateStore/pages/StoreLocator/StoreLocator";
+import NotFound from "../components/shared/Notfound";
 
 const CartPage = React.lazy(() => import("../features/cart/pages/CartPage"));
 const Payment = React.lazy(() => import("../features/cart/pages/Payment"));
@@ -127,7 +128,7 @@ const AppRoutes: React.FC = () => {
         },
         {
           path: "*",
-          element: <div>404 - Page Not Found</div>,
+          element: <NotFound/>,
         },
       ],
     },

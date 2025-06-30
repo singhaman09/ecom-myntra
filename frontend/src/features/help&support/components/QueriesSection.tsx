@@ -3,6 +3,7 @@ import type { SupportQuery } from '../types/support';
 import styles from '../css/Helpsupport.module.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 
 interface QueriesSectionProps {
   queries: SupportQuery[];
@@ -30,7 +31,7 @@ const QueriesSection: React.FC<QueriesSectionProps> = ({ queries: initialQueries
           <div className={styles.queryHeader} onClick={() => toggleQuery(query.id)}>
             <span className={styles.queryTitle}>{query.title}</span>
             <span className={styles.queryToggle}>
-              {expandedQuery === query.id ? '−' : '+'}
+              {expandedQuery === query.id ? <FaMinus /> : <FaPlus/>}
             </span>
           </div>
           

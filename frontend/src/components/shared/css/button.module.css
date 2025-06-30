@@ -14,12 +14,12 @@
 }
 
 .buttonPrimary {
-  background: #00a65a;
+  background: #044236;
   color: #fff;
 }
 .buttonDanger {
   
-  background: #00a65a;
+  background: #044236;
   color: #fff;
 }
 
@@ -29,15 +29,15 @@
 
 .buttonSecondary {
   background: #fff;
-  color: #00a65a;
-  border: 1px solid #00a65a;
+  color: #044236;
+  border: 1px solid #044236;
 }
 
 .buttonSecondary:hover {
   background: #9ad4ba;
 }
 .buttonDisabled {
-  background: #00a65a;
+  background: #044236;
   color: #00a65a;
   cursor: not-allowed;
 }
