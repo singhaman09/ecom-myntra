@@ -3,6 +3,7 @@ import type { Order, OrderStatus, OrderItem, Address } from "./types/orders";
 
 import { ORDER } from "./types/order.enum";
 import apiClient from "../../services/apiClient";
+import axios from "axios";
 const ORDER_URL = import.meta.env.VITE_ORDER_URL;
 const USE_MOCK = true;
 

@@ -2,11 +2,10 @@ import axios from "axios";
 import type { Cart } from "../types/cart";
 import { getToken } from "../../auth/utils/tokenUtils";
 
-const baseURL = "http://172.50.3.140:3003/api/v1/";
+const CART_API_BASE_URL = import.meta.env.VITE_CART_API_URL;
 
 const apiClient = axios.create({
-  baseURL,
-  headers: {
+  baseURL: CART_API_BASE_URL,  headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
@@ -59,7 +58,7 @@ export const updateCartItemSizeAPI = async (
   newSize: string
 ) => {
   try {
-    const res = await apiClient.put<Cart>(`/cart/${productId}/${newSize}`);
+    const res = await apiClient.put<Cart>(`/cart/${productId}/size`, { size: newSize });
     return res.data;
   } catch (error) {
     throw error;

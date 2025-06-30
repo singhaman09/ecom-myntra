@@ -1,15 +1,14 @@
 import React from "react";
 import styles from "../styles/CartPage.module.css";
+import { CartModalAction } from "../../types/cartEnums";
 
 interface RemoveModalProps {
   showRemoveModal: boolean;
-  modalAction: "remove" | "wishlist" | null;
+  modalAction: CartModalAction | null;
   selectedItems: string[];
   handleMoveToWishlist: (id: string) => void;
   setShowRemoveModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setModalAction: React.Dispatch<
-    React.SetStateAction<"remove" | "wishlist" | null>
-  >;
+  setModalAction: React.Dispatch<React.SetStateAction<CartModalAction | null>>;
 }
 
 const RemoveModal: React.FC<RemoveModalProps> = ({
@@ -28,11 +27,11 @@ const RemoveModal: React.FC<RemoveModalProps> = ({
         <p>
           Are you sure you want to{" "}
           <strong>
-            {modalAction === "remove" ? "remove" : "move"}{" "}
+            {modalAction === CartModalAction.REMOVE ? "remove" : "move"}{" "}
             {selectedItems.length}
           </strong>{" "}
           item{selectedItems.length > 1 ? "s" : ""}{" "}
-          {modalAction === "remove" ? "from cart" : "to wishlist"}?
+          {modalAction === CartModalAction.REMOVE ? "from cart" : "to wishlist"}?
         </p>
         <div className={styles.modalActions}>
           <button
@@ -44,7 +43,7 @@ const RemoveModal: React.FC<RemoveModalProps> = ({
               setModalAction(null);
             }}
           >
-            {modalAction === "remove" ? "Remove" : "Move"}
+            {modalAction === CartModalAction.REMOVE ? "Remove" : "Move"}
           </button>
           <span className={styles.modalDivider}></span>
           <button

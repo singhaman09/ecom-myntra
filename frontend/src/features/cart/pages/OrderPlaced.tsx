@@ -1,8 +1,18 @@
 import styles from "../components/styles/OrderPlaced.module.css";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../hooks/useAppDispatch";
+import { resetCart } from "../redux/cartSlice";
 
 const OrderPlaced = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const handlePlaceOrder = () => {
+    // send details to order page
+
+    dispatch(resetCart()); // reset the cart from cartId
+
+    navigate("/");
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -19,7 +29,7 @@ const OrderPlaced = () => {
           delivered soon 🚚
         </p>
 
-        <button onClick={() => navigate("/")} className={styles.homeBtn}>
+        <button onClick={handlePlaceOrder} className={styles.homeBtn}>
           Continue Shopping
         </button>
       </div>

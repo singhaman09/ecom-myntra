@@ -11,8 +11,8 @@ const RecommendedProduct: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const handleAddToBag = (item: Product) => {
-    dispatch(addCartItem(item.id));
+  const handleAddToBag = (item: Product, size: string = "default", color: string = "default") => {
+    dispatch(addCartItem({ productId: item.id, size, color }));
     navigate("/cart");
   };
 

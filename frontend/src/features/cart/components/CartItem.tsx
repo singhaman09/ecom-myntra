@@ -8,11 +8,12 @@ import DiscountCarousel from '../../../assets/discound_carrousel.png';
 import RemoveModal from './modals/RemoveModal';
 import { toast } from 'react-toastify';
 import Loader from '../../product/utils/Loader';
+import { CartActionType, CartModalAction } from '../types/cartEnums';
 
 interface Props {
   item: CartItemType;
   onRemove: (productId: string) => void;
-  onQuantityChange: (productId: string, action: "increment" | "decrement") => void;
+  onQuantityChange: (productId: string, action: CartActionType) => void;
   onMoveToWishlist?: (productId: string) => void;
   onSizeClick?: (item: CartItemType) => void;
   loading?: boolean;
@@ -36,7 +37,7 @@ const CartItem: React.FC<Props> = ({
   const [hovered, setHovered] = useState(false);
   const [hoverDirection, setHoverDirection] = useState<'left' | 'right' | null>(null);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
-  const [modalAction, setModalAction] = useState<"remove" | "wishlist" | null>(null);
+  const [modalAction, setModalAction] = useState<CartModalAction | null>(null);
 
   const handleMouseEnter = (direction: 'left' | 'right') => {
     setHovered(true);
@@ -49,20 +50,20 @@ const CartItem: React.FC<Props> = ({
   };
 
   const handleRemoveClick = () => {
-    setModalAction("remove");
+    setModalAction(CartModalAction.REMOVE);
     setShowRemoveModal(true);
   };
 
   const handleWishlistClick = () => {
-    setModalAction("wishlist");
+    setModalAction(CartModalAction.WISHLIST);
     setShowRemoveModal(true);
   };
 
   const handleConfirmAction = (id: string) => {
-    if (modalAction === "remove") {
+    if (modalAction === CartModalAction.REMOVE) {
       onRemove(id);
       toast.success(`"${item.name}" removed from cart`);
-    } else if (modalAction === "wishlist" && onMoveToWishlist) {
+    } else if (modalAction === CartModalAction.WISHLIST && onMoveToWishlist) {
       onMoveToWishlist(id);
       toast.success(`"${item.name}" moved to wishlist`);
     }
@@ -71,12 +72,12 @@ const CartItem: React.FC<Props> = ({
   };
 
   const handleIncrement = () => {
-    onQuantityChange(item.productId, "increment");
+    onQuantityChange(item.productId, CartActionType.INCREMENT);
   };
 
   const handleDecrement = () => {
     if (item.quantity > 1) {
-      onQuantityChange(item.productId, "decrement");
+      onQuantityChange(item.productId, CartActionType.DECREMENT);
     }
   };
 
