@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
-import ProductSection from './ProductSection';
-import type { Product } from '../../product/interfaces/ProductInterfaces';
+import ProductSection from '../ProductSection/ProductSection';
+import type { Product } from '../../../product/interfaces/ProductInterfaces';
 
 
 interface RecommendedProductsProps {
@@ -12,26 +12,6 @@ interface RecommendedProductsProps {
 const RecommendedProducts: React.FC<RecommendedProductsProps> = ({ products = [] }) => {
   // Sample products to use if no data is passed
   const sampleProducts = useMemo(() => [
-    {
-      _id: "recommended_1",
-      images: [
-        { url: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop", isPrimary: true }
-      ],
-      brand: "The Body Shop",
-      name: "Ginger Anti Dandruff Shampoo",
-      price: 299,
-      category: "Hair Care",
-      subCategory: "Shampoo",
-      totalStock: 35,
-      createdAt: "2024-01-01T00:00:00Z",
-      updatedAt: "2024-01-01T00:00:00Z",
-      description: "Anti-dandruff shampoo with ginger extracts",
-      reviews: [
-        { rating: 4, comment: "Effective against dandruff" },
-        { rating: 5, comment: "Great results" },
-        { rating: 4, comment: "Good value for money" }
-      ]
-    },
     {
       _id: "recommended_2",
       images: [
@@ -50,6 +30,26 @@ const RecommendedProducts: React.FC<RecommendedProductsProps> = ({ products = []
         { rating: 5, comment: "Refreshing and energizing" },
         { rating: 4, comment: "Great fragrance" },
         { rating: 5, comment: "Love this product" }
+      ]
+    },
+    {
+      _id: "recommended_1",
+      images: [
+        { url: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=300&h=300&fit=crop", isPrimary: true }
+      ],
+      brand: "The Body Shop",
+      name: "Anti Dandruff Shampoo",
+      price: 299,
+      category: "Hair Care",
+      subCategory: "Shampoo",
+      totalStock: 35,
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+      description: "Anti-dandruff shampoo with ginger extracts",
+      reviews: [
+        { rating: 4, comment: "Effective against dandruff" },
+        { rating: 5, comment: "Great results" },
+        { rating: 4, comment: "Good value for money" }
       ]
     },
     {

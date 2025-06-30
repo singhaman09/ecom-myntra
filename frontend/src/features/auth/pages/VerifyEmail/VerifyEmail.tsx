@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import SharedOtpVerification from '../components/SharedOtpVerification';
+import { useAuth } from '../../hooks/useAuth';
+import SharedOtpVerification from '../../components/SharedOtpVerification';
 
 const VerifyEmail: React.FC = () => {
   // State variables for managing verification and OTP resend logic

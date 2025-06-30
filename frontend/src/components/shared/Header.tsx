@@ -126,7 +126,7 @@ const Header: React.FC = React.memo(() => {
   // Navigate to Sign In
   const handleSignIn = useCallback(() => {
     setIsProfileDropdownOpen(false);
-    navigate("/login");
+    navigate('/login');
   }, [navigate]);
 
   // Navigate to Sign Up

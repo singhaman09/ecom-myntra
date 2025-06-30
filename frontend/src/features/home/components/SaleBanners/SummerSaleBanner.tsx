@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './css/SummerSaleBanner.module.css';
+import styles from './SummerSaleBanner.module.css';
 
 const SummerSaleBanner: React.FC = () => {
   return (

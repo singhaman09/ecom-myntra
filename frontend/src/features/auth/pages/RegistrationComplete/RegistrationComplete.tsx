@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './css/RegistrationComplete.module.css';
+import styles from './RegistrationComplete.module.css';
 
-import successImg from '../../../assets/icons/successpage.svg';
+import successImg from '../../../../assets/icons/successpage.svg';
 import { useNavigate } from 'react-router-dom';
 
 const CongratulationsPage: React.FC = () => {

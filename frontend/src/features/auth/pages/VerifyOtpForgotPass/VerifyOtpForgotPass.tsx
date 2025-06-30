@@ -2,9 +2,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '../hooks/useAuth';
-import { verifyOtpSchema, type VerifyOtpFormData } from '../schemas/authSchemas';
-import SharedOtpVerification from '../components/SharedOtpVerification';
+import { useAuth } from '../../hooks/useAuth';
+import { verifyOtpSchema, type VerifyOtpFormData } from '../../schemas/authSchemas';
+import SharedOtpVerification from '../../components/SharedOtpVerification';
 
 const VerifyOtpForgotPass: React.FC = () => {
   const navigate = useNavigate();

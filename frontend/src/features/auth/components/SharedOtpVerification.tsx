@@ -58,9 +58,13 @@ const SharedOtpVerification: React.FC<SharedOtpVerificationProps> = ({
     }
   };
 
+  const EVENT_KEY = {
+    BACKSPACE: 'Backspace'
+  }
+
   // Handle backspace key behavior
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === EVENT_KEY.BACKSPACE && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-${index - 1}`);
       prevInput?.focus();
 
