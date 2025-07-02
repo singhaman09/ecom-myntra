@@ -20,6 +20,10 @@ const store = configureStore({
     cart : cartReducer,
     notifications: notificationReducer
   },
+   middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 

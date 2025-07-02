@@ -20,7 +20,6 @@ const HelpSupportPage: React.FC<HelpSupportPageProps> = ({ order: propOrder, onB
 
   const order = location.state?.order as Order;
 
-  // Fallback onBack
   const onBack = propOnBack || (() => navigate(-1));
 
   const [showContactModal, setShowContactModal] = useState(false);
@@ -30,7 +29,7 @@ const HelpSupportPage: React.FC<HelpSupportPageProps> = ({ order: propOrder, onB
     return <div>No order data available.</div>;
   }
 useEffect(() => {
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }, []);
   const queries: SupportQuery[] = [
   {
